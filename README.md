@@ -1,3 +1,13 @@
+# Triton Exchange Frontend
+
+## Getting Started
+
+ - Copy .env.local.example file as .env.local in the same directory
+ - Input the Firebase API key in the .env.local file
+ - 'npm start' and profit
+
+# React README
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
