@@ -5,7 +5,9 @@ import './styles/index.scss';
 import * as serviceWorker from './serviceWorker';
 
 const App: React.FC = () => {
-  return (<h1>Hello World</h1>);
+  return (
+    <h1>{process.env.REACT_APP_VERSION}</h1>
+  );
 }
 
 ReactDOM.render(
