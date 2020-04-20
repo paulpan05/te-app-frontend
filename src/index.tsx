@@ -3,10 +3,11 @@ import ReactDOM from 'react-dom';
 import 'typeface-open-sans';
 import './styles/index.scss';
 import * as serviceWorker from './serviceWorker';
+import Login from './pages/Login';
 
 const App: React.FC = () => {
   return (
-    <h1>{process.env.REACT_APP_VERSION}</h1>
+    <Login />
   );
 }
 

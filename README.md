@@ -3,7 +3,7 @@
 ## Getting Started
 
  - Copy .env.local.example file as .env.local in the same directory
- - Input the Firebase API key in the .env.local file
+ - Input the Firebase credentials in the .env.local file
  - 'npm start' and profit
 
 # React README
