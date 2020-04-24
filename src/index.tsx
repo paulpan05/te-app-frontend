@@ -5,11 +5,7 @@ import './styles/index.scss';
 import * as serviceWorker from './serviceWorker';
 import Login from './pages/Login';
 
-const App: React.FC = () => {
-  return (
-    <Login />
-  );
-}
+const App: React.FC = () => <Login />;
 
 ReactDOM.render(
   <React.StrictMode>

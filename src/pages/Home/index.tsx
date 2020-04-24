@@ -1,7 +1,5 @@
 import React from 'react';
 
-const Home: React.FC = () => {
-  return (<div></div>);
-}
+const Home: React.FC = () => <div />;
 
 export default Home;
