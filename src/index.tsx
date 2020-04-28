@@ -1,15 +1,29 @@
-import React from 'react';
+import React, { Dispatch } from 'react';
 import ReactDOM from 'react-dom';
+import { Provider, connect } from 'react-redux';
 import 'typeface-open-sans';
 import './styles/index.scss';
 import * as serviceWorker from './serviceWorker';
 import Login from './pages/Login';
+import rootStore from './redux/stores';
+import authActions from './redux/actions/auth';
 
-const App: React.FC = () => <Login />;
+interface AppProps {
+  dispatch: Dispatch<any>;
+}
+
+const App = connect()((props: AppProps) => {
+  React.useEffect(() => {
+    props.dispatch(authActions.retrieveUserSession());
+  }, []);
+  return <Login />;
+});
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider store={rootStore}>
+      <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root'),
 );
