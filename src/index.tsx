@@ -19,7 +19,7 @@ const AppComponent: React.FC<AppProps> = ({ dispatch }) => {
     dispatch(authActions.retrieveUserSession());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  return <PrivateRoute exact path component={Home} />;
+  return <PrivateRoute exact path="/" component={Home} />;
 };
 
 const App = connect()(AppComponent);
