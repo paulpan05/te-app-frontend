@@ -2,9 +2,10 @@
 import React from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { Route, Redirect } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import { rootState } from '../../redux/reducers';
 import Loading from '../../pages/Loading';
+import Login from '../../pages/Login';
 
 interface PrivateRouteProps {
   dispatch: Dispatch<any>;
@@ -30,7 +31,7 @@ const PrivateRouteComponent: React.FC<PrivateRouteProps> = ({
         return <RouteComponent {...routeProps} />;
       }
       if (user === null) {
-        return <Redirect to="/login" />;
+        return <Login />;
       }
       return <Loading />;
     }}

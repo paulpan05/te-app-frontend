@@ -38,9 +38,6 @@
     "lint": "eslint ./src --ext .tsx --color",
     "lint:fix": "eslint ./src --ext .tsx --color --fix"
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
   "browserslist": {
     "production": [
       ">0.2%",

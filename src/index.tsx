@@ -1,12 +1,14 @@
 import React, { Dispatch } from 'react';
 import ReactDOM from 'react-dom';
 import { Provider, connect } from 'react-redux';
+import { BrowserRouter as Router } from 'react-router-dom';
 import 'typeface-open-sans';
 import './styles/index.scss';
 import * as serviceWorker from './serviceWorker';
-import Login from './pages/Login';
 import rootStore from './redux/stores';
 import authActions from './redux/actions/auth';
+import PrivateRoute from './components/PrivateRoute';
+import Home from './pages/Home';
 
 interface AppProps {
   dispatch: Dispatch<any>;
@@ -15,8 +17,9 @@ interface AppProps {
 const AppComponent: React.FC<AppProps> = ({ dispatch }) => {
   React.useEffect(() => {
     dispatch(authActions.retrieveUserSession());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  return <Login />;
+  return <PrivateRoute exact path component={Home} />;
 };
 
 const App = connect()(AppComponent);
@@ -24,7 +27,9 @@ const App = connect()(AppComponent);
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={rootStore}>
-      <App />
+      <Router>
+        <App />
+      </Router>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root'),
