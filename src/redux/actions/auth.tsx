@@ -10,10 +10,6 @@ const setUser = (user: firebase.User | null) => ({
   user,
 });
 
-const removeUser = () => ({
-  type: authConstants.REMOVE_USER,
-});
-
 const logInFailed = (err: string) => ({
   type: authConstants.LOGIN_FAILED,
   message: err,
@@ -32,8 +28,7 @@ const retrieveUserSession: ThunkActionCreator = () => (dispatch) => {
 
 const logIn: ThunkActionCreator = () => async (dispatch) => {
   try {
-    const result = await auth.signInWithPopup(googleProvider);
-    dispatch(setUser(result.user));
+    await auth.signInWithPopup(googleProvider);
   } catch (err) {
     dispatch(logInFailed(err.message));
   }
@@ -42,7 +37,6 @@ const logIn: ThunkActionCreator = () => async (dispatch) => {
 const signOut: ThunkActionCreator = () => async (dispatch) => {
   try {
     await auth.signOut();
-    dispatch(removeUser());
   } catch (err) {
     dispatch(signOutFailed(err.message));
   }

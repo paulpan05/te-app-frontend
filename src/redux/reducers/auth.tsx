@@ -20,11 +20,6 @@ const auth = (state = initialState, action: AnyAction) => {
         ...state,
         user: action.user,
       };
-    case authConstants.REMOVE_USER:
-      return {
-        ...state,
-        user: null,
-      };
     case authConstants.LOGIN_FAILED:
       return {
         ...state,
