@@ -1,5 +1,21 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { authActions } from '../../redux/actions';
 
-const Login: React.FC = () => <div>{process.env.REACT_APP_FIREBASE_PROJECT_ID}</div>;
+interface LoginProps {
+  dispatch: Dispatch<any>;
+}
 
-export default Login;
+const Login: React.FC<LoginProps> = ({ dispatch }) => (
+  <button
+    onClick={() => {
+      dispatch(authActions.logIn());
+    }}
+    type="submit"
+  >
+    Log In
+  </button>
+);
+
+export default connect()(Login);

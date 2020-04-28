@@ -12,12 +12,14 @@ interface AppProps {
   dispatch: Dispatch<any>;
 }
 
-const App = connect()((props: AppProps) => {
+const AppComponent: React.FC<AppProps> = ({ dispatch }) => {
   React.useEffect(() => {
-    props.dispatch(authActions.retrieveUserSession());
+    dispatch(authActions.retrieveUserSession());
   }, []);
   return <Login />;
-});
+};
+
+const App = connect()(AppComponent);
 
 ReactDOM.render(
   <React.StrictMode>
