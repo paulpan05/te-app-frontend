@@ -17,7 +17,6 @@ interface AppProps {
 const AppComponent: React.FC<AppProps> = ({ dispatch }) => {
   React.useEffect(() => {
     dispatch(authActions.retrieveUserSession());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return <PrivateRoute exact path="/" component={Home} />;
 };
