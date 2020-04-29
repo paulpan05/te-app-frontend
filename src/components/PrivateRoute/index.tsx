@@ -4,7 +4,6 @@ import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
 import { rootState } from '../../redux/reducers';
-import Loading from '../../pages/Loading';
 import Login from '../../pages/Login';
 
 interface PrivateRouteProps {
@@ -33,7 +32,7 @@ const PrivateRouteComponent: React.FC<PrivateRouteProps> = ({
       if (user === null) {
         return <Login />;
       }
-      return <Loading />;
+      return <></>;
     }}
   />
 );

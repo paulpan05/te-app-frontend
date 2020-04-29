@@ -12,6 +12,5 @@ module.exports = {
     'react/no-array-index-key': 'off',
     'operator-linebreak': 'off',
     'react/prop-types': 'off',
-    'react-hooks/exhaustive-deps': 'off',
   },
 };
