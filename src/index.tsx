@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider, connect } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 import 'typeface-open-sans';
+import './styles/reset.scss';
 import './styles/index.scss';
 import * as serviceWorker from './serviceWorker';
 import rootStore from './redux/stores';
@@ -17,6 +18,7 @@ interface AppProps {
 const AppComponent: React.FC<AppProps> = ({ dispatch }) => {
   React.useEffect(() => {
     dispatch(authActions.retrieveUserSession());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return <PrivateRoute exact path="/" component={Home} />;
 };
