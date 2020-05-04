@@ -17,7 +17,7 @@ const mapStateToProps = (state: rootState) => ({
   user: state.auth.user,
 });
 
-const PrivateRouteComponent: React.FC<PrivateRouteProps> = ({
+const PrivateRoute: React.FC<PrivateRouteProps> = ({
   dispatch,
   component: RouteComponent,
   user,
@@ -37,4 +37,4 @@ const PrivateRouteComponent: React.FC<PrivateRouteProps> = ({
   />
 );
 
-export default connect(mapStateToProps)(PrivateRouteComponent);
+export default connect(mapStateToProps)(PrivateRoute);
