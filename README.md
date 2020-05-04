@@ -5,6 +5,7 @@
  - Copy .env.local.example file as .env.local in the same directory
  - Input the Firebase credentials in the .env.local file
  - 'npm start' and profit
+ - Install ESLint and Prettier plugins on your Visual Studio Code to enable automatic syntax warning and correction.
 
 # React README
 
