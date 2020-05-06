@@ -2,15 +2,13 @@
 import React from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { Route } from 'react-router-dom';
+import { Route, Redirect, RouteProps } from 'react-router-dom';
 import { rootState } from '../../redux/reducers';
-import Login from '../../pages/Login';
 
-interface PrivateRouteProps {
+interface PrivateRouteProps extends Omit<RouteProps, 'render'> {
   dispatch: Dispatch<any>;
   component: React.FC<any>;
   user: firebase.User | null | undefined;
-  [key: string]: any;
 }
 
 const mapStateToProps = (state: rootState) => ({
@@ -30,7 +28,7 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({
         return <RouteComponent {...routeProps} />;
       }
       if (user === null) {
-        return <Login />;
+        return <Redirect to="/login" />;
       }
       return <></>;
     }}

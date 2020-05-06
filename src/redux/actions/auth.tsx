@@ -28,7 +28,7 @@ const retrieveUserSession: ThunkActionCreator = () => (dispatch) => {
 
 const logIn: ThunkActionCreator = () => async (dispatch) => {
   try {
-    await auth.signInWithPopup(googleProvider);
+    await auth.signInWithRedirect(googleProvider);
   } catch (err) {
     dispatch(logInFailed(err.message));
   }
