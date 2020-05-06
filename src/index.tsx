@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider, connect } from 'react-redux';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import 'typeface-open-sans';
-import './styles/reset.scss';
+import 'normalize.css';
 import './styles/index.scss';
 import * as serviceWorker from './serviceWorker';
 import rootStore from './redux/stores';

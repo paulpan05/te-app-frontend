@@ -1,0 +1,42 @@
+.page {
+  width: 100vw;
+  min-height: 100vh;
+  background: linear-gradient(to bottom left, #e67e22, #2980b9);
+  display: flex;
+  flex-direction: column;
+}
+
+.authContainer {
+  width: 100%;
+  min-height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  div {
+    width: 500px;
+    height: 300px;
+    max-width: 100%;
+    background-color: white;
+    border-radius: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    img {
+      width: 100%;
+    }
+    button {
+      background-color: #000080;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 1rem;
+      font-size: large;
+    }
+  }
+}
+
+.aboutContainer {
+  width: 100%;
+  min-height: 10vh;
+}

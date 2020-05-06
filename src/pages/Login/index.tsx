@@ -4,6 +4,8 @@ import { Dispatch } from 'redux';
 import { Redirect } from 'react-router-dom';
 import { authActions } from '../../redux/actions';
 import { rootState } from '../../redux/reducers';
+import styles from './index.module.scss';
+import AppLogo from '../../assets/img/full-app-logo.svg';
 
 interface LoginProps {
   dispatch: Dispatch<any>;
@@ -18,14 +20,22 @@ const Login: React.FC<LoginProps> = ({ dispatch, user }) =>
   user ? (
     <Redirect to="/" />
   ) : (
-    <button
-      onClick={() => {
-        dispatch(authActions.logIn());
-      }}
-      type="submit"
-    >
-      Log In
-    </button>
+    <div className={styles.page}>
+      <div className={styles.authContainer}>
+        <div>
+          <img src={AppLogo} alt="Full App Logo" draggable={false} />
+          <button
+            onClick={() => {
+              dispatch(authActions.logIn());
+            }}
+            type="submit"
+          >
+            Log In with UCSD SSO
+          </button>
+        </div>
+      </div>
+      <div className={styles.aboutContainer} />
+    </div>
   );
 
 export default connect(mapStateToProps)(Login);
