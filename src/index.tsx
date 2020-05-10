@@ -4,6 +4,7 @@ import { Provider, connect } from 'react-redux';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import 'typeface-open-sans';
 import 'normalize.css';
+import 'focus-visible/dist/focus-visible.min';
 import './styles/index.scss';
 import * as serviceWorker from './serviceWorker';
 import rootStore from './redux/stores';
@@ -11,6 +12,7 @@ import authActions from './redux/actions/auth';
 import PrivateRoute from './components/PrivateRoute';
 import Home from './pages/Home';
 import Login from './pages/Login';
+import Navbar from './components/Navbar';
 
 interface AppProps {
   dispatch: Dispatch<any>;
@@ -23,7 +25,12 @@ const AppComponent: React.FC<AppProps> = ({ dispatch }) => {
   return (
     <Switch>
       <Route exact path="/login" component={Login} />
-      <PrivateRoute exact path="/" component={Home} />
+      <Route path="/">
+        <Navbar />
+        <Switch>
+          <PrivateRoute exact path="/" component={Home} />
+        </Switch>
+      </Route>
     </Switch>
   );
 };
