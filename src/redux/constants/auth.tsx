@@ -1,7 +1,13 @@
 enum authConstants {
   SET_USER,
+  LOGGING_IN,
+  LOGIN_SUCCESS,
   LOGIN_FAILED,
+  DISMISS_LOGIN_FAILED,
+  SIGNING_OUT,
+  SIGNOUT_SUCCESS,
   SIGNOUT_FAILED,
+  DISMISS_SIGNOUT_FAILED,
 }
 
 export default authConstants;

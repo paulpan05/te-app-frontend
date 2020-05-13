@@ -1,3 +1,15 @@
 * {
   font-family: 'Open Sans', Arial, Helvetica, sans-serif;
 }
+
+// hide the focus indicator if element receives focus via mouse, but show on keyboard focus (on tab).
+.js-focus-visible :focus:not(.focus-visible) {
+  outline: none;
+}
+
+// Define a strong focus indicator for keyboard focus.
+// If you skip this then the browser's default focus indicator will display instead
+// ideally use outline property for those users using windows high contrast mode
+.js-focus-visible .focus-visible {
+  outline: magenta auto 5px;
+}

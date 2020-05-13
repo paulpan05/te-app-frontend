@@ -10,14 +10,38 @@ const setUser = (user: firebase.User | null) => ({
   user,
 });
 
+const loggingIn = () => ({
+  type: authConstants.LOGGING_IN,
+});
+
+const logInSuccess = () => ({
+  type: authConstants.LOGIN_SUCCESS,
+});
+
 const logInFailed = (err: string) => ({
   type: authConstants.LOGIN_FAILED,
   message: err,
 });
 
+const dismissLogInFailed = () => ({
+  type: authConstants.DISMISS_LOGIN_FAILED,
+});
+
+const signingOut = () => ({
+  type: authConstants.SIGNING_OUT,
+});
+
+const signOutSuccess = () => ({
+  type: authConstants.SIGNOUT_SUCCESS,
+});
+
 const signOutFailed = (err: string) => ({
   type: authConstants.SIGNOUT_FAILED,
   message: err,
+});
+
+const dismissSignOutFailed = () => ({
+  type: authConstants.DISMISS_SIGNOUT_FAILED,
 });
 
 const retrieveUserSession: ThunkActionCreator = () => (dispatch) => {
@@ -28,7 +52,9 @@ const retrieveUserSession: ThunkActionCreator = () => (dispatch) => {
 
 const logIn: ThunkActionCreator = () => async (dispatch) => {
   try {
-    await auth.signInWithRedirect(googleProvider);
+    dispatch(loggingIn());
+    await auth.signInWithPopup(googleProvider);
+    dispatch(logInSuccess());
   } catch (err) {
     dispatch(logInFailed(err.message));
   }
@@ -36,11 +62,19 @@ const logIn: ThunkActionCreator = () => async (dispatch) => {
 
 const signOut: ThunkActionCreator = () => async (dispatch) => {
   try {
+    dispatch(signingOut());
     await auth.signOut();
+    dispatch(signOutSuccess());
   } catch (err) {
     dispatch(signOutFailed(err.message));
   }
 };
 
-const authActions = { retrieveUserSession, logIn, signOut };
+const authActions = {
+  retrieveUserSession,
+  logIn,
+  dismissLogInFailed,
+  signOut,
+  dismissSignOutFailed,
+};
 export default authActions;

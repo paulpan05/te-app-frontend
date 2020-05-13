@@ -10,13 +10,15 @@ import AppLogo from '../../assets/img/full-app-logo.svg';
 interface LoginProps {
   dispatch: Dispatch<any>;
   user: firebase.User | null | undefined;
+  loggingIn: boolean;
 }
 
 const mapStateToProps = (state: rootState) => ({
   user: state.auth.user,
+  loggingIn: state.auth.loggingIn,
 });
 
-const Login: React.FC<LoginProps> = ({ dispatch, user }) =>
+const Login: React.FC<LoginProps> = ({ dispatch, user, loggingIn }) =>
   user ? (
     <Redirect to="/" />
   ) : (
@@ -29,6 +31,7 @@ const Login: React.FC<LoginProps> = ({ dispatch, user }) =>
               dispatch(authActions.logIn());
             }}
             type="submit"
+            disabled={loggingIn}
           >
             Log In with UCSD SSO
           </button>
