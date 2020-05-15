@@ -1,6 +1,8 @@
 on:
   pull_request:
     branches: [ master ]
+  push:
+    branches: [ master ]
 name: Integration testing
 jobs:
   build:
