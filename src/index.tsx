@@ -1,4 +1,4 @@
-import React, { Dispatch } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider, connect } from 'react-redux';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
@@ -6,6 +6,7 @@ import 'typeface-open-sans';
 import 'normalize.css';
 import 'focus-visible/dist/focus-visible.min';
 import './styles/index.scss';
+import { Dispatch } from 'redux';
 import * as serviceWorker from './serviceWorker';
 import rootStore from './redux/stores';
 import authActions from './redux/actions/auth';
