@@ -8,14 +8,16 @@ interface HomeProps {
 }
 
 const Home: React.FC<HomeProps> = ({ dispatch }) => (
-  <button
-    onClick={() => {
-      dispatch(authActions.signOut());
-    }}
-    type="submit"
-  >
-    Sign Out
-  </button>
+  <div>
+    <button
+      onClick={() => {
+        dispatch(authActions.signOut());
+      }}
+      type="submit"
+    >
+      Sign Out
+    </button>
+  </div>
 );
 
 export default connect()(Home);
