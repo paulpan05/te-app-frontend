@@ -1,0 +1,82 @@
+$font-stack: Roboto;
+
+h1 {
+  margin-top: 5vh !important;
+  justify-content: center !important;
+  align-items: center !important;
+  font: $font-stack !important;
+  font-weight: 500 !important;
+  font-size: 35px !important;
+  line-height: 42px !important;
+  text-align: center !important;
+}
+
+h4 {
+  font: $font-stack !important;
+  font-weight: 300 !important;
+  font-size: 25px !important;
+  line-height: 30px !important;
+  margin-bottom: 7vh !important;
+}
+
+.cropContainer {
+  position: relative !important;
+  width: 180px !important;
+  height: 180px !important;
+  margin-right: auto !important;
+  margin-left: auto !important;
+}
+
+.button {
+  background-color: #17284A !important;
+  border-radius: 40vh !important;
+  font: $font-stack !important;
+  margin: 1vh !important;
+  border: 1px solid black !important;
+  box-shadow: none !important;
+
+  :hover {
+    background-color: #17284A !important;
+  }
+}
+
+.input {
+  border-radius: 40vh !important;
+  font: $font-stack !important;
+  border: 0px solid black !important;
+  box-shadow: none !important;
+  margin-bottom: 2vh !important;
+  background-color: #E5E5E5 !important;
+  text-indent: 1vw;
+}
+
+.textarea {
+  border-radius: 7vh !important;
+  font: $font-stack !important;
+  border: 0px solid black !important;
+  box-shadow: none !important;
+  margin-bottom: 2vh !important;
+  background-color: #E5E5E5 !important;
+  text-indent: 1vw;
+}
+
+.text {
+  font: $font-stack !important;
+  text-align: center !important;
+}
+
+.profilePicture {
+  display: block !important;
+  width: 180px !important;
+  height: 180px !important;
+  justify-content: center !important;
+  margin-top: 2vh !important;
+  margin-bottom: 2vh !important;
+  margin-right: auto !important;
+  margin-left: auto !important;
+}
+
+.profilePictureWrapper {
+  width: 100% !important;
+  justify-content: center;
+}

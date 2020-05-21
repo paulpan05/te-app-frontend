@@ -20,9 +20,9 @@ const mapStateToProps = (state: rootState) => ({
 
 const Login: React.FC<LoginProps> = ({ dispatch, user, loggingIn }) =>
   user ? (
-    <Redirect to="/" />
+    <Redirect to="/signup" />
   ) : (
-    <div className={styles.page}>
+    <div>
       <div className={styles.authContainer}>
         <div>
           <img src={AppLogo} alt="Full App Logo" draggable={false} />
