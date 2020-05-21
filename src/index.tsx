@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import { Provider, connect } from 'react-redux';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
@@ -14,6 +14,9 @@ import PrivateRoute from './components/PrivateRoute';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Navbar from './components/Navbar';
+import Signup from './pages/Signup';
+import RateBuyerButton from './components/RateBuyer/buttonExample';
+import Profile from './pages/Profile';
 
 interface AppProps {
   dispatch: Dispatch<any>;
@@ -23,13 +26,19 @@ const AppComponent: React.FC<AppProps> = ({ dispatch }) => {
   React.useEffect(() => {
     dispatch(authActions.retrieveUserSession());
   }, [dispatch]);
+
+  const [signingUp, setSigningUp] = useState(false);
+
   return (
     <Switch>
       <Route exact path="/login" component={Login} />
       <Route path="/">
-        <Navbar />
+        <PrivateRoute exact path="/signup" component={Signup} />
+        <Navbar dispatch={dispatch} />
         <Switch>
-          <PrivateRoute exact path="/" component={Home} />
+          <PrivateRoute exact path="/ratebuyer" component={RateBuyerButton} />
+          <PrivateRoute exact path="/profile" component={Profile} />
+          <PrivateRoute path="/" component={Home} />
         </Switch>
       </Route>
     </Switch>
