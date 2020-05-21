@@ -8,6 +8,7 @@ h1 {
   font-weight: 500 !important;
   font-size: 35px !important;
   line-height: 42px !important;
+  text-align: center !important;
 }
 
 h4 {
@@ -15,7 +16,7 @@ h4 {
   font-weight: 300 !important;
   font-size: 25px !important;
   line-height: 30px !important;
-  margin: 3vh !important;
+  margin-bottom: 7vh !important;
 }
 
 .cropContainer {
@@ -42,9 +43,21 @@ h4 {
 .input {
   border-radius: 40vh !important;
   font: $font-stack !important;
-  border: 1px solid black !important;
+  border: 0px solid black !important;
   box-shadow: none !important;
   margin-bottom: 2vh !important;
+  background-color: #E5E5E5 !important;
+  text-indent: 1vw;
+}
+
+.textarea {
+  border-radius: 7vh !important;
+  font: $font-stack !important;
+  border: 0px solid black !important;
+  box-shadow: none !important;
+  margin-bottom: 2vh !important;
+  background-color: #E5E5E5 !important;
+  text-indent: 1vw;
 }
 
 .text {

@@ -12,7 +12,6 @@ import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { rootState } from '../../redux/reducers';
 import Cropper from 'react-easy-crop';
-import Modal from 'react-bootstrap/Modal';
 import { Redirect } from 'react-router-dom';
 import styles from './index.module.scss';
 
