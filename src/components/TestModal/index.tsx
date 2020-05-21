@@ -62,8 +62,7 @@ class TestModal extends React.Component<{}, IAppState> {
             <br />
             <textarea cols={80} rows={10} />
             <br />
-            <button className={styles.modalBody} onClick={() => {}}
-            >
+            <button className={styles.modalBody} onClick={() => {}}>
               Submit
             </button>
           </div>

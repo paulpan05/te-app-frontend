@@ -8,11 +8,13 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
-import styles from './listing.module.scss';
 import StarRatings from 'react-star-ratings';
 import Card from 'react-bootstrap/Card';
-import ProfileImg from '../../assets/Profile.png';
-import FlowerImg from '../../assets/GreenShirt.png';
+import styles from './listing.module.scss';
+// import ProfileImg from '../../assets/Profile.png';
+// import FlowerImg from '../../assets/GreenShirt.png';
+import FlowerImg from '../../assets/img/books.jpg';
+import ProfileImg from '../../assets/img/sarah.png';
 
 interface ViewListingProps {
   dispatch: Dispatch<any>;
@@ -23,85 +25,85 @@ interface ViewListingProps {
 }
 const ViewListing: React.FC<ViewListingProps> = ({ dispatch, show, setShow, title, seller }) => {
   return (
-    <Modal show={show} onHide={() => setShow(false)} size="lg">
-                  <Row style={{ maxHeight: '100%' }} className="no-gutters">
-            <Card className={styles.myCard}>
-              <Row className={styles.pad}>
-                <Col xs={4} className={styles.textAlign}>
-                  <img className={styles.listingPicture} src={FlowerImg} alt="Item" />
-                </Col>
-                <Col>
-                  <h1 className={styles.listingTitle}>Flower Sweatshirt</h1>
-                  <p className={styles.listingHeader}>Price</p>
-                  <p className={styles.listingHeader}>Posted</p>
-                  <p className={styles.listingHeader}>Pickup</p>
-                  <p className={styles.listingInfo}>$15</p>
-                  <p className={styles.listingInfo}>April 2020</p>
-                  <p className={styles.listingInfo}>Price Center</p>
-                  <p className={styles.listingSecondaryInfo}>
-                    A French terry sweatshirt featuring an embroidered graphic of a yellow
-                    sunflower, long dropped sleeves, a crew neck, and hood. Purchased from Forever
-                    21 - Original Price $35 - 60% cotton, 40% polyester - Machine wash cold
-                  </p>
-                </Col>
-                <Col xs={1}>
-                  <button
-                    type="button"
-                    onClick={() => setShow(false)}
-                    onKeyDown={() => setShow(false)}
-                    className={styles.myButton}
-                  >
-                    <img className={styles.exit} /*src={exit}*/ alt="Exit" />
-                  </button>
-                </Col>
-              </Row>
-              <Row className={styles.pad}>
-                <Col className={styles.sellerProfile}>
-                  <div>
-                    <h1 className={styles.listingTitle}>Comments</h1>
-                    <p>Beautiful sweatshirt!</p>
-                    <p>Interested</p>
-                  </div>
-                  <div className="mt-auto">
-                    <input type="text" value="Write a comment" className={styles.sellerButton} />
-                  </div>
-                </Col>
-                <Col xs={2} className={styles.textAlign}>
-                  <div className={styles.images}>
-                    <img /*src={heart}*/ alt="Like" />
-                    <img /*src={comment}*/ alt="Comment" />
-                    <img /*src={/*flag}*/ alt="Flag" />
-                  </div>
-                </Col>
-                <Col className={styles.sellerProfile}>
-                  <div>
-                    <div>
-                      <img src={ProfileImg} className={styles.sellerPicture} alt="Seller" />
-                    </div>
-                    <div>
-                      <p>Sarah A.</p>
-                      <p>0 Stars</p>
-                    </div>
-                    <div>
-                      <button type="button" className={styles.sellerButton}>
-                        Contact Seller
-                      </button>
-                      <button type="button" className={styles.sellerButton}>
-                        View Profile
-                      </button>
-                    </div>
-                  </div>
-                </Col>
-              </Row>
-            </Card>
+    <Modal show={show} onHide={() => setShow(false)} size="xl">
+      <Row style={{ maxHeight: '100%' }} className="no-gutters">
+        <Card className={styles.myCard}>
+          <Row className={styles.pad}>
+            <Col xs={4} className={styles.textAlign}>
+              <img className={styles.listingPicture} src={FlowerImg} alt="Item" />
+            </Col>
+            <Col>
+              <h1 className={styles.listingTitle}>Flower Sweatshirt</h1>
+              <p className={styles.listingHeader}>Price</p>
+              <p className={styles.listingHeader}>Posted</p>
+              <p className={styles.listingHeader}>Pickup</p>
+              <p className={styles.listingInfo}>$15</p>
+              <p className={styles.listingInfo}>April 2020</p>
+              <p className={styles.listingInfo}>Price Center</p>
+              <p className={styles.listingSecondaryInfo}>
+                A French terry sweatshirt featuring an embroidered graphic of a yellow sunflower,
+                long dropped sleeves, a crew neck, and hood. Purchased from Forever 21 - Original
+                Price $35 - 60% cotton, 40% polyester - Machine wash cold
+              </p>
+            </Col>
+            <Col xs={1}>
+              <button
+                type="button"
+                onClick={() => setShow(false)}
+                onKeyDown={() => setShow(false)}
+                className={styles.myButton}
+              >
+                <img className={styles.exit} alt="Exit" />
+              </button>
+            </Col>
           </Row>
+          <Row className={styles.pad}>
+            <Col className={styles.sellerProfile}>
+              <div>
+                <h1 className={styles.listingTitle}>Comments</h1>
+                <p>Beautiful sweatshirt!</p>
+                <p>Interested</p>
+              </div>
+              <div className="mt-auto">
+                <input type="text" value="Write a comment" className={styles.sellerButton} />
+              </div>
+            </Col>
+            <Col xs={2} className={styles.textAlign}>
+              <div className={styles.images}>
+                <img alt="Like" />
+                <img alt="Comment" />
+                <img alt="Flag" />
+              </div>
+            </Col>
+            <Col className={styles.sellerProfile}>
+              <div>
+                <div>
+                  <img src={ProfileImg} className={styles.sellerPicture} alt="Seller" />
+                </div>
+                <div>
+                  <p>Sarah A.</p>
+                  <p>0 Stars</p>
+                </div>
+                <div>
+                  <button type="button" className={styles.sellerButton}>
+                    Contact Seller
+                  </button>
+                  <button type="button" className={styles.sellerButton}>
+                    View Profile
+                  </button>
+                </div>
+              </div>
+            </Col>
+          </Row>
+        </Card>
+      </Row>
     </Modal>
   );
-}
+};
 export default connect()(ViewListing);
 
-
-{/* <h1 className="mx-auto text-center">Recent Purchase!</h1>
+{
+  /* <h1 className="mx-auto text-center">Recent Purchase!</h1>
 <Form className="text-center">
   <h3 className="mx-auto">{title}</h3>
   <img className={styles.profilePicture} src={ProfileImg}></img>
@@ -129,4 +131,5 @@ export default connect()(ViewListing);
       // POST goes here
     }}>Mark as Sold</Button>
   </Form.Row>
-</Form> */}
+</Form> */
+}

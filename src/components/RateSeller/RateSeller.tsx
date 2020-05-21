@@ -8,9 +8,17 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
+//import StarRatings from 'react-star-ratings';
 import styles from './index.module.scss';
-import StarRatings from 'react-star-ratings';
 import ProfileImg from '../../assets/Profile.png';
+
+        /*<StarRatings
+          rating={2.403}
+          starRatedColor="#FDCC0D"
+          starDimension="40px"
+          starSpacing="15px"
+          className={styles.rating}
+        />*/
 
 interface RateSellerProps {
   dispatch: Dispatch<any>;
@@ -25,33 +33,40 @@ const RateSeller: React.FC<RateSellerProps> = ({ dispatch, show, setShow, title,
       <h1 className="mx-auto text-center">Recent Purchase!</h1>
       <Form className="text-center">
         <h3 className="mx-auto">{title}</h3>
-        <img className={styles.profilePicture} src={ProfileImg}></img>
-        <h4 className="mx-auto">Sold By: {seller}</h4>
+        <img className={styles.profilePicture} src={ProfileImg} />
+        <h4 className="mx-auto">
+          Sold By:
+          {seller}
+        </h4>
         <Form.Row className="justify-content-center">
           <Form.Group as={Col} md="auto" className="text-center">
             <Form.Label className={styles.text}>Rate Seller</Form.Label>
           </Form.Group>
         </Form.Row>
-        <StarRatings
-        rating={2.403}
-        starRatedColor="#FDCC0D"
-        starDimension="40px"
-        starSpacing="15px"
-        className={styles.rating}
-        />
         <Form.Row className="justify-content-center">
           <Form.Group as={Col} md="6" className="text-center">
             <Form.Label className={`${styles.text} ${styles.comments}`}>Comments?</Form.Label>
-            <Form.Control as="textarea" rows={4} placeholder="Comment..." className={styles.textarea} />
+            <Form.Control
+              as="textarea"
+              rows={4}
+              placeholder="Comment..."
+              className={styles.textarea}
+            />
           </Form.Group>
         </Form.Row>
         <Form.Row className="justify-content-center">
-          <Button type="submit" className={styles.button} onClick={() => {
-            // POST goes here
-          }}>Mark as Sold</Button>
+          <Button
+            type="submit"
+            className={styles.button}
+            onClick={() => {
+              // POST goes here
+            }}
+          >
+            Mark as Sold
+          </Button>
         </Form.Row>
       </Form>
     </Modal>
   );
-}
+};
 export default connect()(RateSeller);

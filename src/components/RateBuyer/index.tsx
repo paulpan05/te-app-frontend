@@ -32,25 +32,35 @@ const RateBuyer: React.FC<RateBuyerProps> = ({ dispatch, show, setShow, title })
         <Form.Row className="justify-content-center">
           <Form.Group as={Col} md="auto" className="text-center">
             <Form.Label className={styles.text}>Rate Buyer</Form.Label>
-            
           </Form.Group>
         </Form.Row>
 
         <Form.Row className="justify-content-center">
           <Form.Group as={Col} md="6" className="text-center">
             <Form.Label className={styles.text}>Comments?</Form.Label>
-            <Form.Control as="textarea" rows={4} placeholder="Comment..." className={styles.textarea} />
+            <Form.Control
+              as="textarea"
+              rows={4}
+              placeholder="Comment..."
+              className={styles.textarea}
+            />
           </Form.Group>
         </Form.Row>
 
         <Form.Row className="justify-content-center">
-          <Button type="submit" className={styles.button} onClick={() => {
-            // POST goes here
-          }}>Mark as Sold</Button>
+          <Button
+            type="submit"
+            className={styles.button}
+            onClick={() => {
+              // POST goes here
+            }}
+          >
+            Mark as Sold
+          </Button>
         </Form.Row>
       </Form>
     </Modal>
   );
-}
+};
 
 export default connect()(RateBuyer);

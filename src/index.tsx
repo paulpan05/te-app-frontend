@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import { Provider, connect } from 'react-redux';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
@@ -26,16 +26,19 @@ const AppComponent: React.FC<AppProps> = ({ dispatch }) => {
   React.useEffect(() => {
     dispatch(authActions.retrieveUserSession());
   }, [dispatch]);
+
+  const [signingUp, setSigningUp] = useState(false);
+
   return (
     <Switch>
       <Route exact path="/login" component={Login} />
       <Route path="/">
-        <Navbar />
+        <PrivateRoute exact path="/signup" component={Signup} />
+        <Navbar dispatch={dispatch} />
         <Switch>
           <PrivateRoute exact path="/ratebuyer" component={RateBuyerButton} />
-          <PrivateRoute exact path="/signup" component={Signup} />
           <PrivateRoute exact path="/profile" component={Profile} />
-          <PrivateRoute exact path="/" component={Home} />
+          <PrivateRoute path="/" component={Home} />
         </Switch>
       </Route>
     </Switch>
