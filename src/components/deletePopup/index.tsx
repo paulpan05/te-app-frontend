@@ -3,7 +3,7 @@ import React from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { RouteProps } from 'react-router-dom';
-import { Modal } from 'react-bootstrap';
+import { Modal, Row, Card, Col } from 'react-bootstrap';
 import { rootState } from '../../redux/reducers';
 import styles from './index.module.scss';
 
@@ -25,10 +25,26 @@ const DeletePopup: React.FC<DeletePopupProps> = ({ showPopup, setter }) => {
         <Modal
           show={showPopup}
           onHide={() => setter(false)}
-          dialogClassName={styles.listingModal}
+          dialogClassName={styles.deleteModal}
           backdropOpacity={1}
         >
-          <p>hello test</p>
+          <Row className={styles.margin50}>
+            <Card className={styles.deleteCard}>
+              <Row className={styles.pad}>
+                <Col className={styles.sellerProfile}>
+                  <div>
+                    <h1 className={styles.listingTitle}>Are you sure you want to delete?</h1>
+                  </div>
+                  <div className="mt-auto">
+                    <input type="text" value="Yes" className={styles.sellerButton} />
+                  </div>
+                  <div className="mt-auto">
+                    <input type="text" value="No" className={styles.sellerButton} />
+                  </div>
+                </Col>
+              </Row>
+            </Card>
+          </Row>
         </Modal>
       </div>
     </div>
