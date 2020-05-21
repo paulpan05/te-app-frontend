@@ -1,7 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { authActions } from '../../redux/actions';
+import { authActions, modalActions } from '../../redux/actions';
+import DefaultModal from '../../components/Modals';
+import TestModal from '../../components/TestModal';
 
 interface HomeProps {
   dispatch: Dispatch<any>;
@@ -17,6 +19,7 @@ const Home: React.FC<HomeProps> = ({ dispatch }) => (
     >
       Sign Out
     </button>
+    <TestModal />
   </div>
 );
 
