@@ -14,6 +14,7 @@ import PrivateRoute from './components/PrivateRoute';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Navbar from './components/Navbar';
+import Profile from './pages/Profile';
 
 interface AppProps {
   dispatch: Dispatch<any>;
@@ -29,7 +30,7 @@ const AppComponent: React.FC<AppProps> = ({ dispatch }) => {
       <Route path="/">
         <Navbar />
         <Switch>
-          <PrivateRoute exact path="/" component={Home} />
+          <PrivateRoute exact path="/" component={Profile} />
         </Switch>
       </Route>
     </Switch>
