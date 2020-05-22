@@ -24,17 +24,17 @@ const Navbar: React.FC<NavbarProps> = ({ dispatch }) => {
       <Nav.Link onClick={() => redirectTo("/profile")}>Saved</Nav.Link>
       <Nav.Link>Sell</Nav.Link>
       <DropdownButton
-          alignRight
-          title="Profile"
-          id="dropdown-menu-align-right"
-          img="profile"
-              <Dropdown.Item
-                eventKey="1"
-                onClick={() => {
-                  dispatch(authActions.signOut());
-                }}
-            >Logout
-            </Dropdown.Item>
+        alignRight
+        title="Profile"
+        id="dropdown-menu-align-right"
+        img="profile"
+        >
+            <Dropdown.Item
+              eventKey="1"
+              onClick={() => {
+                dispatch(authActions.signOut());
+              }}
+          >Logout</Dropdown.Item>
           <Dropdown.Divider />
           <Dropdown.Item eventKey="2" onClick={() => redirectTo("/profile")}>View Profile</Dropdown.Item>
           <Redirect to={redirect} />

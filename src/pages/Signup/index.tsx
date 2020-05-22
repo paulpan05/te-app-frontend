@@ -12,7 +12,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { rootState } from '../../redux/reducers';
 import Cropper from 'react-easy-crop';
 import { Redirect } from 'react-router-dom';
-import blankProfile from './blank-profile-picture.png';
+import blankProfile from '../../assets/img/blank-profile-picture.png';
 import styles from './index.module.scss';
 
 interface SignupProps {
@@ -27,11 +27,6 @@ const mapStateToProps = (state: rootState) => ({
 // TODO zoom it to minimum of width/height
 
 const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
-  /* let profileImg = await //API call for user profile picture from google goes here// ;
-  if (profileImg === null) {
-    profileImg = blankProfile;
-  } */
-
   const [profileImgSrc, setProfileImgSrc] = useState(
     user && user.photoURL ? user.photoURL : blankProfile,
   );
@@ -116,8 +111,7 @@ Welcome{user && user.displayName ? user.displayName : ''}!</h1>
                     </Button>
                   </Form.Row>
                 </div>
-              )
-            ) : (
+              ) : (
               <Form.Label className={styles.profilePictureWrapper}>
                 <Image
                   src={profileImgSrc}
@@ -139,7 +133,6 @@ Welcome{user && user.displayName ? user.displayName : ''}!</h1>
                       setCropping(true);
                     }
                   }} />
-                />
               </Form.Label>
             )}
           </Form.Group>
