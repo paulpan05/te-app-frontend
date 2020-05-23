@@ -17,7 +17,8 @@ import styles from './index.module.scss';
 import Modal from 'react-bootstrap/Modal';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Carousel from 'react-bootstrap/Carousel';
-import ToggleButton from '../ToggleButton/index';
+import CustomToggleButton from '../CustomToggleButton/index';
+import Card from 'react-bootstrap/Card';
 
 interface CreateListingProps {
   show: boolean;
@@ -38,77 +39,84 @@ const CreateListing: React.FC<CreateListingProps> = ({ show, setShow }) => {
   
   return (
     <Modal show={show} onHide={() => setShow(false)} size="lg">
-      <Form>
-        <Form.Row className="justify-content-center text-center">
-          <h1>Create Listing</h1>
-        </Form.Row>
+      <Card>
+        <Form className={styles.wrapper}>
+          <Form.Row className="justify-content-center text-center">
+            <h1>Create Listing</h1>
+          </Form.Row>
 
-        <Form.Row className="justify-content-center text-center">
-          <Form.Group as={Col} md="6">
-            <Form.Label className={styles.text}>What are you selling?</Form.Label>
-            <Form.Control placeholder="Title" className={styles.input} />
+          <Form.Row className="justify-content-center text-center">
+            <Form.Group as={Col} md="6">
+              <Form.Label className={styles.text}>What are you selling?</Form.Label>
+              <Form.Control placeholder="Title" className={styles.input} />
 
-            <InputGroup className={styles.input}>
-              <InputGroup.Prepend className={styles.input}>
-                <InputGroup.Text className={styles.text}>$</InputGroup.Text>
-              </InputGroup.Prepend>
-              <Form.Control placeholder="Price in Dollars" className={styles.input} />
-            </InputGroup>
+              <Form.Label className={styles.text}>For how much?</Form.Label>
+              <InputGroup >
+                <InputGroup.Text className={styles.inputPrepend}>$</InputGroup.Text>
+                <Form.Control placeholder="Price in Dollars" className={styles.inputWithPrependAndPostpend} />
+                <InputGroup.Text className={styles.inputPostpend}>.00</InputGroup.Text>
+              </InputGroup>
 
-            <Form.Label className={styles.text}>Description</Form.Label>
-            <Form.Control
-              as="textarea"
-              rows={4}
-              placeholder="Description..."
-              className={styles.textarea}
-            />
+              <Form.Label className={styles.text}>Description</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={4}
+                placeholder="Description..."
+                className={styles.textarea}
+              />
 
-            <Form.Label className={styles.text}>Pickup Location</Form.Label>
-            <Form.Control placeholder="Price Center" className={styles.input} />
-          </Form.Group>
+              <Form.Label className={styles.text}>Pickup Location</Form.Label>
+              <Form.Control placeholder="Price Center" className={styles.input} />
 
-          <Form.Group as={Col} md="6">
-            <Form.Row>
-              <Form.Label className={styles.text}>Add Images</Form.Label>
-              <Carousel>
-                {images.map((src, i) => (
-                  <Carousel.Item key={i}>
-                    <img
-                      src={src}
-                    />
-                  </Carousel.Item>
-                ))}
-              </Carousel>
-              <Form.File
-                id="upload-images-create-listing"
-                accept="image/*"
-                multiple
-                label="Browse..."
-                data-browse="+"
-                custom
-                onChange={(e: any) => {
-                  if (e.target.files && e.target.files.length > 0) {
-                    const uploadingImgs = [];
-                    for (let i = 0; i < e.target.files.length; i++) {
-                      if (e.target.files[i]) {
-                        uploadingImgs.push(URL.createObjectURL(e.target.files[i]));
+              <Form.Label className={styles.text}>Tags</Form.Label>
+              <Form.Row className="justify-content-center text-center">
+                {tags.map((tagLabel, i) => {
+                  return (
+                    <CustomToggleButton value={i}>{tagLabel}</CustomToggleButton>
+                  );
+                })}
+              </Form.Row>
+            </Form.Group>
+
+            <Form.Group as={Col} md={{span: 5, offset: 1}}>
+              <Form.Row className="justify-content-center text-center">
+                <Form.Label>Add Images</Form.Label>
+                <Carousel>
+                  {images.map((src, i) => (
+                    <Carousel.Item key={i}>
+                      <img
+                        src={src}
+                      />
+                    </Carousel.Item>
+                  ))}
+                </Carousel>
+                <Form.File
+                  id="upload-images-create-listing"
+                  accept="image/*"
+                  multiple
+                  label="Browse..."
+                  data-browse="+"
+                  custom
+                  onChange={(e: any) => {
+                    if (e.target.files && e.target.files.length > 0) {
+                      const uploadingImgs = [];
+                      for (let i = 0; i < e.target.files.length; i++) {
+                        if (e.target.files[i]) {
+                          uploadingImgs.push(URL.createObjectURL(e.target.files[i]));
+                        }
                       }
+                      setImages([...images, ...uploadingImgs]);
                     }
-                    setImages([...images, ...uploadingImgs]);
-                  }
-                }} />
-            </Form.Row>
-              {tags.map((tagLabel, i) => {
-                return (
-                  <ToggleButton value={i}>{tagLabel}</ToggleButton>
-                );
-              })}
-            <Form.Row>
-              
-            </Form.Row>
-          </Form.Group>
-        </Form.Row>
-      </Form>
+                  }} />
+              </Form.Row>
+            </Form.Group>
+          </Form.Row>
+
+          <Form.Row className="justify-content-center text-center">
+            <Button type="submit" className={styles.button}>Create</Button>
+          </Form.Row>
+        </Form>
+      </Card>
     </Modal>
   )
 }

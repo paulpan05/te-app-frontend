@@ -1,7 +1,7 @@
 $font-stack: Roboto;
 
 h1 {
-  margin-top: 5vh !important;
+  margin: 3vh !important;
   justify-content: center !important;
   align-items: center !important;
   font: $font-stack !important;
@@ -47,6 +47,36 @@ h4 {
   margin-bottom: 2vh !important;
 }
 
+.inputWithPrependAndPostpend {
+  border-radius: 0vh !important;
+  font: $font-stack !important;
+  border: 1px solid black !important;
+  border-right: 0px !important;
+  border-left: 0px !important;
+  box-shadow: none !important;
+  margin-bottom: 2vh !important;
+}
+
+.inputPrepend {
+  border-radius: 40vh 0vh 0vh 40vh !important;
+  font: $font-stack !important;
+  border: 1px solid black !important;
+  border-right: 0px !important;
+  box-shadow: none !important;
+  margin-bottom: 2vh !important;
+  background-color: white !important;
+}
+
+.inputPostpend {
+  border-radius: 0vh 40vh 40vh 0vh !important;
+  font: $font-stack !important;
+  border: 1px solid black !important;
+  border-left: 0px !important;
+  box-shadow: none !important;
+  margin-bottom: 2vh !important;
+  background-color: white !important;
+}
+
 .text {
   font: $font-stack !important;
   text-align: center !important;
@@ -74,4 +104,9 @@ h4 {
   border: 1px solid black !important;
   box-shadow: none !important;
   margin-bottom: 2vh !important;
+}
+
+.wrapper {
+  margin-right: 4vh;
+  margin-left: 4vh;
 }
