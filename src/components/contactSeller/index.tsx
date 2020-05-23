@@ -7,7 +7,7 @@ import { Modal, Row, Card, Col } from 'react-bootstrap';
 import { rootState } from '../../redux/reducers';
 import styles from './index.module.scss';
 
-interface DeletePopupProps extends Omit<RouteProps, 'render'> {
+interface ContactSellerProps extends Omit<RouteProps, 'render'> {
   dispatch: Dispatch<any>;
   user: firebase.User | null | undefined;
   showPopup: boolean;
@@ -18,7 +18,7 @@ const mapStateToProps = (state: rootState) => ({
   user: state.auth.user,
 });
 
-const DeletePopup: React.FC<DeletePopupProps> = ({ showPopup, setter }) => {
+const ContactSeller: React.FC<ContactSellerProps> = ({ showPopup, setter }) => {
   return (
     <div>
       <div>
@@ -27,20 +27,17 @@ const DeletePopup: React.FC<DeletePopupProps> = ({ showPopup, setter }) => {
             <Card className={styles.deleteCard}>
               <Row className={styles.pad}>
                 <Col className={styles.popup}>
-                  <p className={styles.popupHeader}>
-                    Are you sure you want to delete this listing?
+                  <p className={styles.popupHeader}>Contact Sarah A.</p>
+                  <p className={styles.popupSubtext}>
+                    Email:&nbsp;
+                    <a
+                      className={styles.popupSubtext}
+                      href="mailto:no-one@snai1mai1.com?subject=Interested in 'listing item name'&body=Hi, I saw your listing for 'name' on Triton Exchange."
+                    >
+                      sarah@ucsd.edu
+                    </a>
                   </p>
-
-                  <div className="mt-auto">
-                    <button type="button" className={styles.sellerButton}>
-                      Yes
-                    </button>
-                  </div>
-                  <div className="mt-auto">
-                    <button type="button" className={styles.sellerButton}>
-                      No
-                    </button>
-                  </div>
+                  <p className={styles.popupSubtext}>Phone Number: (000) 000-0000</p>
                 </Col>
               </Row>
             </Card>
@@ -51,4 +48,4 @@ const DeletePopup: React.FC<DeletePopupProps> = ({ showPopup, setter }) => {
   );
 };
 
-export default connect(mapStateToProps)(DeletePopup);
+export default connect(mapStateToProps)(ContactSeller);

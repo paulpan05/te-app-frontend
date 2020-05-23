@@ -9,9 +9,9 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { rootState } from '../../redux/reducers';
 import Cropper from 'react-easy-crop';
 import { Redirect } from 'react-router-dom';
+import { rootState } from '../../redux/reducers';
 import blankProfile from './blank-profile-picture.png';
 import styles from './index.module.scss';
 
@@ -76,7 +76,9 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
       <Row className="text-center">
         <Col md="12">
           <h1>
-Welcome{user && user.displayName ? user.displayName : ''}!</h1>
+            Welcome
+            {user && user.displayName ? user.displayName : ''}!
+          </h1>
         </Col>
         <Col md="12">
           <h4>Finish Setting Up Your Account</h4>
@@ -86,10 +88,10 @@ Welcome{user && user.displayName ? user.displayName : ''}!</h1>
       <Form>
         <Form.Row className="justify-content-center">
           <Form.Group as={Col} sm="4" lg="3">
-            {(cropping) ? (
-                <div className={styles.profilePictureWrapper}>
-                  <div className={styles.cropContainer}>
-                    <Cropper
+            {cropping ? (
+              <div className={styles.profilePictureWrapper}>
+                <div className={styles.cropContainer}>
+                  <Cropper
                     image={profileImgSrc}
                     crop={crop}
                     zoom={zoom}
@@ -101,22 +103,22 @@ Welcome{user && user.displayName ? user.displayName : ''}!</h1>
                     onCropComplete={(croppedArea, croppedAreaPixels) => {
                       setCroppedAreaPixels(croppedAreaPixels);
                     }}
-                    />
-                  </div>
-                  <Form.Row className="justify-content-center">
-                    <Button
-                      className={styles.button}
-                      onClick={async () => {
-                        cropImage().then((croppedImg: any) => {
-                          setProfileImgSrc(croppedImg);
-                          setCropping(false);
-                        });
-                        }}>
-                      Save
-                    </Button>
-                  </Form.Row>
+                  />
                 </div>
-              )
+                <Form.Row className="justify-content-center">
+                  <Button
+                    className={styles.button}
+                    onClick={async () => {
+                      cropImage().then((croppedImg: any) => {
+                        setProfileImgSrc(croppedImg);
+                        setCropping(false);
+                      });
+                    }}
+                  >
+                    Save
+                  </Button>
+                </Form.Row>
+              </div>
             ) : (
               <Form.Label className={styles.profilePictureWrapper}>
                 <Image
@@ -129,16 +131,17 @@ Welcome{user && user.displayName ? user.displayName : ''}!</h1>
                   Click to Select a Profile Picture
                 </Form.Text>
                 <Form.File
-                    id="upload-profile"
-                    accept="image/*"
-                    hidden
-                    onChange={(e: any) => {
+                  id="upload-profile"
+                  accept="image/*"
+                  hidden
+                  onChange={(e: any) => {
                     if (e.target.files && e.target.files.length === 1 && e.target.files[0]) {
                       URL.revokeObjectURL(profileImgSrc);
                       setProfileImgSrc(URL.createObjectURL(e.target.files[0]));
                       setCropping(true);
                     }
-                  }} />
+                  }}
+                />
                 />
               </Form.Label>
             )}
@@ -172,7 +175,9 @@ Welcome{user && user.displayName ? user.displayName : ''}!</h1>
 
         <Form.Row className="justify-content-center">
           <Button
-type="submit" className={styles.button} onClick={() => {
+            type="submit"
+            className={styles.button}
+            onClick={() => {
               setRedirect(true);
               // validate forms
               // API PUT to database

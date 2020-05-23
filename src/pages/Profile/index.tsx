@@ -2,16 +2,24 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button, Container, Row, Col, FormLabel, FormText, FormFile } from 'react-bootstrap';
-import { Image } from 'react-bootstrap';
-import { CardDeck } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Card from './Card'
+import {
+  Button,
+  Container,
+  Row,
+  Col,
+  FormLabel,
+  FormText,
+  FormFile,
+  Image,
+  CardDeck,
+} from 'react-bootstrap';
+
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import Rating from '@material-ui/lab/Rating';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import Card from './Card';
 import example from '../../assets/img/bag.jpg';
 import styles from './index.module.scss';
 import { authActions } from '../../redux/actions';
@@ -54,70 +62,70 @@ const Profile: React.FC<ProfileProps> = ({ user, dispatch }) => {
     <Container className={styles.con}>
       <Row>
         <Col className={styles.column}>
-            <FormLabel>
+          <FormLabel>
             <Image src={profileImgSrc} roundedCircle alt="profile" className={styles.img} fluid />
             <FormText>Click to Select a Profile Picture</FormText>
             <FormFile
-                id="upload-profile"
-                accept="image/*"
-                hidden
-                onChange={(e: any) => {
+              id="upload-profile"
+              accept="image/*"
+              hidden
+              onChange={(e: any) => {
                 if (e.target.files && e.target.files.length === 1 && e.target.files[0]) {
                   URL.revokeObjectURL(profileImgSrc);
                   setProfileImgSrc(URL.createObjectURL(e.target.files[0]));
                 }
               }}
-              />
+            />
           </FormLabel>
-            <div>
+          <div>
             <Box>
-                <Rating
-                    name="simple-controlled"
-                    value={starValue}
-                    onChange={(event, newValue) => {
+              <Rating
+                name="simple-controlled"
+                value={starValue}
+                onChange={(event, newValue) => {
                   setStarValue(newValue);
                 }}
-                  />
-              </Box>
+              />
+            </Box>
           </div>
-            <Button variant="outline-primary" className={styles.btnblue}>
-            Contact Seller
-            {' '}
-            <Button variant="outline-secondary" className={styles.btngrey}>
-            Report Seller
-            {' '}
-          </Col>
+          <Button variant="outline-primary" className={styles.btnblue} />
+          Contact Seller 
+{' '}
+<Button variant="outline-secondary" className={styles.btngrey} />
+          Report Seller
+{' '}
+        </Col>
         <Col xs={9}>
-            <h2 style={{ textAlign: 'center' }}>
+          <h2 style={{ textAlign: 'center' }}>
             {user ? user.displayName : 'Name cannot be rendered: error occurred'}
           </h2>
-            <Row className={styles.row}>
+          <Row className={styles.row}>
             <div className={styles.outlin}>
-                <h4 style={{paddingLeft: '2vh', marginTop: '1vh'}}>Available Listings</h4>
-                <Carousel className={styles.car} responsive={responsive}>
-                    <Card />
-                    <Card />
-                    <Card />
-                    <Card />
-                    <Card />
-                    <Card />
-                  </Carousel>
-              </div>
+              <h4 style={{ paddingLeft: '2vh', marginTop: '1vh' }}>Available Listings</h4>
+              <Carousel className={styles.car} responsive={responsive}>
+                <Card />
+                <Card />
+                <Card />
+                <Card />
+                <Card />
+                <Card />
+              </Carousel>
+            </div>
           </Row>
-            <Row className={styles.row}>
+          <Row className={styles.row}>
             <div className={styles.outlin}>
-                <h4 style={{paddingLeft: '2vh', marginTop: '1vh'}}>Past Listings</h4>
-                <Carousel className={styles.car} responsive={responsive}>
-                    <Card />
-                    <Card />
-                    <Card />
-                    <Card />
-                    <Card />
-                    <Card />
-                  </Carousel>
-              </div>
+              <h4 style={{ paddingLeft: '2vh', marginTop: '1vh' }}>Past Listings</h4>
+              <Carousel className={styles.car} responsive={responsive}>
+                <Card />
+                <Card />
+                <Card />
+                <Card />
+                <Card />
+                <Card />
+              </Carousel>
+            </div>
           </Row>
-          </Col>
+        </Col>
       </Row>
     </Container>
   );
