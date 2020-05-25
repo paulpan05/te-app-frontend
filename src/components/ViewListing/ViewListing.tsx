@@ -8,7 +8,7 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
-import StarRatings from 'react-star-ratings';
+//import StarRatings from 'react-star-ratings';
 import Card from 'react-bootstrap/Card';
 import styles from './listing.module.scss';
 // import ProfileImg from '../../assets/Profile.png';

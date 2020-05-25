@@ -27,7 +27,7 @@ const Navbar: React.FC<NavbarProps> = ({ dispatch }) => {
           alignRight
           title="Profile"
           id="dropdown-menu-align-right"
-          img="profile"
+          img="profile">
               <Dropdown.Item
                 eventKey="1"
                 onClick={() => {

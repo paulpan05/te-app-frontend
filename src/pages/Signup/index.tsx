@@ -76,7 +76,7 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
       <Row className="text-center">
         <Col md="12">
           <h1>
-Welcome{user && user.displayName ? user.displayName : ''}!</h1>
+Welcome {user && user.displayName ? user.displayName : ''}!</h1>
         </Col>
         <Col md="12">
           <h4>Finish Setting Up Your Account</h4>
@@ -116,8 +116,7 @@ Welcome{user && user.displayName ? user.displayName : ''}!</h1>
                     </Button>
                   </Form.Row>
                 </div>
-              )
-            ) : (
+              ) : (
               <Form.Label className={styles.profilePictureWrapper}>
                 <Image
                   src={profileImgSrc}
@@ -139,7 +138,6 @@ Welcome{user && user.displayName ? user.displayName : ''}!</h1>
                       setCropping(true);
                     }
                   }} />
-                />
               </Form.Label>
             )}
           </Form.Group>
