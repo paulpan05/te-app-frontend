@@ -1,0 +1,30 @@
+.comment {
+  padding-top: 20px; //TODO: remove later
+  max-width: 20%;
+  display: inline-flex;
+  align-items: center;
+}
+
+.commentText {
+  font-size: 1em;
+  background-color: rgb(214, 210, 210);
+  border-radius: 20px;
+  height: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+  padding-bottom: 5px;
+  width: 100%;
+  word-wrap: break-word;
+}
+
+
+
+.authorPicture {
+  border-radius: 50%;
+  max-width: 10%;
+  padding-right: 5px;
+  height: auto;
+ // margin:auto;
+  //margin-top: 10px;
+}
