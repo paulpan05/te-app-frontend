@@ -16,6 +16,7 @@ import example from '../../assets/img/bag.jpg';
 import styles from './index.module.scss';
 import { authActions } from '../../redux/actions';
 import { rootState } from '../../redux/reducers';
+import ReportUser from '../../components/ReportModals/ReportUser';
 
 interface ProfileProps {
   dispatch: Dispatch<any>;
@@ -27,6 +28,7 @@ const mapStateToProps = (state: rootState) => ({
 });
 
 const Profile: React.FC<ProfileProps> = ({ user, dispatch }) => {
+  const [show, setShow] = useState(false);
   const [profileImgSrc, setProfileImgSrc] = useState(
     user && user.photoURL ? user.photoURL : example,
   );
@@ -83,8 +85,9 @@ const Profile: React.FC<ProfileProps> = ({ user, dispatch }) => {
             <Button variant="outline-primary" className={styles.btnblue}>
             Contact Seller </Button>
             {' '}
-            <Button variant="outline-secondary" className={styles.btngrey}>
+            <Button variant="outline-secondary" className={styles.btngrey} onClick={() => setShow(true)}>
             Report Seller </Button>
+            <ReportUser show={show} setShow={setShow}></ReportUser>
             {' '}
           </Col>
         <Col xs={9}>

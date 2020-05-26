@@ -17,7 +17,6 @@ import Navbar from './components/Navbar';
 import Signup from './pages/Signup';
 import RateBuyerButton from './components/RateBuyer/buttonExample';
 import Profile from './pages/Profile';
-import Comment from './components/CommentBox/Comment';
 
 interface AppProps {
   dispatch: Dispatch<any>;
@@ -39,7 +38,6 @@ const AppComponent: React.FC<AppProps> = ({ dispatch }) => {
         <Switch>
           <PrivateRoute exact path="/ratebuyer" component={RateBuyerButton} />
           <PrivateRoute exact path="/profile" component={Profile} />
-          <PrivateRoute exact path="/test" component={Comment} />
           <PrivateRoute path="/" component={Home} />
         </Switch>
       </Route>

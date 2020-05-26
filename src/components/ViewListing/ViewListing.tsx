@@ -15,6 +15,8 @@ import styles from './listing.module.scss';
 // import FlowerImg from '../../assets/GreenShirt.png';
 import FlowerImg from '../../assets/img/books.jpg';
 import ProfileImg from '../../assets/img/sarah.png';
+import CommentBox from '../CommentBox';
+import ReportListing from '../ReportModals/ReportListing';
 
 interface ViewListingProps {
   dispatch: Dispatch<any>;
@@ -24,6 +26,7 @@ interface ViewListingProps {
   seller: string;
 }
 const ViewListing: React.FC<ViewListingProps> = ({ dispatch, show, setShow, title, seller }) => {
+  const [showReportListing, setShowReportListing] = useState(false);
   return (
     <Modal show={show} onHide={() => setShow(false)} size="xl">
       <Row style={{ maxHeight: '100%' }} className="no-gutters">
@@ -59,20 +62,14 @@ const ViewListing: React.FC<ViewListingProps> = ({ dispatch, show, setShow, titl
           </Row>
           <Row className={styles.pad}>
             <Col className={styles.sellerProfile}>
-              <div>
-                <h1 className={styles.listingTitle}>Comments</h1>
-                <p>Beautiful sweatshirt!</p>
-                <p>Interested</p>
-              </div>
-              <div className="mt-auto">
-                <input type="text" value="Write a comment" className={styles.sellerButton} />
-              </div>
+              <CommentBox data={[]}></CommentBox>
             </Col>
             <Col xs={2} className={styles.textAlign}>
               <div className={styles.images}>
                 <img alt="Like" />
                 <img alt="Comment" />
                 <img alt="Flag" />
+                <ReportListing show={showReportListing} setShow={() => setShowReportListing(true)}/>
               </div>
             </Col>
             <Col className={styles.sellerProfile}>
