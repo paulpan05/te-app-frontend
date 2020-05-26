@@ -37,14 +37,15 @@ const Navbar: React.FC<NavbarProps> = ({ dispatch }) => {
                           />
                   } 
                   id="dropdown-button-drop-left">
+            <Dropdown.Item eventKey="2" onClick={() => redirectTo("/profile")} active={false}>View Profile</Dropdown.Item>
+            <Dropdown.Divider />
             <Dropdown.Item
                   eventKey="1"
                   onClick={() => {
                     dispatch(authActions.signOut());
                   }}
+                  active={false}
               >Logout</Dropdown.Item>
-            <Dropdown.Divider />
-            <Dropdown.Item eventKey="2" onClick={() => redirectTo("/profile")}>View Profile</Dropdown.Item>
         </NavDropdown>
 
       </Nav>

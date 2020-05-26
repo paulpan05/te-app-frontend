@@ -35,14 +35,14 @@ const AppComponent: React.FC<AppProps> = ({ dispatch }) => {
   return (
     <Switch>
       <Route exact path="/login" component={Login} />
+      <PrivateRoute exact path="/signup" component={Signup} />
       <Route path="/">
         <Navbar dispatch={dispatch} />
         <Switch>
-          <PrivateRoute exact path="/signup" component={Signup} />
           <PrivateRoute exact path="/createlisting" component={CreateListingButton} />
           <PrivateRoute exact path="/ratebuyer" component={RateBuyerButton} />
-          <PrivateRoute exact path="/profile" component={Profile} />
           <PrivateRoute exact path="/editprofile" component={EditProfileButton} />
+          <PrivateRoute exact path="/profile" component={Profile} />
           <PrivateRoute exact path="/saved" component={Saved} />
           <PrivateRoute path="/" component={Home} />
         </Switch>

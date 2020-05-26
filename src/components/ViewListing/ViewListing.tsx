@@ -18,6 +18,8 @@ import DeletePopup from '../deletePopup';
 import SharePopup from '../sharePopup';
 import ContactSeller from '../contactSeller';
 import EditListing from '../editListing';
+import ProfileImg from '../../assets/img/sarah.png';
+import CommentBox from '../CommentBox';
 
 interface ViewListingProps {
   dispatch: Dispatch<any>;
@@ -27,8 +29,6 @@ interface ViewListingProps {
   seller: string;
 }
 const ViewListing: React.FC<ViewListingProps> = ({ dispatch, show, setShow, title, seller }) => {
-  /* Redirect through application */
-  const [redirect, redirectTo] = useState('/');
   /* Popup to show that link was saved to clipboard */
   const [sharePopup, showShare] = useState(false);
   /* Popup to show the seller contact information */
@@ -48,7 +48,7 @@ const ViewListing: React.FC<ViewListingProps> = ({ dispatch, show, setShow, titl
           position: 'fixed',
           bottom: 0,
           right: 0,
-          zIndex: 1000,
+          zIndex: 1000000
         }}
       >
         <Toast show={deleteToast} onClose={toggleDeleteToast} delay={3000} autohide>
@@ -118,28 +118,18 @@ const ViewListing: React.FC<ViewListingProps> = ({ dispatch, show, setShow, titl
             <Row className={styles.pad} style={{ maxHeight: '100%' }}>
               {/* Comment section */}
               <Col xs={12} md={5}>
-                <div className={styles.sellerProfile}>
-                  <h1 className={styles.listingTitle}>Comments</h1>
-                  <p>Beautiful sweatshirt!</p>
-                  <p>Interested</p>
-
-                  <div className="mt-auto">
-                    <input type="text" value="Write a comment" className={styles.sellerButton} />
-                  </div>
-                </div>
+                <CommentBox data={[]}></CommentBox>
               </Col>
               {/* Middle and right section */}
               <EditListing
                 showDeleteSetter={setshowDelete}
                 sharePopupSetter={showShare}
                 contactSellerSetter={showContact}
-                redirectSetter={redirectTo}
                 savedSetter={saveToastSetter}
               />
             </Row>
           </Card>
         </Row>
-        <Redirect to={redirect} />
       </Modal>
     </div>
   );

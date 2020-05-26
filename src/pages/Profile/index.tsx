@@ -16,6 +16,8 @@ import Rating from '@material-ui/lab/Rating';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Listing from '../../components/Listing/Listing';
+import ReportUser from '../../components/ReportModals/ReportUser';
+
 interface ProfileProps {
     dispatch: Dispatch<any>;
     user: firebase.User | null | undefined;
@@ -26,27 +28,28 @@ const mapStateToProps = (state: rootState) => ({
   });
   
 const Profile: React.FC<ProfileProps> = ({ user, dispatch }) => {
-    const [profileImgSrc, setProfileImgSrc] = useState((user && user.photoURL) ? user.photoURL : example);
-    const [starValue, setStarValue] = React.useState<number | null>(2);
-    const responsive = {
-        superLargeDesktop: {
-          // the naming can be any, depends on you.
-          breakpoint: { max: 4000, min: 3000 },
-          items: 5
-        },
-        desktop: {
-          breakpoint: { max: 3000, min: 1024 },
-          items: 5
-        },
-        tablet: {
-          breakpoint: { max: 1024, min: 464 },
-          items: 2
-        },
-        mobile: {
-          breakpoint: { max: 464, min: 0 },
-          items: 1
-        }
-      };
+  const [profileImgSrc, setProfileImgSrc] = useState((user && user.photoURL) ? user.photoURL : example);
+  const [starValue, setStarValue] = useState<number | null>(2);
+  const [show, setShow] = useState(false);
+  const responsive = {
+      superLargeDesktop: {
+        // the naming can be any, depends on you.
+        breakpoint: { max: 4000, min: 3000 },
+        items: 5
+      },
+      desktop: {
+        breakpoint: { max: 3000, min: 1024 },
+        items: 5
+      },
+      tablet: {
+        breakpoint: { max: 1024, min: 464 },
+        items: 2
+      },
+      mobile: {
+        breakpoint: { max: 464, min: 0 },
+        items: 1
+      }
+    };
     document.body.style.padding = "0px";
     return (
     <Container className={styles.con}>
@@ -78,7 +81,10 @@ const Profile: React.FC<ProfileProps> = ({ user, dispatch }) => {
                     </Box>
                 </div>
                 <Button variant="outline-primary" className={styles.btnblue}>Contact Seller</Button>{' '}
-                <Button variant="outline-secondary" className={styles.btngrey}>Edit Profile</Button>{' '}
+                <Button variant="outline-secondary" className={styles.btngrey} onClick={() => setShow(true)}>
+                  Report Seller
+                </Button>
+                <ReportUser show={show} setShow={setShow}></ReportUser>
             </Col>
             <Col xs={9}>
                 <h2 style={{ textAlign: 'center'}}>{user?user.displayName:"Name cannot be rendered: error occurred"}</h2>

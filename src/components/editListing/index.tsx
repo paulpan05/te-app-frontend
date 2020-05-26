@@ -11,12 +11,13 @@ import { rootState } from '../../redux/reducers';
 import styles from './index.module.scss';
 import ProfileImg from '../../assets/img/sarah.png';
 import RateBuyer from '../RateBuyer';
+import ReportListing from '../ReportModals/ReportListing';
+import { Redirect } from 'react-router-dom';
 
 interface EditListingProps extends Omit<RouteProps, 'render'> {
   showDeleteSetter: React.Dispatch<any>;
   sharePopupSetter: React.Dispatch<any>;
   contactSellerSetter: React.Dispatch<any>;
-  redirectSetter: React.Dispatch<any>;
   savedSetter: React.Dispatch<any>;
   user: firebase.User | null | undefined;
 }
@@ -30,7 +31,6 @@ const EditListing: React.FC<EditListingProps> = ({
   showDeleteSetter,
   sharePopupSetter,
   contactSellerSetter,
-  redirectSetter,
   savedSetter,
 }) => {
   /* Temporary: using test boolean to either return guest or seller viewing a listing
@@ -38,6 +38,8 @@ const EditListing: React.FC<EditListingProps> = ({
 
   const [test, testSet] = useState(false);
   const [markSold, markSoldSetter] = useState(false);
+  const [showReportListing, setShowReportListing] = useState(false);
+  const [clickedOnProfile, setClickedOnProfile] = useState(false);
   return test ? (
     /* SELLER VIEW */
     <>
@@ -98,6 +100,8 @@ const EditListing: React.FC<EditListingProps> = ({
   ) : (
     /* BUYER VIEW */
     <>
+      {(clickedOnProfile) ? <Redirect to="/profile" /> : null}
+      <ReportListing show={showReportListing} setShow={() => setShowReportListing(true)}/>
       <Col xs={12} md={2} className={styles.textAlign}>
         <div>
           {/* Button needs to have function to save item for later */}
@@ -121,8 +125,8 @@ const EditListing: React.FC<EditListingProps> = ({
           {/* Button needs to have function to flag item */}
           <button
             type="button"
-            onClick={() => sharePopupSetter(true)}
-            onKeyDown={() => sharePopupSetter(true)}
+            onClick={() => setShowReportListing(true)}
+            onKeyDown={() => setShowReportListing(true)}
             className={styles.myButton}
           >
             <FontAwesomeIcon icon={faFlag} size="lg" className={styles.flag} />
@@ -133,9 +137,8 @@ const EditListing: React.FC<EditListingProps> = ({
         <div className={styles.sellerProfile}>
           <button
             type="button"
-            onClick={() => redirectSetter('/profile')}
-            onKeyDown={() => redirectSetter('/profile')}
             className={styles.myButton}
+            onClick={() => setClickedOnProfile(true)}
           >
             <img src={ProfileImg} className={styles.sellerPicture} alt="Seller" />
           </button>
