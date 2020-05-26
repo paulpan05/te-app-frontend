@@ -51,18 +51,20 @@ const ViewListing: React.FC<ViewListingProps> = ({ dispatch, show, setShow, titl
           zIndex: 1000000
         }}
       >
-        <Toast show={deleteToast} onClose={toggleDeleteToast} delay={3000} autohide>
+        <Toast show={deleteToast} onClose={toggleDeleteToast} delay={3000} autohide className="notification">
           <Toast.Header>
             <strong className="mr-auto">Triton Exchange</strong>
           </Toast.Header>
           <Toast.Body>Your listing has been successfully deleted!</Toast.Body>
         </Toast>
-        <Toast show={saveToast} onClose={toggleSaveToast} delay={3000} autohide>
+
+        <Toast show={saveToast} onClose={toggleSaveToast} delay={3000} autohide className="notification">
           <Toast.Header>
             <strong className="mr-auto">Triton Exchange</strong>
           </Toast.Header>
           <Toast.Body>This listing has been added to your saved collection!</Toast.Body>
         </Toast>
+
       </div>
       <SharePopup showPopup={sharePopup} setter={showShare} />
       <ContactSeller showPopup={contactSeller} setter={showContact} />
