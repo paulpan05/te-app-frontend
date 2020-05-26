@@ -1,4 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
+/* FILE NOT IN USE ANYMORE */
 import React from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
@@ -32,7 +33,6 @@ const OpenPopup: React.FC<OpenPopupProps> = ({ showPopup, setter }) => {
           show={showPopup}
           onHide={() => setter(false)}
           dialogClassName={styles.listingModal}
-          backdropOpacity={1}
           size="xl"
         >
           <Row style={{ maxHeight: '100%' }} className="no-gutters">

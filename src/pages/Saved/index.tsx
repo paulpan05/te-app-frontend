@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
-import {Row, Col, Alert} from 'react-bootstrap';
+import {Row, Col} from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -17,33 +17,16 @@ import EditListing from '../../components/editListing';
 import FlowerImg from '../../assets/GreenShirt.png';
 import styles from './index.module.scss';
 import Listing from '../../components/Listing/Listing';
-import Carousel from 'react-multi-carousel';
 import TagButton from '../../components/Button';
 import Tags from '../../components/Tags';
-import Rate from '../../components/RateSeller';
 
-interface HomeProps {
+interface SavedProps {
   dispatch: Dispatch<any>;
 }
 
-const Home: React.FC<HomeProps> = ({ dispatch }) => {
-  return (
+const Saved: React.FC<SavedProps> = ({ dispatch }) => (
   <div>
-    <Rate></Rate>
-    <Row className="justify-content-md-center">
-      <Tags></Tags>
-    </Row>
-    <Row className="justify-content-md-center">
-    <form className="example">
-      <input className={styles.input} type="text" placeholder="Search.." name="search"></input>
-      <button className={styles.searchButton} type="submit"><FontAwesomeIcon icon={faSearch} size="lg" /></button>
-    </form>
-    </Row>
-    
-    {/* <Form>
-     <Form.Control className="mr-sm-2" type="text" placeholder="Search for an Item" />
-     </Form> */}
-    
+    <h1 className={styles.title}>Saved Listings</h1>
 
     <Container fluid={true}>
       <Row xs={1} md={2} lg={4}>
@@ -59,32 +42,6 @@ const Home: React.FC<HomeProps> = ({ dispatch }) => {
         <Col><Listing></Listing></Col>
       </Row>
     </Container>
-
-    {/* <div className={styles.main}>
-      <Row>
-      <ul className={styles.cards}>
-        <li className={styles.cards_item}>
-          <Listing />
-        </li>
-        <li className={styles.cards_item}>
-          <Listing />
-        </li>
-        <li className={styles.cards_item}>
-          <Listing />
-        </li>
-        <li className={styles.cards_item}>
-          <Listing />
-        </li>
-        <li className={styles.cards_item}>
-          <Listing />
-        </li>
-        <li className={styles.cards_item}>
-          <Listing />
-        </li>
-      </ul>
-      </Row>
-    </div> */}
   </div>
-  );
-};
-export default connect()(Home);
+);
+export default connect()(Saved);

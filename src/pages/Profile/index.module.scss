@@ -1,6 +1,6 @@
 .con {
     max-width: 100% !important;
-    margin-top: 6vh !important;
+    margin-top: 1rem !important;
 }
 .column {
     display: flex;
@@ -10,7 +10,8 @@
 
 .row{
     height: 45% !important;
-    margin: 2% !important;
+    margin-top: 1rem !important;
+    margin-right: 1rem !important;
     border-width: 2px !important;
     
     outline: black;
@@ -32,7 +33,7 @@
     margin-right: auto;
     margin-top: 1vh;
     border-radius: 30px !important;
-    background-color: #00235c !important;
+    background-color: #05275e !important;
     color: white !important;
 }
 
@@ -42,7 +43,7 @@
     margin-right: auto;
     margin-top: 3vh;
     border-radius: 30px !important;
-    background-color: #5a5e65 !important;
+    background-color: #a3a7abee !important;
     color: white !important;
 }
 
@@ -51,6 +52,7 @@
 .outlin{
     height: 100%;
     max-width: 100%;
+    width: 100%;
     padding: 1%;
     border: 1px;
     border-style: solid;
@@ -94,6 +96,10 @@
 
 .carousel{
     width: 100%;
+}
+
+.list{
+    margin: 1vh;
 }
     /*.left {
         display: flex;

@@ -8,7 +8,6 @@ h1 {
   font-weight: 500 !important;
   font-size: 35px !important;
   line-height: 42px !important;
-  text-align: center !important;
 }
 
 h4 {
@@ -16,7 +15,7 @@ h4 {
   font-weight: 300 !important;
   font-size: 25px !important;
   line-height: 30px !important;
-  margin-bottom: 7vh !important;
+  margin: 3vh !important;
 }
 
 .cropContainer {
@@ -43,21 +42,9 @@ h4 {
 .input {
   border-radius: 40vh !important;
   font: $font-stack !important;
-  border: 0px solid black !important;
+  border: 1px solid black !important;
   box-shadow: none !important;
   margin-bottom: 2vh !important;
-  background-color: #E5E5E5 !important;
-  text-indent: 1vw;
-}
-
-.textarea {
-  border-radius: 7vh !important;
-  font: $font-stack !important;
-  border: 0px solid black !important;
-  box-shadow: none !important;
-  margin-bottom: 2vh !important;
-  background-color: #E5E5E5 !important;
-  text-indent: 1vw;
 }
 
 .text {
@@ -80,8 +67,26 @@ h4 {
   width: 100% !important;
   justify-content: center;
 }
-.soldDialog {
-  background-color: #eeeeee!important;
-  box-shadow: 0px 4px 4px rgba(0,0,0,0.25), inset 0px 4px 1px #E5E5E5;
-  border-radius:3rem !important;
+
+.modalContent {
+  background-color: white;
+}
+
+.notification {
+  background-color: rgb(51, 86, 155) !important;
+  color: white !important;
+  position: fixed !important;
+  top: 13vh !important;
+  right: 3vh !important;
+  z-index:100 !important;
+}
+
+.secondaryButton {
+  background-color: rgb(210, 210, 210)!important;
+  color: black !important;
+  border-radius: 40vh !important;
+  font: $font-stack !important;
+  margin: 1vh !important;
+  border: 1px solid black !important;
+  box-shadow: none !important;
 }

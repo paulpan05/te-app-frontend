@@ -17,6 +17,9 @@ import Navbar from './components/Navbar';
 import Signup from './pages/Signup';
 import RateBuyerButton from './components/RateBuyer/buttonExample';
 import Profile from './pages/Profile';
+import EditProfileButton from './components/EditProfile/buttonExample';
+import CreateListingButton from './components/CreateListing/buttonExample';
+import Saved from './pages/Saved';
 
 interface AppProps {
   dispatch: Dispatch<any>;
@@ -32,12 +35,15 @@ const AppComponent: React.FC<AppProps> = ({ dispatch }) => {
   return (
     <Switch>
       <Route exact path="/login" component={Login} />
+      <PrivateRoute exact path="/signup" component={Signup} />
       <Route path="/">
-        <PrivateRoute exact path="/signup" component={Signup} />
         <Navbar dispatch={dispatch} />
         <Switch>
+          <PrivateRoute exact path="/createlisting" component={CreateListingButton} />
           <PrivateRoute exact path="/ratebuyer" component={RateBuyerButton} />
+          <PrivateRoute exact path="/editprofile" component={EditProfileButton} />
           <PrivateRoute exact path="/profile" component={Profile} />
+          <PrivateRoute exact path="/saved" component={Saved} />
           <PrivateRoute path="/" component={Home} />
         </Switch>
       </Route>
