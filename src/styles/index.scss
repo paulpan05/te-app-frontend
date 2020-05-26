@@ -22,3 +22,6 @@
 .carousel-control-prev {
     filter: invert(100%);
 }
+.modal-backdrop.show {
+  opacity: 0 !important;
+}

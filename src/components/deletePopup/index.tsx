@@ -12,13 +12,15 @@ interface DeletePopupProps extends Omit<RouteProps, 'render'> {
   user: firebase.User | null | undefined;
   showPopup: boolean;
   setter: React.Dispatch<any>;
+  toast: React.Dispatch<any>;
+  listingSetter: Function;
 }
 
 const mapStateToProps = (state: rootState) => ({
   user: state.auth.user,
 });
 
-const DeletePopup: React.FC<DeletePopupProps> = ({ showPopup, setter }) => {
+const DeletePopup: React.FC<DeletePopupProps> = ({ showPopup, setter, toast, listingSetter }) => {
   return (
     <div>
       <div>
@@ -32,12 +34,26 @@ const DeletePopup: React.FC<DeletePopupProps> = ({ showPopup, setter }) => {
                   </p>
 
                   <div className="mt-auto">
-                    <button type="button" className={styles.sellerButton}>
+                    {/* Hides the listing and shows toast indicating listing was deleted */}
+                    <button
+                      type="button"
+                      className={styles.sellerButton}
+                      onClick={() => {
+                        toast(true);
+                        setter(false);
+                        listingSetter(false);
+                      }}
+                    >
                       Yes
                     </button>
                   </div>
                   <div className="mt-auto">
-                    <button type="button" className={styles.sellerButton}>
+                    {/* Closes delete popup */}
+                    <button
+                      type="button"
+                      className={styles.sellerButton}
+                      onClick={() => setter(false)}
+                    >
                       No
                     </button>
                   </div>

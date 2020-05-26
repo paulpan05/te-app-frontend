@@ -5,6 +5,7 @@ import { Carousel } from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Toast from 'react-bootstrap/Toast';
 // import StarRatings from 'react-star-ratings';
 import Card from 'react-bootstrap/Card';
 import { Redirect } from 'react-router-dom';
@@ -26,17 +27,52 @@ interface ViewListingProps {
   seller: string;
 }
 const ViewListing: React.FC<ViewListingProps> = ({ dispatch, show, setShow, title, seller }) => {
+  /* Redirect through application */
   const [redirect, redirectTo] = useState('/');
+  /* Popup to show that link was saved to clipboard */
   const [sharePopup, showShare] = useState(false);
+  /* Popup to show the seller contact information */
   const [contactSeller, showContact] = useState(false);
+  /* Popup to show listing deletion confirmation */
   const [showDelete, setshowDelete] = React.useState(false);
-
+  /* Toast to show listing was deleted */
+  const [deleteToast, deleteToastSetter] = useState(false);
+  /* Toast to show the listing was saved */
+  const [saveToast, saveToastSetter] = useState(false);
+  const toggleSaveToast = () => saveToastSetter(!saveToast);
+  const toggleDeleteToast = () => deleteToastSetter(!deleteToast);
   return (
     <div>
+      <div
+        style={{
+          position: 'fixed',
+          bottom: 0,
+          right: 0,
+          zIndex: 1000,
+        }}
+      >
+        <Toast show={deleteToast} onClose={toggleDeleteToast} delay={3000} autohide>
+          <Toast.Header>
+            <strong className="mr-auto">Triton Exchange</strong>
+          </Toast.Header>
+          <Toast.Body>Your listing has been successfully deleted!</Toast.Body>
+        </Toast>
+        <Toast show={saveToast} onClose={toggleSaveToast} delay={3000} autohide>
+          <Toast.Header>
+            <strong className="mr-auto">Triton Exchange</strong>
+          </Toast.Header>
+          <Toast.Body>This listing has been added to your saved collection!</Toast.Body>
+        </Toast>
+      </div>
       <SharePopup showPopup={sharePopup} setter={showShare} />
       <ContactSeller showPopup={contactSeller} setter={showContact} />
-      <DeletePopup showPopup={showDelete} setter={setshowDelete} />
-      <Modal show={show} onHide={() => setShow(false)} size="xl" opacity={1}>
+      <DeletePopup
+        showPopup={showDelete}
+        setter={setshowDelete}
+        toast={deleteToastSetter}
+        listingSetter={setShow}
+      />
+      <Modal show={show} onHide={() => setShow(false)} size="xl">
         <Row style={{ maxHeight: '100%' }} className="no-gutters">
           <Card className={styles.myCard}>
             <Row className={styles.pad}>
@@ -67,6 +103,7 @@ const ViewListing: React.FC<ViewListingProps> = ({ dispatch, show, setShow, titl
                   Price $35 - 60% cotton, 40% polyester - Machine wash cold
                 </p>
               </Col>
+              {/* This is the exit button */}
               <Col xs={1}>
                 <button
                   type="button"
@@ -79,7 +116,8 @@ const ViewListing: React.FC<ViewListingProps> = ({ dispatch, show, setShow, titl
               </Col>
             </Row>
             <Row className={styles.pad} style={{ maxHeight: '100%' }}>
-              <Col md={5}>
+              {/* Comment section */}
+              <Col xs={12} md={5}>
                 <div className={styles.sellerProfile}>
                   <h1 className={styles.listingTitle}>Comments</h1>
                   <p>Beautiful sweatshirt!</p>
@@ -90,11 +128,13 @@ const ViewListing: React.FC<ViewListingProps> = ({ dispatch, show, setShow, titl
                   </div>
                 </div>
               </Col>
+              {/* Middle and right section */}
               <EditListing
                 showDeleteSetter={setshowDelete}
                 sharePopupSetter={showShare}
                 contactSellerSetter={showContact}
                 redirectSetter={redirectTo}
+                savedSetter={saveToastSetter}
               />
             </Row>
           </Card>

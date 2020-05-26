@@ -17,6 +17,7 @@ interface EditListingProps extends Omit<RouteProps, 'render'> {
   sharePopupSetter: React.Dispatch<any>;
   contactSellerSetter: React.Dispatch<any>;
   redirectSetter: React.Dispatch<any>;
+  savedSetter: React.Dispatch<any>;
   user: firebase.User | null | undefined;
 }
 
@@ -30,22 +31,24 @@ const EditListing: React.FC<EditListingProps> = ({
   sharePopupSetter,
   contactSellerSetter,
   redirectSetter,
+  savedSetter,
 }) => {
   /* Temporary: using test boolean to either return guest or seller viewing a listing
   Need to implement it to check if the user matches the seller of the listing */
 
-  const [test, testSet] = useState(true);
+  const [test, testSet] = useState(false);
   const [markSold, markSoldSetter] = useState(false);
   return test ? (
+    /* SELLER VIEW */
     <>
       <RateBuyer show={markSold} setShow={markSoldSetter} title="Flower Sweatshirt" />
-      <Col xs={2} className={styles.textAlign}>
+      <Col xs={12} md={2} className={styles.textAlign}>
         <div className={styles.centerRow}>
           {/* Button needs to have function to save item for later */}
           <button
             type="button"
-            onClick={() => sharePopupSetter(true)}
-            onKeyDown={() => sharePopupSetter(true)}
+            onClick={() => savedSetter(true)}
+            onKeyDown={() => savedSetter(true)}
             className={styles.myButton}
           >
             <FontAwesomeIcon icon={faHeart} size="lg" className={styles.flag} />
@@ -59,7 +62,7 @@ const EditListing: React.FC<EditListingProps> = ({
           >
             <FontAwesomeIcon icon={faLink} size="lg" className={styles.flag} />
           </button>
-          {/* Button needs to have function to delete lsting */}
+          {/* Button needs to have function to delete listing */}
           <button
             type="button"
             onClick={() => showDeleteSetter(true)}
@@ -70,8 +73,8 @@ const EditListing: React.FC<EditListingProps> = ({
           </button>
         </div>
       </Col>
-      <Col className={styles.sellerProfile}>
-        <div>
+      <Col xs={12} md={5}>
+        <div className={styles.sellerProfile}>
           <div className={styles.interestBox}>
             <p>54 Customers Interested</p>
           </div>
@@ -93,14 +96,15 @@ const EditListing: React.FC<EditListingProps> = ({
       </Col>
     </>
   ) : (
+    /* BUYER VIEW */
     <>
       <Col xs={12} md={2} className={styles.textAlign}>
         <div>
           {/* Button needs to have function to save item for later */}
           <button
             type="button"
-            onClick={() => sharePopupSetter(true)}
-            onKeyDown={() => sharePopupSetter(true)}
+            onClick={() => savedSetter(true)}
+            onKeyDown={() => savedSetter(true)}
             className={styles.myButton}
           >
             <FontAwesomeIcon icon={faHeart} size="lg" className={styles.flag} />
@@ -148,6 +152,9 @@ const EditListing: React.FC<EditListingProps> = ({
           >
             Contact Seller
           </button>
+          <div className={styles.interestBox}>
+            <p>54 Customers Interested</p>
+          </div>
         </div>
       </Col>
     </>
