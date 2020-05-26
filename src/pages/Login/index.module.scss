@@ -1,3 +1,4 @@
+$font-stack: Roboto;
 .page {
   width: 100vw;
   min-height: 100vh;
@@ -26,17 +27,30 @@
       width: 100%;
     }
     button {
-      background-color: #000080;
+      background-color: #17284A;
       color: white;
-      padding: 0.5rem 1rem;
+      padding: 1rem 1.5rem;
       border: none;
-      border-radius: 1rem;
+      border-radius: 2rem;
       font-size: large;
+      font-family: $font-stack;
+    }
+    button:hover {
+      box-shadow: 0 5px 5px 0 rgba(0,0,0,0.35) !important;
     }
   }
 }
 
 .aboutContainer {
   width: 100%;
-  min-height: 10vh;
+  min-height: 10vh;  
+}
+
+.background {
+
+  background: #4b6cb7;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #182848, #4b6cb7);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #182848, #4b6cb7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  
+
 }
