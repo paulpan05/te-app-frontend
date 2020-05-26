@@ -75,11 +75,11 @@ img {
 }
 .btn {
   color: black;
-  padding: 0.8rem;
-  margin-top: 2rem;
-  font-size: 14px;
-  text-transform: uppercase;
-  border-radius: 4px;
+  padding: 0.5rem;
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  //text-transform: uppercase;
+  border-radius: 5rem;
   font-weight: 400;
   display: block;
   width: 100%;
@@ -120,6 +120,7 @@ img {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  margin: 2%;
 }
 .card_content {
   padding: 1rem;
@@ -129,20 +130,22 @@ img {
 }
 .card_title {
   color: black;
-  font-size: 1.5rem;
+  font-size: 1rem;
   font-weight: 300;
   letter-spacing: 1px;
   text-transform: capitalize;
   margin: 0px;
+  margin-top: 0.3rem;
   text-align: center;
   font-family: 'Roboto', serif;
 }
 .card_text {
   color: black;
-  font-size: 1.75rem;
+  font-size: 1rem;
   line-height: 1.5;
   //margin-bottom: 1.25rem;
-  margin-top: 0.5rem;
+  margin-top: 0.25rem;
+  
   font-weight: 400;
   text-align: left;
   position: absolute;
@@ -163,7 +166,7 @@ img {
         border-radius: 0.5rem 0 0 0;
         cursor: pointer;
 }
-.cardImage:hover .like_btn {
+.cardImage:hover .like_ {
     transform: translate(0,0);
     transition: all 0.5s linear;
 }

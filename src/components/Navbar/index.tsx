@@ -28,7 +28,7 @@ const Navbar: React.FC<NavbarProps> = ({ dispatch }) => {
           title="Profile"
           id="dropdown-menu-align-right"
           img="profile"
-              <Dropdown.Item
+            ><Dropdown.Item
                 eventKey="1"
                 onClick={() => {
                   dispatch(authActions.signOut());

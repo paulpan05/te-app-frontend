@@ -35,7 +35,7 @@
     "react-app-rewired": "^2.1.5",
     "react-bootstrap": "^1.0.1",
     "react-dom": "^16.13.1",
-    "react-easy-crop": "^3.0.0",
+    "react-easy-crop": "^3.0.1",
     "react-multi-carousel": "^2.5.5",
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.1.2",

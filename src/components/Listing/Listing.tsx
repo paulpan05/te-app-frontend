@@ -10,8 +10,9 @@ import FlowerImg from '../../assets/img/books.jpg';
 
 const Listing: React.FC = ({}) => {
   const [show, setShow] = useState(false);
+  
   return (
-    <div>
+    <div style={{margin: "5%"}}>
       <div className={styles.card}>
         <div className={styles.cardImage}>
           <img onClick={() => setShow(true)} className={styles.cardImgTop} src={FlowerImg} />

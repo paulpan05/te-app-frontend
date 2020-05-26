@@ -81,7 +81,7 @@ const ViewListing: React.FC<ViewListingProps> = ({ dispatch, show, setShow, titl
                   <img src={ProfileImg} className={styles.sellerPicture} alt="Seller" />
                 </div>
                 <div>
-                  <p>Sarah A.</p>
+                  <p>{title}</p>
                   <p>0 Stars</p>
                 </div>
                 <div>

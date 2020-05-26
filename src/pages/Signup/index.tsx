@@ -116,8 +116,7 @@ Welcome{user && user.displayName ? user.displayName : ''}!</h1>
                     </Button>
                   </Form.Row>
                 </div>
-              )
-            ) : (
+              ) : (
               <Form.Label className={styles.profilePictureWrapper}>
                 <Image
                   src={profileImgSrc}
