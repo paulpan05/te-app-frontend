@@ -1,23 +1,5 @@
 /* AARUSHI's */
-.divEdit {
-    margin: 30px;
-    padding: 10px;
-};
-.roundCorners {
-    border-radius: 50px !important;
-    box-shadow: 5px 5px !important;
-}
-.gap {
-    margin-top: 20px;
-    background-color: red;
-}
-.text{
-    font-size: 25px !important;
-    font-weight: 200 !important;
-}
-.divButton {
-    margin-left: 100px;
-};
+
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap');
 .button {
     background-color: #F2F2F2;
@@ -92,17 +74,7 @@ img {
   color: white;
   border: 1px solid white;
 }
-.cards {
-  display: flex;
-  flex-wrap: wrap;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.cards_item {
-  display: flex;
-  padding: 2rem;
-}
+
 @media (min-width: 40rem) {
   .cards_item {
     width: 50%;
@@ -117,9 +89,14 @@ img {
   background-color: white;
   border-radius: 0.25rem;
   box-shadow: 0 20px 40px -14px rgba(0, 0, 0, 0.25);
-  display: flex;
-  flex-direction: column;
+  //display: flex;
+  //flex-direction: column;
   overflow: hidden;
+  //margin-bottom: 1rem;
+  margin-top: 3rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+
 }
 .card_content {
   padding: 1rem;
@@ -128,26 +105,32 @@ img {
   //background: linear-gradient(to bottom left, #17284A 40%, #F2F2F2 100%);
 }
 .card_title {
-  color: black;
+  color: #17284A;
   font-size: 1.5rem;
-  font-weight: 300;
+  font-weight: 400;
   letter-spacing: 1px;
   text-transform: capitalize;
-  margin: 0px;
+  margin-bottom: 1rem;
   text-align: center;
   font-family: 'Roboto', serif;
 }
 .card_text {
-  color: black;
+  color: #17284A;
   font-size: 1.75rem;
   line-height: 1.5;
-  //margin-bottom: 1.25rem;
+  margin-top: 1rem;
+  font-weight: 300;
+  text-align: center;
+}
+
+.description {
   margin-top: 0.5rem;
-  font-weight: 400;
-  text-align: left;
-  position: absolute;
-  bottom: 0;
-  top: 0;
+  text-align: center;
+  font-size: 0.8rem;
+  line-height:25px;
+  letter-spacing: 0.05rem;
+  font-weight: 300;
+  color: rgba(0,0,0,0.54);
 }
 .like_btn {
         position: absolute !important;
@@ -180,43 +163,6 @@ img {
 .filterContainer {
     margin-top: 1rem;
 }
-.search {
-    width: 50%;
-    //position: relative;
-    display: flex;
-  }
-  .searchTerm {
-    width: 100%;
-    border: 3px solid #00B4CC;
-    border-right: none;
-    padding: 5px;
-    height: 20px;
-    border-radius: 5px 0 0 5px;
-    outline: none;
-    color: #9DBFAF;
-  }
-  .searchTerm:focus{
-    color: #00B4CC;
-  }
-  .searchButton {
-    width: 40px;
-    height: 36px;
-    border: 1px solid #00B4CC;
-    background: #00B4CC;
-    text-align: center;
-    color: #fff;
-    border-radius: 0 5px 5px 0;
-    cursor: pointer;
-    font-size: 20px;
-  }
-  /*Resize the wrap to see the search bar change!*/
-  .wrap{
-    width: 30%;
-    //position: absolute;
-    //top: 50%;
-    //left: 50%;
-    transform: translate(-50%, -50%);
-  }
 
 
 
@@ -227,98 +173,3 @@ img {
 
 
 
-
-/* QUYLAN's */
-
-.modal-content {
-    border: 0 !important;
-}
-.listingModal {
-    max-width:50% !important;
-}
-.listingModal .modal-content {
-    font-size:100px !important;
-    border:0 !important;
-}
-.textAlign {
-    text-align:center;
-}
-.pad {
-    padding-top:1rem;
-    padding-bottom: 1rem;
-    margin-right:0 !important;
-    margin-left:0 !important;
-}
-.listingInfo {
-    font-family: Roboto;
-    font-weight: 500;
-    font-size: 25px;
-    line-height:47px;
-    color: #17284A; 
-    float:left;
-    width:33%;
-}
-.listingHeader {
-    float:left;
-    padding-right:3rem;
-    width:33%;
-}
-.listingTitle {
-    font-family: Roboto;
-    font-weight: 500;
-    font-size: 40px;
-    line-height:47px;
-    color: #17284A;
-}
-.listingSecondaryInfo {
-    font-family: Roboto;
-    font-size: 15px;
-    line-height:18px;
-    color: rgba(0,0,0,0.54);
-}
-.listingPicture{
-    box-shadow: 0px 4px 4px #E5E5E5;
-    border-radius: 40px;
-}
-.myCard {
-    background: #FFFFFF;
-    box-shadow: 0px 4px 4px rgba(0,0,0,0.25), inset 0px 4px 1px #E5E5E5;
-    border-radius:3rem !important;
-}
-
-  .sellerPicture {
-      border-radius: 150px;
-      max-width:25%;
-      margin:auto;
-  }
-  .exit {
-      max-width:50%;
-      cursor: pointer;
-  }
-  .sellerButton {
-      background: #17284A;
-      border: 1px solid #000000;
-      border-radius:50px;
-      color:white;
-      font-family: Roboto;
-      font-size:20px;
-      line-height:23px;
-      width: 175px;
-      height:3rem;
-      text-align:center;
-  }
-  .comment{
-    border: 1px solid #000000;
-    border-radius:50px;
-    color:white;
-    font-family: Roboto;
-    font-size:20px;
-    line-height:23px;
-  }
-  .sellerProfile {
-      border-style:solid;
-      border-radius:3rem;
-      text-align:center;
-      height:300px;
-      display:grid;
-  }

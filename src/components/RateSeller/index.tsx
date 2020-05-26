@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import Button from 'react-bootstrap/Button';
+import Alert from 'react-bootstrap/Alert';
 import RateSeller from './RateSeller';
+import styles from './index.module.scss';
 
 const ButtonExample: React.FC = ({}) => {
   const [show, setShow] = useState(false);
   return (
     <div>
-      <Button onClick={() => setShow(true)}>Mark as Sold</Button>
+    <Alert className={styles.center} variant={"info"}>
+      Recent Purchase!
+      <Alert.Link onClick={() => setShow(true)}> Click Here</Alert.Link> to Rate Seller.
+    </Alert>
       <RateSeller title="Flower Sweatshirt" seller="Sarah A." show={show} setShow={setShow} />
     </div>
   );

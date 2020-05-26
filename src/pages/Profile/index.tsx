@@ -80,10 +80,10 @@ const Profile: React.FC<ProfileProps> = ({ user, dispatch }) => {
                   />
               </Box>
           </div>
-            <Button variant="outline-primary" className={styles.btnblue}>
+            <Button variant="outline-primary" className={styles.btnblue}></Button>
             Contact Seller
             {' '}
-            <Button variant="outline-secondary" className={styles.btngrey}>
+            <Button variant="outline-secondary" className={styles.btngrey}></Button>
             Report Seller
             {' '}
           </Col>

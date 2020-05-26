@@ -1,15 +1,13 @@
 $font-stack: Roboto;
 h1 {
-  margin-top: 5vh !important;
   justify-content: center !important;
   align-items: center !important;
   font: $font-stack !important;
   font-weight: 300 !important;
-  font-size: 35px !important;
+  font-size: 25px !important;
   line-height: 42px !important;
   text-align: center !important;
   letter-spacing: 0.2rem;
-  
 }
 
 h3 {
@@ -30,6 +28,13 @@ h4 {
     color: #17284A !important;
   }
 
+.rateSeller {
+  font: $font-stack !important;
+  font-weight: 100 !important;
+  font-size: 20px !important;
+  line-height: 30px !important;
+}
+
 .cropContainer {
   position: relative !important;
   width: 180px !important;
@@ -41,7 +46,9 @@ h4 {
   background-color: #17284A !important;
   border-radius: 40vh !important;
   font: $font-stack !important;
-  margin: 2vh !important;
+  margin: 3vh !important;
+  padding-left: 2vh !important;
+  padding-right: 2vh !important;
   border: 1px solid black !important;
   :hover {
     background-color: #17284A !important;
@@ -74,8 +81,8 @@ h4 {
 }
 .profilePicture {
   display: block !important;
-  width: 180px !important;
-  height: 180px !important;
+  width: 100px !important;
+  height: 100px !important;
   justify-content: center !important;
   margin-top: 2vh !important;
   margin-bottom: 2vh !important;
@@ -91,4 +98,15 @@ h4 {
 .comments {
     margin-top: 20px;
     padding-top: 20px;
+}
+
+.center {
+  text-align: center !important;
+}
+
+.color{
+  background-color: white;
+  width: 500px !important;
+  height: 550px !important;
+  border-radius: 0 0 40px 0;
 }

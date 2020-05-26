@@ -8,13 +8,18 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
-import StarRatings from 'react-star-ratings';
+//import StarRatings from 'react-star-ratings';
 import Card from 'react-bootstrap/Card';
 import styles from './listing.module.scss';
 // import ProfileImg from '../../assets/Profile.png';
 // import FlowerImg from '../../assets/GreenShirt.png';
 import FlowerImg from '../../assets/img/books.jpg';
 import ProfileImg from '../../assets/img/sarah.png';
+import exit from '../../assets/img/exit.png';
+import flag from '../../assets/img/flag.png';
+import heart from '../../assets/img/heart.png';
+import share from '../../assets/img/comment.png';
+
 
 interface ViewListingProps {
   dispatch: Dispatch<any>;
@@ -53,7 +58,7 @@ const ViewListing: React.FC<ViewListingProps> = ({ dispatch, show, setShow, titl
                 onKeyDown={() => setShow(false)}
                 className={styles.myButton}
               >
-                <img className={styles.exit} alt="Exit" />
+                <img className={styles.exit} src={exit} alt="Exit" />
               </button>
             </Col>
           </Row>
@@ -70,9 +75,10 @@ const ViewListing: React.FC<ViewListingProps> = ({ dispatch, show, setShow, titl
             </Col>
             <Col xs={2} className={styles.textAlign}>
               <div className={styles.images}>
-                <img alt="Like" />
-                <img alt="Comment" />
-                <img alt="Flag" />
+                <img src={heart} alt="Like" />
+                <img src={share} alt="share" />
+                <img src={flag} alt="Flag" />
+               
               </div>
             </Col>
             <Col className={styles.sellerProfile}>
