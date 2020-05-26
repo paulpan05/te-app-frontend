@@ -1,12 +1,13 @@
 .comment {
   padding-top: 10px; //TODO: remove later
-  max-width: 20%;
+  max-width: 100%;
   max-height: 50%;
   display: inline-flex;
   align-items: center;
 }
 
 .commentText {
+  display: inline-block !important;
   font-size: 1em;
   background-color: rgb(214, 210, 210);
   border-radius: 20px;
@@ -15,13 +16,14 @@
   padding-right: 10px;
   padding-top: 2px;
   padding-bottom: 5px;
-  width: 200px;
+  width: 100%;
   word-wrap: break-word;
+  text-align: start;
 }
 
 .authorPicture {
   border-radius: 50%;
-  max-width: 40%;
+  max-width: 35px;
   padding-right: 5px;
   height: auto;
   // margin:auto;
@@ -35,12 +37,15 @@
   height: 100%;
   align-items: start;
   grid-auto-rows: 15%;
+  width: 100%;
 }
 
 .commentForm {
+  margin-top: 10px;
   max-width: 100%;
-  display: inline;
-  max-height: 1%;
+  //display: inline;
+  //max-height: 1%;
+  margin-bottom: 10px;
   justify-content: start;
 }
 
@@ -55,14 +60,15 @@
   font-weight: 500;
   font-size: 20px;
   color: #17284A;
-  margin-top: -40px;
+  //margin-top: -40px;
 }
 
 .commentBox {
-  height: 300px;
+  height: 100%;
   border: none;
-  max-width: 100%;
+  //max-width: 90%;
   justify-content: end;
   align-items: center;
-  margin-bottom: -40px;
+  border-radius: 40px;
+  //margin-bottom: -40px;
 }

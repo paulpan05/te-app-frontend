@@ -13,7 +13,7 @@ const Comment: React.FC<CommentProps> = ({ dispatch, text }) => {
   return (
     <div className={styles.comment}>
       <img src={ProfileImg} className={styles.authorPicture} alt="author" />
-      <span className={styles.commentText}>{text}</span>
+      <div className={styles.commentText}>{text}</div>
     </div>
   );
 };
