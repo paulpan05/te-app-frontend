@@ -13,6 +13,7 @@ import Cropper from 'react-easy-crop';
 import { Redirect } from 'react-router-dom';
 import blankProfile from '../../assets/img/blank-profile-picture.png';
 import styles from './index.module.scss';
+import { rootState } from '../../redux/reducers';
 
 interface SignupProps {
   user: firebase.User | null | undefined;
@@ -100,6 +101,7 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
                     }}
                   />
                 </div>
+              </div>
               ) : (
               <Form.Label className={styles.profilePictureWrapper}>
                 <Image

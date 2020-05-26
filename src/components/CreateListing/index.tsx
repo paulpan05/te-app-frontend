@@ -108,7 +108,7 @@ const CreateListing: React.FC<CreateListingProps> = ({ show, setShow }) => {
                         const uploadingImgs = [];
                         for (let i = 0; i < e.target.files.length; i++) {
                           if (e.target.files[i]) {
-                            uploadingImgs.push(URL.createObjectURL(e.target.files[i]));
+                            //uploadingImgs.push(URL.createObjectURL(e.target.files[i]));
                           }
                         }
                         setImages([...images, ...uploadingImgs]);
