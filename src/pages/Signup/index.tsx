@@ -35,6 +35,7 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
   const [zoom, setZoom] = useState(1);
   const [redirect, setRedirect] = useState(false);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState({ width: 0, height: 0, x: 0, y: 0 });
+  const [submitted, setSubmitted] = useState(false);
 
   const cropImage = async () => {
     const image = document.createElement('img');

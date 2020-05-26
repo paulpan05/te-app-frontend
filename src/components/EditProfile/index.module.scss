@@ -71,3 +71,22 @@ h4 {
 .modalContent {
   background-color: white;
 }
+
+.notification {
+  background-color: rgb(51, 86, 155) !important;
+  color: white !important;
+  position: fixed !important;
+  top: 13vh !important;
+  right: 3vh !important;
+  z-index:100 !important;
+}
+
+.secondaryButton {
+  background-color: rgb(210, 210, 210)!important;
+  color: black !important;
+  border-radius: 40vh !important;
+  font: $font-stack !important;
+  margin: 1vh !important;
+  border: 1px solid black !important;
+  box-shadow: none !important;
+}
