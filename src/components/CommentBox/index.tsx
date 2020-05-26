@@ -14,7 +14,7 @@ interface CommentBoxProps {
 const CommentBox: React.FC<CommentBoxProps> = ({ dispatch }, data) => {
   //const [data, setData] = useState({});
 
-  const exData = ['test', 'hi', 'lol'];
+  const exData = ['test', 'hi', 'lol', 'cse110', 'is', 'a', 'joke', 'more', 'comment'];
 
   // const handleCommentSubmit = (comment: { author: string; text: string }) => {
   //   data.push(comment);
