@@ -48,7 +48,7 @@ const ViewListing: React.FC<ViewListingProps> = ({ dispatch, show, setShow, titl
           position: 'fixed',
           bottom: 0,
           right: 0,
-          zIndex: 1000000
+          zIndex: 1000000,
         }}
       >
         <Toast show={deleteToast} onClose={toggleDeleteToast} delay={3000} autohide>
@@ -118,7 +118,7 @@ const ViewListing: React.FC<ViewListingProps> = ({ dispatch, show, setShow, titl
             <Row className={styles.pad} style={{ maxHeight: '100%' }}>
               {/* Comment section */}
               <Col xs={12} md={5}>
-                <CommentBox data={[]}></CommentBox>
+                <CommentBox data={[]} />
               </Col>
               {/* Middle and right section */}
               <EditListing
@@ -134,36 +134,5 @@ const ViewListing: React.FC<ViewListingProps> = ({ dispatch, show, setShow, titl
     </div>
   );
 };
-export default connect()(ViewListing);
 
-{
-  /* <h1 className="mx-auto text-center">Recent Purchase!</h1>
-<Form className="text-center">
-  <h3 className="mx-auto">{title}</h3>
-  <img className={styles.profilePicture} src={ProfileImg}></img>
-  <h4 className="mx-auto">Sold By: {seller}</h4>
-  <Form.Row className="justify-content-center">
-    <Form.Group as={Col} md="auto" className="text-center">
-      <Form.Label className={styles.text}>Rate Seller</Form.Label>
-    </Form.Group>
-  </Form.Row>
-  <StarRatings
-  rating={2.403}
-  starRatedColor="#FDCC0D"
-  starDimension="40px"
-  starSpacing="15px"
-  className={styles.rating}
-  />
-  <Form.Row className="justify-content-center">
-    <Form.Group as={Col} md="6" className="text-center">
-      <Form.Label className={`${styles.text} ${styles.comments}`}>Comments?</Form.Label>
-      <Form.Control as="textarea" rows={4} placeholder="Comment..." className={styles.textarea} />
-    </Form.Group>
-  </Form.Row>
-  <Form.Row className="justify-content-center">
-    <Button type="submit" className={styles.button} onClick={() => {
-      // POST goes here
-    }}>Mark as Sold</Button>
-  </Form.Row>
-</Form> */
-}
+export default connect()(ViewListing);

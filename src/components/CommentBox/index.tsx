@@ -12,9 +12,22 @@ interface CommentBoxProps {
 }
 
 const CommentBox: React.FC<CommentBoxProps> = ({ dispatch }, data) => {
-  //const [data, setData] = useState({});
+  const [stateData, setData] = useState(['']);
 
-  const exData = ['test', 'hi', 'lol', 'cse110', 'is', 'a', 'joke', 'more', 'comment'];
+  // let exData = [
+  //   'test',
+  //   'hi',
+  //   'lol',
+  //   'cse110',
+  //   'is',
+  //   'a',
+  //   'joke',
+  //   'more',
+  //   'comment',
+  //   'lol',
+  //   'lol',
+  //   'lol',
+  // ];
 
   // const handleCommentSubmit = (comment: { author: string; text: string }) => {
   //   data.push(comment);
@@ -24,17 +37,14 @@ const CommentBox: React.FC<CommentBoxProps> = ({ dispatch }, data) => {
   // };
 
   const handleCommentSubmit = (comment: string) => {
-    exData.push(comment);
-    const comments = exData;
-    const newComments = comments.concat([comment]);
-    //setData(newComments);
+    setData([...stateData, comment]);
   };
 
   return (
     <div>
       <Card className={styles.commentBox}>
         <Card.Title className={styles.commentBoxTitle}>Comments</Card.Title>
-        <CommentList data={exData} />
+        <CommentList data={stateData} />
         <CommentForm onCommentSubmit={handleCommentSubmit} />
       </Card>
     </div>

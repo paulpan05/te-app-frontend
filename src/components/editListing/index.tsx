@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { RouteProps } from 'react-router-dom';
+import { RouteProps, Redirect } from 'react-router-dom';
 import { Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFlag, faHeart, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
@@ -12,7 +12,6 @@ import styles from './index.module.scss';
 import ProfileImg from '../../assets/img/sarah.png';
 import RateBuyer from '../RateBuyer';
 import ReportListing from '../ReportModals/ReportListing';
-import { Redirect } from 'react-router-dom';
 
 interface EditListingProps extends Omit<RouteProps, 'render'> {
   showDeleteSetter: React.Dispatch<any>;
@@ -100,8 +99,8 @@ const EditListing: React.FC<EditListingProps> = ({
   ) : (
     /* BUYER VIEW */
     <>
-      {(clickedOnProfile) ? <Redirect to="/profile" /> : null}
-      <ReportListing show={showReportListing} setShow={() => setShowReportListing(true)}/>
+      {clickedOnProfile ? <Redirect to="/profile" /> : null}
+      <ReportListing show={showReportListing} setShow={() => setShowReportListing(true)} />
       <Col xs={12} md={2} className={styles.textAlign}>
         <div>
           {/* Button needs to have function to save item for later */}

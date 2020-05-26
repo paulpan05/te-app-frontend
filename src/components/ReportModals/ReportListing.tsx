@@ -3,9 +3,9 @@ import { Dispatch } from 'redux';
 import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import styles from './index.module.scss';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
+import styles from './index.module.scss';
 
 interface ReportListingProps {
   dispatch?: Dispatch<any>;
@@ -21,20 +21,22 @@ const ReportListing: React.FC<ReportListingProps> = ({ dispatch, show, setShow, 
         show={show}
         onHide={() => setShow(false)}
         size="xl"
-        
         dialogClassName={styles.modal}
         centered
       >
         <div className={styles.myModal}>
           <Modal.Header closeButton>
-            <Modal.Title id="contained-modal-title-vcenter" className="d-flex justify-content-center mb-2">
+            <Modal.Title
+              id="contained-modal-title-vcenter"
+              className="d-flex justify-content-center mb-2"
+            >
               Report User
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <h4>Sarah A.</h4>
             <p className={styles.reportReason}>Reason for Reporting?</p>
-            <textarea className={styles.reportTextArea}></textarea>
+            <textarea className={styles.reportTextArea} />
           </Modal.Body>
         </div>
       </Modal>

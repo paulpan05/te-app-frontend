@@ -12,25 +12,35 @@ interface CommentFormProps {
 let textData = '';
 
 const CommentForm: React.FC<CommentFormProps> = ({ dispatch, onCommentSubmit }) => {
+  const [txt, setTxt] = useState('');
 
   const handleTextChange = (event: ChangeEvent<HTMLInputElement>) => {
     textData = event.target.value;
-  }
+    setTxt(textData);
+  };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const textVal = textData.trim();
-    if (!textVal) return;
-    onCommentSubmit({ text: textVal });
+    if (!textVal) {
+      return;
+    }
+    onCommentSubmit(textVal);
     (event.target as HTMLInputElement).value = '';
-    return;
+    setTxt('');
   };
 
   return (
     <div>
       <form className={styles.commentForm} onSubmit={handleSubmit}>
-        
-        <input type="text" className={styles.commentInput} onChange={handleTextChange} placeholder="Write a Comment..." />
+        <img src={ProfileImg} className={styles.authorPicture} alt="author" />
+        <input
+          type="text"
+          className={styles.commentInput}
+          onChange={handleTextChange}
+          value={txt}
+          placeholder="Write a Comment..."
+        />
       </form>
     </div>
   );

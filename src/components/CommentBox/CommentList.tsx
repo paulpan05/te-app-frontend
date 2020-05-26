@@ -9,18 +9,25 @@ interface CommentListProps {
   data: Array<string>;
 }
 
-const exampleData = [
-  { author: 'Allan', text: 'This is one comment' },
-  { author: 'Parth', text: 'This is two comment' },
-  { author: 'Quylan', text: 'This is three comment' },
-];
-
 const CommentList: React.FC<CommentListProps> = ({ dispatch, data }) => {
+  const messagesEndRef = React.useRef<null | HTMLDivElement>(null);
+  const scrollToBottom = () => {
+    messagesEndRef.current!.scrollIntoView({ behavior: 'smooth' });
+  };
+
   const commentNodes = data.map((comment: string) => {
-    return <Comment text={comment}></Comment>;
+    if (!comment) return;
+    return <Comment text={comment} />;
   });
 
-  return <div className={styles.commentList}>{commentNodes}</div>;
+  React.useEffect(scrollToBottom, [commentNodes]);
+
+  return (
+    <div className={styles.commentList}>
+      {commentNodes}
+      <div ref={messagesEndRef} />
+    </div>
+  );
 };
 
 export default connect()(CommentList);

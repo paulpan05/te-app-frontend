@@ -1,7 +1,7 @@
 import React, { useState, Props } from 'react';
 import Button from 'react-bootstrap/Button';
-import styles from './index.module.scss';
 import { connect } from 'react-redux';
+import styles from './index.module.scss';
 
 interface CustomToggleButtonProps {
   children: string;
@@ -9,17 +9,22 @@ interface CustomToggleButtonProps {
   value: number;
 }
 
-const CustomToggleButton: React.FC<CustomToggleButtonProps> = ({ children, toggledInitial = false, value }) => {
+const CustomToggleButton: React.FC<CustomToggleButtonProps> = ({
+  children,
+  toggledInitial = false,
+  value,
+}) => {
   const [toggled, setToggled] = useState(toggledInitial);
 
   return (
-  <Button
-    key={value}
-    onClick={() => setToggled(!toggled)}
-    className={(toggled) ? styles.toggleButtonActive : styles.toggleButtonInactive}>
+    <Button
+      key={value}
+      onClick={() => setToggled(!toggled)}
+      className={toggled ? styles.toggleButtonActive : styles.toggleButtonInactive}
+    >
       {children}
     </Button>
-    )
-  }
+  );
+};
 
 export default connect()(CustomToggleButton);
