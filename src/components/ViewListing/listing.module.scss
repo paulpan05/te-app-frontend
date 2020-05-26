@@ -27,7 +27,6 @@
 }
 .listingHeader {
   float:left;
-  padding-right:3rem;
   width:33%;
 }
 .listingTitle {
@@ -94,16 +93,16 @@
     border: 1px solid black;
     border-radius:3rem;
     text-align:center;
-    max-height:100%;
+    height:100%;
     display:grid;
     font-family: Roboto;
     font-weight: 300;
     font-size: 20px;
     line-height:23px;
     letter-spacing:.05em;
+    align-items:center;
     margin-left:1rem;
     margin-right:1rem;
-    align-items:center;
 }
 .interestBox {
     background: #EEEEEE;
@@ -119,3 +118,16 @@ p {
 .images img{
     max-width:75%;
 } 
+@media(max-width:767px) {
+  .flag {
+    font-size:1rem;
+  }
+}
+@media (min-width:768px) {
+.flag {
+  font-size:3rem;
+}
+}
+.flag:hover {
+  color:gold;
+}

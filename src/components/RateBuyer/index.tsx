@@ -19,7 +19,7 @@ interface RateBuyerProps {
 
 const RateBuyer: React.FC<RateBuyerProps> = ({ dispatch, show, setShow, title }) => {
   return (
-    <Modal show={show} onHide={() => setShow(false)} size="lg">
+    <Modal show={show} onHide={() => setShow(false)} size="lg" dialogClassName={styles.soldDialog}>
       <h1 className="mx-auto text-center">Mark as Sold</h1>
       <Form className="text-center">
         <h4 className="mx-auto">{title}</h4>

@@ -16,4 +16,12 @@
 .modal-content {
   border: 0 !important;
   background-color: transparent !important;
+  align-items:center !important;
+}
+.carousel-control-next,
+.carousel-control-prev {
+    filter: invert(100%);
+}
+.modal-backdrop.show {
+  opacity: 0 !important;
 }
