@@ -17,7 +17,7 @@ const Comment: React.FC<CommentProps> = ({ dispatch, text }) => {
 
   return (
     <>
-      <ReportComment show={showReportModal} setShow={setShowReportModal}></ReportComment>
+      <ReportComment show={showReportModal} setShow={setShowReportModal} />
       <div className={styles.comment}>
         <img src={ProfileImg} className={styles.authorPicture} alt="author" />
         <div

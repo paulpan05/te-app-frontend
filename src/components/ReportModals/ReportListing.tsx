@@ -1,13 +1,14 @@
-import React, { useState, FormEvent, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { Dispatch } from 'redux';
 import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
-import styles from './index.module.scss';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { toast } from 'react-toastify';
 import ProfileImg from '../../assets/img/sarah.png';
+import styles from './index.module.scss';
 
 interface ReportListingProps {
   dispatch?: Dispatch<any>;
@@ -28,6 +29,7 @@ const ReportListing: React.FC<ReportListingProps> = ({ dispatch, show, setShow }
       return;
     }
     console.log(textVal);
+    toast('Report submitted. Thank you for keeping Triton Exchange safe and secure!');
     setShow(false);
   };
 
@@ -65,17 +67,10 @@ const ReportListing: React.FC<ReportListingProps> = ({ dispatch, show, setShow }
             </Row>
             <Row className={styles.pad2}>
               <div className={styles.reportReason}>Reason for Reporting?</div>
-              <textarea
-                className={styles.reportTextArea}
-                onChange={handleTextChange}
-              ></textarea>
+              <textarea className={styles.reportTextArea} onChange={handleTextChange} />
             </Row>
             <Row className={styles.pad2}>
-              <button
-                type="submit"
-                className={styles.submitButton}
-                onClick={handleSubmit}
-              >
+              <button type="submit" className={styles.submitButton} onClick={handleSubmit}>
                 Submit
               </button>
             </Row>

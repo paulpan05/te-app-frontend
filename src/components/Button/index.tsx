@@ -1,4 +1,4 @@
-import React, { useState, Props } from 'react';
+import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import { connect } from 'react-redux';
 import styles from './index.module.scss';

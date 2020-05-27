@@ -90,7 +90,7 @@ const Profile: React.FC<ProfileProps> = ({ user, dispatch }) => {
             className={styles.btngrey}
             onClick={() => setShow(true)}
           >
-            > Report Seller
+            Report Seller
           </Button>
           <ReportUser show={show} setShow={setShow} />
         </Col>
