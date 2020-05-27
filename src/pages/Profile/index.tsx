@@ -2,28 +2,20 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {
-  Button,
-  Container,
-  Row,
-  Col,
-  FormLabel,
-  FormText,
-  FormFile,
-  Image,
-  CardDeck,
-} from 'react-bootstrap';
+import { Button, Container, Row, Col, FormLabel, FormText, FormFile, Image } from 'react-bootstrap';
 
+// @ts-ignore
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import Rating from '@material-ui/lab/Rating';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import Card from './Card';
 import example from '../../assets/img/bag.jpg';
 import styles from './index.module.scss';
 import { authActions } from '../../redux/actions';
 import { rootState } from '../../redux/reducers';
+import Listing from '../../components/Listing/Listing';
+import ReportUser from '../../components/ReportModals/ReportUser';
 
 interface ProfileProps {
   dispatch: Dispatch<any>;
@@ -38,7 +30,8 @@ const Profile: React.FC<ProfileProps> = ({ user, dispatch }) => {
   const [profileImgSrc, setProfileImgSrc] = useState(
     user && user.photoURL ? user.photoURL : example,
   );
-  const [starValue, setStarValue] = React.useState<number | null>(2);
+  const [starValue, setStarValue] = useState<number | null>(2);
+  const [show, setShow] = useState(false);
   const responsive = {
     superLargeDesktop: {
       // the naming can be any, depends on you.
@@ -58,10 +51,11 @@ const Profile: React.FC<ProfileProps> = ({ user, dispatch }) => {
       items: 1,
     },
   };
+  document.body.style.padding = '0px';
   return (
     <Container className={styles.con}>
       <Row>
-        <Col className={styles.column}>
+        <Col xs={3} className={styles.column}>
           <FormLabel>
             <Image src={profileImgSrc} roundedCircle alt="profile" className={styles.img} fluid />
             <FormText>Click to Select a Profile Picture</FormText>
@@ -88,12 +82,17 @@ const Profile: React.FC<ProfileProps> = ({ user, dispatch }) => {
               />
             </Box>
           </div>
-          <Button variant="outline-primary" className={styles.btnblue} />
-          Contact Seller 
-{' '}
-<Button variant="outline-secondary" className={styles.btngrey} />
-          Report Seller
-{' '}
+          <Button variant="outline-primary" className={styles.btnblue}>
+            Contact Seller
+          </Button>{' '}
+          <Button
+            variant="outline-secondary"
+            className={styles.btngrey}
+            onClick={() => setShow(true)}
+          >
+            > Report Seller
+          </Button>
+          <ReportUser show={show} setShow={setShow} />
         </Col>
         <Col xs={9}>
           <h2 style={{ textAlign: 'center' }}>
@@ -101,27 +100,27 @@ const Profile: React.FC<ProfileProps> = ({ user, dispatch }) => {
           </h2>
           <Row className={styles.row}>
             <div className={styles.outlin}>
-              <h4 style={{ paddingLeft: '2vh', marginTop: '1vh' }}>Available Listings</h4>
+              <p style={{ marginBottom: '0rem', marginLeft: '1rem' }}>Available Listings</p>
               <Carousel className={styles.car} responsive={responsive}>
-                <Card />
-                <Card />
-                <Card />
-                <Card />
-                <Card />
-                <Card />
+                <Listing />
+                <Listing />
+                <Listing />
+                <Listing />
+                <Listing />
+                <Listing />
               </Carousel>
             </div>
           </Row>
           <Row className={styles.row}>
             <div className={styles.outlin}>
-              <h4 style={{ paddingLeft: '2vh', marginTop: '1vh' }}>Past Listings</h4>
+              <p style={{ marginBottom: '0rem', marginLeft: '1rem' }}>Past Transactions</p>
               <Carousel className={styles.car} responsive={responsive}>
-                <Card />
-                <Card />
-                <Card />
-                <Card />
-                <Card />
-                <Card />
+                <Listing />
+                <Listing />
+                <Listing />
+                <Listing />
+                <Listing />
+                <Listing />
               </Carousel>
             </div>
           </Row>
@@ -129,121 +128,6 @@ const Profile: React.FC<ProfileProps> = ({ user, dispatch }) => {
       </Row>
     </Container>
   );
-
-  /*
-    <Row className={styles.row}>  
-                <div className={styles.outlin}>
-                        <h4 style={{paddingLeft: '2vh', marginTop: '3vh'}}>Past Listings</h4>
-                        <CardDeck className={styles.carddeck}>
-                                <Card className={styles.card}>
-                                    <Card.Img variant="top" src={example} className={styles.cardim} />
-                                    <Card.Body className={styles.cardbod}>
-                                    <Card.Title className={styles.cardtitle}>Card Title</Card.Title>
-                                    </Card.Body>
-                                </Card>
-                                <Card className={styles.card}>
-                                    <Card.Img variant="top" src={example} className={styles.cardim} />
-                                    <Card.Body className={styles.cardbod}>
-                                    <Card.Title className={styles.cardtitle}>Card Title</Card.Title>
-                                    </Card.Body>
-                                </Card>
-                                <Card className={styles.card}>
-                                    <Card.Img variant="top" src={example} className={styles.cardim} />
-                                    <Card.Body className={styles.cardbod}>
-                                    <Card.Title className={styles.cardtitle}>Card Title</Card.Title>
-                                    </Card.Body>
-                                </Card>
-                                <Card className={styles.card}>
-                                    <Card.Img variant="top" src={example} className={styles.cardim} />
-                                    <Card.Body className={styles.cardbod}>
-                                    <Card.Title className={styles.cardtitle}>Card Title</Card.Title>
-                                    </Card.Body>
-                                </Card> 
-                        </CardDeck> 
-                    </div>
-                </Row>
-    CardDeck className={styles.carddeck}>
-                                <Card className={styles.card}>
-                                    <Card.Img variant="top" src={example} className={styles.cardim} />
-                                    <Card.Body className={styles.cardbod}>
-                                    <Card.Title className={styles.cardtitle}>Card Title</Card.Title>
-                                    </Card.Body>
-                                </Card>
-                                <Card className={styles.card}>
-                                    <Card.Img variant="top" src={example} className={styles.cardim} />
-                                    <Card.Body className={styles.cardbod}>
-                                    <Card.Title className={styles.cardtitle}>Card Title</Card.Title>
-                                    </Card.Body>
-                                </Card>
-                                <Card className={styles.card}>
-                                    <Card.Img variant="top" src={example} className={styles.cardim} />
-                                    <Card.Body className={styles.cardbod}>
-                                    <Card.Title className={styles.cardtitle}>Card Title</Card.Title>
-                                    </Card.Body>
-                                </Card>
-                                <Card className={styles.card}>
-                                    <Card.Img variant="top" src={example} className={styles.cardim} />
-                                    <Card.Body className={styles.cardbod}>
-                                    <Card.Title className={styles.cardtitle}>Card Title</Card.Title>
-                                    </Card.Body>
-                                </Card> 
-                        </CardDeck> 
-    Carousel className={styles.carousel}>
-                        <Carousel.Item>
-                            <img
-                            className="d-block w-100"
-                            src={example}
-                            alt="First slide"
-                            />
-                            <Carousel.Caption>
-                            <h3>First slide label</h3>
-                            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-                            </Carousel.Caption>
-                        </Carousel.Item>
-                        <Carousel.Item>
-                            <img
-                            className="d-block w-100"
-                            src="holder.js/800x400?text=Second slide&bg=282c34"
-                            alt="Third slide"
-                            />
-
-                            <Carousel.Caption>
-                            <h3>Second slide label</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                            </Carousel.Caption>
-                        </Carousel.Item>
-                        <Carousel.Item>
-                            <img
-                            className="d-block w-100"
-                            src="holder.js/800x400?text=Third slide&bg=20232a"
-                            alt="Third slide"
-                            />
-
-                            <Carousel.Caption>
-                            <h3>Third slide label</h3>
-                            <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
-                            </Carousel.Caption>
-                        </Carousel.Item>
-                    </Carousel>
-    
-    
-    <div className={styles.wrap}>
-      <div className={styles.left}>
-        <h1>Parth Shah</h1>
-        <div>
-            <Image src={example} roundedCircle alt="profile" width="200px" height="200px"/>
-        </div>
-        <div><Button variant="primary">Contact Seller</Button>{' '}</div>
-        <div><Button variant="secondary">Report Seller</Button>{' '}</div>
-      </div>
-      <div className={styles.right}>
-        <Container>
-            <Row>
-
-            </Row>
-        </Container>    
-      </div>
-    </div> */
 };
 
 export default connect(mapStateToProps)(Profile);

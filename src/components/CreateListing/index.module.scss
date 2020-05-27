@@ -1,0 +1,131 @@
+$font-stack: Roboto;
+
+h1 {
+  margin: 3vh !important;
+  justify-content: center !important;
+  align-items: center !important;
+  font: $font-stack !important;
+  font-weight: 500 !important;
+  font-size: 35px !important;
+  line-height: 42px !important;
+}
+
+h4 {
+  font: $font-stack !important;
+  font-weight: 300 !important;
+  font-size: 25px !important;
+  line-height: 30px !important;
+  margin: 3vh !important;
+}
+
+.cropContainer {
+  position: relative !important;
+  width: 180px !important;
+  height: 180px !important;
+  margin-right: auto !important;
+  margin-left: auto !important;
+}
+
+.button {
+  background-color: #17284A !important;
+  border-radius: 40vh !important;
+  font: $font-stack !important;
+  margin: 1vh !important;
+  border: 1px solid black !important;
+  box-shadow: none !important;
+}
+
+.secondaryButton {
+  background-color: rgb(210, 210, 210)!important;
+  color: black !important;
+  border-radius: 40vh !important;
+  font: $font-stack !important;
+  margin: 1vh !important;
+  border: 1px solid black !important;
+  box-shadow: none !important;
+}
+
+.input {
+  border-radius: 40vh !important;
+  font: $font-stack !important;
+  border: 1px solid black !important;
+  box-shadow: none !important;
+  margin-bottom: 2vh !important;
+}
+
+.inputWithPrependAndPostpend {
+  border-radius: 0vh !important;
+  font: $font-stack !important;
+  border: 1px solid black !important;
+  border-right: 0px !important;
+  border-left: 0px !important;
+  box-shadow: none !important;
+  margin-bottom: 2vh !important;
+}
+
+.inputPrepend {
+  border-radius: 40vh 0vh 0vh 40vh !important;
+  font: $font-stack !important;
+  border: 1px solid black !important;
+  border-right: 0px !important;
+  box-shadow: none !important;
+  margin-bottom: 2vh !important;
+  background-color: white !important;
+}
+
+.inputPostpend {
+  border-radius: 0vh 40vh 40vh 0vh !important;
+  font: $font-stack !important;
+  border: 1px solid black !important;
+  border-left: 0px !important;
+  box-shadow: none !important;
+  margin-bottom: 2vh !important;
+  background-color: white !important;
+}
+
+.text {
+  font: $font-stack !important;
+  text-align: center !important;
+}
+
+.profilePicture {
+  display: block !important;
+  width: 180px !important;
+  height: 180px !important;
+  justify-content: center !important;
+  margin-top: 2vh !important;
+  margin-bottom: 2vh !important;
+  margin-right: auto !important;
+  margin-left: auto !important;
+}
+
+.profilePictureWrapper {
+  width: 100% !important;
+  justify-content: center;
+}
+
+.textarea {
+  border-radius: 4vh !important;
+  font: $font-stack !important;
+  border: 1px solid black !important;
+  box-shadow: none !important;
+  margin-bottom: 2vh !important;
+}
+
+.wrapper {
+  margin-right: 4vh;
+  margin-left: 4vh;
+}
+
+.notification {
+  background-color: rgb(51, 86, 155) !important;
+  color: white !important;
+  position: fixed !important;
+  top: 13vh !important;
+  right: 3vh !important;
+  z-index:100 !important;
+}
+
+.black {
+  color: black !important;
+}

@@ -11,9 +11,9 @@ import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Cropper from 'react-easy-crop';
 import { Redirect } from 'react-router-dom';
-import { rootState } from '../../redux/reducers';
-import blankProfile from './blank-profile-picture.png';
+import blankProfile from '../../assets/img/blank-profile-picture.png';
 import styles from './index.module.scss';
+import { rootState } from '../../redux/reducers';
 
 interface SignupProps {
   user: firebase.User | null | undefined;
@@ -27,11 +27,6 @@ const mapStateToProps = (state: rootState) => ({
 // TODO zoom it to minimum of width/height
 
 const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
-  /* let profileImg = await //API call for user profile picture from google goes here// ;
-  if (profileImg === null) {
-    profileImg = blankProfile;
-  } */
-
   const [profileImgSrc, setProfileImgSrc] = useState(
     user && user.photoURL ? user.photoURL : blankProfile,
   );
@@ -40,6 +35,7 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
   const [zoom, setZoom] = useState(1);
   const [redirect, setRedirect] = useState(false);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState({ width: 0, height: 0, x: 0, y: 0 });
+  const [submitted, setSubmitted] = useState(false);
 
   const cropImage = async () => {
     const image = document.createElement('img');
@@ -105,21 +101,8 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
                     }}
                   />
                 </div>
-                <Form.Row className="justify-content-center">
-                  <Button
-                    className={styles.button}
-                    onClick={async () => {
-                      cropImage().then((croppedImg: any) => {
-                        setProfileImgSrc(croppedImg);
-                        setCropping(false);
-                      });
-                    }}
-                  >
-                    Save
-                  </Button>
-                </Form.Row>
               </div>
-            ) : (
+              ) : (
               <Form.Label className={styles.profilePictureWrapper}>
                 <Image
                   src={profileImgSrc}
@@ -140,9 +123,7 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
                       setProfileImgSrc(URL.createObjectURL(e.target.files[0]));
                       setCropping(true);
                     }
-                  }}
-                />
-                />
+                  }} />
               </Form.Label>
             )}
           </Form.Group>
