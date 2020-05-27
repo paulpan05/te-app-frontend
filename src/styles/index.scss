@@ -26,8 +26,8 @@
 .notification {
   background-color: rgb(51, 86, 155) !important;
   color: white !important;
-  position: fixed !important;
+  position: absolute !important;
   top: 13vh !important;
-  right: 3vh !important;
+  right: 0 !important;
   z-index:100 !important;
 }

@@ -41,10 +41,12 @@ const CreateListing: React.FC<CreateListingProps> = ({ show, setShow }) => {
   
   return (
     <div>
-      <Toast onClose={() => setSubmitted(false)} show={submitted} delay={3000} autohide className={styles.notification}>
-        <Toast.Header><div className="mr-auto">Success!</div></Toast.Header>
-        <Toast.Body>The listing was successfully created!</Toast.Body>
-      </Toast>
+      <div className="notificationDiv">
+        <Toast onClose={() => setSubmitted(false)} show={submitted} delay={3000} autohide className="notification">
+          <Toast.Header><div className="mr-auto">Success!</div></Toast.Header>
+          <Toast.Body>The listing was successfully created!</Toast.Body>
+        </Toast>
+      </div>
 
       <Modal show={show} onHide={() => setShow(false)} size="lg">
         <Card>
