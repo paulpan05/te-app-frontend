@@ -5,12 +5,12 @@ import { Carousel } from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Toast from 'react-bootstrap/Toast';
 // import StarRatings from 'react-star-ratings';
 import Card from 'react-bootstrap/Card';
 import { Redirect } from 'react-router-dom';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ToastContainer, toast } from 'react-toastify';
 import styles from './listing.module.scss';
 import FlowerImg from '../../assets/img/books.jpg';
 import { authActions } from '../../redux/actions';
@@ -20,6 +20,7 @@ import ContactSeller from '../contactSeller';
 import EditListing from '../editListing';
 import ProfileImg from '../../assets/img/sarah.png';
 import CommentBox from '../CommentBox';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface ViewListingProps {
   dispatch: Dispatch<any>;
@@ -28,6 +29,7 @@ interface ViewListingProps {
   title: string;
   seller: string;
 }
+
 const ViewListing: React.FC<ViewListingProps> = ({ dispatch, show, setShow, title, seller }) => {
   /* Popup to show that link was saved to clipboard */
   const [sharePopup, showShare] = useState(false);
@@ -35,43 +37,11 @@ const ViewListing: React.FC<ViewListingProps> = ({ dispatch, show, setShow, titl
   const [contactSeller, showContact] = useState(false);
   /* Popup to show listing deletion confirmation */
   const [showDelete, setshowDelete] = React.useState(false);
-  /* Toast to show listing was deleted */
-  const [deleteToast, deleteToastSetter] = useState(false);
-  /* Toast to show the listing was saved */
-  const [saveToast, saveToastSetter] = useState(false);
-  const toggleSaveToast = () => saveToastSetter(!saveToast);
-  const toggleDeleteToast = () => deleteToastSetter(!deleteToast);
   return (
     <div>
-      <div
-        style={{
-          position: 'fixed',
-          bottom: 0,
-          right: 0,
-          zIndex: 1000000,
-        }}
-      >
-        <Toast show={deleteToast} onClose={toggleDeleteToast} delay={3000} autohide>
-          <Toast.Header>
-            <strong className="mr-auto">Triton Exchange</strong>
-          </Toast.Header>
-          <Toast.Body>Your listing has been successfully deleted!</Toast.Body>
-        </Toast>
-        <Toast show={saveToast} onClose={toggleSaveToast} delay={3000} autohide>
-          <Toast.Header>
-            <strong className="mr-auto">Triton Exchange</strong>
-          </Toast.Header>
-          <Toast.Body>This listing has been added to your saved collection!</Toast.Body>
-        </Toast>
-      </div>
       <SharePopup showPopup={sharePopup} setter={showShare} />
       <ContactSeller showPopup={contactSeller} setter={showContact} />
-      <DeletePopup
-        showPopup={showDelete}
-        setter={setshowDelete}
-        toast={deleteToastSetter}
-        listingSetter={setShow}
-      />
+      <DeletePopup showPopup={showDelete} setter={setshowDelete} listingSetter={setShow} />
       <Modal show={show} onHide={() => setShow(false)} size="xl">
         <Row style={{ maxHeight: '100%' }} className="no-gutters">
           <Card className={styles.myCard}>
@@ -125,7 +95,6 @@ const ViewListing: React.FC<ViewListingProps> = ({ dispatch, show, setShow, titl
                 showDeleteSetter={setshowDelete}
                 sharePopupSetter={showShare}
                 contactSellerSetter={showContact}
-                savedSetter={saveToastSetter}
               />
             </Row>
           </Card>

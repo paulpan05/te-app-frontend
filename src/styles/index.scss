@@ -22,3 +22,18 @@
 .carousel-control-prev {
     filter: invert(100%);
 }
+
+.notification {
+  background-color: rgb(51, 86, 155) !important;
+  color: white !important;
+  position: fixed !important;
+  top: 13vh !important;
+  right: 3vh !important;
+  z-index:100 !important;
+}
+.myProgress {
+  background: gold !important;
+}
+.myToast {
+  font-family: Roboto !important;
+}

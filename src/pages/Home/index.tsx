@@ -19,11 +19,18 @@ import TagButton from '../../components/Button';
 import Tags from '../../components/Tags';
 import Rate from '../../components/RateSeller';
 
+import { rootState } from '../../redux/reducers';
+import endpoint from '../../configs/endpoint';
+
 interface HomeProps {
   dispatch: Dispatch<any>;
+  user: firebase.User | null | undefined;
 }
+const mapStateToProps = (state: rootState) => ({
+  user: state.auth.user,
+});
 
-const Home: React.FC<HomeProps> = ({ dispatch }) => {
+const Home: React.FC<HomeProps> = ({ dispatch, user }) => {
   return (
     <div>
       <Rate />
@@ -73,32 +80,8 @@ const Home: React.FC<HomeProps> = ({ dispatch }) => {
           </Col>
         </Row>
       </Container>
-
-      {/* <div className={styles.main}>
-      <Row>
-      <ul className={styles.cards}>
-        <li className={styles.cards_item}>
-          <Listing />
-        </li>
-        <li className={styles.cards_item}>
-          <Listing />
-        </li>
-        <li className={styles.cards_item}>
-          <Listing />
-        </li>
-        <li className={styles.cards_item}>
-          <Listing />
-        </li>
-        <li className={styles.cards_item}>
-          <Listing />
-        </li>
-        <li className={styles.cards_item}>
-          <Listing />
-        </li>
-      </ul>
-      </Row>
-    </div> */}
     </div>
   );
 };
-export default connect()(Home);
+
+export default connect(mapStateToProps)(Home);

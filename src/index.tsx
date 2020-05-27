@@ -7,6 +7,7 @@ import 'normalize.css';
 import 'focus-visible/dist/focus-visible.min';
 import './styles/index.scss';
 import { Dispatch } from 'redux';
+import { ToastContainer, Zoom } from 'react-toastify';
 import * as serviceWorker from './serviceWorker';
 import rootStore from './redux/stores';
 import authActions from './redux/actions/auth';
@@ -37,6 +38,20 @@ const AppComponent: React.FC<AppProps> = ({ dispatch }) => {
       <Route exact path="/login" component={Login} />
       <PrivateRoute exact path="/signup" component={Signup} />
       <Route path="/">
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          progressClassName="myProgress"
+          bodyClassName="myToast"
+          transition={Zoom}
+        />
         <Navbar dispatch={dispatch} />
         <Switch>
           <PrivateRoute exact path="/createlisting" component={CreateListingButton} />
