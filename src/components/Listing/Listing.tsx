@@ -11,15 +11,14 @@ import book from '../../assets/img/books.jpg';
 
 const Listing: React.FC = ({}) => {
   const [show, setShow] = useState(false);
-  
+
   return (
-    <div style={{margin: "5%"}}>
+    <div style={{ margin: '5%' }}>
       <div className={styles.card}>
         <div className={styles.cardImage}>
-
           <Carousel interval={null}>
             <Carousel.Item>
-               <img onClick={() => setShow(true)} className={styles.cardImgTop} src={GreenShirt} />
+              <img onClick={() => setShow(true)} className={styles.cardImgTop} src={GreenShirt} />
             </Carousel.Item>
             <Carousel.Item>
               <img onClick={() => setShow(true)} className={styles.cardImgTop} src={book} />

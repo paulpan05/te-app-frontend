@@ -28,6 +28,7 @@ interface ViewListingProps {
   title: string;
   seller: string;
 }
+
 const ViewListing: React.FC<ViewListingProps> = ({ dispatch, show, setShow, title, seller }) => {
   /* Popup to show that link was saved to clipboard */
   const [sharePopup, showShare] = useState(false);
@@ -45,26 +46,25 @@ const ViewListing: React.FC<ViewListingProps> = ({ dispatch, show, setShow, titl
     <div>
       <div
         style={{
-          position: 'fixed',
-          bottom: 0,
+          position: 'absolute',
+          top: 0,
           right: 0,
-          zIndex: 1000000
+          zIndex: 1000000,
         }}
       >
-        <Toast show={deleteToast} onClose={toggleDeleteToast} delay={3000} autohide className="notification">
+        <Toast show={deleteToast} onClose={toggleDeleteToast} className="notification">
           <Toast.Header>
             <strong className="mr-auto">Triton Exchange</strong>
           </Toast.Header>
           <Toast.Body>Your listing has been successfully deleted!</Toast.Body>
         </Toast>
 
-        <Toast show={saveToast} onClose={toggleSaveToast} delay={3000} autohide className="notification">
+        <Toast show={saveToast} onClose={toggleSaveToast} className="notification">
           <Toast.Header>
             <strong className="mr-auto">Triton Exchange</strong>
           </Toast.Header>
           <Toast.Body>This listing has been added to your saved collection!</Toast.Body>
         </Toast>
-
       </div>
       <SharePopup showPopup={sharePopup} setter={showShare} />
       <ContactSeller showPopup={contactSeller} setter={showContact} />
@@ -120,7 +120,7 @@ const ViewListing: React.FC<ViewListingProps> = ({ dispatch, show, setShow, titl
             <Row className={styles.pad} style={{ maxHeight: '100%' }}>
               {/* Comment section */}
               <Col xs={12} md={5}>
-                <CommentBox data={[]}></CommentBox>
+                <CommentBox data={[]} />
               </Col>
               {/* Middle and right section */}
               <EditListing
