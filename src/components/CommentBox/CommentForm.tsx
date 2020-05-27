@@ -26,7 +26,6 @@ const CommentForm: React.FC<CommentFormProps> = ({ dispatch, onCommentSubmit }) 
       return;
     }
     onCommentSubmit(textVal);
-    (event.target as HTMLInputElement).value = '';
     setTxt('');
   };
 

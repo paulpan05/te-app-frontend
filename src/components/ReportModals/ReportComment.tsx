@@ -9,13 +9,13 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ProfileImg from '../../assets/img/sarah.png';
 
-interface ReportListingProps {
+interface ReportCommentProps {
   dispatch?: Dispatch<any>;
   show: boolean;
   setShow: Function;
 }
 
-const ReportListing: React.FC<ReportListingProps> = ({ dispatch, show, setShow }) => {
+const ReportComment: React.FC<ReportCommentProps> = ({ dispatch, show, setShow }) => {
   const [reportReason, setReportReason] = useState('');
 
   const handleTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -52,15 +52,12 @@ const ReportListing: React.FC<ReportListingProps> = ({ dispatch, show, setShow }
               </Col>
             </Row>
             <Row className={styles.pad1}>
-              <div className={styles.reportTitle}>Report Listing</div>
-            </Row>
-            <Row className={styles.pad1}>
-              <div className={styles.listingTitle}>Flower Sweatshirt</div>
+              <div className={styles.reportTitle}>Report Comment</div>
             </Row>
             <Row className={styles.pad2}>
               <img src={ProfileImg} className={styles.sellerPicture} alt="seller" />
               <div className={styles.reportTitle} style={{ paddingLeft: '1rem' }}>
-                Seller: Sarah A.
+                Sarah A.
               </div>
             </Row>
             <Row className={styles.pad2}>
@@ -86,4 +83,4 @@ const ReportListing: React.FC<ReportListingProps> = ({ dispatch, show, setShow }
   );
 };
 
-export default ReportListing;
+export default ReportComment;

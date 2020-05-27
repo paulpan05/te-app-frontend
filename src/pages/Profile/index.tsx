@@ -15,7 +15,7 @@ import styles from './index.module.scss';
 import { authActions } from '../../redux/actions';
 import { rootState } from '../../redux/reducers';
 import Listing from '../../components/Listing/Listing';
-import ReportUser from '../../components/ReportModals/ReportUser';
+import { ReportUser } from '../../components/ReportModals';
 
 interface ProfileProps {
   dispatch: Dispatch<any>;

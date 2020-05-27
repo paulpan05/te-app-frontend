@@ -11,7 +11,7 @@ import { rootState } from '../../redux/reducers';
 import styles from './index.module.scss';
 import ProfileImg from '../../assets/img/sarah.png';
 import RateBuyer from '../RateBuyer';
-import ReportListing from '../ReportModals/ReportListing';
+import { ReportListing, ReportComment } from '../ReportModals';
 
 interface EditListingProps extends Omit<RouteProps, 'render'> {
   showDeleteSetter: React.Dispatch<any>;
@@ -100,7 +100,7 @@ const EditListing: React.FC<EditListingProps> = ({
     /* BUYER VIEW */
     <>
       {clickedOnProfile ? <Redirect to="/profile" /> : null}
-      <ReportListing show={showReportListing} setShow={() => setShowReportListing(true)} />
+      <ReportListing show={showReportListing} setShow={setShowReportListing} />
       <Col xs={12} md={2} className={styles.textAlign}>
         <div>
           {/* Button needs to have function to save item for later */}
