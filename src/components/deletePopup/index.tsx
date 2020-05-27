@@ -4,6 +4,7 @@ import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { RouteProps } from 'react-router-dom';
 import { Modal, Row, Card, Col } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 import { rootState } from '../../redux/reducers';
 import styles from './index.module.scss';
 
@@ -12,7 +13,6 @@ interface DeletePopupProps extends Omit<RouteProps, 'render'> {
   user: firebase.User | null | undefined;
   showPopup: boolean;
   setter: React.Dispatch<any>;
-  toast: React.Dispatch<any>;
   listingSetter: Function;
 }
 
@@ -20,7 +20,7 @@ const mapStateToProps = (state: rootState) => ({
   user: state.auth.user,
 });
 
-const DeletePopup: React.FC<DeletePopupProps> = ({ showPopup, setter, toast, listingSetter }) => {
+const DeletePopup: React.FC<DeletePopupProps> = ({ showPopup, setter, listingSetter }) => {
   return (
     <div>
       <div>
@@ -39,9 +39,9 @@ const DeletePopup: React.FC<DeletePopupProps> = ({ showPopup, setter, toast, lis
                       type="button"
                       className={styles.sellerButton}
                       onClick={() => {
-                        toast(true);
                         setter(false);
                         listingSetter(false);
+                        toast('This listing has been deleted!');
                       }}
                     >
                       Yes

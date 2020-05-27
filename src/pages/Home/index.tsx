@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
-import {Row, Col, Alert} from 'react-bootstrap';
+import { Row, Col, Alert } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -22,69 +22,69 @@ import TagButton from '../../components/Button';
 import Tags from '../../components/Tags';
 import Rate from '../../components/RateSeller';
 
+import { rootState } from '../../redux/reducers';
+import endpoint from '../../configs/endpoint';
+
 interface HomeProps {
   dispatch: Dispatch<any>;
+  user: firebase.User | null | undefined;
 }
+const mapStateToProps = (state: rootState) => ({
+  user: state.auth.user,
+});
 
-const Home: React.FC<HomeProps> = ({ dispatch }) => {
+const Home: React.FC<HomeProps> = ({ dispatch, user }) => {
   return (
-  <div>
-    <Rate></Rate>
-    <Row className="justify-content-md-center">
-      <Tags></Tags>
-    </Row>
-    <Row className="justify-content-md-center">
-    <form className="example">
-      <input className={styles.input} type="text" placeholder="Search.." name="search"></input>
-      <button className={styles.searchButton} type="submit"><FontAwesomeIcon icon={faSearch} size="lg" /></button>
-    </form>
-    </Row>
-    
-    {/* <Form>
+    <div>
+      <Rate />
+      <Row className="justify-content-md-center">
+        <Tags />
+      </Row>
+      <Row className="justify-content-md-center">
+        <form className="example">
+          <input className={styles.input} type="text" placeholder="Search.." name="search" />
+          <button className={styles.searchButton} type="submit">
+            <FontAwesomeIcon icon={faSearch} size="lg" />
+          </button>
+        </form>
+      </Row>
+
+      {/* <Form>
      <Form.Control className="mr-sm-2" type="text" placeholder="Search for an Item" />
      </Form> */}
-    
 
-    <Container fluid={true}>
-      <Row xs={1} md={2} lg={4}>
-        <Col><Listing></Listing></Col>
-        <Col><Listing></Listing></Col>
-        <Col><Listing></Listing></Col>
-        <Col><Listing></Listing></Col>
-      </Row>
-      <Row xs={1} md={2} lg={4}>
-        <Col><Listing></Listing></Col>
-        <Col><Listing></Listing></Col>
-        <Col><Listing></Listing></Col>
-        <Col><Listing></Listing></Col>
-      </Row>
-    </Container>
-
-    {/* <div className={styles.main}>
-      <Row>
-      <ul className={styles.cards}>
-        <li className={styles.cards_item}>
-          <Listing />
-        </li>
-        <li className={styles.cards_item}>
-          <Listing />
-        </li>
-        <li className={styles.cards_item}>
-          <Listing />
-        </li>
-        <li className={styles.cards_item}>
-          <Listing />
-        </li>
-        <li className={styles.cards_item}>
-          <Listing />
-        </li>
-        <li className={styles.cards_item}>
-          <Listing />
-        </li>
-      </ul>
-      </Row>
-    </div> */}
-  </div>
+      <Container fluid>
+        <Row xs={1} md={2} lg={4}>
+          <Col>
+            <Listing />
+          </Col>
+          <Col>
+            <Listing />
+          </Col>
+          <Col>
+            <Listing />
+          </Col>
+          <Col>
+            <Listing />
+          </Col>
+        </Row>
+        <Row xs={1} md={2} lg={4}>
+          <Col>
+            <Listing />
+          </Col>
+          <Col>
+            <Listing />
+          </Col>
+          <Col>
+            <Listing />
+          </Col>
+          <Col>
+            <Listing />
+          </Col>
+        </Row>
+      </Container>
+    </div>
   );
 };
-export default connect()(Home);
+
+export default connect(mapStateToProps)(Home);
