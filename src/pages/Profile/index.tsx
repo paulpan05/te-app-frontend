@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Container, Row, Col, FormLabel, FormText, FormFile, Image } from 'react-bootstrap';
-import endpoint from '../../configs/endpoint';
+import {getListings} from '../../api/index';
 // @ts-ignore
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
@@ -82,13 +82,14 @@ const Profile: React.FC<ProfileProps> = ({ user, dispatch }) => {
               />
             </Box>
           </div>
-          <Button variant="outline-primary" className={styles.btnblue}>
+          <Button variant="outline-primary" className={styles.btnblue}
+          onClick={() => setShow(true)}>
             Contact Seller
           </Button>{' '}
           <Button
             variant="outline-secondary"
             className={styles.btngrey}
-            onClick={() => setShow(true)}
+            onClick={()=> test}
           >
             Report Seller
           </Button>
