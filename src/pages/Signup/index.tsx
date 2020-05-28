@@ -15,7 +15,7 @@ import blankProfile from '../../assets/img/blank-profile-picture.png';
 import styles from './index.module.scss';
 import { rootState } from '../../redux/reducers';
 import { toast } from 'react-toastify';
-import endpoint from '../../configs/endpoint';
+import { userSignup } from '../../api/index';
 
 interface SignupProps {
   user: firebase.User | null | undefined;
@@ -37,7 +37,6 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
   const [zoom, setZoom] = useState(1);
   const [redirect, setRedirect] = useState(false);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState({ width: 0, height: 0, x: 0, y: 0 });
-  const [submitted, setSubmitted] = useState(false);
 
   const cropImage = async () => {
     const image = document.createElement('img');
@@ -164,22 +163,13 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
               // TODO put validate forms here
               
               // api request
-              user?.getIdToken().then((id) => {
-                console.log(`id: ${id}`);
-                fetch(`${endpoint}/listings`, {
-                  headers: {
-                    Authorization: `Bearer ${id}`,
-                    "Cache-Control": "no-cache" 
-                  }
-                }).then(res => {
-                  // successful post
-                  setRedirect(true);
-                  toast("You successfully created an account! Welcome to Triton Exchange");
-                }).catch(err => {
-                  console.log("error" + err)
-                  toast("There was an error while setting up your account! Try to edit your profile again");
-                })
-              })
+              const success = await userSignup(user);
+              if (success) {
+                setRedirect(true);
+                toast("You successfully created an account! Welcome to Triton Exchange");
+              } else {
+                toast("There was an error while setting up your account! Try to signup again");
+              }
             }}
           >
             Create Account

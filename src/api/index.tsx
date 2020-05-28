@@ -1,0 +1,137 @@
+import endpoint from '../configs/endpoint';
+import { v4 as uuidv4 } from 'uuid';
+
+const handleFetchNotOk = async (res: Response) => {
+  const jsonResult = await res.json();
+  if (!res.ok) {
+    throw Error(jsonResult);
+  }
+  return jsonResult;
+};
+
+const getUserProfile = async (user: firebase.User | null | undefined) => {
+  try {
+    const idToken = await user?.getIdToken();
+    const response = await fetch(`${endpoint}/users/profile?idToken=${idToken}`);
+    const result = await handleFetchNotOk(response);
+    console.log(result);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const userSignup = async (
+  user: firebase.User | null | undefined,
+  phone?: string,
+  customName?: string,
+  customEmail?: string,
+  customPicture?: string,
+) => {
+  try {
+    const idToken = await user?.getIdToken();
+    console.log(idToken);
+    const response = await fetch(`${endpoint}/users/signup?idToken=${idToken}`, {
+      method: 'POST',
+      body: JSON.stringify({
+        phone,
+        customName,
+        customEmail,
+        customPicture,
+      }),
+    });
+
+    const result = await handleFetchNotOk(response);
+    console.log(result);
+    return true;
+  } catch (err) {
+    console.log(err.message);
+    return false;
+  }
+};
+
+const createListing = async (user: firebase.User | null | undefined, setSuccess: Function, title: string, price: number, description: string, location: string, tags: string[], pictures: string[]) => {
+  /* TODO need to upload pictures to s3! */
+  /* TODO incorporate the uuid thing */
+  const listingId = uuidv4();
+  console.log(listingId);
+  try {
+    const idToken = await user?.getIdToken();
+    const response = await fetch(`${endpoint}/users/make-listing?idToken=${idToken}`, {
+      method: 'POST',
+      body: JSON.stringify({
+        listingId: listingId, /* TODO: is this ok? */
+        creationTime: Date.now(),
+        title: title,
+        price: price,
+        description: description,
+        location: location,
+        tags: tags,
+        pictures: pictures /* TODO */
+      })
+    });
+
+    //todo delete
+    const responseJSON = await response.json();
+    console.log(responseJSON);
+
+    const result = await handleFetchNotOk(response);
+    console.log(result);
+    setSuccess(true);
+  } catch (err) {
+    setSuccess(false);
+    console.log(err.message);
+  }
+}
+
+const updateProfile = async (user: firebase.User | null | undefined, phone: string, picture: string, name: string) => {
+  /* TODO need to upload pictures to s3! */
+  try {
+    const idToken = await user?.getIdToken();
+    const response = await fetch(`${endpoint}/users/update?idToken=${idToken}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        phone,
+        picture,
+        name,
+      })
+    });
+    
+    const result = await handleFetchNotOk(response);
+    console.log(result);
+    return true;
+  } catch (err) {
+    console.log(err.message);
+    return false;
+  }
+}
+
+/*
+const getProfileEditables = async (user: firebase.User | null | undefined, setSuccess: Function, setPhone: Function, setPicture: Function, setName: Function) => {
+  try {
+    const idToken = await user?.getIdToken();
+    const response = await fetch(`${endpoint}/users/profile?idToken=${idToken}`);
+    
+    const result = await handleFetchNotOk(response);
+    console.log(result);
+    setSuccess(true);
+  } catch (err) {
+    setSuccess(false);
+    console.log(err.message);
+  }
+}
+
+const getListingEditables = async (user: firebase.User | null | undefined, listingId: string, creationTime: number, setSuccess: Function, setTitle) => {
+  try {
+    const idToken = await user?.getIdToken();
+    const response = await fetch(`${endpoint}/users/profile?idToken=${idToken}`);
+    
+    const result = await handleFetchNotOk(response);
+    console.log(result);
+    setSuccess(true);
+  } catch (err) {
+    setSuccess(false);
+    console.log(err.message);
+  }
+}
+*/
+export { handleFetchNotOk, getUserProfile, createListing, updateProfile, userSignup };

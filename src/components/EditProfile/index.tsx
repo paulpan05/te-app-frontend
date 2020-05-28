@@ -191,26 +191,13 @@ const EditProfile: React.FC<EditProfileProps> = ({ user, dispatch, show, setShow
                 onClick={() => {
                   // validate forms
                   // API PUT to database
-                  user?.getIdToken().then((id) => {
-                    fetch(`${endpoint}/users/update`, {
-                      method: 'POST',
-                      headers: {
-                        Authorization: `Bearer ${id}`,
-                      },
-                      body: JSON.stringify({
-                        phone: "TODO",
-                        picture: "TODO",
-                        name: "TODO",
-                      })
-                    }).then(res => {
-                      // successful post
-                      setShow(false);
-                      toast("Your profile was edited successfully!");
-                    }).catch(err => {
-                      console.log("error" + err)
-                      toast("There was an error and your edited profile wasn't saved! Try to edit your profile again");
-                    })
-                  })
+                  const success = await updateProfile(user, "12345678", "picture goes here", "name goes here");
+                  if (success) {
+                    setShow(false);
+                    toast("Your profile was edited successfully!");
+                  } else {
+                    toast("There was an error and your edited profile wasn't saved! Try to edit your profile again");
+                  }
                 }}
               >
                 Update

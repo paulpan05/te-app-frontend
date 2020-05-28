@@ -20,7 +20,7 @@ import Tags from '../../components/Tags';
 import Rate from '../../components/RateSeller';
 
 import { rootState } from '../../redux/reducers';
-import endpoint from '../../configs/endpoint';
+import { getUserProfile, userSignup } from '../../api';
 
 interface HomeProps {
   dispatch: Dispatch<any>;
@@ -83,5 +83,35 @@ const Home: React.FC<HomeProps> = ({ dispatch, user }) => {
     </div>
   );
 };
+/*
+const Home: React.FC<HomeProps> = ({ dispatch, user }) => (
+  <>
+    <button
+      onClick={() => {
+        dispatch(authActions.signOut());
+      }}
+      type="submit"
+    >
+      Sign Out
+    </button>
+    <button
+      onClick={async () => {
+        await userSignup(user);
+      }}
+      type="submit"
+    >
+      Sample Fetch
+    </button>
+    <button
+      type="submit"
+      onClick={async () => {
+        await getUserProfile(user);
+      }}
+    >
+      Sample User
+    </button>
+  </>
+);
+*/
 
 export default connect(mapStateToProps)(Home);
