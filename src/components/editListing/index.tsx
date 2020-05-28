@@ -13,6 +13,7 @@ import styles from './index.module.scss';
 import ProfileImg from '../../assets/img/sarah.png';
 import RateBuyer from '../RateBuyer';
 import { ReportListing } from '../ReportModals';
+import { saveListing } from '../../api/index';
 
 interface EditListingProps extends Omit<RouteProps, 'render'> {
   showDeleteSetter: React.Dispatch<any>;
@@ -48,7 +49,17 @@ const EditListing: React.FC<EditListingProps> = ({
           {/* Button needs to have function to save item for later */}
           <button
             type="button"
-            onClick={() => toast('This listing has been added to your Saved collection!')}
+            onClick={async () => {
+              const success = await saveListing(user, 'test');
+              if (success) {
+                toast('This listing has been added to your Saved collection!');
+              } else {
+                toast(
+                  'There has been an error while adding this to your saved collection. Please try again.',
+                );
+              }
+            }}
+            // onClick={() => toast('This listing has been added to your Saved collection!')}
             className={styles.myButton}
           >
             <FontAwesomeIcon icon={faHeart} size="lg" className={styles.flag} />

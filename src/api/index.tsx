@@ -2,6 +2,7 @@ import endpoint from '../configs/endpoint';
 
 const handleFetchNotOk = async (res: Response) => {
   const jsonResult = await res.json();
+  console.log(jsonResult);
   if (!res.ok) {
     throw Error(jsonResult);
   }
@@ -45,4 +46,49 @@ const userSignup = async (
   }
 };
 
-export { handleFetchNotOk, getUserProfile, userSignup };
+const saveListing = async (user: firebase.User | null | undefined, listingId: string) => {
+  try {
+    const idToken = await user?.getIdToken();
+    console.log(idToken);
+    const response = await fetch(`${endpoint}/users/save-listing?idToken=${idToken}`, {
+      method: 'POST',
+      body: JSON.stringify({
+        listingId,
+        creationTime: Date.now(),
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const result = await handleFetchNotOk(response);
+    console.log(result);
+    return true;
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+};
+const viewListing = async (
+  user: firebase.User | null | undefined,
+  ids: [string],
+  creationTimes: [number],
+) => {
+  try {
+    const idToken = await user?.getIdToken();
+    console.log(idToken);
+    const response = await fetch(
+      `${endpoint}/listings/byIds?idToken=${idToken}&ids=${ids}&creationTimes=${creationTimes}`,
+      {
+        method: 'GET',
+      },
+    );
+    const result = await handleFetchNotOk(response);
+    console.log(result);
+    return result;
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+};
+
+export { handleFetchNotOk, getUserProfile, userSignup, saveListing, viewListing };

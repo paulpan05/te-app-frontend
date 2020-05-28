@@ -21,24 +21,37 @@ import EditListing from '../editListing';
 import ProfileImg from '../../assets/img/sarah.png';
 import CommentBox from '../CommentBox';
 import 'react-toastify/dist/ReactToastify.css';
+import { viewListing } from '../../api/index';
+import { rootState } from '../../redux/reducers';
 
 interface ViewListingProps {
-  dispatch: Dispatch<any>;
   show: boolean;
   setShow: Function;
   title: string;
   seller: string;
+  user: firebase.User | null | undefined;
 }
-
-const ViewListing: React.FC<ViewListingProps> = ({ dispatch, show, setShow, title, seller }) => {
+const mapStateToProps = (state: rootState) => ({
+  user: state.auth.user,
+});
+const ViewListing: React.FC<ViewListingProps> = ({ user, show, setShow, title, seller }) => {
   /* Popup to show that link was saved to clipboard */
   const [sharePopup, showShare] = useState(false);
   /* Popup to show the seller contact information */
   const [contactSeller, showContact] = useState(false);
   /* Popup to show listing deletion confirmation */
   const [showDelete, setshowDelete] = React.useState(false);
+  const loadListing = async () => {
+    const success = await viewListing(user, ['123456'], [2352325]);
+    console.log(success);
+    return success;
+  };
+  const result = loadListing;
   return (
     <div>
+      <button type="submit" onClick={() => loadListing}>
+        click me
+      </button>
       <SharePopup showPopup={sharePopup} setter={showShare} />
       <ContactSeller showPopup={contactSeller} setter={showContact} />
       <DeletePopup showPopup={showDelete} setter={setshowDelete} listingSetter={setShow} />
@@ -67,11 +80,12 @@ const ViewListing: React.FC<ViewListingProps> = ({ dispatch, show, setShow, titl
                 <p className={styles.listingInfo}>$15</p>
                 <p className={styles.listingInfo}>April 2020</p>
                 <p className={styles.listingInfo}>Price Center</p>
-                <p className={styles.listingSecondaryInfo}>
+                {/*  <p className={styles.listingSecondaryInfo}>
                   A French terry sweatshirt featuring an embroidered graphic of a yellow sunflower,
                   long dropped sleeves, a crew neck, and hood. Purchased from Forever 21 - Original
                   Price $35 - 60% cotton, 40% polyester - Machine wash cold
-                </p>
+  </p> */}
+                <p className={styles.listingSecondaryInfo}>a</p>
               </Col>
               {/* This is the exit button */}
               <Col xs={1}>
@@ -104,4 +118,4 @@ const ViewListing: React.FC<ViewListingProps> = ({ dispatch, show, setShow, titl
   );
 };
 
-export default connect()(ViewListing);
+export default connect(mapStateToProps)(ViewListing);
