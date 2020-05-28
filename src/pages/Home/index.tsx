@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { authActions } from '../../redux/actions';
 import { rootState } from '../../redux/reducers';
-import endpoint from '../../configs/endpoint';
-import { getUserProfile } from '../../api';
+import { getUserProfile, userSignup } from '../../api';
 
 interface HomeProps {
   dispatch: Dispatch<any>;
@@ -26,23 +25,8 @@ const Home: React.FC<HomeProps> = ({ dispatch, user }) => (
       Sign Out
     </button>
     <button
-      onClick={() => {
-        user?.getIdToken().then((result) => {
-          fetch(`${endpoint}/users/signup`, {
-            method: 'POST',
-            headers: {
-              Authorization: `Bearer ${result}`,
-            },
-            body: JSON.stringify({
-              phone: '12345678',
-              location: 'LA',
-            }),
-          })
-            .then((res) => res.json())
-            .then((res1) => {
-              console.log(res1);
-            });
-        });
+      onClick={async () => {
+        await userSignup(user);
       }}
       type="submit"
     >
