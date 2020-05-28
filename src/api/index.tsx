@@ -28,7 +28,8 @@ const userSignup = async (
 ) => {
   try {
     const idToken = await user?.getIdToken();
-    const response = await fetch(`${endpoint}/users/signup?idToken${idToken}`, {
+    console.log(idToken);
+    const response = await fetch(`${endpoint}/users/signup?idToken=${idToken}`, {
       method: 'POST',
       body: JSON.stringify({
         phone,
