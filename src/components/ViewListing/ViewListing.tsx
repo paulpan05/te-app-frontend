@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { Carousel } from 'react-bootstrap';
@@ -21,8 +21,9 @@ import EditListing from '../editListing';
 import ProfileImg from '../../assets/img/sarah.png';
 import CommentBox from '../CommentBox';
 import 'react-toastify/dist/ReactToastify.css';
-import { viewListing } from '../../api/index';
+import { fetchListing } from '../../api/index';
 import { rootState } from '../../redux/reducers';
+import endpoint from '../../configs/endpoint';
 
 interface ViewListingProps {
   show: boolean;
@@ -41,17 +42,14 @@ const ViewListing: React.FC<ViewListingProps> = ({ user, show, setShow, title, s
   const [contactSeller, showContact] = useState(false);
   /* Popup to show listing deletion confirmation */
   const [showDelete, setshowDelete] = React.useState(false);
-  const loadListing = async () => {
-    const success = await viewListing(user, ['123456'], [2352325]);
-    console.log(success);
-    return success;
-  };
-  const result = loadListing;
+  const [myData, setData] = useState<any>(null);
+
+  useEffect(() => {
+    fetchListing(user, setData, ['123456'], [2352325]);
+  }, [user]);
+
   return (
     <div>
-      <button type="submit" onClick={() => loadListing}>
-        click me
-      </button>
       <SharePopup showPopup={sharePopup} setter={showShare} />
       <ContactSeller showPopup={contactSeller} setter={showContact} />
       <DeletePopup showPopup={showDelete} setter={setshowDelete} listingSetter={setShow} />
@@ -73,19 +71,15 @@ const ViewListing: React.FC<ViewListingProps> = ({ user, show, setShow, title, s
                 </Carousel>
               </Col>
               <Col xs={12} md={7} className={styles.textAlign}>
-                <h1 className={styles.listingTitle}>Flower Sweatshirt</h1>
+                {myData && <h1 className={styles.listingTitle}>{myData[0].title}</h1>}
+                {myData && <p>{myData[0].location}</p>}
                 <p className={styles.listingHeader}>Price</p>
                 <p className={styles.listingHeader}>Posted</p>
                 <p className={styles.listingHeader}>Pickup</p>
-                <p className={styles.listingInfo}>$15</p>
-                <p className={styles.listingInfo}>April 2020</p>
-                <p className={styles.listingInfo}>Price Center</p>
-                {/*  <p className={styles.listingSecondaryInfo}>
-                  A French terry sweatshirt featuring an embroidered graphic of a yellow sunflower,
-                  long dropped sleeves, a crew neck, and hood. Purchased from Forever 21 - Original
-                  Price $35 - 60% cotton, 40% polyester - Machine wash cold
-  </p> */}
-                <p className={styles.listingSecondaryInfo}>a</p>
+                {myData && <p className={styles.listingInfo}>{myData[0].price}</p>}
+                {myData && <p className={styles.listingInfo}>{myData[0].creationTime}</p>}
+                {myData && <p className={styles.listingInfo}>{myData[0].location}</p>}
+                {myData && <p className={styles.listingSecondaryInfo}>{myData[0].description}</p>}
               </Col>
               {/* This is the exit button */}
               <Col xs={1}>

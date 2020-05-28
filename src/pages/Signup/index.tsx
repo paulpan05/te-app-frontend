@@ -73,8 +73,9 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
         <Col md="12">
           <h1>
             Welcome
-            {user && user.displayName ? user.displayName : ''}!
-          </h1>
+            {user && user.displayName ? user.displayName : ''}
+!
+</h1>
         </Col>
         <Col md="12">
           <h4>Finish Setting Up Your Account</h4>
