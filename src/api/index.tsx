@@ -34,7 +34,7 @@ const userSignup = async (
     const response = await fetch(`${endpoint}/users/signup?idToken=${idToken}`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         phone,
@@ -53,7 +53,15 @@ const userSignup = async (
   }
 };
 
-const createListing = async (user: firebase.User | null | undefined, title: string, price: number, description: string, location: string, tags: string[], pictures: string[]) => {
+const createListing = async (
+  user: firebase.User | null | undefined,
+  title: string,
+  price: number,
+  description: string,
+  location: string,
+  tags: string[],
+  pictures: string[],
+) => {
   /* TODO need to upload pictures to s3! */
   /* TODO incorporate the uuid thing */
   const listingId = uuidv4();
@@ -63,28 +71,19 @@ const createListing = async (user: firebase.User | null | undefined, title: stri
     const response = await fetch(`${endpoint}/users/make-listing?idToken=${idToken}`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        listingId: '123456',
-        creationTime: 2352325,
-        title: 'title',
-        price: 2,
-        description: '123123',
-        location: '213123',
-        tags: [],
-        pictures: []
-      })
-    });
-    /*
-        listingId, /* TODO: is this ok? 
+        listingId,
         creationTime: Date.now(),
         title,
         price,
         description,
         location,
         tags,
-        pictures /* TODO upload to s3 also */
+        pictures /* TODO upload to s3 also */,
+      }),
+    });
 
     const result = await handleFetchNotOk(response);
     console.log(result);
@@ -93,24 +92,70 @@ const createListing = async (user: firebase.User | null | undefined, title: stri
     console.log(err.message);
     return false;
   }
-}
+};
 
-const updateProfile = async (user: firebase.User | null | undefined, phone: string, picture: string, name: string) => {
+const updateListing = async (
+  user: firebase.User | null | undefined,
+  listingId: string,
+  creationTime: number,
+  title: string,
+  price: number,
+  description: string,
+  location: string,
+  tags: string[],
+  pictures: string[],
+) => {
+  /* TODO need to upload pictures to s3! */
+  /* TODO incorporate the uuid thing */
+  try {
+    const idToken = await user?.getIdToken();
+    const response = await fetch(`${endpoint}/listings/update?idToken=${idToken}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        listingId,
+        creationTime,
+        /* title, */
+        price,
+        description,
+        location,
+        tags,
+        pictures /* TODO upload to s3 also */,
+      }),
+    });
+
+    const result = await handleFetchNotOk(response);
+    console.log(result);
+    return true;
+  } catch (err) {
+    console.log(err.message);
+    return false;
+  }
+};
+
+const updateProfile = async (
+  user: firebase.User | null | undefined,
+  phone: string,
+  picture: string,
+  name: string,
+) => {
   /* TODO need to upload pictures to s3! */
   try {
     const idToken = await user?.getIdToken();
     const response = await fetch(`${endpoint}/users/update?idToken=${idToken}`, {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         phone,
         picture,
         name,
-      })
+      }),
     });
-    
+
     const result = await handleFetchNotOk(response);
     console.log(result);
     return true;
@@ -118,35 +163,6 @@ const updateProfile = async (user: firebase.User | null | undefined, phone: stri
     console.log(err.message);
     return false;
   }
-}
+};
 
-/*
-const getProfileEditables = async (user: firebase.User | null | undefined, setSuccess: Function, setPhone: Function, setPicture: Function, setName: Function) => {
-  try {
-    const idToken = await user?.getIdToken();
-    const response = await fetch(`${endpoint}/users/profile?idToken=${idToken}`);
-    
-    const result = await handleFetchNotOk(response);
-    console.log(result);
-    setSuccess(true);
-  } catch (err) {
-    setSuccess(false);
-    console.log(err.message);
-  }
-}
-
-const getListingEditables = async (user: firebase.User | null | undefined, listingId: string, creationTime: number, setSuccess: Function, setTitle) => {
-  try {
-    const idToken = await user?.getIdToken();
-    const response = await fetch(`${endpoint}/users/profile?idToken=${idToken}`);
-    
-    const result = await handleFetchNotOk(response);
-    console.log(result);
-    setSuccess(true);
-  } catch (err) {
-    setSuccess(false);
-    console.log(err.message);
-  }
-}
-*/
-export { handleFetchNotOk, getUserProfile, createListing, updateProfile, userSignup };
+export { handleFetchNotOk, getUserProfile, updateProfile, createListing, updateListing, userSignup };

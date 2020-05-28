@@ -24,34 +24,19 @@ interface EditProfileProps {
   dispatch: Dispatch<any>;
   show: boolean;
   setShow: Function;
+  phoneProp: string;
+  pictureProp: string;
+  nameProp: string;
 }
 
 const mapStateToProps = (state: rootState) => ({
   user: state.auth.user,
 });
 
-// TODO zoom it to minimum of width/height
-
-const EditProfile: React.FC<EditProfileProps> = ({ user, dispatch, show, setShow }) => {
-  const [profileImgSrc, setProfileImgSrc] = useState(
-    user && user.photoURL ? user.photoURL : blankProfile,
-  );
-  /* const profileImgFromDB = await ;//API call for user profile picture from our database
-  if (profileImgFromDB) {
-    profileImgSrc = profileImgSrcFromDB;
-  } */
-
-  const [name, setName] = useState(user && user.displayName ? user.displayName : '');
-  /* const nameInDB = await ;//API call for user name from our database
-  if (nameInDB) {
-    setName(nameInDB);
-  } */
-
-  const [altContact, setAltContact] = useState(user && user.phoneNumber ? user.phoneNumber : '');
-  /* const altContactInDB = await ;//API call for user name from our database
-  if (altContactInDB) {
-    setAltContact(altContactInDB);
-  } */
+const EditProfile: React.FC<EditProfileProps> = ({ user, dispatch, show, setShow, phoneProp, pictureProp, nameProp }) => {
+  const [profileImgSrc, setProfileImgSrc] = useState(pictureProp);
+  const [name, setName] = useState(nameProp);
+  const [phone, setPhone] = useState(phoneProp);
 
   const [cropping, setCropping] = useState(false);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -175,10 +160,10 @@ const EditProfile: React.FC<EditProfileProps> = ({ user, dispatch, show, setShow
                 lg={{ span: 4, offset: 1 }}
                 className="text-center"
               >
-                <Form.Label className={styles.text}>Alternate Contact (Phone)</Form.Label>
+                <Form.Label className={styles.text}>Phone Number</Form.Label>
                 <FormControl
                   placeholder="(123) 456-7890"
-                  defaultValue={altContact}
+                  defaultValue={phone}
                   className={styles.input}
                 />
                 <Form.Text>This will be displayed publicly, along with your UCSD email</Form.Text>

@@ -29,6 +29,7 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
   const [picture, setPicture] = useState(user && user.photoURL ? user.photoURL : 'ignore');
   const [phone, setPhone] = useState('');
   const [prefName, setPrefName] = useState('');
+  const [dispValidated, setDispValidated] = useState(false);
   const [validated, setValidated] = useState(true);
 
   const [cropping, setCropping] = useState(false);
@@ -78,7 +79,7 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
         </Col>
       </Row>
 
-      <Form validated={true}>
+      <Form validated={dispValidated}>
         <Form.Row className="justify-content-center">
           <Form.Group as={Col} sm="4" lg="3">
             {cropping ? (
@@ -188,7 +189,9 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
           <Button
             className={styles.button}
             onClick={async (e) => {
-              // validate the phone number
+              // validate the form
+              setDispValidated(true);
+              
               if (!validated) {
                 e.preventDefault();
                 e.stopPropagation();

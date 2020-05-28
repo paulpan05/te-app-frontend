@@ -18,20 +18,35 @@ import styles from './index.module.scss';
 import addPhoto from '../../assets/img/add-photo.png';
 import { rootState } from '../../redux/reducers';
 import { toast } from 'react-toastify';
-//import { createListing } from '../../api/index';
+import { updateListing } from '../../api/index';
 
 interface EditListingProps {
   user: firebase.User | null | undefined;
   show: boolean;
   setShow: Function;
+  listingId: string;
+  creationTime: number;
+  titleProp: string;
+  priceProp: number;
+  descriptionProp: string;
+  locationProp: string;
+  tagsProp: string[];
+  imagesProp: string[];
 }
 
 const mapStateToProps = (state: rootState) => ({
   user: state.auth.user,
 });
-
-const EditListing: React.FC<EditListingProps> = ({ user, show, setShow }) => {
-  const [images, setImages] = useState([addPhoto]);
+// TODO implemenet tags and upload images to s3. also make props required, not optional
+const EditListing: React.FC<EditListingProps> = ({ user, show, setShow, listingId, creationTime, titleProp, priceProp, descriptionProp, locationProp, tagsProp, imagesProp }) => {
+  const [images, setImages] = useState(imagesProp);
+  const [dispValidated, setDispValidated] = useState(false);
+  const validated = [true, true, true, true];
+  const which = { title: 0, price: 1, description: 2, location: 3 };
+  let titleInput;
+  let priceInput;
+  let descriptionInput;
+  let locationInput;
 
   /* const tags = await // API call to database for list of tags goes here */
   const tags = ['Furniture', 'Rides', 'Tutoring', 'Appliances', 'Technology'];
@@ -48,22 +63,39 @@ const EditListing: React.FC<EditListingProps> = ({ user, show, setShow }) => {
   return (
     <Modal show={show} onHide={() => setShow(false)} size="lg">
       <Card>
-        <Form className={styles.wrapper}>
+        <Form validated={dispValidated} className={styles.wrapper}>
           <Form.Row className="justify-content-center text-center">
-            <h1>Edit Listing</h1>
+            <h1>Create Listing</h1>
           </Form.Row>
 
           <Form.Row className="justify-content-center text-center">
             <Form.Group as={Col} md="6">
               <Form.Label className={styles.text}>What are you selling?</Form.Label>
-              <Form.Control placeholder="Title" className={styles.input} />
+              <Form.Control
+                placeholder="Title"
+                className={styles.input}
+                required
+                ref={ref => titleInput = ref}
+                onChange={(e) => {
+                  validated[which.title] = e.target.value.length > 0;
+                }}
+                defaultValue={titleProp}
+              />
 
               <Form.Label className={styles.text}>For how much?</Form.Label>
               <InputGroup>
                 <InputGroup.Text className={styles.inputPrepend}>$</InputGroup.Text>
                 <Form.Control
                   placeholder="Price in Dollars"
+                  type="number"
+                  min={0}
+                  required
                   className={styles.inputWithPrependAndPostpend}
+                  ref={ref => priceInput = ref}
+                  onChange={(e) => {
+                    validated[which.price] = e.target.value.length > 0;
+                  }}
+                  defaultValue={priceProp}
                 />
                 <InputGroup.Text className={styles.inputPostpend}>.00</InputGroup.Text>
               </InputGroup>
@@ -73,11 +105,26 @@ const EditListing: React.FC<EditListingProps> = ({ user, show, setShow }) => {
                 as="textarea"
                 rows={4}
                 placeholder="Description..."
+                required
                 className={styles.textarea}
+                ref={ref => descriptionInput = ref}
+                onChange={(e) => {
+                  validated[which.description] = e.target.value.length > 0;
+                }}
+                defaultValue={descriptionProp}
               />
 
               <Form.Label className={styles.text}>Pickup Location</Form.Label>
-              <Form.Control placeholder="Price Center" className={styles.input} />
+              <Form.Control
+                required
+                placeholder="Price Center"
+                className={styles.input}
+                ref={ref => locationInput = ref}
+                onChange={(e) => {
+                  validated[which.location] = e.target.value.length > 0;
+                }}
+                defaultValue={locationProp}
+              />
 
               <Form.Label className={styles.text}>Tags</Form.Label>
               <Form.Row className="justify-content-center text-center">
@@ -112,7 +159,12 @@ const EditListing: React.FC<EditListingProps> = ({ user, show, setShow }) => {
                           uploadingImgs.push(URL.createObjectURL(e.target.files[i]));
                         }
                       }
-                      setImages([...images, ...uploadingImgs]);
+                      // check if should remove the 'add photo' or not
+                      if (images[0] == addPhoto) {
+                        setImages(images.slice(1, images.length).concat(uploadingImgs));
+                      } else {
+                        setImages(images.concat(uploadingImgs));
+                      }
                     }
                   }}
                 />
@@ -125,28 +177,48 @@ const EditListing: React.FC<EditListingProps> = ({ user, show, setShow }) => {
               className={styles.button}
               onClick={async () => {
                 // validate form here
+                setDispValidated(true);
+                
+                let allValidated = true;
+                for (const i of validated) {
+                  allValidated = allValidated && i;
+                }
 
-                /*
-                const success = await createListing(
+                if (!allValidated) {
+                  console.log("not all forms are valid!");
+                  return;
+                }
+                console.log("all forms are valid!");
+
+                // extract values from form
+                const title = titleInput.value;
+                const price = parseInt(priceInput.value);
+                const description = descriptionInput.value;
+                const location = locationInput.value;
+                console.log(title, price, description, location);
+
+                const success = await updateListing(
                   user,
-                  'title goes here',
-                  2000,
-                  'description goes here',
-                  'location goes here',
+                  listingId,
+                  creationTime,
+                  title,
+                  price,
+                  description,
+                  location,
                   [],
                   ['pictures go here'],
                 );
                 if (success) {
                   setShow(false);
-                  toast('The listing was successfully updated!');
+                  toast('The listing was successfully edited!');
                 } else {
                   toast(
-                    'There was an error while updating your listing! Try to update it again or reload.',
+                    'There was an error while editing your listing! Try to create it again or reload.',
                   );
-                }*/
+                }
               }}
             >
-              Update
+              Create
             </Button>
 
             <Button className={styles.secondaryButton} onClick={() => setShow(false)}>
