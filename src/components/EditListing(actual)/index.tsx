@@ -18,9 +18,9 @@ import styles from './index.module.scss';
 import addPhoto from '../../assets/img/add-photo.png';
 import { rootState } from '../../redux/reducers';
 import { toast } from 'react-toastify';
-import { createListing } from '../../api/index';
+//import { createListing } from '../../api/index';
 
-interface CreateListingProps {
+interface EditListingProps {
   user: firebase.User | null | undefined;
   show: boolean;
   setShow: Function;
@@ -30,7 +30,7 @@ const mapStateToProps = (state: rootState) => ({
   user: state.auth.user,
 });
 
-const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) => {
+const EditListing: React.FC<EditListingProps> = ({ user, show, setShow }) => {
   const [images, setImages] = useState([addPhoto]);
 
   /* const tags = await // API call to database for list of tags goes here */
@@ -41,7 +41,7 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
       /* remove photos from memory here (this is the same as componentUnmount) */
       images.map((src, i) => {
         URL.revokeObjectURL(src);
-      })
+      });
     };
   });
 
@@ -50,7 +50,7 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
       <Card>
         <Form className={styles.wrapper}>
           <Form.Row className="justify-content-center text-center">
-            <h1>Create Listing</h1>
+            <h1>Edit Listing</h1>
           </Form.Row>
 
           <Form.Row className="justify-content-center text-center">
@@ -98,7 +98,7 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                   ))}
                 </Carousel>
                 <Form.File
-                  id="upload-images-create-listing"
+                  id="upload-images-edit-listing"
                   accept="image/*"
                   multiple
                   label="Browse..."
@@ -125,17 +125,28 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
               className={styles.button}
               onClick={async () => {
                 // validate form here
-                
-                const success = await createListing(user, "title goes here", 2000, "description goes here", "location goes here", [], ["pictures go here"]);
+
+                /*
+                const success = await createListing(
+                  user,
+                  'title goes here',
+                  2000,
+                  'description goes here',
+                  'location goes here',
+                  [],
+                  ['pictures go here'],
+                );
                 if (success) {
-                    setShow(false);
-                    toast("The listing was successfully created!");
+                  setShow(false);
+                  toast('The listing was successfully updated!');
                 } else {
-                    toast("There was an error while creating your listing! Try to create it again or reload.");
-                }
+                  toast(
+                    'There was an error while updating your listing! Try to update it again or reload.',
+                  );
+                }*/
               }}
             >
-              Create
+              Update
             </Button>
 
             <Button className={styles.secondaryButton} onClick={() => setShow(false)}>
@@ -148,4 +159,4 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
   );
 };
 
-export default connect(mapStateToProps)(CreateListing);
+export default connect(mapStateToProps)(EditListing);

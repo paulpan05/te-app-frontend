@@ -11,7 +11,6 @@ import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Cropper from 'react-easy-crop';
 import { Redirect } from 'react-router-dom';
-import blankProfile from '../../assets/img/blank-profile-picture.png';
 import styles from './index.module.scss';
 import { rootState } from '../../redux/reducers';
 import { toast } from 'react-toastify';
@@ -26,12 +25,12 @@ const mapStateToProps = (state: rootState) => ({
   user: state.auth.user,
 });
 
-// TODO zoom it to minimum of width/height
-
 const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
-  const [profileImgSrc, setProfileImgSrc] = useState(
-    user && user.photoURL ? user.photoURL : blankProfile, /* TODO if i do this, wont it push the user's google pic to the db? */
-  );
+  const [picture, setPicture] = useState(user && user.photoURL ? user.photoURL : 'ignore');
+  const [phone, setPhone] = useState('');
+  const [prefName, setPrefName] = useState('');
+  const [validated, setValidated] = useState(true);
+
   const [cropping, setCropping] = useState(false);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
@@ -40,13 +39,13 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
 
   const cropImage = async () => {
     const image = document.createElement('img');
-    image.src = profileImgSrc;
+    image.src = picture;
     const canvas = document.createElement('canvas');
     canvas.width = croppedAreaPixels.width;
     canvas.height = croppedAreaPixels.height;
 
     const ctx = canvas.getContext('2d');
-    if (!ctx) return profileImgSrc;
+    if (!ctx) return picture;
     ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(
@@ -72,24 +71,21 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
     <Container>
       <Row className="text-center">
         <Col md="12">
-          <h1>
-            Welcome
-            {user && user.displayName ? user.displayName : ''}!
-          </h1>
+          <h1>Welcome {user && user.displayName ? user.displayName : ''}!</h1>
         </Col>
         <Col md="12">
           <h4>Finish Setting Up Your Account</h4>
         </Col>
       </Row>
 
-      <Form>
+      <Form validated={true}>
         <Form.Row className="justify-content-center">
           <Form.Group as={Col} sm="4" lg="3">
             {cropping ? (
               <div className={styles.profilePictureWrapper}>
                 <div className={styles.cropContainer}>
                   <Cropper
-                    image={profileImgSrc}
+                    image={picture}
                     crop={crop}
                     zoom={zoom}
                     aspect={1}
@@ -102,11 +98,24 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
                     }}
                   />
                 </div>
+                <Form.Row className="justify-content-center">
+                  <Button
+                    className={styles.button}
+                    onClick={async () => {
+                      cropImage().then((croppedImg: any) => {
+                        setPicture(croppedImg);
+                        setCropping(false);
+                      });
+                    }}
+                  >
+                    Save
+                  </Button>
+                </Form.Row>
               </div>
             ) : (
               <Form.Label className={styles.profilePictureWrapper}>
                 <Image
-                  src={profileImgSrc}
+                  src={picture}
                   roundedCircle
                   className={styles.profilePicture}
                   draggable={false}
@@ -120,8 +129,8 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
                   hidden
                   onChange={(e: any) => {
                     if (e.target.files && e.target.files.length === 1 && e.target.files[0]) {
-                      URL.revokeObjectURL(profileImgSrc);
-                      setProfileImgSrc(URL.createObjectURL(e.target.files[0]));
+                      URL.revokeObjectURL(picture);
+                      setPicture(URL.createObjectURL(e.target.files[0]));
                       setCropping(true);
                     }
                   }}
@@ -134,7 +143,14 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
         <Form.Row className="justify-content-center">
           <Form.Group as={Col} md="4" lg="3" className="text-center">
             <Form.Label className={styles.text}>Preferred Name</Form.Label>
-            <Form.Control placeholder="Preferred Name" className={styles.input} />
+            <Form.Control
+              placeholder="Preferred Name"
+              type="text"
+              className={styles.input}
+              onChange={(e) => {
+                setPrefName(e.target.value);
+              }}
+            />
             <Form.Text>
               This will be displayed instead of your name (so include your last name)
             </Form.Text>
@@ -146,12 +162,24 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
             lg={{ span: 3, offset: 1 }}
             className="text-center"
           >
-            <Form.Label className={styles.text}>Alternate Contact (Phone)</Form.Label>
+            <Form.Label className={styles.text}>Phone Number</Form.Label>
             <FormControl
               placeholder="(123) 456-7890"
-              defaultValue={user && user.phoneNumber ? user.phoneNumber : ''}
+              defaultValue={phone}
               className={styles.input}
+              pattern="([ ]*\+?[ ]*[0-9]{0,4}[ ]*(-|\()?[0-9]{3}[ ]*(-|\))?[ ]*[0-9]{3}[ ]*-?[ ]*[0-9]{4}[ ]*)?"
+              onChange={(e) => {
+                if (e.target.validity.patternMismatch) {
+                  setValidated(false);
+                } else {
+                  setValidated(true);
+                  setPhone(e.target.value);
+                }
+              }}
             />
+            <Form.Control.Feedback type="invalid">
+              Please provide a valid phone number.
+            </Form.Control.Feedback>
             <Form.Text>This will be displayed publicly, along with your UCSD email</Form.Text>
           </Form.Group>
         </Form.Row>
@@ -159,16 +187,41 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
         <Form.Row className="justify-content-center">
           <Button
             className={styles.button}
-            onClick={async () => {
-              // TODO put validate forms here
-              
+            onClick={async (e) => {
+              // validate the phone number
+              if (!validated) {
+                e.preventDefault();
+                e.stopPropagation();
+                return;
+              }
+
+              // parse phone number in correct format
+              let parsedPhone;
+              if (phone.length > 0) {
+                parsedPhone = phone.replace(/( |-|\(|\))/g, '');
+                const ppLen = parsedPhone.length;
+                parsedPhone = [
+                  ppLen > 11 ? '+' : '',
+                  parsedPhone.slice(0, ppLen - 10),
+                  ppLen > 10 ? ' ' : '',
+                  '(',
+                  parsedPhone.slice(ppLen - 10, ppLen - 7),
+                  ') ',
+                  parsedPhone.slice(ppLen - 7, ppLen - 4),
+                  '-',
+                  parsedPhone.slice(ppLen - 4),
+                ].join('');
+              } else {
+                parsedPhone = undefined;
+              }
+
               // api request
-              const success = await userSignup(user, "81818181", "customName", "customEmail", "customPic");
+              const success = await userSignup(user, parsedPhone, prefName, undefined, 'customPic');
               if (success) {
                 setRedirect(true);
-                toast("You successfully created an account! Welcome to Triton Exchange");
+                toast('You successfully created an account! Welcome to Triton Exchange');
               } else {
-                toast("There was an error while setting up your account! Try to signup again");
+                toast('There was an error while setting up your account! Try to signup again');
               }
             }}
           >

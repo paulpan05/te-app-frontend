@@ -33,6 +33,9 @@ const userSignup = async (
     console.log(idToken);
     const response = await fetch(`${endpoint}/users/signup?idToken=${idToken}`, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({
         phone,
         customName,
@@ -59,6 +62,9 @@ const createListing = async (user: firebase.User | null | undefined, title: stri
     const idToken = await user?.getIdToken();
     const response = await fetch(`${endpoint}/users/make-listing?idToken=${idToken}`, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({
         listingId: '123456',
         creationTime: 2352325,
@@ -82,10 +88,10 @@ const createListing = async (user: firebase.User | null | undefined, title: stri
 
     const result = await handleFetchNotOk(response);
     console.log(result);
-    return true
+    return true;
   } catch (err) {
     console.log(err.message);
-    return false
+    return false;
   }
 }
 
@@ -95,6 +101,9 @@ const updateProfile = async (user: firebase.User | null | undefined, phone: stri
     const idToken = await user?.getIdToken();
     const response = await fetch(`${endpoint}/users/update?idToken=${idToken}`, {
       method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({
         phone,
         picture,
