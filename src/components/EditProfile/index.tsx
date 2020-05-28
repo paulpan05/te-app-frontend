@@ -18,6 +18,7 @@ import blankProfile from '../../assets/img/blank-profile-picture.png';
 import { rootState } from '../../redux/reducers';
 import { toast } from 'react-toastify';
 import endpoint from '../../configs/endpoint';
+import { updateProfile } from '../../api/index';
 
 interface EditProfileProps {
   user: firebase.User | null | undefined;
@@ -188,7 +189,7 @@ const EditProfile: React.FC<EditProfileProps> = ({ user, dispatch, show, setShow
             <Form.Row className="justify-content-center">
               <Button
                 className={styles.button}
-                onClick={() => {
+                onClick={async () => {
                   // validate forms
                   // API PUT to database
                   const success = await updateProfile(user, "12345678", "picture goes here", "name goes here");

@@ -159,7 +159,7 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
         <Form.Row className="justify-content-center">
           <Button
             className={styles.button}
-            onClick={() => {
+            onClick={async () => {
               // TODO put validate forms here
               
               // api request
