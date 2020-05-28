@@ -1,4 +1,5 @@
 import React, { useState, ChangeEvent } from 'react';
+import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
@@ -8,29 +9,40 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { toast } from 'react-toastify';
 import ProfileImg from '../../assets/img/sarah.png';
+import { rootState } from '../../redux/reducers';
 import styles from './index.module.scss';
+import { reportListing } from '../../api';
+import { v4 as uuidv4 } from 'uuid';
 
 interface ReportListingProps {
   dispatch?: Dispatch<any>;
+  user: firebase.User | null | undefined;
   show: boolean;
   setShow: Function;
 }
 
-const ReportListing: React.FC<ReportListingProps> = ({ dispatch, show, setShow }) => {
+const mapStateToProps = (state: rootState) => ({
+  user: state.auth.user,
+});
+
+const ReportListing: React.FC<ReportListingProps> = ({ dispatch, user, show, setShow }) => {
   const [reportReason, setReportReason] = useState('');
 
   const handleTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setReportReason(event.target.value);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const textVal = reportReason.trim();
     if (!textVal) {
       return;
     }
-    console.log(textVal);
-    toast('Report submitted. Thank you for keeping Triton Exchange safe and secure!');
     setShow(false);
+    const type = 'Listing Report';
+    const reportId = uuidv4();
+    const description = textVal;
+    await reportListing(user, type, reportId, description, 'listingid');
+    toast('Report submitted. Thank you for keeping Triton Exchange safe and secure!');
   };
 
   return (
@@ -81,4 +93,4 @@ const ReportListing: React.FC<ReportListingProps> = ({ dispatch, show, setShow }
   );
 };
 
-export default ReportListing;
+export default connect(mapStateToProps)(ReportListing);

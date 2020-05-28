@@ -34,7 +34,7 @@ const EditListing: React.FC<EditListingProps> = ({
   /* Temporary: using test boolean to either return guest or seller viewing a listing
   Need to implement it to check if the user matches the seller of the listing */
 
-  const [test, testSet] = useState(true);
+  const [test, testSet] = useState(false);
   const [markSold, markSoldSetter] = useState(false);
   const [showReportListing, setShowReportListing] = useState(false);
   const [clickedOnProfile, setClickedOnProfile] = useState(false);
