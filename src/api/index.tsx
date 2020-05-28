@@ -2,7 +2,7 @@ import endpoint from '../configs/endpoint';
 
 const handleFetchNotOk = async (res: Response) => {
   const jsonResult = await res.json();
-  console.log(jsonResult)
+  console.log(jsonResult);
   if (!res.ok) {
     throw Error(jsonResult);
   }
@@ -129,10 +129,31 @@ const reportComment = async (
       },
     });
     const result = await handleFetchNotOk(response);
-    console.log(result);
   } catch (err) {
     console.log(err);
   }
 };
 
-export { handleFetchNotOk, getUserProfile, userSignup, reportUser, reportListing, reportComment };
+const getReports = async (user: firebase.User | null | undefined) => {
+  try {
+    const idToken = await user?.getIdToken();
+    const response = await fetch(`${endpoint}/reports?idToken=${idToken}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const result = await handleFetchNotOk(response);
+    return result;
+  } catch (err) {
+    console.log(err);
+  }
+};
+export {
+  handleFetchNotOk,
+  getUserProfile,
+  userSignup,
+  reportUser,
+  reportListing,
+  reportComment,
+  getReports,
+};
