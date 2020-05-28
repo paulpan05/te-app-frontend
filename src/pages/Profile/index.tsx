@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Container, Row, Col, FormLabel, FormText, FormFile, Image } from 'react-bootstrap';
-
+import endpoint from '../../configs/endpoint';
 // @ts-ignore
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
@@ -14,7 +14,7 @@ import example from '../../assets/img/bag.jpg';
 import styles from './index.module.scss';
 import { authActions } from '../../redux/actions';
 import { rootState } from '../../redux/reducers';
-import Listing from '../../components/Listing/Listing';
+import Listing from '../../components/ProfileListing/Listing';
 import { ReportUser } from '../../components/ReportModals';
 
 interface ProfileProps {

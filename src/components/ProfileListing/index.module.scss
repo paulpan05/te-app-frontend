@@ -1,0 +1,165 @@
+/* parth's */
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap');
+.button {
+    background-color: #F2F2F2;
+    border: none;
+    color: black;
+    padding: 10px 20px 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 6px;
+    border-radius: 30px
+}
+.button:hover {
+    box-shadow: 0 3px 3px 0 rgba(0,0,0,0.24);
+}
+/* Font */
+@import url('https://fonts.googleapis.com/css?family=Quicksand:400,700');
+/* Design */
+.heart {
+    color: #17284A;
+}
+.heart:hover {
+    color: red !important;
+}
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html {
+  background-color: #ECF9FF;
+}
+body {
+  color: #272727;
+  font-family: 'Roboto', serif;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0;
+  padding: 1rem;
+}
+.main{
+  max-width: 1100px;
+  margin: 0 auto;
+}
+h1 {
+    font-size: 24px;
+    font-weight: 400;
+    text-align: center;
+}
+img {
+  height: auto;
+  max-width: 100%;
+  vertical-align: middle;
+}
+.btn {
+  color: black;
+  padding: 0.5rem;
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  //text-transform: uppercase;
+  border-radius: 5rem;
+  font-weight: 400;
+  display: block;
+  width: 100%;
+  cursor: pointer;
+  border: 1px solid black;
+  background: transparent;
+}
+.btn:hover {
+  background-color: #17284A;
+  color: white;
+  border: 1px solid white;
+}
+
+@media (min-width: 40rem) {
+  .cards_item {
+    width: 50%;
+  }
+}
+@media (min-width: 56rem) {
+  .cards_item {
+    width: 33.3333%;
+  }
+}
+.card {
+  background-color: white;
+  border-radius: 0.25rem;
+  box-shadow: 0 20px 40px -14px rgba(0, 0, 0, 0.25);
+  //display: flex;
+  //flex-direction: column;
+  overflow: hidden;
+  margin: 2%;
+}
+.card_content {
+  padding: 1rem;
+  background: white;
+  position: relative;
+  //background: linear-gradient(to bottom left, #17284A 40%, #F2F2F2 100%);
+}
+.card_title {
+  color: #17284A;
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 1px;
+  text-transform: capitalize;
+  margin-bottom: 0.15rem;
+  text-align: center;
+  font-family: 'Roboto', serif;
+}
+.card_text {
+  color: #17284A;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 0.15rem;
+  font-weight: 300;
+  text-align: center;
+}
+.like_btn {
+        position: absolute !important;
+        bottom: 0;
+        right: 0;
+        transform: translate(100%, 100%);
+        //-ms-transform: translate(-50%, -50%);
+        background: transparent;
+        color: white;
+        font-size: 16px;
+        padding: 1.0rem 1.2rem;
+        border: 2px solid black;
+        border-radius: 0.5rem 0 0 0;
+        cursor: pointer;
+}
+.cardImage:hover .like_ {
+    transform: translate(0,0);
+    transition: all 0.5s linear;
+}
+.cardImage {
+    position:relative !important;
+    overflow: hidden;
+}
+.cardImgTop {
+    transition: all 0.5s linear;
+}
+.cardImage:hover .cardImgTop {
+    transform: scale(1.05);
+}
+.filterContainer {
+    margin-top: 1rem;
+}
+
+p {
+  margin-bottom: 0.2rem;
+  text-align: center;
+}
+
+
+
+
+
+
+
+
+
