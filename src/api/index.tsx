@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const handleFetchNotOk = async (res: Response) => {
   const jsonResult = await res.json();
+  console.log(jsonResult);
   if (!res.ok) {
     throw Error(jsonResult);
   }
@@ -49,37 +50,42 @@ const userSignup = async (
   }
 };
 
-const createListing = async (user: firebase.User | null | undefined, setSuccess: Function, title: string, price: number, description: string, location: string, tags: string[], pictures: string[]) => {
+const createListing = async (user: firebase.User | null | undefined, title: string, price: number, description: string, location: string, tags: string[], pictures: string[]) => {
   /* TODO need to upload pictures to s3! */
   /* TODO incorporate the uuid thing */
   const listingId = uuidv4();
-  console.log(listingId);
+  console.log(`listingId: ${listingId}`);
   try {
     const idToken = await user?.getIdToken();
     const response = await fetch(`${endpoint}/users/make-listing?idToken=${idToken}`, {
       method: 'POST',
       body: JSON.stringify({
-        listingId: listingId, /* TODO: is this ok? */
-        creationTime: Date.now(),
-        title: title,
-        price: price,
-        description: description,
-        location: location,
-        tags: tags,
-        pictures: pictures /* TODO */
+        listingId: '123456',
+        creationTime: 2352325,
+        title: 'title',
+        price: 2,
+        description: '123123',
+        location: '213123',
+        tags: [],
+        pictures: []
       })
     });
-
-    //todo delete
-    const responseJSON = await response.json();
-    console.log(responseJSON);
+    /*
+        listingId, /* TODO: is this ok? 
+        creationTime: Date.now(),
+        title,
+        price,
+        description,
+        location,
+        tags,
+        pictures /* TODO upload to s3 also */
 
     const result = await handleFetchNotOk(response);
     console.log(result);
-    setSuccess(true);
+    return true
   } catch (err) {
-    setSuccess(false);
     console.log(err.message);
+    return false
   }
 }
 

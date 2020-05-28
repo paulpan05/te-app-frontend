@@ -30,7 +30,7 @@ const mapStateToProps = (state: rootState) => ({
 
 const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
   const [profileImgSrc, setProfileImgSrc] = useState(
-    user && user.photoURL ? user.photoURL : blankProfile,
+    user && user.photoURL ? user.photoURL : blankProfile, /* TODO if i do this, wont it push the user's google pic to the db? */
   );
   const [cropping, setCropping] = useState(false);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -163,7 +163,7 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
               // TODO put validate forms here
               
               // api request
-              const success = await userSignup(user);
+              const success = await userSignup(user, "81818181", "customName", "customEmail", "customPic");
               if (success) {
                 setRedirect(true);
                 toast("You successfully created an account! Welcome to Triton Exchange");

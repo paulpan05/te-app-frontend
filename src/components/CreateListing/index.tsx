@@ -18,7 +18,7 @@ import styles from './index.module.scss';
 import addPhoto from '../../assets/img/add-photo.png';
 import { rootState } from '../../redux/reducers';
 import { toast } from 'react-toastify';
-import endpoint from '../../configs/endpoint';
+import { createListing } from '../../api/index';
 
 interface CreateListingProps {
   user: firebase.User | null | undefined;
@@ -123,34 +123,16 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
           <Form.Row className="justify-content-center text-center">
             <Button
               className={styles.button}
-              onClick={() => {
+              onClick={async () => {
                 // validate form here
-
-                user?.getIdToken().then((id) => {
-                  fetch(`${endpoint}/users/make-listing`, {
-                    method: 'POST',
-                    headers: {
-                      Authorization: `Bearer ${id}`,
-                    },
-                    body: JSON.stringify({
-                      listingId: "empty",
-                      creationTime: Date.now(),
-                      title: "fake title",
-                      price: 2000,
-                      description: "fake description",
-                      location: "Price Center",
-                      tags: [],
-                      pictures: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fsports.yahoo.com%2Fin-pictures-stunning-landscape-photos-from-the-across-the-world-compete-in-agora-photo-contest-160050943.html&psig=AOvVaw3SkhxTNmN4x8nagOsQloef&ust=1590716361018000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCKD2va621ekCFQAAAAAdAAAAABAD"
-                    })
-                  }).then(res => res.json()).then((res) => {
-                    // successful post
+                
+                const success = await createListing(user, "title goes here", 2000, "description goes here", "location goes here", [], ["pictures go here"]);
+                if (success) {
                     setShow(false);
                     toast("The listing was successfully created!");
-                  }).catch(err => {
-                    console.log("error" + err)
+                } else {
                     toast("There was an error while creating your listing! Try to create it again.");
-                  })
-                })
+                }
               }}
             >
               Create
