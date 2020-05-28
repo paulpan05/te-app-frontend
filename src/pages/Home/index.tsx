@@ -24,6 +24,7 @@ import Rate from '../../components/RateSeller';
 
 import { rootState } from '../../redux/reducers';
 import endpoint from '../../configs/endpoint';
+import { getUserProfile } from '../../api';
 
 interface HomeProps {
   dispatch: Dispatch<any>;
