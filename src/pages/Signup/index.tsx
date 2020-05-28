@@ -102,7 +102,7 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
                   />
                 </div>
               </div>
-              ) : (
+            ) : (
               <Form.Label className={styles.profilePictureWrapper}>
                 <Image
                   src={profileImgSrc}
@@ -123,7 +123,8 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
                       setProfileImgSrc(URL.createObjectURL(e.target.files[0]));
                       setCropping(true);
                     }
-                  }} />
+                  }}
+                />
               </Form.Label>
             )}
           </Form.Group>

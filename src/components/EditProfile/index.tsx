@@ -9,14 +9,14 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { rootState } from '../../redux/reducers';
 import Cropper from 'react-easy-crop';
 import { Redirect } from 'react-router-dom';
-import blankProfile from '../../assets/img/blank-profile-picture.png';
-import styles from './index.module.scss';
 import Modal from 'react-bootstrap/Modal';
 import Card from 'react-bootstrap/Card';
 import Toast from 'react-bootstrap/Toast';
+import styles from './index.module.scss';
+import blankProfile from '../../assets/img/blank-profile-picture.png';
+import { rootState } from '../../redux/reducers';
 
 interface EditProfileProps {
   user: firebase.User | null | undefined;
@@ -26,25 +26,27 @@ interface EditProfileProps {
 }
 
 const mapStateToProps = (state: rootState) => ({
-  user: state.auth.user
+  user: state.auth.user,
 });
 
 // TODO zoom it to minimum of width/height
 
 const EditProfile: React.FC<EditProfileProps> = ({ user, dispatch, show, setShow }) => {
-  const [profileImgSrc, setProfileImgSrc] = useState((user && user.photoURL) ? user.photoURL : blankProfile);
+  const [profileImgSrc, setProfileImgSrc] = useState(
+    user && user.photoURL ? user.photoURL : blankProfile,
+  );
   /* const profileImgFromDB = await ;//API call for user profile picture from our database
   if (profileImgFromDB) {
     profileImgSrc = profileImgSrcFromDB;
   } */
 
-  const [name, setName] = useState((user && user.displayName) ? user.displayName : '');
+  const [name, setName] = useState(user && user.displayName ? user.displayName : '');
   /* const nameInDB = await ;//API call for user name from our database
   if (nameInDB) {
     setName(nameInDB);
   } */
 
-  const [altContact, setAltContact] = useState((user && user.phoneNumber) ? user.phoneNumber : '');
+  const [altContact, setAltContact] = useState(user && user.phoneNumber ? user.phoneNumber : '');
   /* const altContactInDB = await ;//API call for user name from our database
   if (altContactInDB) {
     setAltContact(altContactInDB);
@@ -86,8 +88,16 @@ const EditProfile: React.FC<EditProfileProps> = ({ user, dispatch, show, setShow
 
   return (
     <div>
-      <Toast onClose={() => setSubmitted(false)} show={submitted} delay={3000} autohide className={styles.notification}>
-        <Toast.Header><div className="mr-auto">Success!</div></Toast.Header>
+      <Toast
+        onClose={() => setSubmitted(false)}
+        show={submitted}
+        delay={3000}
+        autohide
+        className={styles.notification}
+      >
+        <Toast.Header>
+          <div className="mr-auto">Success!</div>
+        </Toast.Header>
         <Toast.Body>Your profile was edited successfully!</Toast.Body>
       </Toast>
 
@@ -101,10 +111,10 @@ const EditProfile: React.FC<EditProfileProps> = ({ user, dispatch, show, setShow
             <Form>
               <Form.Row className="justify-content-center">
                 <Form.Group as={Col} sm="6" lg="5">
-                  {(cropping) ? (
-                      <div className={styles.profilePictureWrapper}>
-                        <div className={styles.cropContainer}>
-                          <Cropper
+                  {cropping ? (
+                    <div className={styles.profilePictureWrapper}>
+                      <div className={styles.cropContainer}>
+                        <Cropper
                           image={profileImgSrc}
                           crop={crop}
                           zoom={zoom}
@@ -116,22 +126,23 @@ const EditProfile: React.FC<EditProfileProps> = ({ user, dispatch, show, setShow
                           onCropComplete={(croppedArea, croppedAreaPixels) => {
                             setCroppedAreaPixels(croppedAreaPixels);
                           }}
-                          />
-                        </div>
-                        <Form.Row className="justify-content-center">
-                          <Button
-                            className={styles.button}
-                            onClick={async () => {
-                              cropImage().then((croppedImg: any) => {
-                                setProfileImgSrc(croppedImg);
-                                setCropping(false);
-                              });
-                              }}>
-                            Save
-                          </Button>
-                        </Form.Row>
+                        />
                       </div>
-                    ) : (
+                      <Form.Row className="justify-content-center">
+                        <Button
+                          className={styles.button}
+                          onClick={async () => {
+                            cropImage().then((croppedImg: any) => {
+                              setProfileImgSrc(croppedImg);
+                              setCropping(false);
+                            });
+                          }}
+                        >
+                          Save
+                        </Button>
+                      </Form.Row>
+                    </div>
+                  ) : (
                     <Form.Label className={styles.profilePictureWrapper}>
                       <Image
                         src={profileImgSrc}
@@ -143,16 +154,17 @@ const EditProfile: React.FC<EditProfileProps> = ({ user, dispatch, show, setShow
                         Click to Select a Profile Picture
                       </Form.Text>
                       <Form.File
-                          id="upload-profile"
-                          accept="image/*"
-                          hidden
-                          onChange={(e: any) => {
+                        id="upload-profile"
+                        accept="image/*"
+                        hidden
+                        onChange={(e: any) => {
                           if (e.target.files && e.target.files.length === 1 && e.target.files[0]) {
                             URL.revokeObjectURL(profileImgSrc);
                             setProfileImgSrc(URL.createObjectURL(e.target.files[0]));
                             setCropping(true);
                           }
-                        }} />
+                        }}
+                      />
                     </Form.Label>
                   )}
                 </Form.Group>
@@ -161,7 +173,11 @@ const EditProfile: React.FC<EditProfileProps> = ({ user, dispatch, show, setShow
               <Form.Row className="justify-content-center">
                 <Form.Group as={Col} md="5" lg="4" className="text-center">
                   <Form.Label className={styles.text}>Preferred Name</Form.Label>
-                  <Form.Control placeholder="Preferred Name" className={styles.input} defaultValue={name} />
+                  <Form.Control
+                    placeholder="Preferred Name"
+                    className={styles.input}
+                    defaultValue={name}
+                  />
                   <Form.Text>
                     This will be displayed instead of your name (so include your last name)
                   </Form.Text>
@@ -184,7 +200,9 @@ const EditProfile: React.FC<EditProfileProps> = ({ user, dispatch, show, setShow
               </Form.Row>
 
               <Form.Row className="justify-content-center">
-                <Button className={styles.button} onClick={() => {
+                <Button
+                  className={styles.button}
+                  onClick={() => {
                     // validate forms
                     // API PUT to database
                     setSubmitted(true);
@@ -194,10 +212,7 @@ const EditProfile: React.FC<EditProfileProps> = ({ user, dispatch, show, setShow
                   Update
                 </Button>
 
-                <Button
-                  className={styles.secondaryButton}
-                  onClick={() => setShow(false)}
-                  >
+                <Button className={styles.secondaryButton} onClick={() => setShow(false)}>
                   Cancel
                 </Button>
               </Form.Row>

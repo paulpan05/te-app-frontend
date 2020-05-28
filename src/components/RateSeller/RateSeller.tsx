@@ -27,7 +27,8 @@ const RateSeller: React.FC<RateSellerProps> = ({ show, setShow, title, seller })
         <h3 className="mx-auto">{title}</h3>
         <img className={styles.profilePicture} src={ProfileImg} />
         <h4 className="mx-auto">
-          Sold By: {seller}
+          Sold By:
+          {seller}
         </h4>
         <Form.Row className="justify-content-center">
           <Form.Group as={Col} md="auto" className="text-center">
@@ -35,12 +36,12 @@ const RateSeller: React.FC<RateSellerProps> = ({ show, setShow, title, seller })
           </Form.Group>
         </Form.Row>
         <Rating
-                    name="simple-controlled"
-                    value={starValue}
-                    onChange={(event, newValue) => {
-                  setStarValue(newValue);
-                }}
-                  />
+          name="simple-controlled"
+          value={starValue}
+          onChange={(event, newValue) => {
+            setStarValue(newValue);
+          }}
+        />
         <Form.Row className="justify-content-center">
           <Button
             type="submit"

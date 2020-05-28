@@ -1,4 +1,4 @@
-import React, { useState, FormEvent, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { Dispatch } from 'redux';
 import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
@@ -10,13 +10,13 @@ import { toast } from 'react-toastify';
 import ProfileImg from '../../assets/img/sarah.png';
 import styles from './index.module.scss';
 
-interface ReportUserProps {
+interface ReportCommentProps {
   dispatch?: Dispatch<any>;
   show: boolean;
   setShow: Function;
 }
 
-const ReportUser: React.FC<ReportUserProps> = ({ dispatch, show, setShow }) => {
+const ReportComment: React.FC<ReportCommentProps> = ({ dispatch, show, setShow }) => {
   const [reportReason, setReportReason] = useState('');
 
   const handleTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -54,7 +54,7 @@ const ReportUser: React.FC<ReportUserProps> = ({ dispatch, show, setShow }) => {
               </Col>
             </Row>
             <Row className={styles.pad1}>
-              <div className={styles.reportTitle}>Report User</div>
+              <div className={styles.reportTitle}>Report Comment</div>
             </Row>
             <Row className={styles.pad2}>
               <img src={ProfileImg} className={styles.sellerPicture} alt="seller" />
@@ -78,4 +78,4 @@ const ReportUser: React.FC<ReportUserProps> = ({ dispatch, show, setShow }) => {
   );
 };
 
-export default ReportUser;
+export default ReportComment;

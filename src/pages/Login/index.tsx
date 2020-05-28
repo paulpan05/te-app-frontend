@@ -23,7 +23,7 @@ const Login: React.FC<LoginProps> = ({ dispatch, user, loggingIn }) =>
     <Redirect to="/signup" />
   ) : (
     <div className={styles.background}>
-        <div className={styles.authContainer}>
+      <div className={styles.authContainer}>
         <div>
           <img src={AppLogo} alt="Full App Logo" draggable={false} />
           <button
