@@ -14,6 +14,8 @@ import { Redirect } from 'react-router-dom';
 import blankProfile from '../../assets/img/blank-profile-picture.png';
 import styles from './index.module.scss';
 import { rootState } from '../../redux/reducers';
+import { toast } from 'react-toastify';
+import endpoint from '../../configs/endpoint';
 
 interface SignupProps {
   user: firebase.User | null | undefined;
@@ -102,7 +104,7 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
                   />
                 </div>
               </div>
-              ) : (
+            ) : (
               <Form.Label className={styles.profilePictureWrapper}>
                 <Image
                   src={profileImgSrc}
@@ -123,7 +125,8 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
                       setProfileImgSrc(URL.createObjectURL(e.target.files[0]));
                       setCropping(true);
                     }
-                  }} />
+                  }}
+                />
               </Form.Label>
             )}
           </Form.Group>
@@ -156,12 +159,27 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
 
         <Form.Row className="justify-content-center">
           <Button
-            type="submit"
             className={styles.button}
             onClick={() => {
-              setRedirect(true);
-              // validate forms
-              // API PUT to database
+              // TODO put validate forms here
+              
+              // api request
+              user?.getIdToken().then((id) => {
+                console.log(`id: ${id}`);
+                fetch(`${endpoint}/listings`, {
+                  headers: {
+                    Authorization: `Bearer ${id}`,
+                    "Cache-Control": "no-cache" 
+                  }
+                }).then(res => {
+                  // successful post
+                  setRedirect(true);
+                  toast("You successfully created an account! Welcome to Triton Exchange");
+                }).catch(err => {
+                  console.log("error" + err)
+                  toast("There was an error while setting up your account! Try to edit your profile again");
+                })
+              })
             }}
           >
             Create Account

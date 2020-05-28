@@ -1,9 +1,5 @@
 import ReportUser from './ReportUser';
 import ReportListing from './ReportListing';
+import ReportComment from './ReportComment';
 
-const ReportModals = {
-  ReportUser,
-  ReportListing,
-};
-
-export default ReportModals;
+export { ReportUser, ReportListing, ReportComment };

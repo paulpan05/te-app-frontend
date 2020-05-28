@@ -5,12 +5,12 @@ import { Carousel } from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Toast from 'react-bootstrap/Toast';
 // import StarRatings from 'react-star-ratings';
 import Card from 'react-bootstrap/Card';
 import { Redirect } from 'react-router-dom';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ToastContainer, toast } from 'react-toastify';
 import styles from './listing.module.scss';
 import FlowerImg from '../../assets/img/books.jpg';
 import { authActions } from '../../redux/actions';
@@ -20,6 +20,7 @@ import ContactSeller from '../contactSeller';
 import EditListing from '../editListing';
 import ProfileImg from '../../assets/img/sarah.png';
 import CommentBox from '../CommentBox';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface ViewListingProps {
   dispatch: Dispatch<any>;
@@ -28,6 +29,7 @@ interface ViewListingProps {
   title: string;
   seller: string;
 }
+
 const ViewListing: React.FC<ViewListingProps> = ({ dispatch, show, setShow, title, seller }) => {
   /* Popup to show that link was saved to clipboard */
   const [sharePopup, showShare] = useState(false);
@@ -35,45 +37,11 @@ const ViewListing: React.FC<ViewListingProps> = ({ dispatch, show, setShow, titl
   const [contactSeller, showContact] = useState(false);
   /* Popup to show listing deletion confirmation */
   const [showDelete, setshowDelete] = React.useState(false);
-  /* Toast to show listing was deleted */
-  const [deleteToast, deleteToastSetter] = useState(false);
-  /* Toast to show the listing was saved */
-  const [saveToast, saveToastSetter] = useState(false);
-  const toggleSaveToast = () => saveToastSetter(!saveToast);
-  const toggleDeleteToast = () => deleteToastSetter(!deleteToast);
   return (
     <div>
-      <div
-        style={{
-          position: 'fixed',
-          bottom: 0,
-          right: 0,
-          zIndex: 1000000
-        }}
-      >
-        <Toast show={deleteToast} onClose={toggleDeleteToast} delay={3000} autohide className="notification">
-          <Toast.Header>
-            <strong className="mr-auto">Triton Exchange</strong>
-          </Toast.Header>
-          <Toast.Body>Your listing has been successfully deleted!</Toast.Body>
-        </Toast>
-
-        <Toast show={saveToast} onClose={toggleSaveToast} delay={3000} autohide className="notification">
-          <Toast.Header>
-            <strong className="mr-auto">Triton Exchange</strong>
-          </Toast.Header>
-          <Toast.Body>This listing has been added to your saved collection!</Toast.Body>
-        </Toast>
-
-      </div>
       <SharePopup showPopup={sharePopup} setter={showShare} />
       <ContactSeller showPopup={contactSeller} setter={showContact} />
-      <DeletePopup
-        showPopup={showDelete}
-        setter={setshowDelete}
-        toast={deleteToastSetter}
-        listingSetter={setShow}
-      />
+      <DeletePopup showPopup={showDelete} setter={setshowDelete} listingSetter={setShow} />
       <Modal show={show} onHide={() => setShow(false)} size="xl">
         <Row style={{ maxHeight: '100%' }} className="no-gutters">
           <Card className={styles.myCard}>
@@ -120,14 +88,13 @@ const ViewListing: React.FC<ViewListingProps> = ({ dispatch, show, setShow, titl
             <Row className={styles.pad} style={{ maxHeight: '100%' }}>
               {/* Comment section */}
               <Col xs={12} md={5}>
-                <CommentBox data={[]}></CommentBox>
+                <CommentBox data={[]} />
               </Col>
               {/* Middle and right section */}
               <EditListing
                 showDeleteSetter={setshowDelete}
                 sharePopupSetter={showShare}
                 contactSellerSetter={showContact}
-                savedSetter={saveToastSetter}
               />
             </Row>
           </Card>
@@ -136,36 +103,5 @@ const ViewListing: React.FC<ViewListingProps> = ({ dispatch, show, setShow, titl
     </div>
   );
 };
-export default connect()(ViewListing);
 
-{
-  /* <h1 className="mx-auto text-center">Recent Purchase!</h1>
-<Form className="text-center">
-  <h3 className="mx-auto">{title}</h3>
-  <img className={styles.profilePicture} src={ProfileImg}></img>
-  <h4 className="mx-auto">Sold By: {seller}</h4>
-  <Form.Row className="justify-content-center">
-    <Form.Group as={Col} md="auto" className="text-center">
-      <Form.Label className={styles.text}>Rate Seller</Form.Label>
-    </Form.Group>
-  </Form.Row>
-  <StarRatings
-  rating={2.403}
-  starRatedColor="#FDCC0D"
-  starDimension="40px"
-  starSpacing="15px"
-  className={styles.rating}
-  />
-  <Form.Row className="justify-content-center">
-    <Form.Group as={Col} md="6" className="text-center">
-      <Form.Label className={`${styles.text} ${styles.comments}`}>Comments?</Form.Label>
-      <Form.Control as="textarea" rows={4} placeholder="Comment..." className={styles.textarea} />
-    </Form.Group>
-  </Form.Row>
-  <Form.Row className="justify-content-center">
-    <Button type="submit" className={styles.button} onClick={() => {
-      // POST goes here
-    }}>Mark as Sold</Button>
-  </Form.Row>
-</Form> */
-}
+export default connect()(ViewListing);

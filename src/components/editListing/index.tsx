@@ -2,23 +2,22 @@
 import React, { useState } from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { RouteProps } from 'react-router-dom';
+import { RouteProps, Redirect } from 'react-router-dom';
 import { Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFlag, faHeart, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 import { faLink } from '@fortawesome/free-solid-svg-icons';
+import { toast } from 'react-toastify';
 import { rootState } from '../../redux/reducers';
 import styles from './index.module.scss';
 import ProfileImg from '../../assets/img/sarah.png';
 import RateBuyer from '../RateBuyer';
-import ReportListing from '../ReportModals/ReportListing';
-import { Redirect } from 'react-router-dom';
+import { ReportListing } from '../ReportModals';
 
 interface EditListingProps extends Omit<RouteProps, 'render'> {
   showDeleteSetter: React.Dispatch<any>;
   sharePopupSetter: React.Dispatch<any>;
   contactSellerSetter: React.Dispatch<any>;
-  savedSetter: React.Dispatch<any>;
   user: firebase.User | null | undefined;
 }
 
@@ -31,7 +30,6 @@ const EditListing: React.FC<EditListingProps> = ({
   showDeleteSetter,
   sharePopupSetter,
   contactSellerSetter,
-  savedSetter,
 }) => {
   /* Temporary: using test boolean to either return guest or seller viewing a listing
   Need to implement it to check if the user matches the seller of the listing */
@@ -40,6 +38,7 @@ const EditListing: React.FC<EditListingProps> = ({
   const [markSold, markSoldSetter] = useState(false);
   const [showReportListing, setShowReportListing] = useState(false);
   const [clickedOnProfile, setClickedOnProfile] = useState(false);
+
   return test ? (
     /* SELLER VIEW */
     <>
@@ -49,8 +48,7 @@ const EditListing: React.FC<EditListingProps> = ({
           {/* Button needs to have function to save item for later */}
           <button
             type="button"
-            onClick={() => savedSetter(true)}
-            onKeyDown={() => savedSetter(true)}
+            onClick={() => toast('This listing has been added to your Saved collection!')}
             className={styles.myButton}
           >
             <FontAwesomeIcon icon={faHeart} size="lg" className={styles.flag} />
@@ -58,19 +56,13 @@ const EditListing: React.FC<EditListingProps> = ({
           {/* Button needs to have function to copy link to clipboard */}
           <button
             type="button"
-            onClick={() => sharePopupSetter(true)}
-            onKeyDown={() => sharePopupSetter(true)}
+            onClick={() => toast('This listing has been saved to your clipboard!')}
             className={styles.myButton}
           >
             <FontAwesomeIcon icon={faLink} size="lg" className={styles.flag} />
           </button>
           {/* Button needs to have function to delete listing */}
-          <button
-            type="button"
-            onClick={() => showDeleteSetter(true)}
-            onKeyDown={() => showDeleteSetter(true)}
-            className={styles.myButton}
-          >
+          <button type="button" onClick={() => showDeleteSetter(true)} className={styles.myButton}>
             <FontAwesomeIcon icon={faTrashAlt} size="lg" className={styles.flag} />
           </button>
         </div>
@@ -100,15 +92,14 @@ const EditListing: React.FC<EditListingProps> = ({
   ) : (
     /* BUYER VIEW */
     <>
-      {(clickedOnProfile) ? <Redirect to="/profile" /> : null}
-      <ReportListing show={showReportListing} setShow={() => setShowReportListing(true)}/>
+      {clickedOnProfile ? <Redirect to="/profile" /> : null}
+      <ReportListing show={showReportListing} setShow={setShowReportListing} />
       <Col xs={12} md={2} className={styles.textAlign}>
         <div>
           {/* Button needs to have function to save item for later */}
           <button
             type="button"
-            onClick={() => savedSetter(true)}
-            onKeyDown={() => savedSetter(true)}
+            onClick={() => toast('This listing has been added to your Saved collection!')}
             className={styles.myButton}
           >
             <FontAwesomeIcon icon={faHeart} size="lg" className={styles.flag} />
@@ -116,8 +107,7 @@ const EditListing: React.FC<EditListingProps> = ({
           {/* Button needs to have function to copy item link to clipboard */}
           <button
             type="button"
-            onClick={() => sharePopupSetter(true)}
-            onKeyDown={() => sharePopupSetter(true)}
+            onClick={() => toast('This listing has been saved to your clipboard!')}
             className={styles.myButton}
           >
             <FontAwesomeIcon icon={faLink} size="lg" className={styles.flag} />
