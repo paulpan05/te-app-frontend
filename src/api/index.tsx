@@ -33,12 +33,9 @@ const userSignup = async (
     console.log(idToken);
     const response = await fetch(`${endpoint}/users/signup?idToken=${idToken}`, {
       method: 'POST',
-<<<<<<< HEAD
       headers: {
         'Content-Type': 'application/json',
       },
-=======
->>>>>>> 2a99106b76f2cb7e55fd09525df9b4cbefe416e6
       body: JSON.stringify({
         phone,
         customName,
@@ -46,7 +43,6 @@ const userSignup = async (
         customPicture,
       }),
     });
-<<<<<<< HEAD
 
     const result = await handleFetchNotOk(response);
     console.log(result);
@@ -170,13 +166,3 @@ const updateProfile = async (
 };
 
 export { handleFetchNotOk, getUserProfile, updateProfile, createListing, updateListing, userSignup };
-=======
-    const result = await handleFetchNotOk(response);
-    console.log(result);
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-export { handleFetchNotOk, getUserProfile, userSignup };
->>>>>>> 2a99106b76f2cb7e55fd09525df9b4cbefe416e6
