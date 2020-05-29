@@ -13,10 +13,10 @@ import Cropper from 'react-easy-crop';
 import { Redirect } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
 import Card from 'react-bootstrap/Card';
+import { toast } from 'react-toastify';
 import styles from './index.module.scss';
 import blankProfile from '../../assets/img/blank-profile-picture.png';
 import { rootState } from '../../redux/reducers';
-import { toast } from 'react-toastify';
 import { updateProfile } from '../../api/index';
 
 interface EditProfileProps {
