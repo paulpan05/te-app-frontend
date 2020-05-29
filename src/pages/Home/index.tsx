@@ -111,7 +111,7 @@ const Home: React.FC<HomeProps> = ({ dispatch, user }) => {
         <Tags/>
       </Row>
       <Row className="justify-content-md-center">
-        <InputGroup>
+        <InputGroup className={styles.inputGroup}>
           <FormControl className={styles.input} type="text" placeholder="Search.." onChange={(e) => {searchInput = e.target.value}} name="search" />
           <button className={styles.searchButton}  onClick={async () => { if(searchInput.length != 0) {await getListingsBySearch(user, searchInput, setSearchListings); setListings(null); rowArray = new Array(); } else {await getListings(user, setListings); setSearchListings(null); rowArray = new Array();}}}>
             <FontAwesomeIcon icon={faSearch} size="lg" />

@@ -45,7 +45,10 @@ const Saved: React.FC<SavedProps> = ({ dispatch, user }) => {
         ids.push(listing[0]);
         creations.push(listing[1]);
     });
-    const savedListings = await fetchIdListings(user, setListings, ids, creations);
+    if(ids.length != 0) {
+      const savedListings = await fetchIdListings(user, setListings, ids, creations);
+    }
+   
       
    };
 
@@ -57,6 +60,7 @@ const Saved: React.FC<SavedProps> = ({ dispatch, user }) => {
   return (
   <div>
     <h1 className={styles.title}>Saved Listings</h1>
+    {listings == null && <h2>No Saved Listings!</h2>}
     {listings && listings.map((aListing, index) => {
       if(index % 4 === 0 && index + 3 < listings.length) {
         rowArray.push (<Row xs={1} md={2} lg={4}>
