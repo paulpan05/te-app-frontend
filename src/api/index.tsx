@@ -10,12 +10,19 @@ const handleFetchNotOk = async (res: Response) => {
   return jsonResult;
 };
 
-const getUserProfile = async (user: firebase.User | null | undefined) => {
+const getUserProfile = async (user: firebase.User | null | undefined, targetUserId?:string) => {
   try {
     const idToken = await user?.getIdToken();
-    const response = await fetch(`${endpoint}/users/profile?idToken=${idToken}`);
+    let response;
+    if(targetUserId!==undefined){
+      response = await fetch(`${endpoint}/users/profile?idToken=${idToken}&targetUserId=${targetUserId}`);
+    }
+    else{
+      response = await fetch(`${endpoint}/users/profile?idToken=${idToken}`);
+    }
     const result = await handleFetchNotOk(response);
     console.log(result);
+    return result
   } catch (err) {
     console.log(err);
   }
@@ -76,9 +83,10 @@ const reportUser = async (
       },
     });
     const result = await handleFetchNotOk(response);
-    console.log(result);
+    return true;
   } catch (err) {
     console.log(err);
+    return false;
   }
 };
 
@@ -105,9 +113,10 @@ const reportListing = async (
       },
     });
     const result = await handleFetchNotOk(response);
-    console.log(result);
+    return true;
   } catch (err) {
     console.log(err);
+    return false;
   }
 };
 
@@ -136,8 +145,10 @@ const reportComment = async (
       },
     });
     const result = await handleFetchNotOk(response);
+    return true;
   } catch (err) {
     console.log(err);
+    return false;
   }
 };
 

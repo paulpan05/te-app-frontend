@@ -41,8 +41,10 @@ const ReportListing: React.FC<ReportListingProps> = ({ dispatch, user, show, set
     const type = 'Listing Report';
     const reportId = uuidv4();
     const description = textVal;
-    await reportListing(user, type, reportId, description, 'listingid');
-    toast('Report submitted. Thank you for keeping Triton Exchange safe and secure!');
+    const success = await reportListing(user, type, reportId, description, 'listingid');
+    success
+      ? toast('Report submitted. Thank you for keeping Triton Exchange safe and secure!')
+      : toast('Error submitting report. Please try again!');
   };
 
   return (

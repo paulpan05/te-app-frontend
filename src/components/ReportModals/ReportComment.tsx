@@ -41,8 +41,17 @@ const ReportComment: React.FC<ReportCommentProps> = ({ dispatch, user, show, set
     const type = 'Comment Report';
     const reportId = uuidv4();
     const description = textVal;
-    await reportComment(user, type, reportId, description, 'listingid', 'commentid');
-    toast('Report submitted. Thank you for keeping Triton Exchange safe and secure!');
+    const success = await reportComment(
+      user,
+      type,
+      reportId,
+      description,
+      'listingid',
+      'commentid',
+    );
+    success
+      ? toast('Report submitted. Thank you for keeping Triton Exchange safe and secure!')
+      : toast('Error submitting report. Please try again!');
   };
 
   return (

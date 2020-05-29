@@ -32,9 +32,11 @@ interface ViewListingProps {
   seller: string;
   user: firebase.User | null | undefined;
 }
+
 const mapStateToProps = (state: rootState) => ({
   user: state.auth.user,
 });
+
 const ViewListing: React.FC<ViewListingProps> = ({ user, show, setShow, title, seller }) => {
   /* Popup to show that link was saved to clipboard */
   const [sharePopup, showShare] = useState(false);
@@ -96,7 +98,7 @@ const ViewListing: React.FC<ViewListingProps> = ({ user, show, setShow, title, s
             <Row className={styles.pad} style={{ maxHeight: '100%' }}>
               {/* Comment section */}
               <Col xs={12} md={5}>
-                <CommentBox data={[]} />
+                {myData && <CommentBox user={user} commentsData={myData[0].comments} />}
               </Col>
               {/* Middle and right section */}
               {/* {myData && <p>{myData[0].userId}</p>} */}

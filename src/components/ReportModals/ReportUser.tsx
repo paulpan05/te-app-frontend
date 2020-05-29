@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { toast } from 'react-toastify';
 import ProfileImg from '../../assets/img/sarah.png';
 import styles from './index.module.scss';
-import {reportUser} from '../../api';
+import { reportUser } from '../../api';
 import { rootState } from '../../redux/reducers';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -41,8 +41,10 @@ const ReportUser: React.FC<ReportUserProps> = ({ dispatch, user, show, setShow }
     const type = 'User Report';
     const reportId = uuidv4();
     const description = textVal;
-    await reportUser(user, type, reportId, description, 'sarah');
-    toast('Report submitted. Thank you for keeping Triton Exchange safe and secure!');
+    const success = await reportUser(user, type, reportId, description, 'sarah');
+    success
+      ? toast('Report submitted. Thank you for keeping Triton Exchange safe and secure!')
+      : toast('Error submitting report. Please try again!');
   };
 
   return (
