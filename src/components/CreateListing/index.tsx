@@ -19,6 +19,8 @@ import addPhoto from '../../assets/img/add-photo.png';
 import { rootState } from '../../redux/reducers';
 import { toast } from 'react-toastify';
 import { createListing } from '../../api/index';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 
 interface CreateListingProps {
   user: firebase.User | null | undefined;
@@ -43,15 +45,6 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
   /* const tags = await // API call to database for list of tags goes here */
   const tags = ['Furniture', 'Rides', 'Tutoring', 'Appliances', 'Technology'];
 
-  useEffect(() => {
-    return () => {
-      /* remove photos from memory here (this is the same as componentUnmount) */
-      images.map((src, i) => {
-        URL.revokeObjectURL(src);
-      });
-    };
-  });
-
   return (
     <Modal show={show} onHide={() => setShow(false)} size="lg">
       <Card>
@@ -67,7 +60,7 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                 placeholder="Title"
                 className={styles.input}
                 required
-                ref={ref => titleInput = ref}
+                ref={(ref) => (titleInput = ref)}
                 onChange={(e) => {
                   validated[which.title] = e.target.value.length > 0;
                 }}
@@ -82,7 +75,7 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                   min={0}
                   required
                   className={styles.inputWithPrependAndPostpend}
-                  ref={ref => priceInput = ref}
+                  ref={(ref) => (priceInput = ref)}
                   onChange={(e) => {
                     validated[which.price] = e.target.value.length > 0;
                   }}
@@ -97,7 +90,7 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                 placeholder="Description..."
                 required
                 className={styles.textarea}
-                ref={ref => descriptionInput = ref}
+                ref={(ref) => (descriptionInput = ref)}
                 onChange={(e) => {
                   validated[which.description] = e.target.value.length > 0;
                 }}
@@ -109,7 +102,7 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                 placeholder="Price Center"
                 defaultValue="Price Center"
                 className={styles.input}
-                ref={ref => locationInput = ref}
+                ref={(ref) => (locationInput = ref)}
                 onChange={(e) => {
                   validated[which.location] = e.target.value.length > 0;
                 }}
@@ -118,7 +111,7 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
               <Form.Label className={styles.text}>Tags</Form.Label>
               <Form.Row className="justify-content-center text-center">
                 {tags.map((tagLabel, i) => {
-                  return (<CustomToggleButton value={i}>{tagLabel}</CustomToggleButton>);
+                  return <CustomToggleButton value={i}>{tagLabel}</CustomToggleButton>;
                 })}
               </Form.Row>
             </Form.Group>
@@ -127,11 +120,30 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
               <Form.Row className="justify-content-center text-center">
                 <Form.Label>Add Images</Form.Label>
                 <Carousel>
-                  {images.map((src, i) => (
-                    <Carousel.Item key={i}>
-                      <img src={src} onClick={() => console.log('hi')} />
-                    </Carousel.Item>
-                  ))}
+                  {images.map((src, i) => {
+                    if (images.length === 1) {
+                      return (
+                        <Carousel.Item key={i}>
+                          <img src={src} />
+                        </Carousel.Item>
+                      );
+                    } else if (src !== addPhoto) {
+                      return (
+                        <Carousel.Item key={i - 1}>
+                          <img src={src} />
+                          <button
+                            onClick={() => {
+                              setImages(images.filter((x) => x !== src));
+                              URL.revokeObjectURL(src);
+                            }}
+                            className={styles.deleteButton}
+                          >
+                            <FontAwesomeIcon icon={faTrashAlt} size="lg" />
+                          </button>
+                        </Carousel.Item>
+                      );
+                    }
+                  })}
                 </Carousel>
                 <Form.File
                   id="upload-images-create-listing"
@@ -148,12 +160,7 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                           uploadingImgs.push(URL.createObjectURL(e.target.files[i]));
                         }
                       }
-                      // check if should remove the 'add photo' or not
-                      if (images[0] == addPhoto) {
-                        setImages(images.slice(1, images.length).concat(uploadingImgs));
-                      } else {
-                        setImages(images.concat(uploadingImgs));
-                      }
+                      setImages(images.concat(uploadingImgs));
                     }
                   }}
                 />
@@ -167,17 +174,17 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
               onClick={async () => {
                 // validate form here
                 setDispValidated(true);
-                
+
                 let allValidated = true;
                 for (const i of validated) {
                   allValidated = allValidated && i;
                 }
 
                 if (!allValidated) {
-                  console.log("not all forms are valid!");
+                  console.log('not all forms are valid!');
                   return;
                 }
-                console.log("all forms are valid!");
+                console.log('all forms are valid!');
 
                 // extract values from form
                 const title = titleInput.value;
