@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import styles from '../CustomToggleButton/index.module.scss';
+import styles from '../Button/index.module.scss';
 import Button from 'react-bootstrap/Button';
 
 interface TagsDivProps {

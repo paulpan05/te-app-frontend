@@ -115,7 +115,10 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
 
               <Form.Label className={styles.text}>Tags</Form.Label>
               <Form.Row className="justify-content-center text-center">
-                <TagsDiv tags={dispTags} setTag={(tag: string, active: boolean) => tags[tag] = active} />
+                <TagsDiv
+                  tags={dispTags}
+                  setTag={(tag: string, active: boolean) => (tags[tag] = active)}
+                />
               </Form.Row>
             </Form.Group>
 
@@ -123,31 +126,6 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
               <Form.Row className="justify-content-center text-center">
                 <Form.Label>Add Images</Form.Label>
                 <Carousel>
-                  {/*pictures.map((src, i) => {
-                    if (pictures.length === 1) {
-                      return (
-                        <Carousel.Item key={i}>
-                          <img src={src} />
-                        </Carousel.Item>
-                      );
-                    } else if (src !== addPhoto) {
-                      return (
-                        <Carousel.Item key={i - 1}>
-                          <img src={src} />
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setPictures(pictures.filter((x) => x !== src));
-                              URL.revokeObjectURL(src);
-                            }}
-                            className={styles.deleteButton}
-                          >
-                            <FontAwesomeIcon icon={faTrashAlt} size="lg" />
-                          </button>
-                        </Carousel.Item>
-                      );
-                    }
-                  })*/}
                   {pictures.length !== 0 ? (
                     pictures.map((src, i) => {
                       return (
@@ -214,27 +192,32 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                 console.log('all forms are valid!');
 
                 // extract values from form
-                const title = titleInput.value;
-                const price = parseInt(priceInput.value);
-                const description = descriptionInput.value;
-                const location = locationInput.value;
-                console.log(title, price, description, location);
+                const parsedTitle = titleInput.value;
+                const parsedPrice = parseInt(priceInput.value);
+                const parsedDescription = descriptionInput.value;
+                const parsedLocation = locationInput.value;
+                console.log(
+                  `title: ${parsedTitle}, price: ${parsedPrice}, description: ${parsedDescription}, location: ${parsedLocation}`,
+                );
 
                 // TODO upload pics to s3, then extract the links and send them to database
                 const pictures = ['picture srcs go here'];
 
-                // TODO extract active tags here. Ask aarushi how she did it
-                const tags = [];
+                // extract tags
+                const parsedTags = dispTags.filter((tag) => tags[tag]);
+                console.log(`tags: ${parsedTags}`);
 
+                // api call
                 const success = await createListing(
                   user,
-                  title,
-                  price,
-                  description,
-                  location,
-                  tags,
+                  parsedTitle,
+                  parsedPrice,
+                  parsedDescription,
+                  parsedLocation,
+                  parsedTags,
                   pictures,
                 );
+
                 if (success) {
                   setShow(false);
                   toast('The listing was successfully created!');
