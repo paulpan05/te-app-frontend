@@ -118,7 +118,7 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
               <Form.Label className={styles.text}>Tags</Form.Label>
               <Form.Row className="justify-content-center text-center">
                 {tags.map((tagLabel, i) => {
-                  return <CustomToggleButton value={i}>{tagLabel}</CustomToggleButton>;
+                  return (<CustomToggleButton value={i}>{tagLabel}</CustomToggleButton>);
                 })}
               </Form.Row>
             </Form.Group>
@@ -186,14 +186,20 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                 const location = locationInput.value;
                 console.log(title, price, description, location);
 
+                // TODO upload pics to s3, then extract the links and send them to database
+                const pictures = ['picture srcs go here'];
+
+                // TODO extract active tags here. Ask aarushi how she did it
+                const tags = [];
+
                 const success = await createListing(
                   user,
                   title,
                   price,
                   description,
                   location,
-                  [],
-                  ['pictures go here'],
+                  tags,
+                  pictures,
                 );
                 if (success) {
                   setShow(false);

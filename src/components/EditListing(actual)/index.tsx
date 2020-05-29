@@ -31,15 +31,15 @@ interface EditListingProps {
   descriptionProp: string;
   locationProp: string;
   tagsProp: string[];
-  imagesProp: string[];
+  picturesProp: string[];
 }
 
 const mapStateToProps = (state: rootState) => ({
   user: state.auth.user,
 });
-// TODO implemenet tags and upload images to s3. also make props required, not optional
-const EditListing: React.FC<EditListingProps> = ({ user, show, setShow, listingId, creationTime, titleProp, priceProp, descriptionProp, locationProp, tagsProp, imagesProp }) => {
-  const [images, setImages] = useState(imagesProp);
+// TODO implemenet tags and upload pictures to s3. also make props required, not optional
+const EditListing: React.FC<EditListingProps> = ({ user, show, setShow, listingId, creationTime, titleProp, priceProp, descriptionProp, locationProp, tagsProp, picturesProp }) => {
+  const [pictures, setPictures] = useState(picturesProp);
   const [dispValidated, setDispValidated] = useState(false);
   const validated = [true, true, true, true];
   const which = { title: 0, price: 1, description: 2, location: 3 };
@@ -48,13 +48,13 @@ const EditListing: React.FC<EditListingProps> = ({ user, show, setShow, listingI
   let descriptionInput;
   let locationInput;
 
-  /* const tags = await // API call to database for list of tags goes here */
-  const tags = ['Furniture', 'Rides', 'Tutoring', 'Appliances', 'Technology'];
+  /* const tags = await // API call to database for list of tags goes here. paul needs to make an endpoint for it. hard code it for now */
+  const dispTags = ['Furniture', 'Rides', 'Tutoring', 'Appliances', 'Technology'];
 
   useEffect(() => {
     return () => {
       /* remove photos from memory here (this is the same as componentUnmount) */
-      images.map((src, i) => {
+      pictures.map((src, i) => {
         URL.revokeObjectURL(src);
       });
     };
@@ -128,7 +128,7 @@ const EditListing: React.FC<EditListingProps> = ({ user, show, setShow, listingI
 
               <Form.Label className={styles.text}>Tags</Form.Label>
               <Form.Row className="justify-content-center text-center">
-                {tags.map((tagLabel, i) => {
+                {dispTags.map((tagLabel, i) => {
                   return <CustomToggleButton value={i}>{tagLabel}</CustomToggleButton>;
                 })}
               </Form.Row>
@@ -138,14 +138,14 @@ const EditListing: React.FC<EditListingProps> = ({ user, show, setShow, listingI
               <Form.Row className="justify-content-center text-center">
                 <Form.Label>Add Images</Form.Label>
                 <Carousel>
-                  {images.map((src, i) => (
+                  {pictures.map((src, i) => (
                     <Carousel.Item key={i}>
                       <img src={src} onClick={() => console.log('hi')} />
                     </Carousel.Item>
                   ))}
                 </Carousel>
                 <Form.File
-                  id="upload-images-edit-listing"
+                  id="upload-pictures-edit-listing"
                   accept="image/*"
                   multiple
                   label="Browse..."
@@ -160,10 +160,10 @@ const EditListing: React.FC<EditListingProps> = ({ user, show, setShow, listingI
                         }
                       }
                       // check if should remove the 'add photo' or not
-                      if (images[0] == addPhoto) {
-                        setImages(images.slice(1, images.length).concat(uploadingImgs));
+                      if (pictures[0] == addPhoto) {
+                        setPictures(pictures.slice(1, pictures.length).concat(uploadingImgs));
                       } else {
-                        setImages(images.concat(uploadingImgs));
+                        setPictures(pictures.concat(uploadingImgs));
                       }
                     }
                   }}
@@ -190,21 +190,37 @@ const EditListing: React.FC<EditListingProps> = ({ user, show, setShow, listingI
                 }
                 console.log("all forms are valid!");
 
-                // extract values from form
+                // extract values from form and check if they've been changed
                 const title = titleInput.value;
+                const parsedTitle = title !== titleProp ? title : undefined;
+                
                 const price = parseInt(priceInput.value);
+                const parsedPrice = price !== priceProp ? price : undefined;
+                
                 const description = descriptionInput.value;
+                const parsedDescription = description !== descriptionProp ? description : undefined;
+                
                 const location = locationInput.value;
+                const parsedLocation = location !== locationProp ? location : undefined;
                 console.log(title, price, description, location);
+
+                // check which photos/tags have changed
+                const picturesAdded = pictures.filter(pic => !picturesProp.includes(pic));
+                const picturesDeleted = picturesProp.filter(pic => !pictures.includes(pic));
+                
+                //TODO extract the tags. Ask aarushi
+                const tags = ["lkj"];
+                const tagsAdded = tags.filter(pic => !tagsProp.includes(pic));
+                const tagsDeleted = tagsProp.filter(pic => !tags.includes(pic));
 
                 const success = await updateListing(
                   user,
                   listingId,
                   creationTime,
-                  title,
-                  price,
-                  description,
-                  location,
+                  parsedTitle,
+                  parsedPrice,
+                  parsedDescription,
+                  parsedLocation,
                   [],
                   ['pictures go here'],
                 );
