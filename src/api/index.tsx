@@ -94,7 +94,6 @@ const createListing = async (
   }
 };
 
-/* which of these are required vs optional? TODO. Also, title not getting updated? Also, what's deleteTag/deletePicture? */
 const updateListing = async (
   user: firebase.User | null | undefined,
   listingId: string,
@@ -103,8 +102,12 @@ const updateListing = async (
   price?: number,
   description?: string,
   location?: string,
-  tags?: string[],
   pictures?: string[],
+  tags?: string[],
+  comment?: string[], // [commentId: string, userId: string, content: string]
+  deleteTag?: boolean,
+  deletePicture?: boolean,
+  deleteComment?: boolean,
 ) => {
   /* TODO need to upload pictures to s3! */
   /* TODO incorporate the uuid thing */
@@ -120,10 +123,14 @@ const updateListing = async (
         creationTime,
         /* title, */
         price,
-        description,
+        /* description, */
         location,
-        tags,
         pictures /* TODO upload to s3 also */,
+        tags,
+        comment,
+        deleteTag,
+        deletePicture,
+        deleteComment,
       }),
     });
 
@@ -166,4 +173,11 @@ const updateProfile = async (
   }
 };
 
-export { handleFetchNotOk, getUserProfile, updateProfile, createListing, updateListing, userSignup };
+export {
+  handleFetchNotOk,
+  getUserProfile,
+  updateProfile,
+  createListing,
+  updateListing,
+  userSignup,
+};

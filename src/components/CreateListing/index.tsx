@@ -31,9 +31,9 @@ interface CreateListingProps {
 const mapStateToProps = (state: rootState) => ({
   user: state.auth.user,
 });
-// TODO implemenet tags and upload images to s3
+// TODO implemenet tags and upload pictures to s3
 const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) => {
-  const [images, setImages] = useState([addPhoto]);
+  const [pictures, setPictures]: [string[], Function] = useState([]);
   const [dispValidated, setDispValidated] = useState(false);
   const validated = [false, false, false, true];
   const which = { title: 0, price: 1, description: 2, location: 3 };
@@ -43,7 +43,7 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
   let locationInput;
 
   /* const tags = await // API call to database for list of tags goes here */
-  const tags = ['Furniture', 'Rides', 'Tutoring', 'Appliances', 'Technology'];
+  const dispTags = ['Furniture', 'Rides', 'Tutoring', 'Appliances', 'Technology'];
 
   return (
     <Modal show={show} onHide={() => setShow(false)} size="lg">
@@ -110,7 +110,7 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
 
               <Form.Label className={styles.text}>Tags</Form.Label>
               <Form.Row className="justify-content-center text-center">
-                {tags.map((tagLabel, i) => {
+                {dispTags.map((tagLabel, i) => {
                   return <CustomToggleButton value={i}>{tagLabel}</CustomToggleButton>;
                 })}
               </Form.Row>
@@ -120,8 +120,8 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
               <Form.Row className="justify-content-center text-center">
                 <Form.Label>Add Images</Form.Label>
                 <Carousel>
-                  {images.map((src, i) => {
-                    if (images.length === 1) {
+                  {/*pictures.map((src, i) => {
+                    if (pictures.length === 1) {
                       return (
                         <Carousel.Item key={i}>
                           <img src={src} />
@@ -132,8 +132,9 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                         <Carousel.Item key={i - 1}>
                           <img src={src} />
                           <button
+                            type="button"
                             onClick={() => {
-                              setImages(images.filter((x) => x !== src));
+                              setPictures(pictures.filter((x) => x !== src));
                               URL.revokeObjectURL(src);
                             }}
                             className={styles.deleteButton}
@@ -143,10 +144,33 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                         </Carousel.Item>
                       );
                     }
-                  })}
+                  })*/}
+                  {pictures.length !== 0 ? (
+                    pictures.map((src, i) => {
+                      return (
+                        <Carousel.Item key={i}>
+                          <img src={src} />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setPictures(pictures.filter((pic) => pic !== src));
+                              URL.revokeObjectURL(src);
+                            }}
+                            className={styles.deleteButton}
+                          >
+                            <FontAwesomeIcon icon={faTrashAlt} size="lg" />
+                          </button>
+                        </Carousel.Item>
+                      );
+                    })
+                  ) : (
+                    <Carousel.Item key={0}>
+                      <img src={addPhoto} />
+                    </Carousel.Item>
+                  )}
                 </Carousel>
                 <Form.File
-                  id="upload-images-create-listing"
+                  id="upload-pictures-create-listing"
                   accept="image/*"
                   multiple
                   label="Browse..."
@@ -160,7 +184,7 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                           uploadingImgs.push(URL.createObjectURL(e.target.files[i]));
                         }
                       }
-                      setImages(images.concat(uploadingImgs));
+                      setPictures(pictures.concat(uploadingImgs));
                     }
                   }}
                 />
@@ -176,8 +200,8 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                 setDispValidated(true);
 
                 let allValidated = true;
-                for (const i of validated) {
-                  allValidated = allValidated && i;
+                for (const singleValidation of validated) {
+                  allValidated = allValidated && singleValidation;
                 }
 
                 if (!allValidated) {

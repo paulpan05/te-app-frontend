@@ -19,6 +19,7 @@ import Signup from './pages/Signup';
 import RateBuyerButton from './components/RateBuyer/buttonExample';
 import Profile from './pages/Profile';
 import EditProfileButton from './components/EditProfile/buttonExample';
+import EditListingButton from './components/EditListing(actual)/buttonExample';
 import CreateListingButton from './components/CreateListing/buttonExample';
 import Saved from './pages/Saved';
 
@@ -57,6 +58,7 @@ const AppComponent: React.FC<AppProps> = ({ dispatch }) => {
           <PrivateRoute exact path="/createlisting" component={CreateListingButton} />
           <PrivateRoute exact path="/ratebuyer" component={RateBuyerButton} />
           <PrivateRoute exact path="/editprofile" component={EditProfileButton} />
+          <PrivateRoute exact path="/editlisting" component={EditListingButton} />
           <PrivateRoute exact path="/profile" component={Profile} />
           <PrivateRoute exact path="/saved" component={Saved} />
           <PrivateRoute path="/" component={Home} />
