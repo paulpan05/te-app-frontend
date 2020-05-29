@@ -21,6 +21,7 @@ import { toast } from 'react-toastify';
 import { createListing } from '../../api/index';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-regular-svg-icons';
+import TagsDiv from '../Tags/Tags';
 
 interface CreateListingProps {
   user: firebase.User | null | undefined;
@@ -44,6 +45,10 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
 
   /* const tags = await // API call to database for list of tags goes here */
   const dispTags = ['Furniture', 'Rides', 'Tutoring', 'Appliances', 'Technology'];
+  const tags = {};
+  dispTags.map((tag) => {
+    tags[tag] = false;
+  });
 
   return (
     <Modal show={show} onHide={() => setShow(false)} size="lg">
@@ -110,9 +115,7 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
 
               <Form.Label className={styles.text}>Tags</Form.Label>
               <Form.Row className="justify-content-center text-center">
-                {dispTags.map((tagLabel, i) => {
-                  return <CustomToggleButton value={i}>{tagLabel}</CustomToggleButton>;
-                })}
+                <TagsDiv tags={dispTags} setTag={(tag: string, active: boolean) => tags[tag] = active} />
               </Form.Row>
             </Form.Group>
 
