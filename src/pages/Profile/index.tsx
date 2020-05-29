@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Container, Row, Col, FormLabel, FormText, FormFile, Image } from 'react-bootstrap';
-import {getListings} from '../../api/index';
+import {fetchListing,getUserProfile} from '../../api/index';
 // @ts-ignore
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
@@ -20,18 +20,32 @@ import { ReportUser } from '../../components/ReportModals';
 interface ProfileProps {
   dispatch: Dispatch<any>;
   user: firebase.User | null | undefined;
+  targetUserId: string | undefined;
 }
 
 const mapStateToProps = (state: rootState) => ({
   user: state.auth.user,
 });
 
-const Profile: React.FC<ProfileProps> = ({ user, dispatch }) => {
-  const [profileImgSrc, setProfileImgSrc] = useState(
-    user && user.photoURL ? user.photoURL : example,
-  );
-  const [starValue, setStarValue] = useState<number | null>(2);
+
+const Profile: React.FC<ProfileProps> = ({ user, targetUserId, dispatch }) => {
+  const[profile, setProfile] = useState<any>()
+  const [userEquals, setUserEquals] = useState(false);
+  const getAndSetProfile = async () => {
+    const result = await getUserProfile(user, targetUserId);
+    setProfile(result)
+  }
+  useEffect(() => {
+    if(targetUserId!==undefined){
+      setUserEquals(true)
+    }
+    getAndSetProfile();
+  }, [])
+  const [listingObj, setListingObj] = useState<any>(null)
   const [show, setShow] = useState(false);
+  const ids= new Array()
+  const creationTimes= new Array()
+
   const responsive = {
     superLargeDesktop: {
       // the naming can be any, depends on you.
@@ -52,63 +66,56 @@ const Profile: React.FC<ProfileProps> = ({ user, dispatch }) => {
     },
   };
   document.body.style.padding = '0px';
-  return (
+  return profile?(
     <Container className={styles.con}>
       <Row>
         <Col xs={3} className={styles.column}>
           <FormLabel>
-            <Image src={profileImgSrc} roundedCircle alt="profile" className={styles.img} fluid />
-            <FormText>Click to Select a Profile Picture</FormText>
-            <FormFile
-              id="upload-profile"
-              accept="image/*"
-              hidden
-              onChange={(e: any) => {
-                if (e.target.files && e.target.files.length === 1 && e.target.files[0]) {
-                  URL.revokeObjectURL(profileImgSrc);
-                  setProfileImgSrc(URL.createObjectURL(e.target.files[0]));
-                }
-              }}
-            />
+            <Image src={profile?.picture} roundedCircle alt="profile" className={styles.img} fluid />
           </FormLabel>
           <div>
             <Box>
-              <Rating
-                name="simple-controlled"
-                value={starValue}
-                onChange={(event, newValue) => {
-                  setStarValue(newValue);
-                }}
-              />
+            <Rating name="read-only" value={ (() => {
+              let sum = 0 ;
+              for(let i=0;i<(profile?.ratings).length;i++){
+                sum+=profile?.ratings[i]
+              }
+              return Math.floor(sum/(profile?.ratings).length)})()
+              } readOnly />
             </Box>
           </div>
-          <Button variant="outline-primary" className={styles.btnblue}
-          onClick={() => setShow(true)}>
+          {userEquals?(<>
+            <Button variant="outline-primary" className={styles.btnblue}>
+              Edit Profile
+            </Button></> ):(<>
+          <Button variant="outline-primary" className={styles.btnblue}>
             Contact Seller
-          </Button>{' '}
+          </Button>
           <Button
             variant="outline-secondary"
             className={styles.btngrey}
-            onClick={()=> test}
-          >
+            onClick={() => setShow(true)}>
             Report Seller
           </Button>
-          <ReportUser show={show} setShow={setShow} />
+          <ReportUser show={show} setShow={setShow} /></>)}  
         </Col>
         <Col xs={9}>
           <h2 style={{ textAlign: 'center' }}>
-            {user ? user.displayName : 'Name cannot be rendered: error occurred'}
+            {profile?.name}
           </h2>
           <Row className={styles.row}>
             <div className={styles.outlin}>
               <p style={{ marginBottom: '0rem', marginLeft: '1rem' }}>Available Listings</p>
               <Carousel className={styles.car} responsive={responsive}>
-                <Listing />
-                <Listing />
-                <Listing />
-                <Listing />
-                <Listing />
-                <Listing />
+                {()=>{
+                for(let k=0; k<(profile?.activeListings).length; k++){
+                  ids.push(profile?.activeListings[k][0]);
+                  creationTimes.push(profile?.activeListings[k][0]);
+                }
+                fetchListing(user, setListingObj, ids, creationTimes)
+                listingObj.map((listing)=>{
+                  <Listing user={listing.user} title={listing.title} postDate={listing.creationTime} pictures={listing.picture} price={listing.price}/>
+                })}}
               </Carousel>
             </div>
           </Row>
@@ -128,7 +135,8 @@ const Profile: React.FC<ProfileProps> = ({ user, dispatch }) => {
         </Col>
       </Row>
     </Container>
-  );
+  ):(<></>);
+
 };
 
 export default connect(mapStateToProps)(Profile);

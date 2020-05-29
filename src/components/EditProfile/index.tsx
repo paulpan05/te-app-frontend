@@ -13,50 +13,35 @@ import Cropper from 'react-easy-crop';
 import { Redirect } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
 import Card from 'react-bootstrap/Card';
-import Toast from 'react-bootstrap/Toast';
 import styles from './index.module.scss';
 import blankProfile from '../../assets/img/blank-profile-picture.png';
 import { rootState } from '../../redux/reducers';
+import { toast } from 'react-toastify';
+import { updateProfile } from '../../api/index';
 
 interface EditProfileProps {
   user: firebase.User | null | undefined;
   dispatch: Dispatch<any>;
   show: boolean;
   setShow: Function;
+  phoneProp: string;
+  pictureProp: string;
+  nameProp: string;
 }
 
 const mapStateToProps = (state: rootState) => ({
   user: state.auth.user,
 });
 
-// TODO zoom it to minimum of width/height
-
-const EditProfile: React.FC<EditProfileProps> = ({ user, dispatch, show, setShow }) => {
-  const [profileImgSrc, setProfileImgSrc] = useState(
-    user && user.photoURL ? user.photoURL : blankProfile,
-  );
-  /* const profileImgFromDB = await ;//API call for user profile picture from our database
-  if (profileImgFromDB) {
-    profileImgSrc = profileImgSrcFromDB;
-  } */
-
-  const [name, setName] = useState(user && user.displayName ? user.displayName : '');
-  /* const nameInDB = await ;//API call for user name from our database
-  if (nameInDB) {
-    setName(nameInDB);
-  } */
-
-  const [altContact, setAltContact] = useState(user && user.phoneNumber ? user.phoneNumber : '');
-  /* const altContactInDB = await ;//API call for user name from our database
-  if (altContactInDB) {
-    setAltContact(altContactInDB);
-  } */
+const EditProfile: React.FC<EditProfileProps> = ({ user, dispatch, show, setShow, phoneProp, pictureProp, nameProp }) => {
+  const [profileImgSrc, setProfileImgSrc] = useState(pictureProp);
+  const [name, setName] = useState(nameProp);
+  const [phone, setPhone] = useState(phoneProp);
 
   const [cropping, setCropping] = useState(false);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState({ width: 0, height: 0, x: 0, y: 0 });
-  const [submitted, setSubmitted] = useState(false);
 
   const cropImage = async () => {
     const image = document.createElement('img');
@@ -87,140 +72,137 @@ const EditProfile: React.FC<EditProfileProps> = ({ user, dispatch, show, setShow
   };
 
   return (
-    <div>
-      <Toast
-        onClose={() => setSubmitted(false)}
-        show={submitted}
-        delay={3000}
-        autohide
-        className={styles.notification}
-      >
-        <Toast.Header>
-          <div className="mr-auto">Success!</div>
-        </Toast.Header>
-        <Toast.Body>Your profile was edited successfully!</Toast.Body>
-      </Toast>
+    <Modal show={show} onHide={() => setShow(false)} size="lg">
+      <Card>
+        <Container>
+          <Row className="justify-content-center text-center">
+            <h1>Edit Your Profile</h1>
+          </Row>
 
-      <Modal show={show} onHide={() => setShow(false)} size="lg">
-        <Card>
-          <Container>
-            <Row className="justify-content-center text-center">
-              <h1>Edit Your Profile</h1>
-            </Row>
-
-            <Form>
-              <Form.Row className="justify-content-center">
-                <Form.Group as={Col} sm="6" lg="5">
-                  {cropping ? (
-                    <div className={styles.profilePictureWrapper}>
-                      <div className={styles.cropContainer}>
-                        <Cropper
-                          image={profileImgSrc}
-                          crop={crop}
-                          zoom={zoom}
-                          aspect={1}
-                          onCropChange={setCrop}
-                          onZoomChange={setZoom}
-                          cropShape="round"
-                          showGrid={false}
-                          onCropComplete={(croppedArea, croppedAreaPixels) => {
-                            setCroppedAreaPixels(croppedAreaPixels);
-                          }}
-                        />
-                      </div>
-                      <Form.Row className="justify-content-center">
-                        <Button
-                          className={styles.button}
-                          onClick={async () => {
-                            cropImage().then((croppedImg: any) => {
-                              setProfileImgSrc(croppedImg);
-                              setCropping(false);
-                            });
-                          }}
-                        >
-                          Save
-                        </Button>
-                      </Form.Row>
-                    </div>
-                  ) : (
-                    <Form.Label className={styles.profilePictureWrapper}>
-                      <Image
-                        src={profileImgSrc}
-                        roundedCircle
-                        className={styles.profilePicture}
-                        draggable={false}
-                      />
-                      <Form.Text className="my-auto text-center">
-                        Click to Select a Profile Picture
-                      </Form.Text>
-                      <Form.File
-                        id="upload-profile"
-                        accept="image/*"
-                        hidden
-                        onChange={(e: any) => {
-                          if (e.target.files && e.target.files.length === 1 && e.target.files[0]) {
-                            URL.revokeObjectURL(profileImgSrc);
-                            setProfileImgSrc(URL.createObjectURL(e.target.files[0]));
-                            setCropping(true);
-                          }
+          <Form>
+            <Form.Row className="justify-content-center">
+              <Form.Group as={Col} sm="6" lg="5">
+                {cropping ? (
+                  <div className={styles.profilePictureWrapper}>
+                    <div className={styles.cropContainer}>
+                      <Cropper
+                        image={profileImgSrc}
+                        crop={crop}
+                        zoom={zoom}
+                        aspect={1}
+                        onCropChange={setCrop}
+                        onZoomChange={setZoom}
+                        cropShape="round"
+                        showGrid={false}
+                        onCropComplete={(croppedArea, croppedAreaPixels) => {
+                          setCroppedAreaPixels(croppedAreaPixels);
                         }}
                       />
-                    </Form.Label>
-                  )}
-                </Form.Group>
-              </Form.Row>
+                    </div>
+                    <Form.Row className="justify-content-center">
+                      <Button
+                        className={styles.button}
+                        onClick={async () => {
+                          cropImage().then((croppedImg: any) => {
+                            setProfileImgSrc(croppedImg);
+                            setCropping(false);
+                          });
+                        }}
+                      >
+                        Save
+                      </Button>
+                    </Form.Row>
+                  </div>
+                ) : (
+                  <Form.Label className={styles.profilePictureWrapper}>
+                    <Image
+                      src={profileImgSrc}
+                      roundedCircle
+                      className={styles.profilePicture}
+                      draggable={false}
+                    />
+                    <Form.Text className="my-auto text-center">
+                      Click to Select a Profile Picture
+                    </Form.Text>
+                    <Form.File
+                      id="upload-profile"
+                      accept="image/*"
+                      hidden
+                      onChange={(e: any) => {
+                        if (e.target.files && e.target.files.length === 1 && e.target.files[0]) {
+                          URL.revokeObjectURL(profileImgSrc);
+                          setProfileImgSrc(URL.createObjectURL(e.target.files[0]));
+                          setCropping(true);
+                        }
+                      }}
+                    />
+                  </Form.Label>
+                )}
+              </Form.Group>
+            </Form.Row>
 
-              <Form.Row className="justify-content-center">
-                <Form.Group as={Col} md="5" lg="4" className="text-center">
-                  <Form.Label className={styles.text}>Preferred Name</Form.Label>
-                  <Form.Control
-                    placeholder="Preferred Name"
-                    className={styles.input}
-                    defaultValue={name}
-                  />
-                  <Form.Text>
-                    This will be displayed instead of your name (so include your last name)
-                  </Form.Text>
-                </Form.Group>
+            <Form.Row className="justify-content-center">
+              <Form.Group as={Col} md="5" lg="4" className="text-center">
+                <Form.Label className={styles.text}>Preferred Name</Form.Label>
+                <Form.Control
+                  placeholder="Preferred Name"
+                  className={styles.input}
+                  defaultValue={name}
+                />
+                <Form.Text>
+                  This will be displayed instead of your name (so include your last name)
+                </Form.Text>
+              </Form.Group>
 
-                <Form.Group
-                  as={Col}
-                  md={{ span: 5, offset: 1 }}
-                  lg={{ span: 4, offset: 1 }}
-                  className="text-center"
-                >
-                  <Form.Label className={styles.text}>Alternate Contact (Phone)</Form.Label>
-                  <FormControl
-                    placeholder="(123) 456-7890"
-                    defaultValue={altContact}
-                    className={styles.input}
-                  />
-                  <Form.Text>This will be displayed publicly, along with your UCSD email</Form.Text>
-                </Form.Group>
-              </Form.Row>
+              <Form.Group
+                as={Col}
+                md={{ span: 5, offset: 1 }}
+                lg={{ span: 4, offset: 1 }}
+                className="text-center"
+              >
+                <Form.Label className={styles.text}>Phone Number</Form.Label>
+                <FormControl
+                  placeholder="(123) 456-7890"
+                  defaultValue={phone}
+                  className={styles.input}
+                />
+                <Form.Text>This will be displayed publicly, along with your UCSD email</Form.Text>
+              </Form.Group>
+            </Form.Row>
 
-              <Form.Row className="justify-content-center">
-                <Button
-                  className={styles.button}
-                  onClick={() => {
-                    // validate forms
-                    // API PUT to database
-                    setSubmitted(true);
+            <Form.Row className="justify-content-center">
+              <Button
+                className={styles.button}
+                onClick={async () => {
+                  // validate forms
+                  // API PUT to database
+                  const success = await updateProfile(
+                    user,
+                    '12345678',
+                    'picture goes here',
+                    'name goes here',
+                  );
+                  if (success) {
                     setShow(false);
-                  }}
-                >
-                  Update
-                </Button>
+                    toast('Your profile was edited successfully!');
+                  } else {
+                    toast(
+                      "There was an error and your edited profile wasn't saved! Try to edit your profile again",
+                    );
+                  }
+                }}
+              >
+                Update
+              </Button>
 
-                <Button className={styles.secondaryButton} onClick={() => setShow(false)}>
-                  Cancel
-                </Button>
-              </Form.Row>
-            </Form>
-          </Container>
-        </Card>
-      </Modal>
-    </div>
+              <Button className={styles.secondaryButton} onClick={() => setShow(false)}>
+                Cancel
+              </Button>
+            </Form.Row>
+          </Form>
+        </Container>
+      </Card>
+    </Modal>
   );
 };
 

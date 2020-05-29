@@ -8,10 +8,15 @@ import GreenShirt from '../../assets/img/GreenTshirt.png';
 import FlowerImg from '../../assets/img/FlowerShirt.png';
 import ViewListing from '../ViewListing/ViewListing';
 import book from '../../assets/img/books.jpg';
-
-const Listing: React.FC = ({}) => {
+interface ListingProps {
+  user: firebase.User | null | undefined;
+  title: string;
+  price: string;
+  postDate: string;
+  pictures: string[];
+}
+const Listing: React.FC<ListingProps> = ({title, price, postDate, pictures}) => {
   const [show, setShow] = useState(false);
-
   return (
     <div style={{ margin: '5%' }}>
       <div className={styles.card}>
@@ -32,13 +37,12 @@ const Listing: React.FC = ({}) => {
           </button>
         </div>
         <div className={styles.card_content}>
-          <h2 className={styles.card_title}>Green T-Shirt</h2>
-          <p className={styles.card_text}>$50</p>
-          <p className={styles.description}>Posted April 2020</p>
+          <h2 className={styles.card_title}>{title}</h2>
+          <p className={styles.card_text}>{price}</p>
+          <p className={styles.description}>Posted {postDate}</p>
           {/* <button className={styles.btn}>Contact Seller</button> */}
         </div>
       </div>
-
       <ViewListing title="Flower Sweatshirt" seller="Sarah A." show={show} setShow={setShow} />
     </div>
   );
