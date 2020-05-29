@@ -50,68 +50,11 @@ const Home: React.FC<HomeProps> = ({ dispatch, user }) => {
   return (
     <div>
       <Rate />
-      {listings && <button onClick={() => {console.log(listings.Items.length);}}>Click Me</button>}
-      <button
-      onClick={async () => {
-        await userSignup(user, "4086434569", "Aarushi","a3shah@ucsd.edu","Aarushi.png");
-      }}
-      type="submit"
-    >
-      Post User
-    </button>
-    <button
-      type="submit"
-      onClick={async () => {
-        await getUserProfile(user, userInfoSetter);
-      }}
-    >
-      Fetch User
-    </button>
-    <button
-      type="submit"
-      onClick={async () => {
-        await updateProfile(user, "408643459", "Aarushi.png", "Aarushi");
-      }}
-    >
-      Edit Profile
-    </button>
-    <button
-      type="submit"
-      onClick={async () => {
-        await getListings(user, setListings);
-      }}
-    >
-      Fetch Listings
-    </button>
-    <button
-      type="submit"
-      onClick={async () => {
-        await getListingsByTags(user, ["Rides", "Clothes"]);
-      }}
-    >
-      Fetch Listings By Tags
-    </button>
-    <button
-      type="submit"
-      onClick={async () => {
-        await getListingsBySearch(user, "title", setListings);
-      }}
-    >
-      Fetch Listings By Search
-    </button>
-    <button
-      type="submit"
-      onClick={async () => {
-        await createListing(user, "Red Dress", 30, "Red Dress", "Price Center", ["Clothes"], []);
-      }}
-    >
-      Create Listing
-    </button>
       <Row className="justify-content-md-center">
         <Tags/>
       </Row>
       <Row className="justify-content-md-center">
-        <InputGroup className={styles.inputGroup}>
+        <InputGroup className={styles.inputGr}>
           <FormControl className={styles.input} type="text" placeholder="Search.." onChange={(e) => {searchInput = e.target.value}} name="search" />
           <button className={styles.searchButton}  onClick={async () => { if(searchInput.length != 0) {await getListingsBySearch(user, searchInput, setSearchListings); setListings(null); rowArray = new Array(); } else {await getListings(user, setListings); setSearchListings(null); rowArray = new Array();}}}>
             <FontAwesomeIcon icon={faSearch} size="lg" />
