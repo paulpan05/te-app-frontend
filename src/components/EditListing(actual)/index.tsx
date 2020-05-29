@@ -13,11 +13,11 @@ import Modal from 'react-bootstrap/Modal';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Carousel from 'react-bootstrap/Carousel';
 import Card from 'react-bootstrap/Card';
+import { toast } from 'react-toastify';
 import CustomToggleButton from '../CustomToggleButton/index';
 import styles from './index.module.scss';
 import addPhoto from '../../assets/img/add-photo.png';
 import { rootState } from '../../redux/reducers';
-import { toast } from 'react-toastify';
 import { updateListing } from '../../api/index';
 
 interface EditListingProps {
@@ -38,7 +38,19 @@ const mapStateToProps = (state: rootState) => ({
   user: state.auth.user,
 });
 // TODO implemenet tags and upload images to s3. also make props required, not optional
-const EditListing: React.FC<EditListingProps> = ({ user, show, setShow, listingId, creationTime, titleProp, priceProp, descriptionProp, locationProp, tagsProp, imagesProp }) => {
+const EditListing: React.FC<EditListingProps> = ({
+  user,
+  show,
+  setShow,
+  listingId,
+  creationTime,
+  titleProp,
+  priceProp,
+  descriptionProp,
+  locationProp,
+  tagsProp,
+  imagesProp,
+}) => {
   const [images, setImages] = useState(imagesProp);
   const [dispValidated, setDispValidated] = useState(false);
   const validated = [true, true, true, true];
@@ -75,7 +87,7 @@ const EditListing: React.FC<EditListingProps> = ({ user, show, setShow, listingI
                 placeholder="Title"
                 className={styles.input}
                 required
-                ref={ref => titleInput = ref}
+                ref={(ref) => (titleInput = ref)}
                 onChange={(e) => {
                   validated[which.title] = e.target.value.length > 0;
                 }}
@@ -91,7 +103,7 @@ const EditListing: React.FC<EditListingProps> = ({ user, show, setShow, listingI
                   min={0}
                   required
                   className={styles.inputWithPrependAndPostpend}
-                  ref={ref => priceInput = ref}
+                  ref={(ref) => (priceInput = ref)}
                   onChange={(e) => {
                     validated[which.price] = e.target.value.length > 0;
                   }}
@@ -107,7 +119,7 @@ const EditListing: React.FC<EditListingProps> = ({ user, show, setShow, listingI
                 placeholder="Description..."
                 required
                 className={styles.textarea}
-                ref={ref => descriptionInput = ref}
+                ref={(ref) => (descriptionInput = ref)}
                 onChange={(e) => {
                   validated[which.description] = e.target.value.length > 0;
                 }}
@@ -119,7 +131,7 @@ const EditListing: React.FC<EditListingProps> = ({ user, show, setShow, listingI
                 required
                 placeholder="Price Center"
                 className={styles.input}
-                ref={ref => locationInput = ref}
+                ref={(ref) => (locationInput = ref)}
                 onChange={(e) => {
                   validated[which.location] = e.target.value.length > 0;
                 }}
@@ -178,17 +190,17 @@ const EditListing: React.FC<EditListingProps> = ({ user, show, setShow, listingI
               onClick={async () => {
                 // validate form here
                 setDispValidated(true);
-                
+
                 let allValidated = true;
                 for (const i of validated) {
                   allValidated = allValidated && i;
                 }
 
                 if (!allValidated) {
-                  console.log("not all forms are valid!");
+                  console.log('not all forms are valid!');
                   return;
                 }
-                console.log("all forms are valid!");
+                console.log('all forms are valid!');
 
                 // extract values from form
                 const title = titleInput.value;

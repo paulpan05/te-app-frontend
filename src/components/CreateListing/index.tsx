@@ -13,11 +13,11 @@ import Modal from 'react-bootstrap/Modal';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Carousel from 'react-bootstrap/Carousel';
 import Card from 'react-bootstrap/Card';
+import { toast } from 'react-toastify';
 import CustomToggleButton from '../CustomToggleButton/index';
 import styles from './index.module.scss';
 import addPhoto from '../../assets/img/add-photo.png';
 import { rootState } from '../../redux/reducers';
-import { toast } from 'react-toastify';
 import { createListing } from '../../api/index';
 
 interface CreateListingProps {
@@ -67,7 +67,7 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                 placeholder="Title"
                 className={styles.input}
                 required
-                ref={ref => titleInput = ref}
+                ref={(ref) => (titleInput = ref)}
                 onChange={(e) => {
                   validated[which.title] = e.target.value.length > 0;
                 }}
@@ -82,7 +82,7 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                   min={0}
                   required
                   className={styles.inputWithPrependAndPostpend}
-                  ref={ref => priceInput = ref}
+                  ref={(ref) => (priceInput = ref)}
                   onChange={(e) => {
                     validated[which.price] = e.target.value.length > 0;
                   }}
@@ -97,7 +97,7 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                 placeholder="Description..."
                 required
                 className={styles.textarea}
-                ref={ref => descriptionInput = ref}
+                ref={(ref) => (descriptionInput = ref)}
                 onChange={(e) => {
                   validated[which.description] = e.target.value.length > 0;
                 }}
@@ -109,7 +109,7 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                 placeholder="Price Center"
                 defaultValue="Price Center"
                 className={styles.input}
-                ref={ref => locationInput = ref}
+                ref={(ref) => (locationInput = ref)}
                 onChange={(e) => {
                   validated[which.location] = e.target.value.length > 0;
                 }}
@@ -167,17 +167,17 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
               onClick={async () => {
                 // validate form here
                 setDispValidated(true);
-                
+
                 let allValidated = true;
                 for (const i of validated) {
                   allValidated = allValidated && i;
                 }
 
                 if (!allValidated) {
-                  console.log("not all forms are valid!");
+                  console.log('not all forms are valid!');
                   return;
                 }
-                console.log("all forms are valid!");
+                console.log('all forms are valid!');
 
                 // extract values from form
                 const title = titleInput.value;

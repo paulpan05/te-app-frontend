@@ -2,6 +2,7 @@
  * modals when a user views their own listing vs someone elses. Compares the current user to the user of the listing.
  * Has all the button functionality for a listing.
  */
+/*eslint-disable*/
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useEffect } from 'react';
 import { Dispatch } from 'redux';
@@ -17,8 +18,8 @@ import styles from './index.module.scss';
 import ProfileImg from '../../assets/img/sarah.png';
 import RateBuyer from '../RateBuyer';
 import { ReportListing } from '../ReportModals';
-import { saveListing } from '../../api/index';
-
+import { saveListing, getUserProfile, unsaveListing, fetchListing } from '../../api/index';
+import 'react-toastify/dist/ReactToastify.css';
 interface EditListingProps extends Omit<RouteProps, 'render'> {
   showDeleteSetter: React.Dispatch<any>;
   contactSellerSetter: React.Dispatch<any>;
@@ -44,51 +45,78 @@ const EditListing: React.FC<EditListingProps> = ({
   // false means not same user, true means they own the listing
   const [curId, curIdSetter] = useState();
   const [liked, setLiked] = useState(false);
+  const [sellerData, sellerDataSetter] = useState();
+  const [toggled, setToggled] = useState(false);
+  const [myData, myDataSetter] = useState();
+  const callAPI = async () => {
+    const test = await getUserProfile(user, sellerDataSetter);
+    if (test) {
+      for (let i = 0; i < test.savedListings.length; i++) {
+        if (test.savedListings[i][0] === listingObject.listingId) {
+          if (test.savedListings[i][1] === listingObject.creationTime) {
+            setLiked(true);
+            break;
+          }
+        }
+      }
+    }
+    const result1 = await fetchListing(
+      user,
+      myDataSetter,
+      [listingObject.listingId],
+      [listingObject.creationTime],
+    );
+  };
   useEffect(() => {
     const myId = user?.uid;
     // when the current user is the owner of the listing
     if (myId === listingObject.userId) {
       curIdSetter(true);
     }
-    const obj = [listingObject.listingId, listingObject.creationTime];
-    console.log(obj);
-    for (let i = 0; i < sellerInfo.savedListings.length; i++) {
-      if (sellerInfo.savedListings[i][0] === listingObject.listingId) {
-        setLiked(true);
-        break;
-      }
-    }
-  }, [
-    listingObject.creationTime,
-    listingObject.listingId,
-    listingObject.userId,
-    sellerInfo.savedListings,
-    user,
-  ]);
+    callAPI();
+  }, [user]);
   return (
-    /* this is for someone viewing some elses listing */
+    /* VIEWING SOMEONE ELSE'S LISTING!!! */
     <>
-      {!curId && (
+      {!curId && myData && (
         <>
           {clickedOnProfile ? <Redirect to="/profile" /> : null}
           <ReportListing show={showReportListing} setShow={setShowReportListing} />
           <Col xs={12} md={2} className={styles.textAlign}>
             <div>
-              {/* Button needs to have function to save item for later */}
+              {/* Button will save listing or remove it based on what state it is in */}
+
               <button
                 type="button"
                 onClick={async () => {
-                  const success = await saveListing(
-                    user,
-                    listingObject.listingId,
-                    listingObject.creationTime,
-                  );
-                  if (success) {
-                    toast('This listing has been added to your Saved collection!');
-                  } else {
-                    toast(
-                      'There has been an error while adding this to your saved collection. Please try again.',
+                  if (!liked) {
+                    const success = await saveListing(
+                      user,
+                      myData[0].listingId,
+                      myData[0].creationTime,
                     );
+                    if (success) {
+                      toast('This listing has been added to your Saved collection!');
+                      setLiked(!liked);
+                    } else {
+                      toast(
+                        'There has been an error while adding this to your saved collection. Please try again.',
+                      );
+                    }
+                  } else {
+                    const success = await unsaveListing(
+                      user,
+                      myData[0].listingId,
+                      myData[0].creationTime,
+                    );
+                    if (success) {
+                      toast('This listing has been removed from your Saved collection!');
+                      setLiked(!liked);
+                    } else {
+                      toast(
+                        'There has been an error while removing this from your saved collection. Please try again.',
+                      );
+                    }
                   }
                 }}
                 className={styles.myButton}
@@ -128,7 +156,7 @@ const EditListing: React.FC<EditListingProps> = ({
                 <img src={ProfileImg} className={styles.sellerPicture} alt="Seller" />
               </button>
               {sellerInfo && <p>{sellerInfo.name}</p>}
-              <p>0 Stars</p>
+              <p>{sellerInfo.ratings}</p>
 
               {/* Seller popup needs to be implemented to get seller data */}
               <button
@@ -140,36 +168,51 @@ const EditListing: React.FC<EditListingProps> = ({
                 Contact Seller
               </button>
               <div className={styles.interestBox}>
-                <p>{listingObject.savedCount}
-{' '}
-people have this item saved!
-</p>
+                <p>{myData[0].savedCount} people have this item saved!</p>
               </div>
             </div>
           </Col>
         </>
       )}
-      {/* This is for someone viewing their OWN listing */}
-      {curId && (
+      {/* THIS IS FOR VIEWING YOUR OWN LISTING!!!*/}
+      {curId && myData && (
         <>
           <RateBuyer show={markSold} setShow={markSoldSetter} title="Flower Sweatshirt" />
           <Col xs={12} md={2} className={styles.textAlign}>
             <div className={styles.centerRow}>
-              {/* Button needs to have function to save item for later */}
+              {/* Button will save listing or remove it based on what state it is in */}
+
               <button
                 type="button"
                 onClick={async () => {
-                  const success = await saveListing(
-                    user,
-                    listingObject.listingId,
-                    listingObject.creationTime,
-                  );
-                  if (success) {
-                    toast('This listing has been added to your Saved collection!');
-                  } else {
-                    toast(
-                      'There has been an error while adding this to your saved collection. Please try again.',
+                  if (!liked) {
+                    const success = await saveListing(
+                      user,
+                      myData[0].listingId,
+                      myData[0].creationTime,
                     );
+                    if (success === true) {
+                      toast('This listing has been added to your Saved collection!');
+                      setLiked(!liked);
+                    } else {
+                      toast(
+                        'There has been an error while adding this to your saved collection. Please try again.',
+                      );
+                    }
+                  } else {
+                    const success = await unsaveListing(
+                      user,
+                      myData[0].listingId,
+                      myData[0].creationTime,
+                    );
+                    if (success === true) {
+                      toast('This listing has been removed from your Saved collection!');
+                      setLiked(!liked);
+                    } else {
+                      toast(
+                        'There has been an error while removing this from your saved collection. Please try again.',
+                      );
+                    }
                   }
                 }}
                 className={styles.myButton}
@@ -208,12 +251,9 @@ people have this item saved!
                 <img src={ProfileImg} className={styles.sellerPicture} alt="Seller" />
               </button>
               {sellerInfo && <p>{sellerInfo.name}</p>}
-              <p>0 Stars</p>
+              <p>{sellerInfo.ratings}</p>
               <div className={styles.interestBox}>
-                <p>{listingObject.savedCount}
-{' '}
-people have this item saved!
-</p>
+                <p>{myData[0].savedCount} people have this item saved!</p>
               </div>
               <div>
                 {/* Button needs to have function to mark item as sold */}
