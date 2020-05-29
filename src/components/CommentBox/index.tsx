@@ -5,47 +5,44 @@ import Card from 'react-bootstrap/Card';
 import styles from './index.module.scss';
 import CommentList from './CommentList';
 import CommentForm from './CommentForm';
+import {updateComments} from '../../api';
 
 interface CommentBoxProps {
-  dispatch: Dispatch<any>;
-  data: Array<string>;
+  dispatch?: Dispatch<any>;
+  user: firebase.User | null | undefined;
+  listingId: string;
+  creationTime: number;
+  commentsData: Array<Comment>;
 }
 
-const CommentBox: React.FC<CommentBoxProps> = ({ dispatch }, data) => {
-  const [stateData, setData] = useState(['']);
+interface Comment {
+  commentId: string;
+  userId: string;
+  content: string;
+}
 
-  // let exData = [
-  //   'test',
-  //   'hi',
-  //   'lol',
-  //   'cse110',
-  //   'is',
-  //   'a',
-  //   'joke',
-  //   'more',
-  //   'comment',
-  //   'lol',
-  //   'lol',
-  //   'lol',
-  // ];
+const CommentBox: React.FC<CommentBoxProps> = ({ dispatch, user, listingId, creationTime, commentsData}) => {
+  const [stateData, setData] = useState(commentsData);
 
-  // const handleCommentSubmit = (comment: { author: string; text: string }) => {
-  //   data.push(comment);
-  //   const comments = data;
-  //   const newComments = comments.concat([comment]);
-  //   //setData(newComments);
-  // };
-
-  const handleCommentSubmit = (comment: string) => {
-    setData([...stateData, comment]);
+  const handleCommentSubmit = (newComment: { commentId: string, userId: string; content: string }) => {
+    setData([...stateData, newComment]);
+    //commentsData.push(newComment);
+    updateComments(user, listingId, creationTime, newComment);
+    //const comments = data;
+    //const newComments = comments.concat([comment]);
+    //setData(newComments);
   };
+
+  // const handleCommentSubmit = (comment: string) => {
+  //   setData([...stateData, comment]);
+  // };
 
   return (
     <div>
       <Card className={styles.commentBox}>
         <Card.Title className={styles.commentBoxTitle}>Comments</Card.Title>
-        <CommentList data={stateData} />
-        <CommentForm onCommentSubmit={handleCommentSubmit} />
+        <CommentList currentUser={user} commentsData={stateData} />
+        <CommentForm user={user} onCommentSubmit={handleCommentSubmit} />
       </Card>
     </div>
   );

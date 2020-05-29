@@ -36,12 +36,12 @@ const Navbar: React.FC<NavbarProps> = ({ dispatch }) => {
               title={<img className={styles.thumbnail_image} src={profile} alt="user pic" />}
               id="dropdown-button-drop-left"
             >
-              <Dropdown.Item eventKey="2" onClick={() => redirectTo('/profile')} active={false}>
+              <Dropdown.Item eventKey="1" onClick={() => redirectTo('/profile')} active={false}>
                 View Profile
               </Dropdown.Item>
               <Dropdown.Divider />
               <Dropdown.Item
-                eventKey="1"
+                eventKey="2"
                 onClick={() => {
                   dispatch(authActions.signOut());
                 }}

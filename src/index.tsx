@@ -22,7 +22,7 @@ import EditProfileButton from './components/EditProfile/buttonExample';
 import EditListingButton from './components/EditListing(actual)/buttonExample';
 import CreateListingButton from './components/CreateListing/buttonExample';
 import Saved from './pages/Saved';
-
+import AllReports from './components/ReportModals/AllReports';
 interface AppProps {
   dispatch: Dispatch<any>;
 }
@@ -61,6 +61,7 @@ const AppComponent: React.FC<AppProps> = ({ dispatch }) => {
           <PrivateRoute exact path="/editlisting" component={EditListingButton} />
           <PrivateRoute exact path="/profile" component={Profile} />
           <PrivateRoute exact path="/saved" component={Saved} />
+          <PrivateRoute exact path="/allreports" component={AllReports} />
           <PrivateRoute path="/" component={Home} />
         </Switch>
       </Route>

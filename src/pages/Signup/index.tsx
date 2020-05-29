@@ -11,9 +11,9 @@ import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Cropper from 'react-easy-crop';
 import { Redirect } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import styles from './index.module.scss';
 import { rootState } from '../../redux/reducers';
-import { toast } from 'react-toastify';
 import { userSignup } from '../../api/index';
 
 interface SignupProps {
@@ -72,7 +72,10 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
     <Container>
       <Row className="text-center">
         <Col md="12">
-          <h1>Welcome {user && user.displayName ? user.displayName : ''}!</h1>
+          <h1>
+            Welcome{user && user.displayName ? user.displayName : ''}
+            !
+</h1>
         </Col>
         <Col md="12">
           <h4>Finish Setting Up Your Account</h4>
@@ -184,7 +187,7 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
             onClick={async (e) => {
               // validate the form
               setDispValidated(true);
-              
+
               if (!validated) {
                 e.preventDefault();
                 e.stopPropagation();
