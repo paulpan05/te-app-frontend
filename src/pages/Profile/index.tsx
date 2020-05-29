@@ -102,12 +102,12 @@ const Profile: React.FC<ProfileProps> = ({ user, dispatch }) => {
             <div className={styles.outlin}>
               <p style={{ marginBottom: '0rem', marginLeft: '1rem' }}>Available Listings</p>
               <Carousel className={styles.car} responsive={responsive}>
-                <Listing />
-                <Listing />
-                <Listing />
-                <Listing />
-                <Listing />
-                <Listing />
+              <Listing user={user} listingId={"123456"} title={"Green Shirt"} price={"$50"} postDate={1234} pictures={[]}/>
+              <Listing user={user} listingId={"123456"} title={"Green Shirt"} price={"$50"} postDate={1234} pictures={[]}/>
+              <Listing user={user} listingId={"123456"} title={"Green Shirt"} price={"$50"} postDate={1234} pictures={[]}/>
+              <Listing user={user} listingId={"123456"} title={"Green Shirt"} price={"$50"} postDate={1234} pictures={[]}/>
+              <Listing user={user} listingId={"123456"} title={"Green Shirt"} price={"$50"} postDate={1234} pictures={[]}/>
+              <Listing user={user} listingId={"123456"} title={"Green Shirt"} price={"$50"} postDate={1234} pictures={[]}/>
               </Carousel>
             </div>
           </Row>
@@ -115,12 +115,12 @@ const Profile: React.FC<ProfileProps> = ({ user, dispatch }) => {
             <div className={styles.outlin}>
               <p style={{ marginBottom: '0rem', marginLeft: '1rem' }}>Past Transactions</p>
               <Carousel className={styles.car} responsive={responsive}>
-                <Listing />
-                <Listing />
-                <Listing />
-                <Listing />
-                <Listing />
-                <Listing />
+              <Listing user={user} listingId={"123456"} title={"Green Shirt"} price={"$50"} postDate={1234} pictures={[]}/>
+              <Listing user={user} listingId={"123456"} title={"Green Shirt"} price={"$50"} postDate={1234} pictures={[]}/>
+              <Listing user={user} listingId={"123456"} title={"Green Shirt"} price={"$50"} postDate={1234} pictures={[]}/>
+              <Listing user={user} listingId={"123456"} title={"Green Shirt"} price={"$50"} postDate={1234} pictures={[]}/>
+              <Listing user={user} listingId={"123456"} title={"Green Shirt"} price={"$50"} postDate={1234} pictures={[]}/>
+              <Listing user={user} listingId={"123456"} title={"Green Shirt"} price={"$50"} postDate={1234} pictures={[]}/>
               </Carousel>
             </div>
           </Row>

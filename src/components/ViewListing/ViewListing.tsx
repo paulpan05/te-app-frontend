@@ -23,14 +23,13 @@ import CommentBox from '../CommentBox';
 import 'react-toastify/dist/ReactToastify.css';
 
 interface ViewListingProps {
-  dispatch: Dispatch<any>;
   show: boolean;
   setShow: Function;
   title: string;
   seller: string;
 }
 
-const ViewListing: React.FC<ViewListingProps> = ({ dispatch, show, setShow, title, seller }) => {
+const ViewListing: React.FC<ViewListingProps> = ({ show, setShow, title, seller }) => {
   /* Popup to show that link was saved to clipboard */
   const [sharePopup, showShare] = useState(false);
   /* Popup to show the seller contact information */
