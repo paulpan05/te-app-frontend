@@ -21,6 +21,7 @@ import { toast } from 'react-toastify';
 import { updateListing } from '../../api/index';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-regular-svg-icons';
+import TagsDiv from '../Tags/Tags';
 
 interface EditListingProps {
   user: firebase.User | null | undefined;
@@ -64,6 +65,10 @@ const EditListing: React.FC<EditListingProps> = ({
 
   /* const tags = await // API call to database for list of tags goes here. paul needs to make an endpoint for it. hard code it for now */
   const dispTags = ['Furniture', 'Rides', 'Tutoring', 'Appliances', 'Technology'];
+  const tags = {};
+  dispTags.map((tag) => {
+    tags[tag] = false;
+  });
 
   return (
     <Modal show={show} onHide={() => setShow(false)} size="lg">
@@ -133,9 +138,11 @@ const EditListing: React.FC<EditListingProps> = ({
 
               <Form.Label className={styles.text}>Tags</Form.Label>
               <Form.Row className="justify-content-center text-center">
-                {dispTags.map((tagLabel, i) => {
-                  return <CustomToggleButton value={i}>{tagLabel}</CustomToggleButton>;
-                })}
+                <TagsDiv
+                  tags={dispTags}
+                  initialActiveTags={tagsProp}
+                  setTag={(tag: string, active: boolean) => (tags[tag] = active)}
+                />
               </Form.Row>
             </Form.Group>
 
@@ -220,7 +227,9 @@ const EditListing: React.FC<EditListingProps> = ({
 
                 const location = locationInput.value;
                 const parsedLocation = location !== locationProp ? location : undefined;
-                console.log(title, price, description, location);
+                console.log(
+                  `title: ${parsedTitle}, price: ${parsedPrice}, description: ${parsedDescription}, location: ${parsedLocation}`,
+                );
 
                 // check which photos/tags have changed
                 const picturesAdded = pictures.filter((pic) => !picturesProp.includes(pic));
@@ -228,11 +237,15 @@ const EditListing: React.FC<EditListingProps> = ({
                 console.log(`added pictures: ${picturesAdded}`);
                 console.log(`deleted pictures: ${picturesDeleted}`);
 
-                //TODO extract the tags. Ask aarushi
-                const tags = ['lkj'];
-                const tagsAdded = tags.filter((pic) => !tagsProp.includes(pic));
-                const tagsDeleted = tagsProp.filter((pic) => !tags.includes(pic));
+                // extract the tags
+                const parsedTags = dispTags.filter((tag) => tags[tag]);
+                console.log(`tags: ${parsedTags}`);
+                const tagsAdded = parsedTags.filter((pic) => !tagsProp.includes(pic));
+                const tagsDeleted = tagsProp.filter((pic) => !parsedTags.includes(pic));
+                console.log(`tags added: ${tagsAdded}`);
+                console.log(`tags deleted: ${tagsDeleted}`);
 
+                /* TODO: test */
                 const successAdd = await updateListing(
                   user,
                   listingId,
