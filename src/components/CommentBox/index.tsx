@@ -5,10 +5,13 @@ import Card from 'react-bootstrap/Card';
 import styles from './index.module.scss';
 import CommentList from './CommentList';
 import CommentForm from './CommentForm';
+import {updateComments} from '../../api';
 
 interface CommentBoxProps {
   dispatch?: Dispatch<any>;
   user: firebase.User | null | undefined;
+  listingId: string;
+  creationTime: number;
   commentsData: Array<Comment>;
 }
 
@@ -18,12 +21,13 @@ interface Comment {
   content: string;
 }
 
-const CommentBox: React.FC<CommentBoxProps> = ({ dispatch, user, commentsData}) => {
+const CommentBox: React.FC<CommentBoxProps> = ({ dispatch, user, listingId, creationTime, commentsData}) => {
   const [stateData, setData] = useState(commentsData);
 
   const handleCommentSubmit = (newComment: { commentId: string, userId: string; content: string }) => {
     setData([...stateData, newComment]);
-    commentsData.push(newComment);
+    //commentsData.push(newComment);
+    updateComments(user, listingId, creationTime, newComment);
     //const comments = data;
     //const newComments = comments.concat([comment]);
     //setData(newComments);

@@ -1,6 +1,4 @@
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
+import React from 'react';
 import styles from './index.module.scss';
 import Comment from './Comment';
 
@@ -36,4 +34,4 @@ const CommentList: React.FC<CommentListProps> = ({currentUser, commentsData }) =
   );
 };
 
-export default connect()(CommentList);
+export default CommentList;

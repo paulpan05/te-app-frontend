@@ -10,19 +10,20 @@ const handleFetchNotOk = async (res: Response) => {
   return jsonResult;
 };
 
-const getUserProfile = async (user: firebase.User | null | undefined, targetUserId?:string) => {
+const getUserProfile = async (user: firebase.User | null | undefined, targetUserId?: string) => {
   try {
     const idToken = await user?.getIdToken();
     let response;
-    if(targetUserId!==undefined){
-      response = await fetch(`${endpoint}/users/profile?idToken=${idToken}&targetUserId=${targetUserId}`);
-    }
-    else{
+    if (targetUserId !== undefined) {
+      response = await fetch(
+        `${endpoint}/users/profile?idToken=${idToken}&targetUserId=${targetUserId}`,
+      );
+    } else {
       response = await fetch(`${endpoint}/users/profile?idToken=${idToken}`);
     }
     const result = await handleFetchNotOk(response);
     console.log(result);
-    return result
+    return result;
   } catch (err) {
     console.log(err);
   }
@@ -249,6 +250,34 @@ const updateListing = async (
   }
 };
 
+const updateComments = async (
+  user: firebase.User | null | undefined,
+  listingId: string,
+  creationTime: number,
+  comment: { commentId: string; userId: string; content: string },
+) => {
+  try {
+    const idToken = await user?.getIdToken();
+    const response = await fetch(`${endpoint}/listings/update?idToken=${idToken}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        listingId,
+        creationTime,
+        comment,
+      }),
+    });
+    console.log('comment:' + JSON.stringify(comment));
+    const result = await handleFetchNotOk(response);
+    return true;
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+};
+
 const updateProfile = async (
   user: firebase.User | null | undefined,
   phone: string,
@@ -411,6 +440,7 @@ export {
   updateProfile,
   createListing,
   updateListing,
+  updateComments,
   saveListing,
   unsaveListing,
   fetchListing,

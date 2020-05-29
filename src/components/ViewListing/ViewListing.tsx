@@ -98,7 +98,14 @@ const ViewListing: React.FC<ViewListingProps> = ({ user, show, setShow, title, s
             <Row className={styles.pad} style={{ maxHeight: '100%' }}>
               {/* Comment section */}
               <Col xs={12} md={5}>
-                {myData && <CommentBox user={user} commentsData={myData[0].comments} />}
+                {myData && (
+                  <CommentBox
+                    user={user}
+                    listingId={myData[0].listingId}
+                    creationTime={myData[0].creationTime}
+                    commentsData={myData[0].comments}
+                  />
+                )}
               </Col>
               {/* Middle and right section */}
               {/* {myData && <p>{myData[0].userId}</p>} */}
