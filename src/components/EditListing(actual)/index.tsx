@@ -18,22 +18,30 @@ import styles from './index.module.scss';
 import addPhoto from '../../assets/img/add-photo.png';
 import { rootState } from '../../redux/reducers';
 import { toast } from 'react-toastify';
-import { createListing } from '../../api/index';
+import { updateListing } from '../../api/index';
 
-interface CreateListingProps {
+interface EditListingProps {
   user: firebase.User | null | undefined;
   show: boolean;
   setShow: Function;
+  listingId: string;
+  creationTime: number;
+  titleProp: string;
+  priceProp: number;
+  descriptionProp: string;
+  locationProp: string;
+  tagsProp: string[];
+  imagesProp: string[];
 }
 
 const mapStateToProps = (state: rootState) => ({
   user: state.auth.user,
 });
-// TODO implemenet tags and upload images to s3
-const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) => {
-  const [images, setImages] = useState([addPhoto]);
+// TODO implemenet tags and upload images to s3. also make props required, not optional
+const EditListing: React.FC<EditListingProps> = ({ user, show, setShow, listingId, creationTime, titleProp, priceProp, descriptionProp, locationProp, tagsProp, imagesProp }) => {
+  const [images, setImages] = useState(imagesProp);
   const [dispValidated, setDispValidated] = useState(false);
-  const validated = [false, false, false, true];
+  const validated = [true, true, true, true];
   const which = { title: 0, price: 1, description: 2, location: 3 };
   let titleInput;
   let priceInput;
@@ -71,6 +79,7 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                 onChange={(e) => {
                   validated[which.title] = e.target.value.length > 0;
                 }}
+                defaultValue={titleProp}
               />
 
               <Form.Label className={styles.text}>For how much?</Form.Label>
@@ -86,6 +95,7 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                   onChange={(e) => {
                     validated[which.price] = e.target.value.length > 0;
                   }}
+                  defaultValue={priceProp}
                 />
                 <InputGroup.Text className={styles.inputPostpend}>.00</InputGroup.Text>
               </InputGroup>
@@ -101,18 +111,19 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                 onChange={(e) => {
                   validated[which.description] = e.target.value.length > 0;
                 }}
+                defaultValue={descriptionProp}
               />
 
               <Form.Label className={styles.text}>Pickup Location</Form.Label>
               <Form.Control
                 required
                 placeholder="Price Center"
-                defaultValue="Price Center"
                 className={styles.input}
                 ref={ref => locationInput = ref}
                 onChange={(e) => {
                   validated[which.location] = e.target.value.length > 0;
                 }}
+                defaultValue={locationProp}
               />
 
               <Form.Label className={styles.text}>Tags</Form.Label>
@@ -134,7 +145,7 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                   ))}
                 </Carousel>
                 <Form.File
-                  id="upload-images-create-listing"
+                  id="upload-images-edit-listing"
                   accept="image/*"
                   multiple
                   label="Browse..."
@@ -186,8 +197,10 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                 const location = locationInput.value;
                 console.log(title, price, description, location);
 
-                const success = await createListing(
+                const success = await updateListing(
                   user,
+                  listingId,
+                  creationTime,
                   title,
                   price,
                   description,
@@ -197,10 +210,10 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                 );
                 if (success) {
                   setShow(false);
-                  toast('The listing was successfully created!');
+                  toast('The listing was successfully edited!');
                 } else {
                   toast(
-                    'There was an error while creating your listing! Try to create it again or reload.',
+                    'There was an error while editing your listing! Try to create it again or reload.',
                   );
                 }
               }}
@@ -218,4 +231,4 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
   );
 };
 
-export default connect(mapStateToProps)(CreateListing);
+export default connect(mapStateToProps)(EditListing);

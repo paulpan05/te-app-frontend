@@ -83,7 +83,8 @@ const Home: React.FC<HomeProps> = ({ dispatch, user }) => {
     </div>
   );
 };
-/* const Home: React.FC<HomeProps> = ({ dispatch, user }) => (
+/*
+const Home: React.FC<HomeProps> = ({ dispatch, user }) => (
   <>
     <button
       onClick={() => {
@@ -110,6 +111,7 @@ const Home: React.FC<HomeProps> = ({ dispatch, user }) => {
       Sample User
     </button>
   </>
-); */
+);
+*/
 
 export default connect(mapStateToProps)(Home);

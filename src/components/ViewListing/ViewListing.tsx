@@ -45,7 +45,7 @@ const ViewListing: React.FC<ViewListingProps> = ({ user, show, setShow, title, s
   const [myData, setData] = useState<any>(null);
 
   useEffect(() => {
-    fetchListing(user, setData, ['123456'], [2352325]);
+    fetchListing(user, setData, ['dce37862-1852-44f3-ad43-7a2109755ea0'], [1590700860538]);
   }, [user]);
 
   return (
@@ -99,11 +99,17 @@ const ViewListing: React.FC<ViewListingProps> = ({ user, show, setShow, title, s
                 <CommentBox data={[]} />
               </Col>
               {/* Middle and right section */}
-              <EditListing
-                showDeleteSetter={setshowDelete}
-                sharePopupSetter={showShare}
-                contactSellerSetter={showContact}
-              />
+              {/* {myData && <p>{myData[0].userId}</p>} */}
+              {myData && (
+                <EditListing
+                  showDeleteSetter={setshowDelete}
+                  sharePopupSetter={showShare}
+                  contactSellerSetter={showContact}
+                  sellerId={myData[0].userId}
+                  listingId="dce37862-1852-44f3-ad43-7a2109755ea0"
+                  listingTime={1590700860538}
+                />
+              )}
             </Row>
           </Card>
         </Row>
