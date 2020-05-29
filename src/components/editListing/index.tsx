@@ -1,3 +1,7 @@
+/** This file is NOT for editing a listing (sorry). This file contains the different listing
+ * modals when a user views their own listing vs someone elses. Compares the current user to the user of the listing.
+ * Has all the button functionality for a listing.
+ */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useEffect } from 'react';
 import { Dispatch } from 'redux';
@@ -13,16 +17,14 @@ import styles from './index.module.scss';
 import ProfileImg from '../../assets/img/sarah.png';
 import RateBuyer from '../RateBuyer';
 import { ReportListing } from '../ReportModals';
-import { saveListing, compareUserId, deleteListing } from '../../api/index';
+import { saveListing } from '../../api/index';
 
 interface EditListingProps extends Omit<RouteProps, 'render'> {
   showDeleteSetter: React.Dispatch<any>;
-  sharePopupSetter: React.Dispatch<any>;
   contactSellerSetter: React.Dispatch<any>;
   user: firebase.User | null | undefined;
-  sellerId: string;
-  listingId: string;
-  listingTime: number;
+  listingObject: any;
+  sellerInfo: any;
 }
 
 const mapStateToProps = (state: rootState) => ({
@@ -32,34 +34,27 @@ const mapStateToProps = (state: rootState) => ({
 const EditListing: React.FC<EditListingProps> = ({
   user,
   showDeleteSetter,
-  sharePopupSetter,
   contactSellerSetter,
-  sellerId,
-  listingId,
-  listingTime,
+  listingObject,
+  sellerInfo,
 }) => {
-  /* Temporary: using test boolean to either return guest or seller viewing a listing
-  Need to implement it to check if the user matches the seller of the listing */
-
-  const [test, testSet] = useState(true);
   const [markSold, markSoldSetter] = useState(false);
   const [showReportListing, setShowReportListing] = useState(false);
   const [clickedOnProfile, setClickedOnProfile] = useState(false);
-  // const [curId, curIdSetter] = useState<any>(null);
-  const [curId, curIdSetter] = useState(true);
-  const [data, setData] = useState<any>(null);
+  // false means not same user, true means they own the listing
+  const [curId, curIdSetter] = useState();
   useEffect(() => {
-    compareUserId(user, curIdSetter, sellerId);
-    // getSellerInfo(sellerId, setData);
-  }, [sellerId, user]);
+    const myId = user?.uid;
+    // when the current user is the owner of the listing
+    if (myId === listingObject.userId) {
+      curIdSetter(true);
+    }
+  }, [listingObject.userId, user]);
   return (
-    /* SELLER VIEW */
-
+    /* this is for someone viewing some elses listing */
     <>
       {!curId && (
         <>
-          <p>HELLO</p>
-          <p>{curId}</p>
           {clickedOnProfile ? <Redirect to="/profile" /> : null}
           <ReportListing show={showReportListing} setShow={setShowReportListing} />
           <Col xs={12} md={2} className={styles.textAlign}>
@@ -68,7 +63,11 @@ const EditListing: React.FC<EditListingProps> = ({
               <button
                 type="button"
                 onClick={async () => {
-                  const success = await saveListing(user, listingId, listingTime);
+                  const success = await saveListing(
+                    user,
+                    listingObject.listingId,
+                    listingObject.creationTime,
+                  );
                   if (success) {
                     toast('This listing has been added to your Saved collection!');
                   } else {
@@ -77,7 +76,6 @@ const EditListing: React.FC<EditListingProps> = ({
                     );
                   }
                 }}
-                // onClick={() => toast('This listing has been added to your Saved collection!')}
                 className={styles.myButton}
               >
                 <FontAwesomeIcon icon={faHeart} size="lg" className={styles.flag} />
@@ -110,7 +108,7 @@ const EditListing: React.FC<EditListingProps> = ({
               >
                 <img src={ProfileImg} className={styles.sellerPicture} alt="Seller" />
               </button>
-              <p>Sarah A.</p>
+              {sellerInfo && <p>{sellerInfo.name}</p>}
               <p>0 Stars</p>
 
               {/* Seller popup needs to be implemented to get seller data */}
@@ -123,12 +121,14 @@ const EditListing: React.FC<EditListingProps> = ({
                 Contact Seller
               </button>
               <div className={styles.interestBox}>
-                <p>54 Customers Interested</p>
+                <p>
+{listingObject.savedCount} people have this item saved!</p>
               </div>
             </div>
           </Col>
         </>
       )}
+      {/* This is for someone viewing their OWN listing */}
       {curId && (
         <>
           <RateBuyer show={markSold} setShow={markSoldSetter} title="Flower Sweatshirt" />
@@ -138,7 +138,11 @@ const EditListing: React.FC<EditListingProps> = ({
               <button
                 type="button"
                 onClick={async () => {
-                  const success = await saveListing(user, listingId, listingTime);
+                  const success = await saveListing(
+                    user,
+                    listingObject.listingId,
+                    listingObject.creationTime,
+                  );
                   if (success) {
                     toast('This listing has been added to your Saved collection!');
                   } else {
@@ -147,7 +151,6 @@ const EditListing: React.FC<EditListingProps> = ({
                     );
                   }
                 }}
-                // onClick={() => toast('This listing has been added to your Saved collection!')}
                 className={styles.myButton}
               >
                 <FontAwesomeIcon icon={faHeart} size="lg" className={styles.flag} />
@@ -163,14 +166,7 @@ const EditListing: React.FC<EditListingProps> = ({
               {/* Button needs to have function to delete listing */}
               <button
                 type="button"
-                onClick={async () => {
-                  const success = await deleteListing(user, listingId, listingTime);
-                  if (success) {
-                    toast('This listing has been deleted!');
-                  } else {
-                    toast('There has been an error while deleting this listing. Please try again.');
-                  }
-                }}
+                onClick={() => showDeleteSetter(true)}
                 className={styles.myButton}
               >
                 <FontAwesomeIcon icon={faTrashAlt} size="lg" className={styles.flag} />
@@ -180,7 +176,8 @@ const EditListing: React.FC<EditListingProps> = ({
           <Col xs={12} md={5}>
             <div className={styles.sellerProfile}>
               <div className={styles.interestBox}>
-                <p>54 Customers Interested</p>
+                <p>
+{listingObject.savedCount} people have this item saved!</p>
               </div>
               <div>
                 {/* Button needs to have function to mark item as sold */}

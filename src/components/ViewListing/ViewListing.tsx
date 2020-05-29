@@ -1,13 +1,13 @@
+/** This file is for the popup when you click a listing. Has props for stored listing object and seller profile
+ */
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
 import { Carousel } from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 // import StarRatings from 'react-star-ratings';
 import Card from 'react-bootstrap/Card';
-import { Redirect } from 'react-router-dom';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ToastContainer, toast } from 'react-toastify';
@@ -15,13 +15,11 @@ import styles from './listing.module.scss';
 import FlowerImg from '../../assets/img/books.jpg';
 import { authActions } from '../../redux/actions';
 import DeletePopup from '../deletePopup';
-import SharePopup from '../sharePopup';
 import ContactSeller from '../contactSeller';
 import EditListing from '../editListing';
-import ProfileImg from '../../assets/img/sarah.png';
 import CommentBox from '../CommentBox';
 import 'react-toastify/dist/ReactToastify.css';
-import { fetchListing } from '../../api/index';
+import { fetchListing, getSellerInfo } from '../../api/index';
 import { rootState } from '../../redux/reducers';
 import endpoint from '../../configs/endpoint';
 
@@ -42,17 +40,45 @@ const ViewListing: React.FC<ViewListingProps> = ({ user, show, setShow, title, s
   const [contactSeller, showContact] = useState(false);
   /* Popup to show listing deletion confirmation */
   const [showDelete, setshowDelete] = React.useState(false);
+  /* Stores the listing object */
   const [myData, setData] = useState<any>(null);
+  /* Stores the seller profile of the listing */
+  const [sellerInfo, sellerInfoSetter] = useState<any>(null);
 
+  const callAPI = async () => {
+    // gets the single listing object
+    /* const result1 = await fetchListing(
+      user,
+      setData,
+      ['aa7f6878-2b29-45cc-958b-d6eb3b895485'],
+      [1590713319380],
+    ); */
+    const result1 = await fetchListing(
+      user,
+      setData,
+      ['dce37862-1852-44f3-ad43-7a2109755ea0'],
+      [1590700860538],
+    );
+    // gets the seller profile
+    const result2 = getSellerInfo(user, result1[0].userId, sellerInfoSetter);
+  };
   useEffect(() => {
-    fetchListing(user, setData, ['dce37862-1852-44f3-ad43-7a2109755ea0'], [1590700860538]);
-  }, [user]);
+    callAPI();
+  }, []);
 
   return (
     <div>
-      <SharePopup showPopup={sharePopup} setter={showShare} />
-      <ContactSeller showPopup={contactSeller} setter={showContact} />
-      <DeletePopup showPopup={showDelete} setter={setshowDelete} listingSetter={setShow} />
+      {myData && sellerInfo && (
+        <ContactSeller showPopup={contactSeller} setter={showContact} sellerInfo={sellerInfo} />
+      )}
+      {myData && (
+        <DeletePopup
+          showPopup={showDelete}
+          setter={setshowDelete}
+          listingSetter={setShow}
+          listingObject={myData[0]}
+        />
+      )}
       <Modal show={show} onHide={() => setShow(false)} size="xl">
         <Row style={{ maxHeight: '100%' }} className="no-gutters">
           <Card className={styles.myCard}>
@@ -81,7 +107,7 @@ const ViewListing: React.FC<ViewListingProps> = ({ user, show, setShow, title, s
                 {myData && <p className={styles.listingInfo}>{myData[0].location}</p>}
                 {myData && <p className={styles.listingSecondaryInfo}>{myData[0].description}</p>}
               </Col>
-              {/* This is the exit button */}
+              {/* Button to close the listing modal */}
               <Col xs={1}>
                 <button
                   type="button"
@@ -99,15 +125,12 @@ const ViewListing: React.FC<ViewListingProps> = ({ user, show, setShow, title, s
                 <CommentBox data={[]} />
               </Col>
               {/* Middle and right section */}
-              {/* {myData && <p>{myData[0].userId}</p>} */}
-              {myData && (
+              {myData && sellerInfo && (
                 <EditListing
                   showDeleteSetter={setshowDelete}
-                  sharePopupSetter={showShare}
                   contactSellerSetter={showContact}
-                  sellerId={myData[0].userId}
-                  listingId="dce37862-1852-44f3-ad43-7a2109755ea0"
-                  listingTime={1590700860538}
+                  listingObject={myData[0]}
+                  sellerInfo={sellerInfo}
                 />
               )}
             </Row>
