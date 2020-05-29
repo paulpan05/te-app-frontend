@@ -43,13 +43,28 @@ const EditListing: React.FC<EditListingProps> = ({
   const [clickedOnProfile, setClickedOnProfile] = useState(false);
   // false means not same user, true means they own the listing
   const [curId, curIdSetter] = useState();
+  const [liked, setLiked] = useState(false);
   useEffect(() => {
     const myId = user?.uid;
     // when the current user is the owner of the listing
     if (myId === listingObject.userId) {
       curIdSetter(true);
     }
-  }, [listingObject.userId, user]);
+    const obj = [listingObject.listingId, listingObject.creationTime];
+    console.log(obj);
+    for (let i = 0; i < sellerInfo.savedListings.length; i++) {
+      if (sellerInfo.savedListings[i][0] === listingObject.listingId) {
+        setLiked(true);
+        break;
+      }
+    }
+  }, [
+    listingObject.creationTime,
+    listingObject.listingId,
+    listingObject.userId,
+    sellerInfo.savedListings,
+    user,
+  ]);
   return (
     /* this is for someone viewing some elses listing */
     <>
@@ -78,7 +93,11 @@ const EditListing: React.FC<EditListingProps> = ({
                 }}
                 className={styles.myButton}
               >
-                <FontAwesomeIcon icon={faHeart} size="lg" className={styles.flag} />
+                <FontAwesomeIcon
+                  icon={faHeart}
+                  size="lg"
+                  className={liked ? styles.likedFlag : styles.flag}
+                />
               </button>
               {/* Button needs to have function to copy item link to clipboard */}
               <button
@@ -121,8 +140,10 @@ const EditListing: React.FC<EditListingProps> = ({
                 Contact Seller
               </button>
               <div className={styles.interestBox}>
-                <p>
-{listingObject.savedCount} people have this item saved!</p>
+                <p>{listingObject.savedCount}
+{' '}
+people have this item saved!
+</p>
               </div>
             </div>
           </Col>
@@ -153,7 +174,11 @@ const EditListing: React.FC<EditListingProps> = ({
                 }}
                 className={styles.myButton}
               >
-                <FontAwesomeIcon icon={faHeart} size="lg" className={styles.flag} />
+                <FontAwesomeIcon
+                  icon={faHeart}
+                  size="lg"
+                  className={liked ? styles.likedFlag : styles.flag}
+                />
               </button>
               {/* Button needs to have function to copy link to clipboard */}
               <button
@@ -175,9 +200,20 @@ const EditListing: React.FC<EditListingProps> = ({
           </Col>
           <Col xs={12} md={5}>
             <div className={styles.sellerProfile}>
+              <button
+                type="button"
+                className={styles.myButton}
+                onClick={() => setClickedOnProfile(true)}
+              >
+                <img src={ProfileImg} className={styles.sellerPicture} alt="Seller" />
+              </button>
+              {sellerInfo && <p>{sellerInfo.name}</p>}
+              <p>0 Stars</p>
               <div className={styles.interestBox}>
-                <p>
-{listingObject.savedCount} people have this item saved!</p>
+                <p>{listingObject.savedCount}
+{' '}
+people have this item saved!
+</p>
               </div>
               <div>
                 {/* Button needs to have function to mark item as sold */}

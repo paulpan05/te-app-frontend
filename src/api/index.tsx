@@ -263,7 +263,9 @@ const deleteListing = async (
         deleteTag: true,
       }),
     });
+    console.log(response);
     const result = await handleFetchNotOk(response);
+    console.log(result);
     return true;
   } catch (err) {
     return false;
