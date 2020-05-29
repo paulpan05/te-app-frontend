@@ -48,16 +48,6 @@ const Navbar: React.FC<NavbarProps> = ({ dispatch }) => {
               >
                 Logout
               </Dropdown.Item>
-              <Dropdown.Divider/>
-              <Dropdown.Item
-                eventKey="3"
-                onClick={() => {
-                  redirectTo('/allreports');
-                }}
-                active={false}
-              >
-                Get All Reports
-              </Dropdown.Item>
             </NavDropdown>
           </Nav>
         </NavBar.Collapse>
