@@ -30,6 +30,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ReportListing } from '../ReportModals';
 import ProfileImg from '../../assets/img/sarah.png';
 import Profile from '../../pages/Profile/index';
+import RateBuyer from '../RateBuyer';
 
 interface ViewListingProps {
   show: boolean;
@@ -302,6 +303,7 @@ const ViewListing: React.FC<ViewListingProps> = ({
                             >
                               Mark as Sold
                           </button>
+                          <RateBuyer user={user} title="Flower Sweatshirt" show={markSold} setShow={markSoldSetter} />
                           <button type="button" className={styles.sellerButton} onClick={() => {setShowEditListing(true);}}>
                               Edit Listing
                             </button>

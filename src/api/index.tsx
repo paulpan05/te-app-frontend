@@ -112,7 +112,7 @@ const getListingsBySearch = async (
     console.log(`searchTitle=${searchTerm} result=`);
     console.log(result);
     setter(result);
-    return result;
+    return true;
   } catch (err) {
     console.log(err);
     return err;
@@ -125,7 +125,7 @@ const getListingsByTags = async (user: firebase.User | null | undefined, tags: s
     const response = await fetch(`${endpoint}/listings/byTags?idToken=${idToken}&tags=${tags}`);
     const result = await handleFetchNotOk(response);
     console.log(result);
-    return true;
+    return result;
   } catch (err) {
     console.log(err);
     return false;
@@ -491,6 +491,22 @@ const fetchListing = async (
   }
 };
 
+const searchUser = async (
+  user: firebase.User | null | undefined,
+  name: string,
+) => {
+  try {
+    const idToken = await user?.getIdToken();
+    const response = await fetch(
+      `${endpoint}/users/search?idToken=${idToken}&name=${name}`,
+    );
+    const result = await handleFetchNotOk(response);
+    return result;
+  } catch (err) {
+    return undefined;
+  }
+};
+
 
 const deleteListing = async (
   user: firebase.User | null | undefined,
@@ -546,6 +562,7 @@ const markAsSold = async (
   }
 };
 
+
 export {
   handleFetchNotOk,
   getUserProfile,
@@ -568,4 +585,5 @@ export {
   fetchIdListings,
   markAsSold,
   fetchListings,
+  searchUser
 };

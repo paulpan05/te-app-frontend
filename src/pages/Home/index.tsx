@@ -19,7 +19,7 @@ import Carousel from 'react-multi-carousel';
 import TagButton from '../../components/Button';
 import Tags from '../../components/Tags';
 import Rate from '../../components/RateSeller';
-
+import { toast } from 'react-toastify';
 import { rootState } from '../../redux/reducers';
 import endpoint from '../../configs/endpoint';
 import { getUserProfile, userSignup, updateProfile, getListings, getListingsBySearch, getListingsByTags, createListing, fetchIdListings} from '../../api';
@@ -39,7 +39,11 @@ const Home: React.FC<HomeProps> = ({ dispatch, user }) => {
   const [userInfo, userInfoSetter] = useState<any>(null);
   let rowArray = new Array();
   let searchInput;
-  const [tagStates, setTagStates] = useState([false, false, false, false, false, false, false, false, false, false, false, false, false, false, false])
+  const dispTags = ['Tutoring', 'Housing', 'Rideshare', 'Study Material', 'Clothes', 'Furniture', 'Electronics', 'Appliances', 'Fitness', 'Other', 'On-Campus Pickup', 'Off-Campus Pickup', 'Venmo', 'Cash', 'Dining Dollars', 'Free'];
+  let tags = {};
+  dispTags.map((tag) => {
+    tags[tag] = false;
+  });
 
   useEffect(() => {
          getUserProfile(user, undefined, userInfoSetter);
@@ -50,7 +54,27 @@ const Home: React.FC<HomeProps> = ({ dispatch, user }) => {
     <div>
       <Rate />
       <Row className="justify-content-md-center">
-        <Tags/>
+        <button onClick={async () => {
+              const parsedTags = dispTags.filter((tag) => tags[tag]);
+              console.log(`tags: ${parsedTags}`);
+              if(parsedTags.length != 0 ) {
+                const response1 = await getListingsByTags(user, parsedTags);
+                let parsedIds = new Array();
+                let parsedCreationTimes = new Array();
+                console.log(response1);
+                if(response1 != false) {
+                response1.map((taggedArray) => {taggedArray.map((listing) => { if(!parsedIds.includes(listing[0])) { parsedIds.push(listing[0]); parsedCreationTimes.push(listing[1]);} })})
+                const response2 = await fetchIdListings(user, setSearchListings, parsedIds, parsedCreationTimes);
+                setListings(null); rowArray = new Array();
+                } else {
+                  toast('No Listings exist with those tags yet!');
+                }
+              } else {
+                await getListings(user, setListings); 
+                setSearchListings(null); rowArray = new Array();
+              }
+          }}>Apply Filters</button>
+        <Tags tags={dispTags} setTag={(tag: string, active: boolean) => (tags[tag] = active)}/>
       </Row>
       <Row className="justify-content-md-center">
         <InputGroup className={styles.inputGroup}>

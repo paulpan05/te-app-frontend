@@ -54,7 +54,7 @@ const SellerInfo: React.FC<SellerInfoProps> = ({
 
   return (isUsersListing) ? (
     <>
-      <RateBuyer show={markSold} setShow={markSoldSetter} title="Flower Sweatshirt" />
+      <RateBuyer user={user} show={markSold} setShow={markSoldSetter} title="Flower Sweatshirt" />
       <div>
         {/* Button needs to have function to mark item as sold */}
         <button
