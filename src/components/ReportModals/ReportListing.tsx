@@ -19,13 +19,16 @@ interface ReportListingProps {
   user: firebase.User | null | undefined;
   show: boolean;
   setShow: Function;
+  listingId: string;
+  reportedListingName: string
+  reportedUserName: string;
 }
 
 const mapStateToProps = (state: rootState) => ({
   user: state.auth.user,
 });
 
-const ReportListing: React.FC<ReportListingProps> = ({ dispatch, user, show, setShow }) => {
+const ReportListing: React.FC<ReportListingProps> = ({ dispatch, user, show, setShow, listingId, reportedListingName, reportedUserName, }) => {
   const [reportReason, setReportReason] = useState('');
 
   const handleTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -41,10 +44,12 @@ const ReportListing: React.FC<ReportListingProps> = ({ dispatch, user, show, set
     const type = 'Listing Report';
     const reportId = uuidv4();
     const description = textVal;
-    const success = await reportListing(user, type, reportId, description, 'listingid');
-    success
-      ? toast('Report submitted. Thank you for keeping Triton Exchange safe and secure!')
-      : toast('Error submitting report. Please try again!');
+    const success = await reportListing(user, type, reportId, description, listingId);
+    if (success) {
+      toast('Report submitted. Thank you for keeping Triton Exchange safe and secure!');
+    } else {
+      toast('Error submitting report. Please try again!');
+    }
   };
 
   return (
@@ -71,12 +76,12 @@ const ReportListing: React.FC<ReportListingProps> = ({ dispatch, user, show, set
               <div className={styles.reportTitle}>Report Listing</div>
             </Row>
             <Row className={styles.pad1}>
-              <div className={styles.listingTitle}>Flower Sweatshirt</div>
+              <div className={styles.listingTitle}>{reportedListingName}</div>
             </Row>
             <Row className={styles.pad2}>
               <img src={ProfileImg} className={styles.sellerPicture} alt="seller" />
               <div className={styles.reportTitle} style={{ paddingLeft: '1rem' }}>
-                Seller: Sarah A.
+                Seller: {reportedUserName}
               </div>
             </Row>
             <Row className={styles.pad2}>

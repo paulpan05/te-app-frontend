@@ -1,5 +1,8 @@
 * {
-  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+  font-family: Roboto, 'Open Sans', Arial, Helvetica, sans-serif;
+  p {
+    font-size:2vmin !important;
+  }
 }
 
 // hide the focus indicator if element receives focus via mouse, but show on keyboard focus (on tab).
@@ -36,4 +39,92 @@
 }
 .myToast {
   font-family: Roboto !important;
+}
+@media(max-width:767px) {
+  .exitFlag {
+    font-size:1rem;
+  }
+  .flag {
+    font-size:3rem;
+  }
+  .likedFlag {
+    font-size:3rem;
+  }
+  .responsiveModal {
+    max-width:90% !important;
+    left:5% !important;
+  }
+}
+@media (min-width:768px) {
+  .responsiveModal {
+    max-width:100% !important;
+  }
+  .exitFlag {
+    font-size:3rem;
+  }
+.flag {
+  font-size:5rem;
+}
+.likedFlag {
+  font-size:5rem;
+}
+}
+.hoverPointer:hover {
+  cursor: pointer !important;
+}
+.imgWrapper {
+  width: 100% !important;
+  height:400px !important;
+  max-width: 400px !important;
+  max-height:400px !important;
+}
+.header {
+  font-size: 3rem !important;
+  text-align:center;
+}
+.mediumHeader {
+  font-size: 2.25rem !important;
+  padding-bottom: 1rem !important;
+}
+.subHeader {
+  font-size:1.5rem !important;
+}
+.bodyText {
+  font-size:1rem !important;
+}
+.blueColor {
+  color: #17284A !important;
+}
+body {
+  padding: 0 !important;
+}
+.maxWidth95 {
+  max-width:95% !important;
+}
+.textAlign {
+  text-align:center;
+}
+.myButton {
+  background: none;
+  border: 0;
+  margin-top:3rem;
+  margin-bottom:3rem;
+  vertical-align: middle;
+}
+.exitButton {
+  background:none !important;
+  border: 0 !important;
+  vertical-align:middle !important;
+  font-size:1.5rem !important;
+}
+.exitPad {
+  position:absolute !important;
+  right: 0 !important;
+  padding-top: 1rem !important;
+  padding-right: 2rem !important;
+}
+.myCard {
+  background: #ffffff;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), inset 0px 4px 1px #e5e5e5;
+  border-radius: 3rem !important;
 }

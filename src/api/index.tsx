@@ -3,7 +3,7 @@ import endpoint from '../configs/endpoint';
 
 const handleFetchNotOk = async (res: Response) => {
   const jsonResult = await res.json();
-  //console.log(jsonResult);
+  console.log(jsonResult);
   if (!res.ok) {
     throw Error(jsonResult);
   }
@@ -16,7 +16,7 @@ const getUserProfile = async (
   targetUserId?: string,
   setter?: Function,
 ) => {
-  //TODO setter: Function, updating the calls
+  // TODO setter: Function, updating the calls
   try {
     const idToken = await user?.getIdToken();
     let response;
@@ -49,10 +49,12 @@ const fetchListings = async (
     const idToken = await user?.getIdToken();
     // console.log(idToken);
     const response = await fetch(
-      `${endpoint}/listings/byIds?idToken=${idToken}&ids=${ids.join(',')}&creationTimes=${creationTimes.join(',')}`,
+      `${endpoint}/listings/byIds?idToken=${idToken}&ids=${ids.join(
+        ',',
+      )}&creationTimes=${creationTimes.join(',')}`,
     );
     const result = await handleFetchNotOk(response);
-    if(setter){
+    if (setter) {
       setter(result);
     }
     // console.log(result);
@@ -62,7 +64,6 @@ const fetchListings = async (
     return undefined;
   }
 };
-
 
 const getListings = async (user: firebase.User | null | undefined, setter: Function) => {
   try {
@@ -150,7 +151,7 @@ const createListing = async (
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        listingId: '12091209',
+        listingId: uuidv4(),
         creationTime: Date.now(),
         title,
         price,
@@ -195,6 +196,162 @@ const userSignup = async (
     return true;
   } catch (err) {
     return false;
+  }
+};
+
+const uploadProfilePicture = async (
+  user: firebase.User | null | undefined,
+  localPhotoPath: string, // use the local photo path from fileUpload (not the blob thing)
+) => {
+  try {
+    // get necessary variables for api call
+    const userId = user?.uid;
+    const splitPath = localPhotoPath.split('.');
+    const fileExtension = splitPath[splitPath.length - 1];
+    const key = `${userId}/profile${fileExtension}`;
+
+    const formData = new FormData();
+    formData.append('key', key); // for listing pictures: key: `${userId}/{uuid}${fileExtension}` 'https://triton-exchange-bucket-photos.s3.amazonaws.com/{key}
+    formData.append('file', localPhotoPath);
+    const response = await fetch('https://triton-exchange-bucket-photos.s3.amazonaws.com', { // [public] link 'https://triton-exchange-bucket-photos.s3.amazonaws.com/{key}'
+      method: 'POST',
+      body: formData,
+      /*       headers: {
+        'Content-Type': 'application/json', TODO is this needed?
+      },? */
+    });
+
+    if (response.status !== 204) { // TODO can i use handleFetchNotOk? it used .ok, not '200' specifically
+      throw Error(await response.json());
+    }
+    
+    return `https://triton-exchange-bucket-photos.s3.amazonaws.com/${key}`;
+  } catch (err) {
+    console.log(err);
+    return undefined;
+  }
+};
+
+const uploadPictures = async (
+  user: firebase.User | null | undefined,
+  localPhotoPaths: string[], // I create a link for it. would a local photo path work?
+) => {
+  try {
+    const responses = await Promise.all(
+      localPhotoPaths.map(async path => uploadPicture(user, path))
+    );
+
+    let errOccurred = false;
+    const pictureURLs = responses.map((response, i) => {
+      console.log(response);
+      console.log(localPhotoPaths[i]);
+      if (response) {
+        return response;
+      } else {
+        console.log("error occured in uploadPictures. couldn't upload all pictures!");
+        errOccurred = true;
+      }
+    });
+
+    if (errOccurred) {
+      // test. when something is mapped, if nothing is returned, will the index at map be undefined or will nothing be added
+      console.log('test in uploadingPicture (false = bad):', (localPhotoPaths.length === pictureURLs.length));
+      throw Error('error occured in upload pictures!');
+    }
+
+    console.log(`pictureURLs for uploadPictures: ${pictureURLs}`);
+    return pictureURLs;
+  } catch (err) {
+    console.log(err);
+    return undefined;
+  }
+};
+
+const uploadPicture = async (
+  user: firebase.User | null | undefined,
+  localPhotoPath: string, // I create a link for it. would a local photo path work?
+) => {
+  try {
+    // get necessary variables for api call
+    const userId = user?.uid;
+    const splitPath = localPhotoPath.split('.');
+    const fileExtension = splitPath[splitPath.length - 1];
+    const key = `${userId}/${uuidv4()}${fileExtension}`;
+
+    const formData = new FormData();
+    formData.append('key', key); // ${userId}/{uuid}${fileExtension}
+    formData.append('file', localPhotoPath);
+
+    const response = await fetch('https://triton-exchange-bucket-photos.s3.amazonaws.com', {
+      method: 'POST',
+      body: formData,
+      /*       headers: {
+        'Content-Type': 'application/json',
+      },? */
+    });
+
+    if (response.status !== 204) { // can i use handleFetchNotOk? it used .ok, not '200' specifically TODO
+      throw Error(await response.json());
+    }
+
+    return `https://triton-exchange-bucket-photos.s3.amazonaws.com/${key}`;
+  } catch (err) {
+    console.log(err);
+    return undefined;
+  }
+};
+
+/* NOTE: this api wrapper returns the OPPOSITE of the other api wrappers. success: returns undefined. failure: array of failed deletions (the picture urls) */
+const deletePictures = async (pictureURLs: string[]) => {
+  let failures;
+  try {
+    const responses = await Promise.all(
+      pictureURLs.map(async pictureURL => deletePicture(pictureURL))
+    );
+
+    let errOccurred = false;
+    failures = responses.map((response, i) => {
+      console.log(response);
+      console.log(pictureURLs[i]);
+      if (response) {
+        console.log("are the two URLs equal? test: ", (pictureURLs[i] === response));
+      } else {
+        console.log("error occurred in deletePictures. couldn't delete all pictures!");
+        errOccurred = true;
+        return ;
+      }
+    });
+
+    if (errOccurred) {
+      // test. when something is mapped, if nothing is returned, will the index at map be undefined or will nothing be added
+      console.log('test in deletePictures (false = bad):', (pictureURLs.length === failures.length));
+      throw Error(`error occured in delete pictures!: ${failures}`);
+    }
+
+    console.log("Success in deleting all images!");
+    return undefined;
+  } catch (err) {
+    console.log(err);
+    return failures;
+  }
+}
+
+/* NOTE: this api wrapper returns the OPPOSITE of the other api wrappers. success: returns undefined. failure: the failed deletion's URL */
+const deletePicture = async (
+  pictureURL: string,
+) => {
+  try {
+    const response = await fetch(pictureURL, {
+      method: 'DELETE',
+    });
+
+    if (response.status !== 204) {
+      throw Error(await response.json());
+    }
+    return undefined;
+  } catch (err) {
+    console.log(err);
+    return pictureURL;
   }
 };
 
@@ -356,7 +513,7 @@ const updateComments = async (
   user: firebase.User | null | undefined,
   listingId: string,
   creationTime: number,
-  comments: { commentId: string; userId: string; content: string }[],
+  comments: string[][],
 ) => {
   try {
     const idToken = await user?.getIdToken();
@@ -490,21 +647,6 @@ const fetchListing = async (
   }
 };
 
-const getSellerInfo = async (
-  user: firebase.User | null | undefined,
-  targetUser: string,
-  setter: Function,
-) => {
-  try {
-    const idToken = await user?.getIdToken();
-    const response = await fetch(
-      `${endpoint}/users/profile?idToken=${idToken}&targetUserId=${targetUser}`,
-    );
-    const result = await handleFetchNotOk(response);
-    setter(result);
-    return result;
-  } catch (err) {}
-};
 
 const deleteListing = async (
   user: firebase.User | null | undefined,
@@ -575,11 +717,11 @@ export {
   saveListing,
   unsaveListing,
   fetchListing,
-  getSellerInfo,
   deleteListing,
   getListings,
   getListingsBySearch,
   getListingsByTags,
   fetchIdListings,
   markAsSold,
+  fetchListings,
 };

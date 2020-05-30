@@ -23,11 +23,13 @@ const CommentForm: React.FC<CommentFormProps> = ({ user, onCommentSubmit }) => {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const textVal = textData.trim();
+    let textVal = textData.trim();
     if (!textVal) {
       return;
     }
-    const newComment = { commentId: uuidv4(), userId: await user?.getIdToken(), content: textVal };
+    if(textVal.length > 100)
+      textVal = textVal.substring(0, 100);
+    const newComment = [uuidv4(), user?.uid, textVal];
     onCommentSubmit(newComment);
     setTxt('');
     textData = '';
@@ -42,7 +44,7 @@ const CommentForm: React.FC<CommentFormProps> = ({ user, onCommentSubmit }) => {
           className={styles.commentInput}
           onChange={handleTextChange}
           value={txt}
-          placeholder="Write a Comment..."
+          placeholder="Write a Comment... (100 chars limit)"
         />
       </form>
     </div>

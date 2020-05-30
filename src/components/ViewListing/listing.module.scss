@@ -48,15 +48,7 @@
   box-shadow: 0px 4px 4px #e5e5e5;
   border-radius: 40px;
 }
-.myCard {
-  background: #ffffff;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), inset 0px 4px 1px #e5e5e5;
-  border-radius: 3rem !important;
-}
-.myButton {
-  background: none;
-  border: 0;
-}
+
 
 .sellerPicture {
   border-radius: 150px;
@@ -90,18 +82,18 @@
 }
 .sellerProfile {
   border: 1px solid black;
-  border-radius: 3rem;
-  text-align: center;
-  height: 100%;
-  display: grid;
+  border-radius:3rem;
+  text-align:center;
+  height:100%;
+  display:block;
   font-family: Roboto;
   font-weight: 300;
   font-size: 20px;
-  line-height: 23px;
-  letter-spacing: 0.05em;
-  align-items: center;
-  margin-left: 1rem;
-  margin-right: 1rem;
+  line-height:23px;
+  letter-spacing:.05em;
+  align-items:center;
+  margin-left:1rem;
+  margin-right:1rem;
 }
 .interestBox {
   background: #eeeeee;
@@ -117,16 +109,81 @@ p {
 .images img {
   max-width: 75%;
 }
-@media (max-width: 767px) {
+@media(max-width:767px) {
+  .exitFlag {
+    font-size:1rem;
+  }
   .flag {
-    font-size: 1rem;
+    font-size:3rem;
+  }
+  .likedFlag {
+    font-size:3rem;
+  }
+  .modal-90w {
+    max-width:75% !important;
+    position:absolute !important;
+    left:12.5% !important;
   }
 }
-@media (min-width: 768px) {
-  .flag {
-    font-size: 3rem;
+@media (min-width:768px) {
+  .modal-90w {
+    max-width:40% !important;
   }
+  .exitFlag {
+    font-size:3rem;
+  }
+.flag {
+  font-size:5rem;
+}
+.likedFlag {
+  font-size:5rem;
+}
 }
 .flag:hover {
-  color: gold;
+  color:red;
+}
+.likedFlag {
+  color:red;
+}
+.exitFlag:hover {
+  color:red;
+}
+
+
+.myButton {
+  background: none;
+  border: 0;
+  margin-top:3rem;
+  margin-bottom:3rem;
+  vertical-align: middle;
+}
+
+.sellerButton {
+  background: #17284A;
+  border: 1px solid #000000;
+  border-radius:50px;
+  color:white;
+  font-family: Roboto;
+  font-size:20px;
+  line-height:23px;
+  height:3rem;
+  text-align:center;
+  margin-bottom:1rem;
+}
+.interestBox {
+  background: #EEEEEE;
+  border-radius:50px;
+  max-height:25%;
+  margin-top:20%;
+  display:flex;
+  justify-content:center;
+  p {
+    max-width: 90%;
+    text-align: center;
+  }
+}
+.sellerPicture {
+  border-radius: 150px;
+  max-width:25%;
+  margin:auto;
 }

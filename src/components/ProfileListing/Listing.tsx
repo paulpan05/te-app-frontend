@@ -90,8 +90,8 @@ const Listing: React.FC<ListingProps> = ({title, price, postDate, pictures, user
           {/* <button className={styles.btn}>Contact Seller</button> */}
         </div>
       </div>
-
-      <ViewListing title="Flower Sweatshirt" seller="Sarah A." show={show} setShow={setShow} />
+          {show && (
+      <ViewListing listingId={listingId} creationTime={postDate} show={show} setShow={setShow} />)}
     </div>
   );
 };

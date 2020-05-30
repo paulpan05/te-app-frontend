@@ -10,7 +10,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faSearch } from '@fortawesome/free-solid-svg-icons';
 import OpenPopup from '../../components/openPopup';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import EditListing from '../../components/editListing';
 import FlowerImg from '../../assets/GreenShirt.png';
 import styles from './index.module.scss';
 import Listing from '../../components/Listing/Listing';

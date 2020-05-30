@@ -305,3 +305,12 @@ const EditListing: React.FC<EditListingProps> = ({
 };
 
 export default connect(mapStateToProps)(EditListing);
+
+/*
+  <button
+    type="button"
+    onClick={() => showDeleteSetter(true)}
+    className={styles.myButton}
+  >
+    <FontAwesomeIcon icon={faTrashAlt} size="lg" className={styles.flag} />
+  </button>*/

@@ -12,7 +12,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faSearch } from '@fortawesome/free-solid-svg-icons';
 import OpenPopup from '../../components/openPopup';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import EditListing from '../../components/editListing';
 import FlowerImg from '../../assets/GreenShirt.png';
 import styles from './index.module.scss';
 import Listing from '../../components/Listing/Listing';
@@ -50,10 +49,10 @@ const Home: React.FC<HomeProps> = ({ dispatch, user }) => {
   return (
     <div>
       <Rate />
-      <Row className="justify-content-md-center">
+      <Row className="justify-content-center">
         <Tags/>
       </Row>
-      <Row className="justify-content-md-center">
+      <Row className="justify-content-center">
         <InputGroup className={styles.inputGroup}>
           <FormControl className={styles.input} type="text" placeholder="Search.." onChange={(e) => {searchInput = e.target.value}} name="search" />
           <button className={styles.searchButton}  onClick={async () => { if(searchInput.length != 0) {await getListingsBySearch(user, searchInput, setSearchListings); setListings(null); rowArray = new Array(); } else {await getListings(user, setListings); setSearchListings(null); rowArray = new Array();}}}>

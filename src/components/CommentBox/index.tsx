@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import Card from 'react-bootstrap/Card';
@@ -12,36 +12,22 @@ interface CommentBoxProps {
   user: firebase.User | null | undefined;
   listingId: string;
   creationTime: number;
-  commentsData: Array<Comment>;
+  commentsData: string[][];
 }
 
-interface Comment {
-  commentId: string;
-  userId: string;
-  content: string;
-}
 
 const CommentBox: React.FC<CommentBoxProps> = ({ dispatch, user, listingId, creationTime, commentsData}) => {
   const [stateData, setData] = useState(commentsData);
-
-  const handleCommentSubmit = (newComment: { commentId: string, userId: string; content: string }) => {
+  const handleCommentSubmit = (newComment: string[]) => {
     setData([...stateData, newComment]);
-    //commentsData.push(newComment);
     updateComments(user, listingId, creationTime, [newComment]);
-    //const comments = data;
-    //const newComments = comments.concat([comment]);
-    //setData(newComments);
   };
-
-  // const handleCommentSubmit = (comment: string) => {
-  //   setData([...stateData, comment]);
-  // };
 
   return (
     <div>
       <Card className={styles.commentBox}>
         <Card.Title className={styles.commentBoxTitle}>Comments</Card.Title>
-        <CommentList currentUser={user} commentsData={stateData} />
+        <CommentList currentUser={user} commentsData={stateData} listingId={listingId}/>
         <CommentForm user={user} onCommentSubmit={handleCommentSubmit} />
       </Card>
     </div>

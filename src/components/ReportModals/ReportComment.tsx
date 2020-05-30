@@ -19,13 +19,18 @@ interface ReportCommentProps {
   user: firebase.User | null | undefined;
   show: boolean;
   setShow: Function;
+  userId: string;
+  listingId: string;
+  commentId: string;
+  reportedUserName: string;
+  reportedProfilePicture: string;
 }
 
 const mapStateToProps = (state: rootState) => ({
   user: state.auth.user,
 });
 
-const ReportComment: React.FC<ReportCommentProps> = ({ dispatch, user, show, setShow }) => {
+const ReportComment: React.FC<ReportCommentProps> = ({ dispatch, user, show, setShow, userId, listingId, commentId, reportedUserName, reportedProfilePicture }) => {
   const [reportReason, setReportReason] = useState('');
 
   const handleTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -46,8 +51,8 @@ const ReportComment: React.FC<ReportCommentProps> = ({ dispatch, user, show, set
       type,
       reportId,
       description,
-      'listingid',
-      'commentid',
+      listingId,
+      commentId,
     );
     success
       ? toast('Report submitted. Thank you for keeping Triton Exchange safe and secure!')
@@ -78,9 +83,9 @@ const ReportComment: React.FC<ReportCommentProps> = ({ dispatch, user, show, set
               <div className={styles.reportTitle}>Report Comment</div>
             </Row>
             <Row className={styles.pad2}>
-              <img src={ProfileImg} className={styles.sellerPicture} alt="seller" />
+              <img src={reportedProfilePicture} className={styles.sellerPicture} alt="seller" />
               <div className={styles.reportTitle} style={{ paddingLeft: '1rem' }}>
-                Sarah A.
+                {reportedUserName}
               </div>
             </Row>
             <Row className={styles.pad2}>

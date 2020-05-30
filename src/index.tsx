@@ -8,6 +8,7 @@ import 'focus-visible/dist/focus-visible.min';
 import './styles/index.scss';
 import { Dispatch } from 'redux';
 import { ToastContainer, Zoom } from 'react-toastify';
+import { FirebaseError } from 'firebase';
 import * as serviceWorker from './serviceWorker';
 import rootStore from './redux/stores';
 import authActions from './redux/actions/auth';
@@ -18,19 +19,13 @@ import Navbar from './components/Navbar';
 import Signup from './pages/Signup';
 import RateBuyerButton from './components/RateBuyer/buttonExample';
 import Profile from './pages/Profile';
-import EditProfileButton from './components/EditProfile/buttonExample';
-import EditListingButton from './components/EditListing(actual)/buttonExample';
-import CreateListingButton from './components/CreateListing/buttonExample';
 import Saved from './pages/Saved';
 import AllReports from './components/ReportModals/AllReports';
 import { rootState } from './redux/reducers';
-import { FirebaseError } from 'firebase';
 
 interface AppProps {
   dispatch: Dispatch<any>;
 }
-
-
 
 const AppComponent: React.FC<AppProps> = ({ dispatch }) => {
   React.useEffect(() => {
@@ -38,7 +33,6 @@ const AppComponent: React.FC<AppProps> = ({ dispatch }) => {
   }, [dispatch]);
 
   const [signingUp, setSigningUp] = useState(false);
-  
 
   return (
     <Switch>
@@ -62,13 +56,10 @@ const AppComponent: React.FC<AppProps> = ({ dispatch }) => {
         />
         <Navbar dispatch={dispatch} />
         <Switch>
-          <PrivateRoute exact path="/createlisting" component={CreateListingButton} />
           <PrivateRoute exact path="/ratebuyer" component={RateBuyerButton} />
-          <PrivateRoute exact path="/editprofile" component={EditProfileButton} />
-          <PrivateRoute exact path="/editlisting" component={EditListingButton} />
           <PrivateRoute exact path="/profile" component={Profile} />
           <PrivateRoute exact path="/saved" component={Saved} />
-          <PrivateRoute exact path="/" component={Home} />
+          <PrivateRoute path="/" component={Home} />
         </Switch>
       </Route>
     </Switch>
