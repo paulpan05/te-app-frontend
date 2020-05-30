@@ -20,7 +20,7 @@ import RateBuyer from '../RateBuyer';
 import { ReportListing } from '../ReportModals';
 import { saveListing, getUserProfile, unsaveListing, fetchListing } from '../../api/index';
 import 'react-toastify/dist/ReactToastify.css';
-
+import Profile from '../../pages/Profile/index';
 interface EditListingProps extends Omit<RouteProps, 'render'> {
   showDeleteSetter: React.Dispatch<any>;
   contactSellerSetter: React.Dispatch<any>;
@@ -89,12 +89,15 @@ const EditListing: React.FC<EditListingProps> = ({
     }*/
     callAPI();
   }, [user]);
+  console.log('LISTING OBJECT USER ID');
+  console.log(listingObject.userId);
   return (
     /* VIEWING SOMEONE ELSE'S LISTING!!! */
     <>
-      {clickedOnProfile && <Redirect to="/profile" />}
+      {/*{clickedOnProfile && <Redirect to="/profile" />} */}
       {!curId && myData && (
         <>
+        {clickedOnProfile && <Redirect to={{pathname: "/profile", state: { targetUserId: listingObject.userId }}}/>}
           <ReportListing show={showReportListing} setShow={setShowReportListing} />
           <Col xs={12} md={2} className={styles.textAlign}>
             <div>

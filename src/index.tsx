@@ -8,6 +8,7 @@ import 'focus-visible/dist/focus-visible.min';
 import './styles/index.scss';
 import { Dispatch } from 'redux';
 import { ToastContainer, Zoom } from 'react-toastify';
+import { FirebaseError } from 'firebase';
 import * as serviceWorker from './serviceWorker';
 import rootStore from './redux/stores';
 import authActions from './redux/actions/auth';
@@ -24,13 +25,10 @@ import CreateListingButton from './components/CreateListing/buttonExample';
 import Saved from './pages/Saved';
 import AllReports from './components/ReportModals/AllReports';
 import { rootState } from './redux/reducers';
-import { FirebaseError } from 'firebase';
 
 interface AppProps {
   dispatch: Dispatch<any>;
 }
-
-
 
 const AppComponent: React.FC<AppProps> = ({ dispatch }) => {
   React.useEffect(() => {
@@ -38,7 +36,6 @@ const AppComponent: React.FC<AppProps> = ({ dispatch }) => {
   }, [dispatch]);
 
   const [signingUp, setSigningUp] = useState(false);
-  
 
   return (
     <Switch>

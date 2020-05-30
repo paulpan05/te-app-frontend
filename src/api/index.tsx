@@ -3,7 +3,7 @@ import endpoint from '../configs/endpoint';
 
 const handleFetchNotOk = async (res: Response) => {
   const jsonResult = await res.json();
-  //console.log(jsonResult);
+  // console.log(jsonResult);
   if (!res.ok) {
     throw Error(jsonResult);
   }
@@ -16,7 +16,7 @@ const getUserProfile = async (
   targetUserId?: string,
   setter?: Function,
 ) => {
-  //TODO setter: Function, updating the calls
+  // TODO setter: Function, updating the calls
   try {
     const idToken = await user?.getIdToken();
     let response;
@@ -49,10 +49,12 @@ const fetchListings = async (
     const idToken = await user?.getIdToken();
     // console.log(idToken);
     const response = await fetch(
-      `${endpoint}/listings/byIds?idToken=${idToken}&ids=${ids.join(',')}&creationTimes=${creationTimes.join(',')}`,
+      `${endpoint}/listings/byIds?idToken=${idToken}&ids=${ids.join(
+        ',',
+      )}&creationTimes=${creationTimes.join(',')}`,
     );
     const result = await handleFetchNotOk(response);
-    if(setter){
+    if (setter) {
       setter(result);
     }
     // console.log(result);
@@ -62,7 +64,6 @@ const fetchListings = async (
     return undefined;
   }
 };
-
 
 const getListings = async (user: firebase.User | null | undefined, setter: Function) => {
   try {
@@ -371,7 +372,7 @@ const updateComments = async (
         comment,
       }),
     });
-    console.log('comment:' + JSON.stringify(comment));
+    console.log(`comment:${JSON.stringify(comment)}`);
     const result = await handleFetchNotOk(response);
     return true;
   } catch (err) {
@@ -582,4 +583,5 @@ export {
   getListingsByTags,
   fetchIdListings,
   markAsSold,
+  fetchListings,
 };
