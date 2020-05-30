@@ -18,7 +18,7 @@ import { faLink } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './listing.module.scss';
 import FlowerImg from '../../assets/img/books.jpg';
-import DeletePopup from '../deletePopup';
+import DeletePopup from '../DeletePopup/index';
 import ContactSeller from '../ContactSeller';
 import SellerInfo from '../SellerInfo';
 import CommentBox from '../CommentBox';
