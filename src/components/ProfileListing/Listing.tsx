@@ -22,6 +22,7 @@ interface ListingProps {
   pictures: string[];
   
 }
+
 const Listing: React.FC<ListingProps> = ({title, price, postDate, pictures, userInfo, listingId, user}) => {
   const [show, setShow] = useState(false);
   
@@ -40,9 +41,9 @@ const Listing: React.FC<ListingProps> = ({title, price, postDate, pictures, user
   }, []);
 
   return (
-    <div style={{ margin: '5%' }}>
+    <div className="hoverPointer" style={{ margin: '5%' }}>
       <div className={styles.card}>
-        <div className={styles.cardImage}>
+        <div className="cardImage imgWrapper">
           <Carousel className={styles.zIndx} interval={null}>
             <Carousel.Item>
               <img onClick={() => setShow(true)} className={styles.cardImgTop} src={GreenShirt} />
@@ -87,11 +88,11 @@ const Listing: React.FC<ListingProps> = ({title, price, postDate, pictures, user
           className={styles.like_btn}>
                 <FontAwesomeIcon icon={faHeart} size="lg" className={toggled ? styles.heartActive : styles.heartInactive} />
           </button>
-          {/* <button className={styles.btn}>Contact Seller</button> */}
         </div>
       </div>
-          {show && (
-      <ViewListing listingId={listingId} creationTime={postDate} show={show} setShow={setShow} />)}
+      {show && (
+        <ViewListing listingId={listingId} creationTime={postDate} show={show} setShow={setShow} />
+      )}
     </div>
   );
 };
