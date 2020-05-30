@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const handleFetchNotOk = async (res: Response) => {
   const jsonResult = await res.json();
-  console.log(jsonResult);
+  //console.log(jsonResult);
   if (!res.ok) {
     throw Error(jsonResult);
   }
@@ -12,18 +12,20 @@ const handleFetchNotOk = async (res: Response) => {
 
 const fetchListing = async (
   user: firebase.User | null | undefined,
-  setter: Function,
   ids: string[],
   creationTimes: number[],
+  setter?: Function,
 ) => {
   try {
     const idToken = await user?.getIdToken();
     // console.log(idToken);
     const response = await fetch(
-      `${endpoint}/listings/byIds?idToken=${idToken}&ids=${ids}&creationTimes=${creationTimes}`,
+      `${endpoint}/listings/byIds?idToken=${idToken}&ids=${ids.join(',')}&creationTimes=${creationTimes.join(',')}`,
     );
     const result = await handleFetchNotOk(response);
-    setter(result);
+    if(setter){
+      setter(result);
+    }
     // console.log(result);
     return result;
   } catch (err) {
@@ -44,7 +46,53 @@ const getListings = async (user: firebase.User | null | undefined) => {
     return false;
   }
 };
-
+const saveListing = async (
+  user: firebase.User | null | undefined,
+  listingId: string,
+  creationTime: number,
+) => {
+  try {
+    const idToken = await user?.getIdToken();
+    console.log(idToken);
+    const response = await fetch(`${endpoint}/users/save-listing?idToken=${idToken}`, {
+      method: 'POST',
+      body: JSON.stringify({
+        listingId,
+        creationTime,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const result = await handleFetchNotOk(response);
+    return true;
+  } catch (err) {
+    return false;
+  }
+};
+const unsaveListing = async (
+  user: firebase.User | null | undefined,
+  listingId: string,
+  creationTime: number,
+) => {
+  try {
+    const idToken = await user?.getIdToken();
+    const response = await fetch(`${endpoint}/users/unsave-listing?idToken=${idToken}`, {
+      method: 'POST',
+      body: JSON.stringify({
+        listingId,
+        creationTime,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const result = await handleFetchNotOk(response);
+    return true;
+  } catch (err) {
+    return false;
+  }
+};
 const getUserProfile = async (user: firebase.User | null | undefined, targetUserId?:string) => {
   try {
     const idToken = await user?.getIdToken();
@@ -56,7 +104,7 @@ const getUserProfile = async (user: firebase.User | null | undefined, targetUser
       response = await fetch(`${endpoint}/users/profile?idToken=${idToken}`);
     }
     const result = await handleFetchNotOk(response);
-    console.log(result);
+    //console.log(result);
     return result
   } catch (err) {
     console.log(err);
@@ -207,4 +255,4 @@ const updateProfile = async (
   }
 };
 
-export { fetchListing, getListings, handleFetchNotOk, getUserProfile, updateProfile, createListing, updateListing, userSignup };
+export { saveListing, unsaveListing, fetchListing, getListings, handleFetchNotOk, getUserProfile, updateProfile, createListing, updateListing, userSignup };
