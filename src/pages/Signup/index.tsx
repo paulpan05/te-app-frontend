@@ -14,7 +14,7 @@ import { Redirect } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import styles from './index.module.scss';
 import { rootState } from '../../redux/reducers';
-import { userSignup } from '../../api/index';
+import { userSignup, uploadProfilePicture } from '../../api/index';
 
 interface SignupProps {
   user: firebase.User | null | undefined;
@@ -27,7 +27,8 @@ const mapStateToProps = (state: rootState) => ({
 
 const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
   const [picture, setPicture] = useState(user && user.photoURL ? user.photoURL : 'ignore');
-  const [pictureLocalPath, setPictureLocalPath] = useState(undefined);
+  const [pictureLocalPath, setPictureLocalPath] = useState('');
+  const [pictureFile, setPictureFile] = useState();
   const [dispValidated, setDispValidated] = useState(false);
   let nameInput;
   let phoneInput;
@@ -63,7 +64,7 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
     );
 
     return new Promise((resolve, reject) => {
-      canvas.toBlob((file) => {console.log(`blob file: ${file}`); resolve(URL.createObjectURL(file));}, 'image/jpeg'); //TODO
+      canvas.toBlob((blob) => resolve(blob), 'image/jpeg'); //TODO
     });
   };
 
@@ -105,8 +106,11 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
                     className={styles.button}
                     onClick={async () => {
                       cropImage().then((croppedImg: any) => {
-                        console.log(`cropped Image: ${croppedImg}`);//TODO
-                        setPicture(croppedImg);
+                        const imgURL = URL.createObjectURL(croppedImg);
+                        const file = new File([croppedImg], "myFile.jpeg", { type: "image/jpeg", lastModified: Date.now() });
+                        setPictureFile(file);
+                        console.log(file);
+                        setPicture(imgURL);
                         setCropping(false);
                       });
                     }}
@@ -133,6 +137,7 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
                   onChange={(e: any) => {
                     if (e.target.files && e.target.files.length === 1 && e.target.files[0]) {
                       console.log(`e.target.files[0]: ${e.target.files[0]}`);//TODO
+                      setPictureLocalPath(e.target.value);
                       URL.revokeObjectURL(picture);
                       setPicture(URL.createObjectURL(e.target.files[0]));
                       setCropping(true);
@@ -216,14 +221,25 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
                 parsedPhone = undefined;
               }
 
-              // print picture path (hopefully) TODO
-              console.log(`picture path: ${picture}`);
-
               // get name from input
               const parsedName = nameInput.value.length > 0 ? nameInput.value : undefined;
 
-              // api request
-              const success = await userSignup(user, parsedPhone, parsedName, undefined, 'customPic');
+              // print picture path (hopefully) TODO
+              console.log(`picture path: ${picture}`);
+              
+              // if picture isn't google's picture, try uploading picture to s3 and get the url
+              let pictureURL;
+              if (picture !== user?.photoURL) {
+                pictureURL = await uploadProfilePicture(user, pictureLocalPath, pictureFile);
+                console.log("picture url: ", pictureURL);
+                setPicture(pictureURL);
+              } else {
+                pictureURL = undefined;
+              }
+              console.log("done");
+
+              return;
+              const success = await userSignup(user, parsedPhone, parsedName, undefined, pictureURL);
               if (success) {
                 setRedirect(true);
                 toast('You successfully created an account! Welcome to Triton Exchange');

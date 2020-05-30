@@ -199,20 +199,24 @@ const userSignup = async (
   }
 };
 
+// TODO probably need to add '.' between /profile and fileExtension (line 212)
 const uploadProfilePicture = async (
   user: firebase.User | null | undefined,
   localPhotoPath: string, // use the local photo path from fileUpload (not the blob thing)
+  picture: File,
 ) => {
   try {
+    console.log("In uploadProfilePicture API");
     // get necessary variables for api call
     const userId = user?.uid;
     const splitPath = localPhotoPath.split('.');
     const fileExtension = splitPath[splitPath.length - 1];
-    const key = `${userId}/profile${fileExtension}`;
+    const key = `${userId}/profile.${fileExtension}`;
 
     const formData = new FormData();
     formData.append('key', key); // for listing pictures: key: `${userId}/{uuid}${fileExtension}` 'https://triton-exchange-bucket-photos.s3.amazonaws.com/{key}
-    formData.append('file', localPhotoPath);
+    formData.append('file', picture);
+    console.log(`Creating formData: ${formData}`);
     const response = await fetch('https://triton-exchange-bucket-photos.s3.amazonaws.com', { // [public] link 'https://triton-exchange-bucket-photos.s3.amazonaws.com/{key}'
       method: 'POST',
       body: formData,
@@ -222,9 +226,11 @@ const uploadProfilePicture = async (
     });
 
     if (response.status !== 204) { // TODO can i use handleFetchNotOk? it used .ok, not '200' specifically
+      console.log("Error: response not 204!");
       throw Error(await response.json());
     }
-    
+
+    console.log("Success! Uploaded file.");
     return `https://triton-exchange-bucket-photos.s3.amazonaws.com/${key}`;
   } catch (err) {
     console.log(err);
@@ -276,7 +282,7 @@ const uploadPicture = async (
     const userId = user?.uid;
     const splitPath = localPhotoPath.split('.');
     const fileExtension = splitPath[splitPath.length - 1];
-    const key = `${userId}/${uuidv4()}${fileExtension}`;
+    const key = `${userId}/${uuidv4()}.${fileExtension}`;
 
     const formData = new FormData();
     formData.append('key', key); // ${userId}/{uuid}${fileExtension}
@@ -724,4 +730,9 @@ export {
   fetchIdListings,
   markAsSold,
   fetchListings,
+  uploadProfilePicture,
+  uploadPicture,
+  uploadPictures,
+  deletePicture,
+  deletePictures,
 };
