@@ -120,6 +120,7 @@ const ViewListing: React.FC<ViewListingProps> = ({
     <div>
       {showEditListing && (
         <ActualEditListing
+          showDeleteSetter={setshowDelete}
           show={showEditListing}
           setShow={setShowEditListing}
           listingId={listingId}

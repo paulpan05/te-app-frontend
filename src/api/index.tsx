@@ -484,7 +484,7 @@ const updateListing = async (
   try {
     const idToken = await user?.getIdToken();
     const response = await fetch(`${endpoint}/listings/update?idToken=${idToken}`, {
-      method: 'POST',
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },

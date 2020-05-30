@@ -139,7 +139,7 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                     pictures.map((src, i) => {
                       return (
                         <Carousel.Item key={i}>
-                          <img src={src} />
+                          <img src={src} style={{minWidth: "30vh"}}/>
                           <button
                             type="button"
                             onClick={() => {
