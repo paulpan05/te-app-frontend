@@ -41,9 +41,9 @@ const Listing: React.FC<ListingProps> = ({title, price, postDate, pictures, user
   }, []);
 
   return (
-    <div style={{ margin: '5%' }}>
+    <div className="hoverPointer" style={{ margin: '5%' }}>
       <div className={styles.card}>
-        <div className={styles.cardImage}>
+        <div className="cardImage imgWrapper">
           <Carousel className={styles.zIndx} interval={null}>
             <Carousel.Item>
               <img onClick={() => setShow(true)} className={styles.cardImgTop} src={GreenShirt} />
