@@ -19,7 +19,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './listing.module.scss';
 import FlowerImg from '../../assets/img/books.jpg';
 import DeletePopup from '../DeletePopup/index';
-import ContactSeller from '../ContactSeller';
+import ContactSeller from '../ContactSeller/index';
 import SellerInfo from '../SellerInfo';
 import CommentBox from '../CommentBox';
 import ActualEditListing from '../EditListing(actual)/index';

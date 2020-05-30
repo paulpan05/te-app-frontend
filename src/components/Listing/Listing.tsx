@@ -67,6 +67,13 @@ const Listing: React.FC<ListingProps> = ({title, price, postDate, pictures, user
                 listingId,
                 postDate
               );
+              if (successUnsave) {
+                toast('This listing has been removed from your Saved collection!');
+              } else {
+                toast(
+                  'There has been an error while removing this from your saved collection. Please try again.',
+                );
+              }
             } else {
               const successSave = await saveListing(
                 user,
@@ -80,7 +87,6 @@ const Listing: React.FC<ListingProps> = ({title, price, postDate, pictures, user
                   'There has been an error while adding this to your saved collection. Please try again.',
                 );
               }
-
             }
             
           }

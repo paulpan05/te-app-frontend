@@ -19,6 +19,7 @@ const getUserProfile = async (
   // TODO setter: Function, updating the calls
   try {
     const idToken = await user?.getIdToken();
+    console.log(idToken);
     let response;
     if (targetUserId) {
       response = await fetch(
@@ -35,6 +36,7 @@ const getUserProfile = async (
     return result;
   } catch (err) {
     console.log(err);
+    return undefined;
   }
 };
 
@@ -612,7 +614,7 @@ const unsaveListing = async (
   try {
     const idToken = await user?.getIdToken();
     const response = await fetch(`${endpoint}/users/unsave-listing?idToken=${idToken}`, {
-      method: 'POST',
+      method: 'DELETE',
       body: JSON.stringify({
         listingId,
         creationTime,
