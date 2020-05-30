@@ -115,6 +115,7 @@ img {
   letter-spacing: 1px;
   text-transform: capitalize;
   margin-bottom: 1rem;
+  margin-top: 0.5rem;
   text-align: center;
   font-family: 'Roboto', serif;
 }
@@ -123,14 +124,17 @@ img {
   font-size: 1.75rem;
   line-height: 1.5;
   margin-top: 1rem;
+  margin-bottom: 1rem;
   font-weight: 300;
   text-align: center;
 }
 
 .description {
-  margin-top: 0.5rem;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
   text-align: center;
   font-size: 0.8rem;
+  padding-bottom: 0.5rem;
   line-height:25px;
   letter-spacing: 0.05rem;
   font-weight: 300;

@@ -31,6 +31,7 @@ import { ReportListing } from '../ReportModals';
 import ProfileImg from '../../assets/img/sarah.png';
 import Profile from '../../pages/Profile/index';
 import RateBuyer from '../RateBuyer';
+import FlowerImg2 from '../../assets/img/GreenTshirt.png';
 
 interface ViewListingProps {
   show: boolean;
@@ -161,7 +162,7 @@ const ViewListing: React.FC<ViewListingProps> = ({
                 <Col xs={12} md={4} className={styles.textAlign}>
                   <Carousel interval={null}>
                     <Carousel.Item>
-                      <img className={styles.listingPicture} src={FlowerImg} alt="Item" />
+                      <img className={styles.listingPicture} src={FlowerImg2} alt="Item" />
                     </Carousel.Item>
                     <Carousel.Item>
                       <img className={styles.listingPicture} src={FlowerImg} alt="Item" />
@@ -173,7 +174,6 @@ const ViewListing: React.FC<ViewListingProps> = ({
                 </Col>
                 <Col xs={12} md={7} className={styles.textAlign}>
                   <h1 className={styles.listingTitle}>{listingData.title}</h1>
-                  <p>{listingData.location}</p>
                   <p className={styles.listingHeader}>Price</p>
                   <p className={styles.listingHeader}>Posted</p>
                   <p className={styles.listingHeader}>Pickup</p>
@@ -289,7 +289,7 @@ const ViewListing: React.FC<ViewListingProps> = ({
                       <img src={ProfileImg} className={styles.sellerPicture} alt="Seller" />
                     </button>
 
-                    <p>{sellerInfo.name}</p>
+                    <p className={styles.sellerName}>{sellerInfo.name}</p>
                     <p>{sellerInfo.ratings}</p>
                     <div className={styles.interestBox}>
                       <p>{numSaved} people have this item saved!</p>
@@ -305,7 +305,7 @@ const ViewListing: React.FC<ViewListingProps> = ({
                             >
                               Mark as Sold
                           </button>
-                          <RateBuyer user={user} title="Flower Sweatshirt" show={markSold} setShow={markSoldSetter} />
+                          <RateBuyer user={user} listingData={listingData} sellerInfo={sellerInfo} title={listingData.title} show={markSold} setShow={markSoldSetter} />
                           <button type="button" className={styles.sellerButton} onClick={() => {setShowEditListing(true);}}>
                               Edit Listing
                             </button>

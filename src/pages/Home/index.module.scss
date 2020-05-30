@@ -1,3 +1,5 @@
+
+$font-stack: Roboto;
 /* AARUSHI's */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap');
 .button {
@@ -96,5 +98,22 @@ h1 {
 }
 
 .searchButton:hover {
+  box-shadow: 0 3px 3px 0 rgba(0,0,0,0.24) !important;
+}
+
+.filterButton {
+  background-color: #F2F2F2 !important;
+  color: black !important;
+  border-radius: 40vh !important;
+  font: $font-stack !important;
+  border: none !important; 
+  box-shadow: none !important;
+  padding: 10px 20px 10px 20px;
+  text-align: center;
+  display: inline-block !important;
+  margin-bottom: 1rem;
+}
+
+.filterButton:hover {
   box-shadow: 0 3px 3px 0 rgba(0,0,0,0.24) !important;
 }

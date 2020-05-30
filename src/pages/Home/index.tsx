@@ -37,6 +37,8 @@ const Home: React.FC<HomeProps> = ({ dispatch, user }) => {
   const [listings, setListings] = useState();
   const[searchListings, setSearchListings] = useState();
   const [userInfo, userInfoSetter] = useState<any>(null);
+  //holds the listingId of the listing that needs to be rated
+  const [rateListing, rateListingSetter] = useState();
   let rowArray = new Array();
   let searchInput;
   const dispTags = ['Tutoring', 'Housing', 'Rideshare', 'Study Material', 'Clothes', 'Furniture', 'Electronics', 'Appliances', 'Fitness', 'Other', 'On-Campus Pickup', 'Off-Campus Pickup', 'Venmo', 'Cash', 'Dining Dollars', 'Free'];
@@ -45,16 +47,32 @@ const Home: React.FC<HomeProps> = ({ dispatch, user }) => {
     tags[tag] = false;
   });
 
+  const callAPI = async () => {
+    const userResult = await getUserProfile(user, undefined, userInfoSetter);
+    // check if user profile came back valid
+    if(userResult != undefined && userResult != null) {
+      // check if there are any listings that need to be rated
+      if(userResult.listingsToRate != undefined && userResult.listingsToRate.length != 0) {
+        // take the first listing that needs to be rated
+        rateListingSetter(userResult.listingsToRate[0]);
+      }
+    }
+  }
+
   useEffect(() => {
-         getUserProfile(user, undefined, userInfoSetter);
+         callAPI();
          getListings(user, setListings);
   }, [user]);
 
   return (
     <div>
-      <Rate />
+      {rateListing && <Rate listingId={rateListing}/>}
       <Row className="justify-content-md-center">
-        <button onClick={async () => {
+        
+        <Tags tags={dispTags} setTag={(tag: string, active: boolean) => (tags[tag] = active)}/>
+      </Row>
+      <Row className="justify-content-center">
+      <button className={styles.filterButton} onClick={async () => {
               const parsedTags = dispTags.filter((tag) => tags[tag]);
               console.log(`tags: ${parsedTags}`);
               if(parsedTags.length != 0 ) {
@@ -74,7 +92,6 @@ const Home: React.FC<HomeProps> = ({ dispatch, user }) => {
                 setSearchListings(null); rowArray = new Array();
               }
           }}>Apply Filters</button>
-        <Tags tags={dispTags} setTag={(tag: string, active: boolean) => (tags[tag] = active)}/>
       </Row>
       <Row className="justify-content-center">
         <InputGroup className={styles.inputGroup}>

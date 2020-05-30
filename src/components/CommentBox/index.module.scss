@@ -1,3 +1,4 @@
+$font-stack: Roboto;
 .comment {
   padding-top: 10px; //TODO: remove later
   max-width: 100%;
@@ -11,7 +12,7 @@
 .commentText {
   display: inline-block !important;
   font-size: 1em;
-  background-color: rgb(214, 210, 210);
+  background-color: #EEEEEE;
   border-radius: 20px;
   height: 100%;
   padding-left: 15px;
@@ -22,6 +23,7 @@
   word-wrap: break-word;
   text-align: start;
   z-index: 5;
+  font-family: Roboto;
 }
 
 .authorPicture {
@@ -58,7 +60,12 @@
   border-radius: 100px;
   width: 100%;
   align-self: start;
-  padding-left: 5px;
+  padding-left: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  font-family: Roboto;
+  letter-spacing: 0.5px;
+  color: rgba(0,0,0, 0.38);
 }
 
 .commentBoxTitle {
@@ -74,6 +81,7 @@
   justify-content: end;
   margin-left: 1rem;
   border-radius: 3rem;
+  padding-top: 0.5rem;
 }
 
 .reportComment {

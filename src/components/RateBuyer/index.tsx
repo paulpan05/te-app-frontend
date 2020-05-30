@@ -10,7 +10,8 @@ import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
 import styles from './index.module.scss';
 import Rating from '@material-ui/lab/Rating';
-import {searchUser} from '../../api';
+import {searchUser, markAsSold, addListingToRate} from '../../api';
+import { toast } from 'react-toastify';
 
 interface RateBuyerProps {
   dispatch: Dispatch<any>;
@@ -18,9 +19,11 @@ interface RateBuyerProps {
   setShow: Function;
   title: string;
   user: firebase.User | null | undefined;
+  sellerInfo: any; 
+  listingData: any;
 }
 
-const RateBuyer: React.FC<RateBuyerProps> = ({ dispatch, show, setShow, title , user}) => {
+const RateBuyer: React.FC<RateBuyerProps> = ({ dispatch, show, setShow, title , user, sellerInfo, listingData}) => {
   const [starValue, setStarValue] = React.useState<number | null>(2);
   let buyerName;
 
@@ -28,7 +31,18 @@ const RateBuyer: React.FC<RateBuyerProps> = ({ dispatch, show, setShow, title , 
 
     const userProfile = await searchUser(user, buyerName);
     console.log(userProfile);
-
+    console.log(sellerInfo);
+    console.log(listingData);
+    setShow(false);
+    if(userProfile.length != 0) {
+      await markAsSold(user, listingData.listingId, listingData.creationTime, sellerInfo.userId, userProfile.userId);
+      //TODO: how do i update the buyers rating 
+      // await addBuyerRating();
+      await addListingToRate(user, userProfile.Id, listingData.listingId, listingData.creationTime);
+      toast(`Successfully Marked Listing as Sold`);
+    } else {
+      toast(`No Such User as ${buyerName} found. Try again!`);
+    }
     // userProfile.savedListings.map((listing) => {
     //     console.log(listing[0]);
     //     ids.push(listing[0]);

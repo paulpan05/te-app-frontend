@@ -718,6 +718,31 @@ const markAsSold = async (
   }
 };
 
+const addListingToRate = async (
+  user: firebase.User | null | undefined,
+  listingId: string,
+  listingCreationTime: string,
+  buyerId: string,
+) => {
+  try {
+    const idToken = await user?.getIdToken();
+    const response = await fetch(`${endpoint}/users/add-listing-to-rate?idToken=${idToken}`, {
+      method: 'POST',
+      body: JSON.stringify({
+        buyerId,
+        listingId,
+        listingCreationTime,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const result = await handleFetchNotOk(response);
+    return true;
+  } catch (err) {
+    return false;
+  }
+};
 
 export {
   handleFetchNotOk,
@@ -741,5 +766,6 @@ export {
   fetchIdListings,
   markAsSold,
   fetchListings,
-  searchUser
+  searchUser,
+  addListingToRate
 };

@@ -14,15 +14,11 @@ import ProfileImg from '../../assets/img/sarah.png';
 import RateSeller from './RateSeller';
 import styles from './index.module.scss';
 
-/* <StarRatings
-          rating={2.403}
-          starRatedColor="#FDCC0D"
-          starDimension="40px"
-          starSpacing="15px"
-          className={styles.rating}
-        /> */
+interface RateProps {
+  listingId: string
+}
 
-const Rate: React.FC = ({}) => {
+const Rate: React.FC<RateProps> = ({listingId}) => {
   const [show, setShow] = useState(false);
   return (
     <div>
