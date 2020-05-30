@@ -19,8 +19,10 @@ import DeletePopup from '../deletePopup';
 import ContactSeller from '../contactSeller';
 import EditListing from '../editListing';
 import CommentBox from '../CommentBox';
+import ActualEditListing from '../EditListing(actual)/index';
 import { fetchListing, getSellerInfo } from '../../api/index';
 import { rootState } from '../../redux/reducers';
+import { toast } from 'react-toastify';
 
 interface ViewListingProps {
   show: boolean;
@@ -43,6 +45,8 @@ const ViewListing: React.FC<ViewListingProps> = ({ user, show, setShow, title, s
   const [myData, setData] = useState<any>(null);
   /* Stores the seller profile of the listing */
   const [sellerInfo, sellerInfoSetter] = useState<any>(null);
+  /* Popup to show edit listing */
+  const [showEditListing, setShowEditListing] = useState(false);
 
   const callAPI = async () => {
     /* const result1 = await fetchListing(
@@ -52,15 +56,22 @@ const ViewListing: React.FC<ViewListingProps> = ({ user, show, setShow, title, s
       [1590713319380],
     ); */
     //gets single listing object
-     const result1 = await fetchListing(
+    const result = await fetchListing(
       user,
       setData,
-      ['dce37862-1852-44f3-ad43-7a2109755ea0'],
-      [1590700860538],
-    ); 
-    // gets the seller profile
-    getSellerInfo(user, result1[0].userId, sellerInfoSetter);
-    setData(result1);
+      ['01f03ff9-af1b-4dd6-aa79-7d6862189efe'],
+      [1590798233455],
+    );
+    if (result) {
+      // gets the seller profile
+      getSellerInfo(user, result[0].userId, sellerInfoSetter);
+      setData(result);
+    } else {
+      console.log('there was an error while fetching your listing!');
+      toast(
+        'There was an error while retrieving your listing details! Please try again or reload the page.',
+      );
+    }
   };
   useEffect(() => {
     callAPI();
@@ -68,6 +79,9 @@ const ViewListing: React.FC<ViewListingProps> = ({ user, show, setShow, title, s
 
   return (
     <div>
+      {myData && showEditListing && (
+        <ActualEditListing show={showEditListing} setShow={setShowEditListing} listingId={myData[0].listingId} creationTime={myData[0].creationTime} titleProp={myData[0].title} priceProp={myData[0].price} descriptionProp={myData[0].description} locationProp={myData[0].location} tagsProp={myData[0].tags} picturesProp={myData[0].pictures} />
+      )}
       {myData && sellerInfo && (
         <ContactSeller showPopup={contactSeller} setter={showContact} sellerInfo={sellerInfo} />
       )}
@@ -104,7 +118,7 @@ const ViewListing: React.FC<ViewListingProps> = ({ user, show, setShow, title, s
                   <p className={styles.listingHeader}>Posted</p>
                   <p className={styles.listingHeader}>Pickup</p>
                   <p className={styles.listingInfo}>{myData[0].price}</p>
-                  <p className={styles.listingInfo}>{myData[0].creationTime}</p>
+                  <p className={styles.listingInfo}>{new Date(myData[0].creationTime).toDateString()}</p>
                   <p className={styles.listingInfo}>{myData[0].location}</p>
                   <p className={styles.listingSecondaryInfo}>{myData[0].description}</p>
                 </Col>
@@ -136,6 +150,7 @@ const ViewListing: React.FC<ViewListingProps> = ({ user, show, setShow, title, s
                   contactSellerSetter={showContact}
                   listingObject={myData[0]}
                   sellerInfo={sellerInfo}
+                  setShowEditListing={setShowEditListing}
                 />
               </Row>
             </Card>

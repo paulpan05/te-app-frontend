@@ -411,19 +411,19 @@ const deleteListing = async (
   user: firebase.User | null | undefined,
   listingId: string,
   creationTime: number,
-  deleteBool: boolean,
+  tags: string[],
 ) => {
   try {
     const idToken = await user?.getIdToken();
-    const response = await fetch(`${endpoint}/listings/update?idToken=${idToken}`, {
-      method: 'PUT',
+    const response = await fetch(`${endpoint}/users/delete-listing?idToken=${idToken}`, {
+      method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         listingId,
         creationTime,
-        deleteTag: deleteBool,
+        tags,
       }),
     });
     const result = await handleFetchNotOk(response);

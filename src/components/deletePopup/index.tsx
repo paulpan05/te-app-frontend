@@ -53,7 +53,7 @@ const DeletePopup: React.FC<DeletePopupProps> = ({
                           user,
                           listingObject.listingId,
                           listingObject.creationTime,
-                          true,
+                          listingObject.tags,
                         );
                         if (success) {
                           setter(false);
