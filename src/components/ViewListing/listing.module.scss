@@ -48,11 +48,6 @@
   box-shadow: 0px 4px 4px #e5e5e5;
   border-radius: 40px;
 }
-.myCard {
-  background: #ffffff;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), inset 0px 4px 1px #e5e5e5;
-  border-radius: 3rem !important;
-}
 
 
 .sellerPicture {
@@ -115,14 +110,28 @@ p {
   max-width: 75%;
 }
 @media(max-width:767px) {
+  .exitFlag {
+    font-size:1rem;
+  }
   .flag {
     font-size:3rem;
   }
   .likedFlag {
     font-size:3rem;
   }
+  .modal-90w {
+    max-width:75% !important;
+    position:absolute !important;
+    left:12.5% !important;
+  }
 }
 @media (min-width:768px) {
+  .modal-90w {
+    max-width:40% !important;
+  }
+  .exitFlag {
+    font-size:3rem;
+  }
 .flag {
   font-size:5rem;
 }
@@ -134,6 +143,9 @@ p {
   color:red;
 }
 .likedFlag {
+  color:red;
+}
+.exitFlag:hover {
   color:red;
 }
 

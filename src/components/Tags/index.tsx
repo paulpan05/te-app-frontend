@@ -6,7 +6,7 @@ import TagButton from '../Button';
 
 const Tags: React.FC = ({}) => {
   return (
-    <div className={styles.wrapper}>
+    <div className="wrapper maxWidth95">
       <div className={styles.scrolls}>
         <div className={styles.imageDiv}>
           <TagButton children="Tutoring" value={0} />

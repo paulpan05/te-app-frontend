@@ -4,24 +4,20 @@ import Comment from './Comment';
 
 interface CommentListProps {
   currentUser: firebase.User | null | undefined;
-  commentsData: Array<Comment>;
+  commentsData: string[][];
+  listingId: string;
 }
 
-interface Comment {
-  commentId: string;
-  userId: string;
-  content: string;
-}
-
-const CommentList: React.FC<CommentListProps> = ({currentUser, commentsData }) => {
+const CommentList: React.FC<CommentListProps> = ({currentUser, commentsData, listingId }) => {
   const messagesEndRef = React.useRef<null | HTMLDivElement>(null);
   const scrollToBottom = () => {
     messagesEndRef.current!.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const commentNodes = commentsData.map((comment: Comment) => {
-    if (!comment) return;
-    return <Comment currentUser={currentUser} commentId={comment.commentId} userId={comment.userId} content={comment.content} />;
+
+  const commentNodes = commentsData.map((comment: string[]) => {
+    if (!comment[0]) return;
+    return <Comment currentUser={currentUser} commentId={comment[0]} userId={comment[1]} content={comment[2]} listingId={listingId} />;
   });
 
   React.useEffect(scrollToBottom, [commentNodes]);

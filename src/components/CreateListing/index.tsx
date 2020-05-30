@@ -21,6 +21,8 @@ import { rootState } from '../../redux/reducers';
 import { createListing } from '../../api/index';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-regular-svg-icons';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+
 import TagsDiv from '../Tags/Tags';
 
 interface CreateListingProps {
@@ -52,10 +54,18 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
 
   return (
     <Modal show={show} onHide={() => setShow(false)} size="lg">
-      <Card>
+      <Card className="myCard">
         <Form validated={dispValidated} className={styles.wrapper}>
           <Form.Row className="justify-content-center text-center">
+          
             <h1>Create Listing</h1>
+                          <button
+                    type="button"
+                    onClick={() => setShow(false)}
+                    className="exitButton exitPad"
+                  >
+                    <FontAwesomeIcon icon={faTimes} size="lg" className={styles.exitFlag} />
+                  </button>
           </Form.Row>
 
           <Form.Row className="justify-content-center text-center">

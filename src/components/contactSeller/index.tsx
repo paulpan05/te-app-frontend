@@ -24,22 +24,22 @@ const mapStateToProps = (state: rootState) => ({
 
 const ContactSeller: React.FC<ContactSellerProps> = ({ showPopup, setter, sellerInfo }) => {
   return (
-    <div>
+    <div className="textAlign">
       <div>
         <Modal show={showPopup} onHide={() => setter(false)}>
           <Row className={styles.margin50}>
             <Card className={styles.deleteCard}>
               <Row className={styles.pad}>
-                <Col className={styles.popup}>
-                  <p className={styles.popupHeader}>
+                <Col className="popup blueColor">
+                  <p className="subHeader">
                     Contact&nbsp;
                     {sellerInfo.name}
                   </p>
-                  <p className={styles.popupSubtext}>
+                  <p className="bodyText">
                     Email:&nbsp;
                     {sellerInfo.email}
                   </p>
-                  <p className={styles.popupSubtext}>
+                  <p className="bodyText">
                     Phone Number:&nbsp;
                     {sellerInfo.phone}
                   </p>

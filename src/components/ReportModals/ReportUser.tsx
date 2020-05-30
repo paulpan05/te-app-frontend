@@ -19,13 +19,15 @@ interface ReportUserProps {
   user?: firebase.User | null | undefined;
   show: boolean;
   setShow: Function;
+  reportedUserId: string;
+  reportedUserName: string;
 }
 
 const mapStateToProps = (state: rootState) => ({
   user: state.auth.user,
 });
 
-const ReportUser: React.FC<ReportUserProps> = ({ dispatch, user, show, setShow }) => {
+const ReportUser: React.FC<ReportUserProps> = ({ dispatch, user, show, setShow, reportedUserId, reportedUserName}) => {
   const [reportReason, setReportReason] = useState('');
 
   const handleTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -41,7 +43,7 @@ const ReportUser: React.FC<ReportUserProps> = ({ dispatch, user, show, setShow }
     const type = 'User Report';
     const reportId = uuidv4();
     const description = textVal;
-    const success = await reportUser(user, type, reportId, description, 'sarah');
+    const success = await reportUser(user, type, reportId, description, reportedUserId);
     success
       ? toast('Report submitted. Thank you for keeping Triton Exchange safe and secure!')
       : toast('Error submitting report. Please try again!');
@@ -73,7 +75,7 @@ const ReportUser: React.FC<ReportUserProps> = ({ dispatch, user, show, setShow }
             <Row className={styles.pad2}>
               <img src={ProfileImg} className={styles.sellerPicture} alt="seller" />
               <div className={styles.reportTitle} style={{ paddingLeft: '1rem' }}>
-                Sarah A.
+                {reportedUserName}
               </div>
             </Row>
             <Row className={styles.pad2}>

@@ -19,7 +19,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './listing.module.scss';
 import FlowerImg from '../../assets/img/books.jpg';
 import DeletePopup from '../deletePopup';
-import ContactSeller from '../contactSeller';
+import ContactSeller from '../ContactSeller';
 import SellerInfo from '../SellerInfo';
 import CommentBox from '../CommentBox';
 import ActualEditListing from '../EditListing(actual)/index';
@@ -108,7 +108,7 @@ const ViewListing: React.FC<ViewListingProps> = ({
     <>
       <Modal show={clickedOnProfile} onHide={() => setClickedOnProfile(false)} size="xl">
       <Container style={{ maxHeight: '100%' }} className="no-gutters">
-        <Card className={styles.myCard}>
+        <Card className="myCard">
           <Profile targetUserId={listingData.userId} />
         </Card>
       </Container>
@@ -140,20 +140,22 @@ const ViewListing: React.FC<ViewListingProps> = ({
         listingObject={listingData}
       />
 
-      <ReportListing
+      {sellerInfo && <ReportListing
         show={showReportListing}
         setShow={setShowReportListing}
         listingId={listingId}
-      />
+        reportedUserName={sellerInfo.name}
+        reportedListingName={listingData.title}
+      />}
 
       {sellerInfo && (
         <ContactSeller showPopup={contactSeller} setter={contactSellerSetter} sellerInfo={sellerInfo} />
       )}
 
       {sellerInfo && (
-        <Modal show={show} onHide={() => setShow(false)} size="xl">
+        <Modal show={show} onHide={() => setShow(false)} size="xl" className="responsiveModal">
           <Row style={{ maxHeight: '100%' }} className="no-gutters">
-            <Card className={styles.myCard}>
+            <Card className="myCard">
               <Row className={styles.pad}>
                 <Col xs={12} md={4} className={styles.textAlign}>
                   <Carousel interval={null}>
@@ -174,7 +176,7 @@ const ViewListing: React.FC<ViewListingProps> = ({
                   <p className={styles.listingHeader}>Price</p>
                   <p className={styles.listingHeader}>Posted</p>
                   <p className={styles.listingHeader}>Pickup</p>
-                  <p className={styles.listingInfo}>{listingData.price}</p>
+                  <p className={styles.listingInfo}>${listingData.price}</p>
                   <p className={styles.listingInfo}>
                     {new Date(creationTime).toDateString()}
                   </p>
@@ -187,9 +189,9 @@ const ViewListing: React.FC<ViewListingProps> = ({
                     type="button"
                     onClick={() => setShow(false)}
                     onKeyDown={() => setShow(false)}
-                    className={styles.myButton}
+                    className="exitButton"
                   >
-                    <FontAwesomeIcon icon={faTimes} size="lg" className={styles.flag} />
+                    <FontAwesomeIcon icon={faTimes} size="lg" className={styles.exitFlag} />
                   </button>
                 </Col>
               </Row>
@@ -256,7 +258,7 @@ const ViewListing: React.FC<ViewListingProps> = ({
                     {/* Button needs to have function to copy item link to clipboard */}
                     <button
                       type="button"
-                      onClick={() => toast('This listing has been saved to your clipboard!')}
+                      onClick={() => {toast('This listing has been saved to your clipboard!'); navigator.clipboard.writeText(listingData.listingId)}}
                       className={styles.myButton}
                     >
                       <FontAwesomeIcon icon={faLink} size="lg" className={styles.flag} />

@@ -27,6 +27,7 @@ const mapStateToProps = (state: rootState) => ({
 
 const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
   const [picture, setPicture] = useState(user && user.photoURL ? user.photoURL : 'ignore');
+  const [pictureLocalPath, setPictureLocalPath] = useState(undefined);
   const [dispValidated, setDispValidated] = useState(false);
   let nameInput;
   let phoneInput;
@@ -62,7 +63,7 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
     );
 
     return new Promise((resolve, reject) => {
-      canvas.toBlob((file) => resolve(URL.createObjectURL(file)), 'image/jpeg');
+      canvas.toBlob((file) => {console.log(`blob file: ${file}`); resolve(URL.createObjectURL(file));}, 'image/jpeg'); //TODO
     });
   };
 
@@ -104,6 +105,7 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
                     className={styles.button}
                     onClick={async () => {
                       cropImage().then((croppedImg: any) => {
+                        console.log(`cropped Image: ${croppedImg}`);//TODO
                         setPicture(croppedImg);
                         setCropping(false);
                       });
@@ -130,6 +132,7 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
                   hidden
                   onChange={(e: any) => {
                     if (e.target.files && e.target.files.length === 1 && e.target.files[0]) {
+                      console.log(`e.target.files[0]: ${e.target.files[0]}`);//TODO
                       URL.revokeObjectURL(picture);
                       setPicture(URL.createObjectURL(e.target.files[0]));
                       setCropping(true);
@@ -195,7 +198,8 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
               const phone = phoneInput.value;
               let parsedPhone;
               if (phone.length > 0) {
-                parsedPhone = phone.replace(/( |-|\(|\))/g, '');
+                // remove all spaces, -, (, ), +
+                parsedPhone = phone.replace(/( |-|\(|\)|\+)/g, ''); //TODO test
                 const ppLen = parsedPhone.length;
                 parsedPhone = [
                   ppLen > 11 ? '+' : '',
@@ -211,6 +215,9 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
               } else {
                 parsedPhone = undefined;
               }
+
+              // print picture path (hopefully) TODO
+              console.log(`picture path: ${picture}`);
 
               // get name from input
               const parsedName = nameInput.value.length > 0 ? nameInput.value : undefined;
