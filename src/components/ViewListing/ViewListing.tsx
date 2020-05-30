@@ -68,6 +68,8 @@ const ViewListing: React.FC<ViewListingProps> = ({
   const [clickedOnProfile, setClickedOnProfile] = useState(false);
   const [markSold, markSoldSetter] = useState(false);
 
+  const [price, setPrice] = useState(listingData.price);
+
   useEffect(() => {
     const fetchListingData = async () => {
       //gets single listing object
@@ -130,6 +132,7 @@ const ViewListing: React.FC<ViewListingProps> = ({
           locationProp={listingData.location}
           tagsProp={listingData.tags}
           picturesProp={listingData.pictures}
+          setPrice={setPrice}
         />
       )}
 
@@ -176,7 +179,7 @@ const ViewListing: React.FC<ViewListingProps> = ({
                   <p className={styles.listingHeader}>Price</p>
                   <p className={styles.listingHeader}>Posted</p>
                   <p className={styles.listingHeader}>Pickup</p>
-                  <p className={styles.listingInfo}>${listingData.price}</p>
+                  <p className={styles.listingInfo}>${price}</p>
                   <p className={styles.listingInfo}>
                     {new Date(creationTime).toDateString()}
                   </p>

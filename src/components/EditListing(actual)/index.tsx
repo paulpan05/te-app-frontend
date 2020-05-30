@@ -16,7 +16,7 @@ import Card from 'react-bootstrap/Card';
 import { toast } from 'react-toastify';
 import CustomToggleButton from '../CustomToggleButton/index';
 import styles from '../CreateListing/index.module.scss';
-import deletePopup from '../DeletePopup/index'
+import deletePopup from '../DeletePopup/index';
 import addPhoto from '../../assets/img/add-photo.png';
 import { rootState } from '../../redux/reducers';
 import { updateListing } from '../../api/index';
@@ -37,6 +37,7 @@ interface EditListingProps {
   locationProp: string;
   tagsProp: string[];
   picturesProp: string[];
+  setPrice: Function;
 }
 
 const mapStateToProps = (state: rootState) => ({
@@ -55,6 +56,7 @@ const EditListing: React.FC<EditListingProps> = ({
   locationProp,
   tagsProp,
   picturesProp,
+  setPrice,
 }) => {
   const [pictures, setPictures]: [string[], Function] = useState(picturesProp);
   const [dispValidated, setDispValidated] = useState(false);
@@ -77,14 +79,10 @@ const EditListing: React.FC<EditListingProps> = ({
       <Card>
         <Form validated={dispValidated} className={styles.wrapper}>
           <Form.Row className="justify-content-center text-center">
-          <p className="mediumHeader">Edit Listing</p>
-                          <button
-                    type="button"
-                    onClick={() => setShow(false)}
-                    className="exitButton exitPad"
-                  >
-                    <FontAwesomeIcon icon={faTimes} size="lg" className={styles.exitFlag} />
-                  </button>
+            <p className="mediumHeader">Edit Listing</p>
+            <button type="button" onClick={() => setShow(false)} className="exitButton exitPad">
+              <FontAwesomeIcon icon={faTimes} size="lg" className={styles.exitFlag} />
+            </button>
           </Form.Row>
 
           <Form.Row className="justify-content-center text-center">
@@ -270,7 +268,7 @@ const EditListing: React.FC<EditListingProps> = ({
                   false,
                   undefined,
                 );
-                
+
                 // delete old pictures and tags here
                 const successDelete = await updateListing(
                   user,
@@ -287,13 +285,14 @@ const EditListing: React.FC<EditListingProps> = ({
                   true,
                   undefined,
                 );
-                  console.log(successAdd)
-                  console.log(successDelete)
+                console.log(successAdd);
+                console.log(successDelete);
                 // TODO what would happen if the successAdd works but successDelete fails? wouldn't it add new pictures but tell the user that no new pictures were added? also vice versa
 
                 if (successAdd && successDelete) {
                   setShow(false);
                   toast('The listing was successfully edited!');
+                  setPrice(parsedPrice);
                 } else {
                   toast(
                     'There was an error while editing your listing! Try to edit it again or reload.',
