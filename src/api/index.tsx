@@ -3,7 +3,7 @@ import endpoint from '../configs/endpoint';
 
 const handleFetchNotOk = async (res: Response) => {
   const jsonResult = await res.json();
-  console.log(jsonResult);
+  //console.log(jsonResult);
   if (!res.ok) {
     throw Error(jsonResult);
   }
@@ -37,6 +37,32 @@ const getUserProfile = async (
     console.log(err);
   }
 };
+
+/* test with multiple */
+const fetchListings = async (
+  user: firebase.User | null | undefined,
+  ids: string[],
+  creationTimes: number[],
+  setter?: Function,
+) => {
+  try {
+    const idToken = await user?.getIdToken();
+    // console.log(idToken);
+    const response = await fetch(
+      `${endpoint}/listings/byIds?idToken=${idToken}&ids=${ids.join(',')}&creationTimes=${creationTimes.join(',')}`,
+    );
+    const result = await handleFetchNotOk(response);
+    if(setter){
+      setter(result);
+    }
+    // console.log(result);
+    return result;
+  } catch (err) {
+    // console.log(err);
+    return undefined;
+  }
+};
+
 
 const getListings = async (user: firebase.User | null | undefined, setter: Function) => {
   try {

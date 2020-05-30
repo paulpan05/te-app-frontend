@@ -23,9 +23,14 @@ import EditListingButton from './components/EditListing(actual)/buttonExample';
 import CreateListingButton from './components/CreateListing/buttonExample';
 import Saved from './pages/Saved';
 import AllReports from './components/ReportModals/AllReports';
+import { rootState } from './redux/reducers';
+import { FirebaseError } from 'firebase';
+
 interface AppProps {
   dispatch: Dispatch<any>;
 }
+
+
 
 const AppComponent: React.FC<AppProps> = ({ dispatch }) => {
   React.useEffect(() => {
@@ -33,6 +38,7 @@ const AppComponent: React.FC<AppProps> = ({ dispatch }) => {
   }, [dispatch]);
 
   const [signingUp, setSigningUp] = useState(false);
+  
 
   return (
     <Switch>
