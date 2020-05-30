@@ -10,26 +10,34 @@ interface CommentProps {
   commentId: string;
   userId: string;
   content: string;
+  listingId: string;
 }
 
-const Comment: React.FC<CommentProps> = ({ currentUser, commentId, userId, content }) => {
+const Comment: React.FC<CommentProps> = ({ currentUser, commentId, userId, content, listingId}) => {
   const [showReportButton, setShowReportButton] = useState(false);
   const [showReportModal, setShowReportModal] = useState(false);
   const [profilePicture, setProfilePicture] = useState(ProfileImg);
+  const [reportedUserName, setReportedUserName] = useState('');
 
   const getProfilePicture = async () => {
-    const userProfile = await getUserProfile(currentUser);
+    const userProfile = await getUserProfile(currentUser, userId);
     if(!userProfile)
       return
-    console.log(JSON.stringify(userProfile));
     setProfilePicture(userProfile.picture);
+    setReportedUserName(userProfile.name);
   };
 
   useEffect(() => {getProfilePicture()}, [currentUser]);
 
   return (
     <>
-      <ReportComment show={showReportModal} setShow={setShowReportModal} />
+      <ReportComment show={showReportModal} 
+        setShow={setShowReportModal} 
+        userId={userId} listingId={listingId} 
+        commentId={commentId} 
+        reportedUserName={reportedUserName}
+        reportedProfilePicture={profilePicture} 
+      />
       <div className={styles.comment}>
         <img src={profilePicture} className={styles.authorPicture} alt="author" />
         <div

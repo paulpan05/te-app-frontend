@@ -14,13 +14,14 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Carousel from 'react-bootstrap/Carousel';
 import Card from 'react-bootstrap/Card';
 import { toast } from 'react-toastify';
-import CustomToggleButton from '../CustomToggleButton/index';
 import styles from './index.module.scss';
 import addPhoto from '../../assets/img/add-photo.png';
 import { rootState } from '../../redux/reducers';
 import { createListing } from '../../api/index';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-regular-svg-icons';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+
 import TagsDiv from '../Tags/Tags';
 
 interface CreateListingProps {
@@ -52,15 +53,23 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
 
   return (
     <Modal show={show} onHide={() => setShow(false)} size="lg">
-      <Card>
+      <Card className="myCard">
         <Form validated={dispValidated} className={styles.wrapper}>
           <Form.Row className="justify-content-center text-center">
-            <h1>Create Listing</h1>
+          
+            <p className="mediumHeader">Create Listing</p>
+                          <button
+                    type="button"
+                    onClick={() => setShow(false)}
+                    className="exitButton exitPad"
+                  >
+                    <FontAwesomeIcon icon={faTimes} size="lg" className={styles.exitFlag} />
+                  </button>
           </Form.Row>
 
           <Form.Row className="justify-content-center text-center">
             <Form.Group as={Col} md="6">
-              <Form.Label className={styles.text}>What are you selling?</Form.Label>
+              <Form.Label className="bodyText">What are you selling?</Form.Label>
               <Form.Control
                 placeholder="Title"
                 className={styles.input}
@@ -71,7 +80,7 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                 }}
               />
 
-              <Form.Label className={styles.text}>For how much?</Form.Label>
+              <Form.Label className="bodyText">For how much?</Form.Label>
               <InputGroup>
                 <InputGroup.Text className={styles.inputPrepend}>$</InputGroup.Text>
                 <Form.Control
@@ -88,7 +97,7 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                 <InputGroup.Text className={styles.inputPostpend}>.00</InputGroup.Text>
               </InputGroup>
 
-              <Form.Label className={styles.text}>Description</Form.Label>
+              <Form.Label className="bodyText">Description</Form.Label>
               <Form.Control
                 as="textarea"
                 rows={4}
@@ -101,7 +110,7 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                 }}
               />
 
-              <Form.Label className={styles.text}>Pickup Location</Form.Label>
+              <Form.Label className="bodyText">Pickup Location</Form.Label>
               <Form.Control
                 required
                 placeholder="Price Center"
@@ -113,7 +122,7 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                 }}
               />
 
-              <Form.Label className={styles.text}>Tags</Form.Label>
+              <Form.Label className="bodyText">Tags</Form.Label>
               <Form.Row className="justify-content-center text-center">
                 <TagsDiv
                   tags={dispTags}
@@ -231,9 +240,6 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
               Create
             </Button>
 
-            <Button className={styles.secondaryButton} onClick={() => setShow(false)}>
-              Cancel
-            </Button>
           </Form.Row>
         </Form>
       </Card>

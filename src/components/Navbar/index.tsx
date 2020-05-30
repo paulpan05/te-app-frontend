@@ -7,7 +7,6 @@ import profile from '../../assets/img/sarah.png';
 import b from '../../assets/img/full-app-logo.svg';
 import { authActions } from '../../redux/actions';
 import CreateListing from '../CreateListing/index';
-import EditProfile from '../EditProfile/buttonExample';
 import styles from './index.module.scss';
 
 interface NavbarProps {
@@ -21,14 +20,12 @@ const Navbar: React.FC<NavbarProps> = ({ dispatch }) => {
   return (
     <div>
       <NavBar collapseOnSelect className={styles.navbar} expand="lg" variant="dark">
-        <NavBar.Brand onClick={() => redirectTo('/')}>Triton Exchange</NavBar.Brand>
+        <NavBar.Brand className="hoverPointer" onClick={() => redirectTo('/')}>Triton Exchange</NavBar.Brand>
         <NavBar.Toggle aria-controls="responsive-navbar-nav" />
         <NavBar.Collapse id="responsive-navbar-nav">
           <Nav className="ml-auto">
             <Nav.Link onClick={() => redirectTo('/')}>Home</Nav.Link>
             <Nav.Link onClick={() => redirectTo('/saved')}>Saved</Nav.Link>
-            <Nav.Link onClick={() => redirectTo('/editprofile')}>Edit Profile</Nav.Link>
-            <Nav.Link onClick={() => redirectTo('/editlisting')}>Edit Listing</Nav.Link>
             <Nav.Link onClick={() => setShowCreateListing(true)}>Sell</Nav.Link>
             <NavDropdown
               eventKey={1}

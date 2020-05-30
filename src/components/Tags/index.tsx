@@ -11,7 +11,7 @@ interface TagsProps {
 
 const Tags: React.FC<TagsProps> = ({tags, setTag}) => {
   return (
-    <div className={styles.wrapper}>
+    <div className="wrapper maxWidth95">
       <div className={styles.scrolls}>
         <div className={styles.imageDiv}>
           <TagButton tags={tags} setTag={setTag} children="Tutoring" value={0} />
