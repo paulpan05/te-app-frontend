@@ -3,15 +3,17 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import styles from './index.module.scss';
 import ProfileImg from '../../assets/img/sarah.png';
+import { v4 as uuidv4 } from 'uuid';
+import { text } from '@fortawesome/fontawesome-svg-core';
 
 interface CommentFormProps {
-  dispatch?: Dispatch<any>;
+  user: firebase.User | null | undefined;
   onCommentSubmit: Function;
 }
 
 let textData = '';
 
-const CommentForm: React.FC<CommentFormProps> = ({ dispatch, onCommentSubmit }) => {
+const CommentForm: React.FC<CommentFormProps> = ({ user, onCommentSubmit }) => {
   const [txt, setTxt] = useState('');
 
   const handleTextChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -19,14 +21,16 @@ const CommentForm: React.FC<CommentFormProps> = ({ dispatch, onCommentSubmit }) 
     setTxt(textData);
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const textVal = textData.trim();
     if (!textVal) {
       return;
     }
-    onCommentSubmit(textVal);
+    const newComment = { commentId: uuidv4(), userId: await user?.getIdToken(), content: textVal };
+    onCommentSubmit(newComment);
     setTxt('');
+    textData = '';
   };
 
   return (

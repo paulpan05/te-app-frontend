@@ -19,6 +19,9 @@ import styles from './index.module.scss';
 import addPhoto from '../../assets/img/add-photo.png';
 import { rootState } from '../../redux/reducers';
 import { createListing } from '../../api/index';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashAlt } from '@fortawesome/free-regular-svg-icons';
+import TagsDiv from '../Tags/Tags';
 
 interface CreateListingProps {
   user: firebase.User | null | undefined;
@@ -29,9 +32,9 @@ interface CreateListingProps {
 const mapStateToProps = (state: rootState) => ({
   user: state.auth.user,
 });
-// TODO implemenet tags and upload images to s3
+// TODO implemenet tags and upload pictures to s3
 const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) => {
-  const [images, setImages] = useState([addPhoto]);
+  const [pictures, setPictures]: [string[], Function] = useState([]);
   const [dispValidated, setDispValidated] = useState(false);
   const validated = [false, false, false, true];
   const which = { title: 0, price: 1, description: 2, location: 3 };
@@ -41,15 +44,10 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
   let locationInput;
 
   /* const tags = await // API call to database for list of tags goes here */
-  const tags = ['Furniture', 'Rides', 'Tutoring', 'Appliances', 'Technology'];
-
-  useEffect(() => {
-    return () => {
-      /* remove photos from memory here (this is the same as componentUnmount) */
-      images.map((src, i) => {
-        URL.revokeObjectURL(src);
-      });
-    };
+  const dispTags = ['Tutoring', 'Housing', 'Rideshare', 'Study Material', 'Clothes', 'Furniture', 'Electronics', 'Appliances', 'Fitness', 'Other', 'On-Campus Pickup', 'Off-Campus Pickup', 'Venmo', 'Cash', 'Dining Dollars', 'Free'];
+  const tags = {};
+  dispTags.map((tag) => {
+    tags[tag] = false;
   });
 
   return (
@@ -117,9 +115,10 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
 
               <Form.Label className={styles.text}>Tags</Form.Label>
               <Form.Row className="justify-content-center text-center">
-                {tags.map((tagLabel, i) => {
-                  return <CustomToggleButton value={i}>{tagLabel}</CustomToggleButton>;
-                })}
+                <TagsDiv
+                  tags={dispTags}
+                  setTag={(tag: string, active: boolean) => (tags[tag] = active)}
+                />
               </Form.Row>
             </Form.Group>
 
@@ -127,14 +126,32 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
               <Form.Row className="justify-content-center text-center">
                 <Form.Label>Add Images</Form.Label>
                 <Carousel>
-                  {images.map((src, i) => (
-                    <Carousel.Item key={i}>
-                      <img src={src} onClick={() => console.log('hi')} />
+                  {pictures.length !== 0 ? (
+                    pictures.map((src, i) => {
+                      return (
+                        <Carousel.Item key={i}>
+                          <img src={src} />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setPictures(pictures.filter((pic) => pic !== src));
+                              URL.revokeObjectURL(src);
+                            }}
+                            className={styles.deleteButton}
+                          >
+                            <FontAwesomeIcon icon={faTrashAlt} size="lg" />
+                          </button>
+                        </Carousel.Item>
+                      );
+                    })
+                  ) : (
+                    <Carousel.Item key={0}>
+                      <img src={addPhoto} />
                     </Carousel.Item>
-                  ))}
+                  )}
                 </Carousel>
                 <Form.File
-                  id="upload-images-create-listing"
+                  id="upload-pictures-create-listing"
                   accept="image/*"
                   multiple
                   label="Browse..."
@@ -148,12 +165,7 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                           uploadingImgs.push(URL.createObjectURL(e.target.files[i]));
                         }
                       }
-                      // check if should remove the 'add photo' or not
-                      if (images[0] == addPhoto) {
-                        setImages(images.slice(1, images.length).concat(uploadingImgs));
-                      } else {
-                        setImages(images.concat(uploadingImgs));
-                      }
+                      setPictures(pictures.concat(uploadingImgs));
                     }
                   }}
                 />
@@ -169,8 +181,8 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                 setDispValidated(true);
 
                 let allValidated = true;
-                for (const i of validated) {
-                  allValidated = allValidated && i;
+                for (const singleValidation of validated) {
+                  allValidated = allValidated && singleValidation;
                 }
 
                 if (!allValidated) {
@@ -180,21 +192,32 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                 console.log('all forms are valid!');
 
                 // extract values from form
-                const title = titleInput.value;
-                const price = parseInt(priceInput.value);
-                const description = descriptionInput.value;
-                const location = locationInput.value;
-                console.log(title, price, description, location);
+                const parsedTitle = titleInput.value;
+                const parsedPrice = parseInt(priceInput.value);
+                const parsedDescription = descriptionInput.value;
+                const parsedLocation = locationInput.value;
+                console.log(
+                  `title: ${parsedTitle}, price: ${parsedPrice}, description: ${parsedDescription}, location: ${parsedLocation}`,
+                );
 
+                // TODO upload pics to s3, then extract the links and send them to database
+                const pictures = ['picture srcs go here'];
+
+                // extract tags
+                const parsedTags = dispTags.filter((tag) => tags[tag]);
+                console.log(`tags: ${parsedTags}`);
+
+                // api call
                 const success = await createListing(
                   user,
-                  title,
-                  price,
-                  description,
-                  location,
-                  [],
-                  ['pictures go here'],
+                  parsedTitle,
+                  parsedPrice,
+                  parsedDescription,
+                  parsedLocation,
+                  parsedTags,
+                  pictures,
                 );
+
                 if (success) {
                   setShow(false);
                   toast('The listing was successfully created!');

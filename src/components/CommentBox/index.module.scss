@@ -5,6 +5,7 @@
   display: inline-flex;
   align-items: center;
   margin-left: 10px;
+  position: relative;
 }
 
 .commentText {
@@ -13,8 +14,8 @@
   background-color: rgb(214, 210, 210);
   border-radius: 20px;
   height: 100%;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 15px;
+  padding-right: 20px;
   padding-top: 2px;
   padding-bottom: 5px;
   width: 360px;
@@ -28,8 +29,6 @@
   max-width: 35px;
   padding-right: 5px;
   height: auto;
-  // margin:auto;
-  //margin-top: 10px;
 }
 
 .commentList {
@@ -47,9 +46,6 @@
 .commentForm {
   margin-top: 10px;
   max-width: 100%;
-  //display: inline;
-  //max-height: 1%;
-  //width: 400px;
   width: 430px;
   margin-bottom: 10px;
   justify-content: start;
@@ -71,30 +67,26 @@
   font-weight: 500;
   font-size: 20px;
   color: #17284a;
-  //margin-top: -40px;
 }
 
 .commentBox {
   height: 534px;
   border: 1px solid black;
-  //max-width: 90%;
   justify-content: end;
   align-items: center;
   margin-left: 1rem;
-  //margin-bottom: -40px;
   border-radius: 3rem;
 }
 
 .reportComment {
   max-height: 30px;
-  //position: absolute;
-  position: sticky;
+  position: absolute;
   background: none;
   border: 0;
-  left: 100%;
   border-radius: 20px;
-  bottom: 50%;
   z-index: 10;
+  bottom: 0;
+  right: 0;
 }
 
 .reportCommentImg {

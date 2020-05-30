@@ -28,6 +28,7 @@ const Navbar: React.FC<NavbarProps> = ({ dispatch }) => {
             <Nav.Link onClick={() => redirectTo('/')}>Home</Nav.Link>
             <Nav.Link onClick={() => redirectTo('/saved')}>Saved</Nav.Link>
             <Nav.Link onClick={() => redirectTo('/editprofile')}>Edit Profile</Nav.Link>
+            <Nav.Link onClick={() => redirectTo('/editlisting')}>Edit Listing</Nav.Link>
             <Nav.Link onClick={() => setShowCreateListing(true)}>Sell</Nav.Link>
             <NavDropdown
               eventKey={1}
@@ -35,12 +36,12 @@ const Navbar: React.FC<NavbarProps> = ({ dispatch }) => {
               title={<img className={styles.thumbnail_image} src={profile} alt="user pic" />}
               id="dropdown-button-drop-left"
             >
-              <Dropdown.Item eventKey="2" onClick={() => redirectTo('/profile')} active={false}>
+              <Dropdown.Item eventKey="1" onClick={() => redirectTo('/profile')} active={false}>
                 View Profile
               </Dropdown.Item>
               <Dropdown.Divider />
               <Dropdown.Item
-                eventKey="1"
+                eventKey="2"
                 onClick={() => {
                   dispatch(authActions.signOut());
                 }}

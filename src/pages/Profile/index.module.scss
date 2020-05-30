@@ -1,6 +1,7 @@
 .con {
     max-width: 100% !important;
     margin-top: 1rem !important;
+    min-height: 100% !important;
 }
 .column {
     display: flex;
@@ -9,17 +10,20 @@
 }
 
 .row{
-    height: 45% !important;
-    margin-top: 1rem !important;
-    margin-right: 1rem !important;
-    border-width: 2px !important;
-    
+    //height: % !important;
+    min-height: 40% !important;
+    max-height: fit-content;
+    margin: 1rem;
+
+   // margin-top: 1rem !important;
+    //margin-right: 1rem !important;
+    border-width: 2px !important;    
     outline: black;
     outline-width: 2px;
 }
 .img {
-    width: 250px !important;
-    height: 250px !important;
+    width: 16rem !important;
+    height: 16rem !important;
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -32,6 +36,7 @@
     margin-left: auto;
     margin-right: auto;
     margin-top: 1vh;
+    margin-bottom: 3vh;
     border-radius: 30px !important;
     background-color: #05275e !important;
     color: white !important;
@@ -41,7 +46,7 @@
     width: 60%;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 3vh;
+    margin-bottom: 2vh;
     border-radius: 30px !important;
     background-color: #aba3a4ee !important;
     color: white !important;
@@ -50,13 +55,15 @@
 
 
 .outlin{
-    height: 100%;
+    height: inherit;
+    
     max-width: 100%;
     width: 100%;
     padding: 1%;
     border: 1px;
     border-style: solid;
     border-radius: 3vh;
+    text-align: inherit;
 }
  
 .carddeck {

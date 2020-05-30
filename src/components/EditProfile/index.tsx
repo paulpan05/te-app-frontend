@@ -24,7 +24,7 @@ interface EditProfileProps {
   dispatch: Dispatch<any>;
   show: boolean;
   setShow: Function;
-  phoneProp: string;
+  phoneProp?: string;
   pictureProp: string;
   nameProp: string;
 }
@@ -42,9 +42,11 @@ const EditProfile: React.FC<EditProfileProps> = ({
   pictureProp,
   nameProp,
 }) => {
-  const [profileImgSrc, setProfileImgSrc] = useState(pictureProp);
-  const [name, setName] = useState(nameProp);
-  const [phone, setPhone] = useState(phoneProp);
+  const [picture, setPicture] = useState(pictureProp);
+  const [dispValidated, setDispValidated] = useState(false);
+  let nameInput;
+  let phoneInput;
+  let validated = true;
 
   const [cropping, setCropping] = useState(false);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -53,13 +55,13 @@ const EditProfile: React.FC<EditProfileProps> = ({
 
   const cropImage = async () => {
     const image = document.createElement('img');
-    image.src = profileImgSrc;
+    image.src = picture;
     const canvas = document.createElement('canvas');
     canvas.width = croppedAreaPixels.width;
     canvas.height = croppedAreaPixels.height;
 
     const ctx = canvas.getContext('2d');
-    if (!ctx) return profileImgSrc;
+    if (!ctx) return picture;
     ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(
@@ -84,17 +86,17 @@ const EditProfile: React.FC<EditProfileProps> = ({
       <Card>
         <Container>
           <Row className="justify-content-center text-center">
-            <h1>Edit Your Profile</h1>
+            <h1>Hi {nameProp}, Edit Your Profile Below</h1>
           </Row>
 
-          <Form>
+          <Form validated={dispValidated}>
             <Form.Row className="justify-content-center">
               <Form.Group as={Col} sm="6" lg="5">
                 {cropping ? (
                   <div className={styles.profilePictureWrapper}>
                     <div className={styles.cropContainer}>
                       <Cropper
-                        image={profileImgSrc}
+                        image={picture}
                         crop={crop}
                         zoom={zoom}
                         aspect={1}
@@ -112,7 +114,7 @@ const EditProfile: React.FC<EditProfileProps> = ({
                         className={styles.button}
                         onClick={async () => {
                           cropImage().then((croppedImg: any) => {
-                            setProfileImgSrc(croppedImg);
+                            setPicture(croppedImg);
                             setCropping(false);
                           });
                         }}
@@ -124,7 +126,7 @@ const EditProfile: React.FC<EditProfileProps> = ({
                 ) : (
                   <Form.Label className={styles.profilePictureWrapper}>
                     <Image
-                      src={profileImgSrc}
+                      src={picture}
                       roundedCircle
                       className={styles.profilePicture}
                       draggable={false}
@@ -138,8 +140,8 @@ const EditProfile: React.FC<EditProfileProps> = ({
                       hidden
                       onChange={(e: any) => {
                         if (e.target.files && e.target.files.length === 1 && e.target.files[0]) {
-                          URL.revokeObjectURL(profileImgSrc);
-                          setProfileImgSrc(URL.createObjectURL(e.target.files[0]));
+                          URL.revokeObjectURL(picture);
+                          setPicture(URL.createObjectURL(e.target.files[0]));
                           setCropping(true);
                         }
                       }}
@@ -151,15 +153,13 @@ const EditProfile: React.FC<EditProfileProps> = ({
 
             <Form.Row className="justify-content-center">
               <Form.Group as={Col} md="5" lg="4" className="text-center">
-                <Form.Label className={styles.text}>Preferred Name</Form.Label>
+                <Form.Label className={styles.text}>Name</Form.Label>
                 <Form.Control
-                  placeholder="Preferred Name"
+                  placeholder="Name"
                   className={styles.input}
-                  defaultValue={name}
+                  defaultValue={nameProp}
+                  ref={(ref) => (nameInput = ref)}
                 />
-                <Form.Text>
-                  This will be displayed instead of your name (so include your last name)
-                </Form.Text>
               </Form.Group>
 
               <Form.Group
@@ -171,8 +171,13 @@ const EditProfile: React.FC<EditProfileProps> = ({
                 <Form.Label className={styles.text}>Phone Number</Form.Label>
                 <FormControl
                   placeholder="(123) 456-7890"
-                  defaultValue={phone}
+                  ref={(ref) => (phoneInput = ref)}
+                  defaultValue={phoneProp}
                   className={styles.input}
+                  pattern="([ ]*\+?[ ]*[0-9]{0,4}[ ]*(-|\()?[0-9]{3}[ ]*(-|\))?[ ]*[0-9]{3}[ ]*-?[ ]*[0-9]{4}[ ]*)?"
+                  onChange={(e) => {
+                    validated = !e.target.validity.patternMismatch;
+                  }}
                 />
                 <Form.Text>This will be displayed publicly, along with your UCSD email</Form.Text>
               </Form.Group>
@@ -181,15 +186,51 @@ const EditProfile: React.FC<EditProfileProps> = ({
             <Form.Row className="justify-content-center">
               <Button
                 className={styles.button}
-                onClick={async () => {
-                  // validate forms
+                onClick={async (e) => {
+                  // validate the form
+                  setDispValidated(true);
+
+                  if (!validated) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return;
+                  }
+
+                  // parse phone number in correct format
+                  const phone = phoneInput.value;
+                  let parsedPhone;
+                  if (phone.length > 0) {
+                    parsedPhone = phone.replace(/( |-|\(|\))/g, '');
+                    const ppLen = parsedPhone.length;
+                    parsedPhone = [
+                      ppLen > 11 ? '+' : '',
+                      parsedPhone.slice(0, ppLen - 10),
+                      ppLen > 10 ? ' ' : '',
+                      '(',
+                      parsedPhone.slice(ppLen - 10, ppLen - 7),
+                      ') ',
+                      parsedPhone.slice(ppLen - 7, ppLen - 4),
+                      '-',
+                      parsedPhone.slice(ppLen - 4),
+                    ].join('');
+                  } else {
+                    parsedPhone = undefined;
+                  }
+
+                  // check if phone number was edited
+                  if (parsedPhone === phoneProp) {
+                    parsedPhone = undefined;
+                  }
+
+                  // get name from input, check if it was edited
+                  const val = nameInput.value;
+                  const parsedName = val.length > 0 && val !== nameProp ? val : undefined;
+
+                  // check if picture was edited
+                  const parsedPicture = picture !== pictureProp ? picture : undefined;
+
                   // API PUT to database
-                  const success = await updateProfile(
-                    user,
-                    '12345678',
-                    'picture goes here',
-                    'name goes here',
-                  );
+                  const success = await updateProfile(user, parsedPhone, parsedPicture, parsedName);
                   if (success) {
                     setShow(false);
                     toast('Your profile was edited successfully!');

@@ -129,3 +129,17 @@ h4 {
 .black {
   color: black !important;
 }
+
+.deleteButton {
+  background-color: transparent;
+  border: 0px;
+  position: absolute;
+  margin: 5px;
+  top: 0;
+  right: 0;
+  z-index: 500;
+  color: black;
+  :hover {
+    color: red;
+  }
+}

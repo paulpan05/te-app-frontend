@@ -20,12 +20,14 @@ import RateBuyer from '../RateBuyer';
 import { ReportListing } from '../ReportModals';
 import { saveListing, getUserProfile, unsaveListing, fetchListing } from '../../api/index';
 import 'react-toastify/dist/ReactToastify.css';
+
 interface EditListingProps extends Omit<RouteProps, 'render'> {
   showDeleteSetter: React.Dispatch<any>;
   contactSellerSetter: React.Dispatch<any>;
   user: firebase.User | null | undefined;
   listingObject: any;
   sellerInfo: any;
+  setShowEditListing: Function;
 }
 
 const mapStateToProps = (state: rootState) => ({
@@ -38,18 +40,20 @@ const EditListing: React.FC<EditListingProps> = ({
   contactSellerSetter,
   listingObject,
   sellerInfo,
+  setShowEditListing,
 }) => {
   const [markSold, markSoldSetter] = useState(false);
   const [showReportListing, setShowReportListing] = useState(false);
   const [clickedOnProfile, setClickedOnProfile] = useState(false);
   // false means not same user, true means they own the listing
-  const [curId, curIdSetter] = useState();
+  const [curId, curIdSetter] = useState(user?.uid === listingObject.userId);
   const [liked, setLiked] = useState(false);
+  const [numSaved, setNumSaved] = useState(0);
   const [sellerData, sellerDataSetter] = useState();
   const [toggled, setToggled] = useState(false);
   const [myData, myDataSetter] = useState();
   const callAPI = async () => {
-    const test = await getUserProfile(user, sellerDataSetter);
+    const test = await getUserProfile(user, undefined, sellerDataSetter);
     if (test) {
       for (let i = 0; i < test.savedListings.length; i++) {
         if (test.savedListings[i][0] === listingObject.listingId) {
@@ -60,28 +64,37 @@ const EditListing: React.FC<EditListingProps> = ({
         }
       }
     }
-    const result1 = await fetchListing(
+    const result = await fetchListing(
       user,
       myDataSetter,
       [listingObject.listingId],
       [listingObject.creationTime],
     );
-    myDataSetter(result1);
+    if (!result) {
+      console.log('there was an error while fetching your listing!');
+      toast(
+        'There was an error while retrieving your listing details! Please try again or reload the page.',
+      );
+    } else {
+      myDataSetter(result);
+      setNumSaved(result[0].savedCount);
+    }
   };
   useEffect(() => {
+    /*
     const myId = user?.uid;
     // when the current user is the owner of the listing
     if (myId === listingObject.userId) {
       curIdSetter(true);
-    }
+    }*/
     callAPI();
   }, [user]);
   return (
     /* VIEWING SOMEONE ELSE'S LISTING!!! */
     <>
+      {clickedOnProfile && <Redirect to="/profile" />}
       {!curId && myData && (
         <>
-          {clickedOnProfile ? <Redirect to="/profile" /> : null}
           <ReportListing show={showReportListing} setShow={setShowReportListing} />
           <Col xs={12} md={2} className={styles.textAlign}>
             <div>
@@ -97,8 +110,9 @@ const EditListing: React.FC<EditListingProps> = ({
                       myData[0].creationTime,
                     );
                     if (success) {
-                      toast('This listing has been added to your Saved collection!');
+                      setNumSaved(numSaved + 1);
                       setLiked(!liked);
+                      toast('This listing has been added to your Saved collection!');
                     } else {
                       toast(
                         'There has been an error while adding this to your saved collection. Please try again.',
@@ -111,8 +125,9 @@ const EditListing: React.FC<EditListingProps> = ({
                       myData[0].creationTime,
                     );
                     if (success) {
-                      toast('This listing has been removed from your Saved collection!');
+                      setNumSaved(numSaved - 1);
                       setLiked(!liked);
+                      toast('This listing has been removed from your Saved collection!');
                     } else {
                       toast(
                         'There has been an error while removing this from your saved collection. Please try again.',
@@ -140,7 +155,6 @@ const EditListing: React.FC<EditListingProps> = ({
               <button
                 type="button"
                 onClick={() => setShowReportListing(true)}
-                onKeyDown={() => setShowReportListing(true)}
                 className={styles.myButton}
               >
                 <FontAwesomeIcon icon={faFlag} size="lg" className={styles.flag} />
@@ -163,13 +177,12 @@ const EditListing: React.FC<EditListingProps> = ({
               <button
                 type="button"
                 onClick={() => contactSellerSetter(true)}
-                onKeyDown={() => contactSellerSetter(true)}
                 className={styles.sellerButton}
               >
                 Contact Seller
               </button>
               <div className={styles.interestBox}>
-                <p>{myData[0].savedCount} people have this item saved!</p>
+                <p>{numSaved} people have this item saved!</p>
               </div>
             </div>
           </Col>
@@ -193,8 +206,9 @@ const EditListing: React.FC<EditListingProps> = ({
                       myData[0].creationTime,
                     );
                     if (success === true) {
-                      toast('This listing has been added to your Saved collection!');
+                      setNumSaved(numSaved + 1);
                       setLiked(!liked);
+                      toast('This listing has been added to your Saved collection!');
                     } else {
                       toast(
                         'There has been an error while adding this to your saved collection. Please try again.',
@@ -207,8 +221,9 @@ const EditListing: React.FC<EditListingProps> = ({
                       myData[0].creationTime,
                     );
                     if (success === true) {
-                      toast('This listing has been removed from your Saved collection!');
+                      setNumSaved(numSaved - 1);
                       setLiked(!liked);
+                      toast('This listing has been removed from your Saved collection!');
                     } else {
                       toast(
                         'There has been an error while removing this from your saved collection. Please try again.',
@@ -254,7 +269,7 @@ const EditListing: React.FC<EditListingProps> = ({
               {sellerInfo && <p>{sellerInfo.name}</p>}
               <p>{sellerInfo.ratings}</p>
               <div className={styles.interestBox}>
-                <p>{myData[0].savedCount} people have this item saved!</p>
+                <p>{numSaved} people have this item saved!</p>
               </div>
               <div>
                 {/* Button needs to have function to mark item as sold */}
@@ -266,7 +281,9 @@ const EditListing: React.FC<EditListingProps> = ({
                   Mark as Sold
                 </button>
                 {/* Button needs to have function to edit listing */}
-                <button type="button" className={styles.sellerButton}>
+                <button type="button" className={styles.sellerButton} onClick={() => {
+                  setShowEditListing(true);
+                }}>
                   Edit Listing
                 </button>
               </div>

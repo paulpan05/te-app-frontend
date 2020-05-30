@@ -19,12 +19,16 @@
 /* Font */
 @import url('https://fonts.googleapis.com/css?family=Quicksand:400,700');
 /* Design */
-.heart {
-    color: #17284A;
+
+.heartInactive {
+  color: 	#D3D3D3 !important;
 }
-.heart:hover {
-    color: red !important;
+
+.heartActive {
+  color: red !important;
 }
+
+
 *,
 *::before,
 *::after {
@@ -101,7 +105,7 @@ img {
 .card_content {
   padding: 1rem;
   background: white;
-  position: relative;
+  position: relative !important;
   //background: linear-gradient(to bottom left, #17284A 40%, #F2F2F2 100%);
 }
 .card_title {
@@ -146,10 +150,12 @@ img {
         border-radius: 0.5rem 0 0 0;
         cursor: pointer;
 }
-.cardImage:hover .like_ {
+
+.card:hover .like_btn{
     transform: translate(0,0);
     transition: all 0.5s linear;
 }
+
 .cardImage {
     position:relative !important;
     overflow: hidden;
@@ -163,6 +169,7 @@ img {
 .filterContainer {
     margin-top: 1rem;
 }
+
 
 
 

@@ -51,6 +51,10 @@
       margin-top:20%;
       display:flex;
       justify-content:center;
+      p {
+        max-width: 90%;
+        text-align: center;
+      }
   }
   p {
       margin-top:auto !important;
