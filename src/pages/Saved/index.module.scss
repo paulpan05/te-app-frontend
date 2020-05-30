@@ -4,3 +4,11 @@ $font-stack: Roboto;
     font: $font-stack;
     letter-spacing: 0.2rem;
 }
+
+h2 {
+    color: #17284A;
+    font-size: 20;
+    font: $font-stack;
+    letter-spacing: 0.2rem;
+    align-content: center !important;
+}
