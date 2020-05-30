@@ -64,7 +64,7 @@ const EditListing: React.FC<EditListingProps> = ({
   let locationInput;
 
   /* const tags = await // API call to database for list of tags goes here. paul needs to make an endpoint for it. hard code it for now */
-  const dispTags = ['Furniture', 'Rides', 'Tutoring', 'Appliances', 'Technology'];
+  const dispTags = ['Tutoring', 'Housing', 'Rideshare', 'Study Material', 'Clothes', 'Furniture', 'Electronics', 'Appliances', 'Fitness', 'Other', 'On-Campus Pickup', 'Off-Campus Pickup', 'Venmo', 'Cash', 'Dining Dollars', 'Free'];
   const tags = {};
   dispTags.map((tag) => {
     tags[tag] = false;
