@@ -491,21 +491,6 @@ const fetchListing = async (
   }
 };
 
-const getSellerInfo = async (
-  user: firebase.User | null | undefined,
-  targetUser: string,
-  setter: Function,
-) => {
-  try {
-    const idToken = await user?.getIdToken();
-    const response = await fetch(
-      `${endpoint}/users/profile?idToken=${idToken}&targetUserId=${targetUser}`,
-    );
-    const result = await handleFetchNotOk(response);
-    setter(result);
-    return result;
-  } catch (err) {}
-};
 
 const deleteListing = async (
   user: firebase.User | null | undefined,
@@ -576,7 +561,6 @@ export {
   saveListing,
   unsaveListing,
   fetchListing,
-  getSellerInfo,
   deleteListing,
   getListings,
   getListingsBySearch,

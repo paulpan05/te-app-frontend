@@ -88,11 +88,10 @@ const Listing: React.FC<ListingProps> = ({title, price, postDate, pictures, user
           className={styles.like_btn}>
                 <FontAwesomeIcon icon={faHeart} size="lg" className={toggled ? styles.heartActive : styles.heartInactive} />
           </button>
-          {/* <button className={styles.btn}>Contact Seller</button> */}
         </div>
       </div>
       {show && (
-        <ViewListing title="Flower Sweatshirt" seller="Sarah A." show={show} setShow={setShow} />
+        <ViewListing listingId={listingId} creationTime={postDate} show={show} setShow={setShow} />
       )}
     </div>
   );

@@ -60,25 +60,3 @@
       margin-top:auto !important;
   }
 
-  @media(max-width:767px) {
-    .flag {
-      font-size:3rem;
-    }
-    .likedFlag {
-      font-size:3rem;
-    }
-  }
-  @media (min-width:768px) {
-  .flag {
-    font-size:5rem;
-  }
-  .likedFlag {
-    font-size:5rem;
-  }
-  }
-  .flag:hover {
-    color:red;
-  }
-  .likedFlag {
-    color:red;
-  }

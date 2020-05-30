@@ -19,13 +19,14 @@ interface ReportListingProps {
   user: firebase.User | null | undefined;
   show: boolean;
   setShow: Function;
+  listingId: string;
 }
 
 const mapStateToProps = (state: rootState) => ({
   user: state.auth.user,
 });
 
-const ReportListing: React.FC<ReportListingProps> = ({ dispatch, user, show, setShow }) => {
+const ReportListing: React.FC<ReportListingProps> = ({ dispatch, user, show, setShow, listingId }) => {
   const [reportReason, setReportReason] = useState('');
 
   const handleTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -41,10 +42,12 @@ const ReportListing: React.FC<ReportListingProps> = ({ dispatch, user, show, set
     const type = 'Listing Report';
     const reportId = uuidv4();
     const description = textVal;
-    const success = await reportListing(user, type, reportId, description, 'listingid');
-    success
-      ? toast('Report submitted. Thank you for keeping Triton Exchange safe and secure!')
-      : toast('Error submitting report. Please try again!');
+    const success = await reportListing(user, type, reportId, description, listingId);
+    if (success) {
+      toast('Report submitted. Thank you for keeping Triton Exchange safe and secure!');
+    } else {
+      toast('Error submitting report. Please try again!');
+    }
   };
 
   return (

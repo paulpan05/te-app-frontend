@@ -8,7 +8,6 @@ import { rootState } from '../../redux/reducers';
 interface PrivateRouteProps extends Omit<RouteProps, 'render'> {
   dispatch: Dispatch<any>;
   user: firebase.User | null | undefined;
-  state?: any;
 }
 
 const mapStateToProps = (state: rootState) => ({
@@ -19,14 +18,13 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({
   dispatch,
   component: RouteComponent,
   user,
-  state,
   ...rest
 }: PrivateRouteProps) => (
   <Route
     {...rest}
     render={(routeProps) => {
       if (user) {
-        return RouteComponent && <RouteComponent {...routeProps} {...state} />;
+        return RouteComponent && <RouteComponent {...routeProps} />;
       }
       if (user === null) {
         return <Redirect to="/login" />;
