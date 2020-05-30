@@ -66,6 +66,7 @@ const EditListing: React.FC<EditListingProps> = ({
       [listingObject.listingId],
       [listingObject.creationTime],
     );
+    myDataSetter(result1);
   };
   useEffect(() => {
     const myId = user?.uid;

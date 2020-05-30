@@ -54,78 +54,76 @@ const Profile: React.FC<ProfileProps> = ({ user, dispatch }) => {
   document.body.style.padding = '0px';
   return (
     <Container className={styles.con}>
-      <Row>
-        <Col xs={3} className={styles.column}>
-          <FormLabel>
-            <Image src={profileImgSrc} roundedCircle alt="profile" className={styles.img} fluid />
-            <FormText>Click to Select a Profile Picture</FormText>
-            <FormFile
-              id="upload-profile"
-              accept="image/*"
-              hidden
-              onChange={(e: any) => {
-                if (e.target.files && e.target.files.length === 1 && e.target.files[0]) {
-                  URL.revokeObjectURL(profileImgSrc);
-                  setProfileImgSrc(URL.createObjectURL(e.target.files[0]));
-                }
-              }}
-            />
-          </FormLabel>
-          <div>
-            <Box>
-              <Rating
-                name="simple-controlled"
-                value={starValue}
-                onChange={(event, newValue) => {
-                  setStarValue(newValue);
+      <div className="min-vh-100">
+        <Row>
+          <Col xs={3} className={styles.column}>
+            <FormLabel>
+              <Image src={profileImgSrc} roundedCircle alt="profile" className={styles.img} fluid />
+              <FormText>Click to Select a Profile Picture</FormText>
+              <FormFile
+                id="upload-profile"
+                accept="image/*"
+                hidden
+                onChange={(e: any) => {
+                  if (e.target.files && e.target.files.length === 1 && e.target.files[0]) {
+                    URL.revokeObjectURL(profileImgSrc);
+                    setProfileImgSrc(URL.createObjectURL(e.target.files[0]));
+                  }
                 }}
               />
-            </Box>
-          </div>
-          <Button variant="outline-primary" className={styles.btnblue}>
-            Contact Seller
-          </Button>{' '}
-          <Button
-            variant="outline-secondary"
-            className={styles.btngrey}
-            onClick={() => setShow(true)}
-          >
-            Report Seller
-          </Button>
-          <ReportUser show={show} setShow={setShow} />
-        </Col>
-        <Col xs={9}>
-          <h2 style={{ textAlign: 'center' }}>
-            {user ? user.displayName : 'Name cannot be rendered: error occurred'}
-          </h2>
-          <Row className={styles.row}>
-            <div className={styles.outlin}>
-              <p style={{ marginBottom: '0rem', marginLeft: '1rem' }}>Available Listings</p>
-              <Carousel className={styles.car} responsive={responsive}>
-                <Listing />
-                <Listing />
-                <Listing />
-                <Listing />
-                <Listing />
-                <Listing />
-              </Carousel>
+            </FormLabel>
+            <div>
+              <Box>
+                <Rating
+                  name="simple-controlled"
+                  value={starValue}
+                  onChange={(event, newValue) => {
+                    setStarValue(newValue);
+                  }}
+                />
+              </Box>
             </div>
-          </Row>
-          <Row className={styles.row}>
+            <Button variant="outline-primary" className={styles.btnblue}>
+              Contact Seller
+            </Button>
+{' '}
+            <Button
+              variant="outline-secondary"
+              className={styles.btngrey}
+              onClick={() => setShow(true)}
+            >
+              Report Seller
+            </Button>
+            <ReportUser show={show} setShow={setShow} />
+          </Col>
+          <Col xs={9}>
+            <h2 style={{ textAlign: 'center' }}>
+              {user ? user.displayName : 'Name cannot be rendered: error occurred'}
+            </h2>
+            <Row className={styles.row}>
+              <div className={styles.outlin}>
+                <p style={{ marginBottom: '0rem', marginLeft: '1rem' }}>Available Listings</p>
+                <Carousel className={styles.car} responsive={responsive}>
+                  <Listing />
+                  <Listing />
+                  <Listing />
+                  <Listing />
+                  <Listing />
+                  <Listing />
+                </Carousel>
+              </div>
+            </Row>
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={3} />
+          <Col xs={9}>
             <div className={styles.outlin}>
               <p style={{ marginBottom: '0rem', marginLeft: '1rem' }}>Past Transactions</p>
-              <Carousel className={styles.car} responsive={responsive}>
-                <Listing />
-                <Listing />
-                <Listing />
-                <Listing />
-                <Listing />
-                <Listing />
-              </Carousel>
             </div>
-          </Row>
-        </Col>
-      </Row>
+          </Col>
+        </Row>
+      </div>
     </Container>
   );
 };

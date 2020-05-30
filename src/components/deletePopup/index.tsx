@@ -32,8 +32,6 @@ const DeletePopup: React.FC<DeletePopupProps> = ({
   listingSetter,
   listingObject,
 }) => {
-  console.log(listingObject);
-  console.log('MYLISTINGOBJECT');
   return (
     <div>
       <div>
