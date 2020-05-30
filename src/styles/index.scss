@@ -74,9 +74,12 @@
 }
 .imgWrapper {
   width: 100% !important;
-  height:400px !important;
+  height:300px !important;
   max-width: 400px !important;
   max-height:400px !important;
+  background-color: #545b6221;
+  align-items: center;
+  display:flex;
 }
 .header {
   font-size: 3rem !important;

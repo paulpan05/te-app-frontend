@@ -37,7 +37,7 @@ const Home: React.FC<HomeProps> = ({ dispatch, user }) => {
   const [listings, setListings] = useState();
   const[searchListings, setSearchListings] = useState();
   const [userInfo, userInfoSetter] = useState<any>(null);
-  //holds the listingId of the listing that needs to be rated
+  //holds the listing of the listing that needs to be rated
   const [rateListing, rateListingSetter] = useState();
   let rowArray = new Array();
   let searchInput;
@@ -62,11 +62,11 @@ const Home: React.FC<HomeProps> = ({ dispatch, user }) => {
   useEffect(() => {
          callAPI();
          getListings(user, setListings);
-  }, [user]);
+  }, [false]);
 
   return (
     <div>
-      {rateListing && <Rate listingId={rateListing}/>}
+      {rateListing && <Rate user={user} sellerId={rateListing[2]} creationTime={rateListing[1]} listingId={rateListing[0]}/>}
       <Row className="justify-content-md-center">
         
         <Tags tags={dispTags} setTag={(tag: string, active: boolean) => (tags[tag] = active)}/>
@@ -74,12 +74,12 @@ const Home: React.FC<HomeProps> = ({ dispatch, user }) => {
       <Row className="justify-content-center">
       <button className={styles.filterButton} onClick={async () => {
               const parsedTags = dispTags.filter((tag) => tags[tag]);
-              console.log(`tags: ${parsedTags}`);
+              // console.log(`tags: ${parsedTags}`);
               if(parsedTags.length != 0 ) {
                 const response1 = await getListingsByTags(user, parsedTags);
                 let parsedIds = new Array();
                 let parsedCreationTimes = new Array();
-                console.log(response1);
+                // console.log(response1);
                 if(response1 != false) {
                 response1.map((taggedArray) => {taggedArray.map((listing) => { if(!parsedIds.includes(listing[0])) { parsedIds.push(listing[0]); parsedCreationTimes.push(listing[1]);} })})
                 const response2 = await fetchIdListings(user, setSearchListings, parsedIds, parsedCreationTimes);
@@ -122,7 +122,34 @@ const Home: React.FC<HomeProps> = ({ dispatch, user }) => {
       <Listing user={user} userInfo={userInfo} listingId={listings.Items[index + 3].listingId}  title={listings.Items[index + 3].title === null ? "No Name": listingItem.title } price={listings.Items[index + 3].price} postDate={listings.Items[index + 3].creationTime} pictures={listings.Items[index + 3].pictures}/>
       </Col>
     </Row>)
-  }
+  } else if (listings.Items.length % 4 == 1 && listings.Items.length - 1 == index) {
+    rowArray.push(<Row xs={1} md={2} lg={4}>
+      <Col>
+      <Listing user={user} userInfo={userInfo} listingId={listingItem.listingId} title={listingItem.title} price={listingItem.price} postDate={listingItem.creationTime} pictures={listingItem.pictures}/>
+      </Col>
+    </Row>)
+  } else if (listings.Items.length % 4 == 2 && listings.Items.length - 2 == index) {
+    rowArray.push(<Row xs={1} md={2} lg={4}>
+      <Col>
+      <Listing user={user} userInfo={userInfo} listingId={listingItem.listingId} title={listingItem.title} price={listingItem.price} postDate={listingItem.creationTime} pictures={listingItem.pictures}/>
+      </Col>
+      <Col>
+      <Listing user={user} userInfo={userInfo} listingId={listings.Items[index + 1].listingId} title={listings.Items[index + 1].title} price={listings.Items[index + 1].price} postDate={listings.Items[index + 1].creationTime} pictures={listings.Items[index + 1].pictures}/>
+      </Col>
+    </Row>)
+  } else if (listings.Items.length % 4 == 3 && listings.Items.length - 3 == index) {
+    rowArray.push(<Row xs={1} md={2} lg={4}>
+      <Col>
+      <Listing user={user} userInfo={userInfo} listingId={listingItem.listingId} title={listingItem.title} price={listingItem.price} postDate={listingItem.creationTime} pictures={listingItem.pictures}/>
+      </Col>
+      <Col>
+      <Listing user={user} userInfo={userInfo} listingId={listings.Items[index + 1].listingId} title={listings.Items[index + 1].title} price={listings.Items[index + 1].price} postDate={listings.Items[index + 1].creationTime} pictures={listings.Items[index + 1].pictures}/>
+      </Col>
+      <Col>
+      <Listing user={user} userInfo={userInfo} listingId={listings.Items[index + 2].listingId} title={listings.Items[index + 2].title} price={listings.Items[index + 2].price} postDate={listings.Items[index + 2].creationTime} pictures={listings.Items[index + 2].pictures}/>
+      </Col>
+    </Row>)
+  } 
 }) && <Container fluid>{rowArray.map((row) => <div>{row}</div>)}</Container>}
 
 

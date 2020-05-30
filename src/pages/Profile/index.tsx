@@ -193,7 +193,7 @@ const Profile: React.FC<ProfileProps> = ({ user, targetUserId, dispatch}) => {
           <Row className={styles.row} style={{margin: "0" , minHeight: "15rem"}}>
             <Col lg={5} xl={3} className={styles.column}></Col>
             <Col lg={7} xl={9}>
-              <Row className={styles.row} style={{margin: "0" }}></Row>
+              <Row className={styles.row} style={{margin: "0" }}>
                 <div className={styles.outlin}>
                   {userEquals?(<><p style={{ marginBottom: '0rem', marginLeft: '1rem' }}>Past Transactions</p>
                   {(soldArray || boughtArray) && <Carousel className={styles.car} responsive={responsive}>
@@ -206,6 +206,7 @@ const Profile: React.FC<ProfileProps> = ({ user, targetUserId, dispatch}) => {
                   </Carousel>}
                   </>)}
                 </div>
+              </Row>
             </Col>
           </Row>
           

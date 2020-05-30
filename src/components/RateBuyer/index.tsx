@@ -10,7 +10,7 @@ import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
 import styles from './index.module.scss';
 import Rating from '@material-ui/lab/Rating';
-import {searchUser, markAsSold, addListingToRate} from '../../api';
+import {searchUser, markAsSold, addListingToRate, addBuyerRating} from '../../api';
 import { toast } from 'react-toastify';
 
 interface RateBuyerProps {
@@ -25,20 +25,21 @@ interface RateBuyerProps {
 
 const RateBuyer: React.FC<RateBuyerProps> = ({ dispatch, show, setShow, title , user, sellerInfo, listingData}) => {
   const [starValue, setStarValue] = React.useState<number | null>(2);
-  let buyerName;
+  let buyerName = "";
 
   const callAPI = async () => {
 
     const userProfile = await searchUser(user, buyerName);
-    console.log(userProfile);
+    console.log(userProfile[0].userId);
     console.log(sellerInfo);
     console.log(listingData);
     setShow(false);
     if(userProfile.length != 0) {
-      await markAsSold(user, listingData.listingId, listingData.creationTime, sellerInfo.userId, userProfile.userId);
-      //TODO: how do i update the buyers rating 
+      await markAsSold(user, listingData.listingId, listingData.creationTime, sellerInfo.userId, userProfile[0].userId);
+      //TODO: how do i update the buyers rating
+      await addBuyerRating(user, userProfile[0].userId, starValue?starValue: 1); 
       // await addBuyerRating();
-      await addListingToRate(user, userProfile.Id, listingData.listingId, listingData.creationTime);
+      await addListingToRate(user, userProfile[0].userId, listingData.listingId, listingData.creationTime);
       toast(`Successfully Marked Listing as Sold`);
     } else {
       toast(`No Such User as ${buyerName} found. Try again!`);

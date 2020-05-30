@@ -28,7 +28,7 @@ const getUserProfile = async (
       response = await fetch(`${endpoint}/users/profile?idToken=${idToken}`);
     }
     const result = await handleFetchNotOk(response);
-    console.log(result);
+    // console.log(result);
     if (setter) {
       setter(result);
     }
@@ -70,8 +70,9 @@ const getListings = async (user: firebase.User | null | undefined, setter: Funct
     const idToken = await user?.getIdToken();
     const response = await fetch(`${endpoint}/listings?idToken=${idToken}`);
     const result = await handleFetchNotOk(response);
+    
     setter(result);
-    console.log(result);
+    //console.log(result);
     return true;
   } catch (err) {
     console.log(err);
@@ -92,7 +93,7 @@ const fetchIdListings = async (
     );
     const result = await handleFetchNotOk(response);
     setter(result);
-    return true;
+    return result;
   } catch (err) {
     return false;
   }
@@ -110,7 +111,7 @@ const getListingsBySearch = async (
     );
     const result = await handleFetchNotOk(response);
     console.log(`searchTitle=${searchTerm} result=`);
-    console.log(result);
+    // console.log(result);
     setter(result);
     return true;
   } catch (err) {
@@ -124,7 +125,7 @@ const getListingsByTags = async (user: firebase.User | null | undefined, tags: s
     const idToken = await user?.getIdToken();
     const response = await fetch(`${endpoint}/listings/byTags?idToken=${idToken}&tags=${tags}`);
     const result = await handleFetchNotOk(response);
-    console.log(result);
+    // console.log(result);
     return result;
   } catch (err) {
     console.log(err);
@@ -162,7 +163,7 @@ const createListing = async (
       }),
     });
     const result = await handleFetchNotOk(response);
-    console.log(result);
+    // console.log(result);
     return true;
   } catch (err) {
     console.log(err.message);
@@ -640,7 +641,7 @@ const fetchListing = async (
       `${endpoint}/listings/byIds?idToken=${idToken}&ids=${ids}&creationTimes=${creationTimes}`,
     );
     const result = await handleFetchNotOk(response);
-    // setter(result);
+    setter(result);
     return result;
   } catch (err) {
     return undefined;
@@ -720,9 +721,9 @@ const markAsSold = async (
 
 const addListingToRate = async (
   user: firebase.User | null | undefined,
-  listingId: string,
-  listingCreationTime: string,
   buyerId: string,
+  listingId: string,
+  creationTime: string,
 ) => {
   try {
     const idToken = await user?.getIdToken();
@@ -731,7 +732,31 @@ const addListingToRate = async (
       body: JSON.stringify({
         buyerId,
         listingId,
-        listingCreationTime,
+        creationTime,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const result = await handleFetchNotOk(response);
+    return true;
+  } catch (err) {
+    return false;
+  }
+};
+
+const addBuyerRating = async (
+  user: firebase.User | null | undefined,
+  toRateUserId: string,
+  rating: number
+) => {
+  try {
+    const idToken = await user?.getIdToken();
+    const response = await fetch(`${endpoint}/users/rate-user?idToken=${idToken}`, {
+      method: 'POST',
+      body: JSON.stringify({
+        toRateUserId,
+        rating
       }),
       headers: {
         'Content-Type': 'application/json',
@@ -767,5 +792,6 @@ export {
   markAsSold,
   fetchListings,
   searchUser,
-  addListingToRate
+  addListingToRate,
+  addBuyerRating
 };
