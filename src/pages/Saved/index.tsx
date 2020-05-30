@@ -103,36 +103,6 @@ const Saved: React.FC<SavedProps> = ({ dispatch, user }) => {
       }
     }
     ) && <Container fluid>{rowArray.map((row) => <div>{row}</div>)}</Container>}
-    <Container fluid>
-      <Row xs={1} md={2} lg={4}>
-        <Col>
-        <Listing user={user} listingId={"123456"} title={"Green Shirt"} price={"$50"} postDate={1231} pictures={[]}/>
-        </Col>
-        <Col>
-        <Listing user={user} listingId={"123456"} title={"Green Shirt"} price={"$50"} postDate={1231} pictures={[]}/>
-        </Col>
-        <Col>
-        <Listing user={user} listingId={"123456"} title={"Green Shirt"} price={"$50"} postDate={1231} pictures={[]}/>
-        </Col>
-        <Col>
-        <Listing user={user} listingId={"123456"} title={"Green Shirt"} price={"$50"} postDate={1231} pictures={[]}/>
-        </Col>
-      </Row>
-      <Row xs={1} md={2} lg={4}>
-        <Col>
-        <Listing user={user} listingId={"123456"} title={"Green Shirt"} price={"$50"} postDate={1231} pictures={[]}/>
-        </Col>
-        <Col>
-        <Listing user={user} listingId={"123456"} title={"Green Shirt"} price={"$50"} postDate={1231} pictures={[]}/>
-        </Col>
-        <Col>
-        <Listing user={user} listingId={"123456"} title={"Green Shirt"} price={"$50"} postDate={1231} pictures={[]}/>
-        </Col>
-        <Col>
-        <Listing user={user} listingId={"123456"} title={"Green Shirt"} price={"$50"} postDate={1231} pictures={[]}/>
-        </Col>
-      </Row>
-    </Container>
   </div>
   );
 };

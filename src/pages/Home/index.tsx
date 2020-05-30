@@ -54,7 +54,7 @@ const Home: React.FC<HomeProps> = ({ dispatch, user }) => {
         <Tags/>
       </Row>
       <Row className="justify-content-md-center">
-        <InputGroup className={styles.inputGr}>
+        <InputGroup className={styles.inputGroup}>
           <FormControl className={styles.input} type="text" placeholder="Search.." onChange={(e) => {searchInput = e.target.value}} name="search" />
           <button className={styles.searchButton}  onClick={async () => { if(searchInput.length != 0) {await getListingsBySearch(user, searchInput, setSearchListings); setListings(null); rowArray = new Array(); } else {await getListings(user, setListings); setSearchListings(null); rowArray = new Array();}}}>
             <FontAwesomeIcon icon={faSearch} size="lg" />
@@ -129,38 +129,6 @@ const Home: React.FC<HomeProps> = ({ dispatch, user }) => {
     }
     ) && <Container fluid>{rowArray.map((row) => <div>{row}</div>)}</Container>}
 
-
-      {/* Placeholder listings, Can be deleted  */}
-      <Container fluid>
-        <Row xs={1} md={2} lg={4}>
-          <Col>
-            <Listing user={user} userInfo={userInfo} listingId={"123456"} title={"Green Shirt"} price={"$50"} postDate={1231} pictures={[]}/>
-          </Col>
-          <Col>
-            <Listing user={user} userInfo={userInfo} listingId={"123456"} title={"Green Shirt"} price={"$50"} postDate={1231} pictures={[]}/>
-          </Col>
-          <Col>
-            <Listing user={user} userInfo={userInfo} listingId={"123456"} title={"Green Shirt"} price={"$50"} postDate={1231} pictures={[]}/>
-          </Col>
-          <Col>
-            <Listing user={user} userInfo={userInfo} listingId={"123456"} title={"Green Shirt"} price={"$50"} postDate={1231} pictures={[]}/>
-          </Col>
-        </Row>
-        <Row xs={1} md={2} lg={4}>
-          <Col>
-            <Listing user={user} userInfo={userInfo} listingId={"123456"} title={"Green Shirt"} price={"$50"} postDate={1231} pictures={[]}/>  
-          </Col>
-          <Col>
-            <Listing user={user} userInfo={userInfo} listingId={"123456"} title={"Green Shirt"} price={"$50"} postDate={1231} pictures={[]}/>
-          </Col>
-          <Col>
-            <Listing user={user} userInfo={userInfo} listingId={"123456"} title={"Green Shirt"} price={"$50"} postDate={1231} pictures={[]}/>
-          </Col>
-          <Col>
-            <Listing user={user} userInfo={userInfo} listingId={"123456"} title={"Green Shirt"} price={"$50"} postDate={1231} pictures={[]}/>
-          </Col>
-        </Row>
-      </Container>
     </div>
   );
 };
