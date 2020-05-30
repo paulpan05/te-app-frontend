@@ -107,7 +107,7 @@ const ViewListing: React.FC<ViewListingProps> = ({
   return clickedOnProfile ? (
     <>
       <Modal show={clickedOnProfile} onHide={() => setClickedOnProfile(false)} size="xl">
-      <Container style={{ maxHeight: '100%' }} className="no-gutters">
+      <Container style={{ maxHeight: '50%' }} className="no-gutters">
         <Card className="myCard">
           <Profile targetUserId={listingData.userId} />
         </Card>

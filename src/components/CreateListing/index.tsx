@@ -193,7 +193,7 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                 for (const singleValidation of validated) {
                   allValidated = allValidated && singleValidation;
                 }
-
+                console.log(validated)
                 if (!allValidated) {
                   console.log('not all forms are valid!');
                   return;
