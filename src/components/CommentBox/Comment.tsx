@@ -39,7 +39,7 @@ const Comment: React.FC<CommentProps> = ({ currentUser, commentId, userId, conte
         reportedProfilePicture={profilePicture} 
       />
       <div className={styles.comment}>
-        <img src={profilePicture} className={styles.authorPicture} alt="author" />
+        <img src={profilePicture} className={styles.authorPicture} alt="a" />
         <div
           className={styles.commentText}
           onMouseEnter={() => {

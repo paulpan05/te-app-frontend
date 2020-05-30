@@ -14,6 +14,7 @@ import Listing from '../../components/ProfileListing/Listing';
 import { ReportUser } from '../../components/ReportModals';
 import EditProfile from '../../components/EditProfile/index';
 import ContactSeller from '../../components/ContactSeller';
+
 interface ProfileProps {
   dispatch: Dispatch<any>;
   user: firebase.User | null | undefined;
