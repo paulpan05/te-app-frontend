@@ -45,19 +45,18 @@
 
 .commentForm {
   margin-top: 10px;
-  max-width: 100%;
-  width: 430px;
+  max-width: 90%;
+  width: 90%;
   margin-bottom: 10px;
   justify-content: start;
   display: inline-flex;
   align-items: center;
-  margin-left: 45px;
+  margin-left: 5%;
 }
 
 .commentInput {
   border-radius: 100px;
-  max-width: 100%;
-  width: 350px;
+  width: 100%;
   align-self: start;
   padding-left: 5px;
 }
@@ -67,13 +66,13 @@
   font-weight: 500;
   font-size: 20px;
   color: #17284a;
+  align-self: center;
 }
 
 .commentBox {
   height: 534px;
   border: 1px solid black;
   justify-content: end;
-  align-items: center;
   margin-left: 1rem;
   border-radius: 3rem;
 }

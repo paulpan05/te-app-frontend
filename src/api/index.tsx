@@ -254,7 +254,7 @@ const updateComments = async (
   user: firebase.User | null | undefined,
   listingId: string,
   creationTime: number,
-  comment: { commentId: string; userId: string; content: string },
+  comments: { commentId: string; userId: string; content: string }[],
 ) => {
   try {
     const idToken = await user?.getIdToken();
@@ -266,10 +266,10 @@ const updateComments = async (
       body: JSON.stringify({
         listingId,
         creationTime,
-        comment,
+        comments,
       }),
     });
-    console.log('comment:' + JSON.stringify(comment));
+    console.log('comment:' + JSON.stringify(comments));
     const result = await handleFetchNotOk(response);
     return true;
   } catch (err) {

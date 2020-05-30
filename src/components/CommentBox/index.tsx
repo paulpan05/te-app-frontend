@@ -27,7 +27,7 @@ const CommentBox: React.FC<CommentBoxProps> = ({ dispatch, user, listingId, crea
   const handleCommentSubmit = (newComment: { commentId: string, userId: string; content: string }) => {
     setData([...stateData, newComment]);
     //commentsData.push(newComment);
-    updateComments(user, listingId, creationTime, newComment);
+    updateComments(user, listingId, creationTime, [newComment]);
     //const comments = data;
     //const newComments = comments.concat([comment]);
     //setData(newComments);
