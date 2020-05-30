@@ -132,69 +132,77 @@ const Profile: React.FC<ProfileProps> = ({ user, targetUserId, dispatch }) => {
   document.body.style.minHeight = '100%';
   return profile?(
     <Container className={styles.con} fluid>
-      <Row style={{maxHeight: "100%"}}>
-        <Col lg={5} xl={3} className={styles.column}>
-          <div>
-            <Image src={profile?.picture} roundedCircle alt="profile" className={styles.img} fluid />
-          </div>
-          <div>
-            <Box>
-            <Rating name="read-only" value={ (() => {
-              let sum = 0 ;
-              console.log(profile?.ratings)
-              if(profile?.ratings.length===0){
-                return 0
-              }
-              for(let i=0;i<(profile?.ratings).length;i++){
-                sum+=profile?.ratings[i]
-              }
-              return Math.floor(sum/(profile?.ratings).length)})()
-              } readOnly />
-            </Box>
-          </div>
-          {userEquals?(<>
+      <div className="min-vh-100">
+        <Row>
+          <Col lg={5} xl={3} className={styles.column}>
+            <div>
+              <Image src={profile?.picture} roundedCircle alt="profile" className={styles.img} fluid />
+            </div>
+            <div>
+              <Box>
+              <Rating name="read-only" value={ (() => {
+                let sum = 0 ;
+                console.log(profile?.ratings)
+                if(profile?.ratings.length===0){
+                  return 0
+                }
+                for(let i=0;i<(profile?.ratings).length;i++){
+                  sum+=profile?.ratings[i]
+                }
+                return Math.floor(sum/(profile?.ratings).length)})()
+                } readOnly />
+              </Box>
+            </div>
+            {userEquals?(<>
+              <Button variant="outline-primary" className={styles.btnblue}>
+                Edit Profile
+              </Button></> ):(<>
             <Button variant="outline-primary" className={styles.btnblue}>
-              Edit Profile
-            </Button></> ):(<>
-          <Button variant="outline-primary" className={styles.btnblue}>
-            Contact Seller
-          </Button>
-          <Button
-            variant="outline-secondary"
-            className={styles.btngrey}
-            onClick={() => setShow(true)}>
-            Report Seller
-          </Button>
-          <ReportUser show={show} setShow={setShow} /></>)}  
-        </Col>
-        <Col lg={7} xl={9}>
-          <h2 style={{ textAlign: 'center' }}>
-            {profile?.name}
-          </h2>
-          <Row className={styles.row}>
-            <div className={styles.outlin}>
-              <p style={{ marginBottom: '0rem', marginLeft: '1rem' }}>Available Listings</p>
-              {availArray && <Carousel className={styles.car} responsive={responsive}>
-            {availArray}
-            </Carousel>}
-            </div>
-          </Row>
-          <Row className={styles.row}>
-            <div className={styles.outlin}>
-              {userEquals?(<><p style={{ marginBottom: '0rem', marginLeft: '1rem' }}>Past Transactions</p>
-              {(soldArray || boughtArray) && <Carousel className={styles.car} responsive={responsive}>
-                {soldArray.concat(boughtArray)}
-            </Carousel>}</>
-            ):(
-            <><p style={{ marginBottom: '0rem', marginLeft: '1rem' }}>Past Listings</p>
-              {soldArray && <Carousel className={styles.car} responsive={responsive}>
-                {soldArray}
+              Contact Seller
+            </Button>
+            <Button
+              variant="outline-secondary"
+              className={styles.btngrey}
+              onClick={() => setShow(true)}>
+              Report Seller
+            </Button>
+            <ReportUser show={show} setShow={setShow} /></>)}  
+          </Col>
+          <Col lg={7} xl={9}>
+            <h2 style={{ textAlign: 'center' }}>
+              {profile?.name}
+            </h2>
+            <Row className={styles.row}>
+              <div className={styles.outlin}>
+                <p style={{ marginBottom: '0rem', marginLeft: '1rem' }}>Available Listings</p>
+                {availArray && <Carousel className={styles.car} responsive={responsive}>
+              {availArray}
               </Carousel>}
-              </>)}
-            </div>
-          </Row>
-        </Col>
-      </Row>
+              </div>
+            </Row>
+            </Col>
+            </Row>
+        <Row className={styles.row} style={{margin: "0" , minHeight: "15rem"}}>
+          <Col lg={5} xl={3} className={styles.column}></Col>
+          <Col lg={7} xl={9}>
+            <Row className={styles.row} style={{margin: "0" }}></Row>
+              <div className={styles.outlin}>
+                {userEquals?(<><p style={{ marginBottom: '0rem', marginLeft: '1rem' }}>Past Transactions</p>
+                {(soldArray || boughtArray) && <Carousel className={styles.car} responsive={responsive}>
+                  {soldArray.concat(boughtArray)}
+              </Carousel>}</>
+              ):(
+              <><p style={{ marginBottom: '0rem', marginLeft: '1rem' }}>Past Listings</p>
+                {soldArray && <Carousel className={styles.car} responsive={responsive}>
+                  {soldArray}
+                </Carousel>}
+                </>)}
+              </div>
+          </Col>
+        </Row>
+        
+      
+      </div>
     </Container>
   ):(<></>);
 
