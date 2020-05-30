@@ -13,12 +13,15 @@ import Modal from 'react-bootstrap/Modal';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Carousel from 'react-bootstrap/Carousel';
 import Card from 'react-bootstrap/Card';
+import { toast } from 'react-toastify';
 import CustomToggleButton from '../CustomToggleButton/index';
-import styles from './index.module.scss';
+import styles from '../CreateListing/index.module.scss';
 import addPhoto from '../../assets/img/add-photo.png';
 import { rootState } from '../../redux/reducers';
-import { toast } from 'react-toastify';
 import { updateListing } from '../../api/index';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashAlt } from '@fortawesome/free-regular-svg-icons';
+import TagsDiv from '../Tags/Tags';
 
 interface EditListingProps {
   user: firebase.User | null | undefined;
@@ -31,15 +34,27 @@ interface EditListingProps {
   descriptionProp: string;
   locationProp: string;
   tagsProp: string[];
-  imagesProp: string[];
+  picturesProp: string[];
 }
 
 const mapStateToProps = (state: rootState) => ({
   user: state.auth.user,
 });
-// TODO implemenet tags and upload images to s3. also make props required, not optional
-const EditListing: React.FC<EditListingProps> = ({ user, show, setShow, listingId, creationTime, titleProp, priceProp, descriptionProp, locationProp, tagsProp, imagesProp }) => {
-  const [images, setImages] = useState(imagesProp);
+// TODO implemenet tags and upload pictures to s3. also make props required, not optional
+const EditListing: React.FC<EditListingProps> = ({
+  user,
+  show,
+  setShow,
+  listingId,
+  creationTime,
+  titleProp,
+  priceProp,
+  descriptionProp,
+  locationProp,
+  tagsProp,
+  picturesProp,
+}) => {
+  const [pictures, setPictures]: [string[], Function] = useState(picturesProp);
   const [dispValidated, setDispValidated] = useState(false);
   const validated = [true, true, true, true];
   const which = { title: 0, price: 1, description: 2, location: 3 };
@@ -48,16 +63,11 @@ const EditListing: React.FC<EditListingProps> = ({ user, show, setShow, listingI
   let descriptionInput;
   let locationInput;
 
-  /* const tags = await // API call to database for list of tags goes here */
-  const tags = ['Furniture', 'Rides', 'Tutoring', 'Appliances', 'Technology'];
-
-  useEffect(() => {
-    return () => {
-      /* remove photos from memory here (this is the same as componentUnmount) */
-      images.map((src, i) => {
-        URL.revokeObjectURL(src);
-      });
-    };
+  /* const tags = await // API call to database for list of tags goes here. paul needs to make an endpoint for it. hard code it for now */
+  const dispTags = ['Furniture', 'Rides', 'Tutoring', 'Appliances', 'Technology'];
+  const tags = {};
+  dispTags.map((tag) => {
+    tags[tag] = false;
   });
 
   return (
@@ -65,7 +75,7 @@ const EditListing: React.FC<EditListingProps> = ({ user, show, setShow, listingI
       <Card>
         <Form validated={dispValidated} className={styles.wrapper}>
           <Form.Row className="justify-content-center text-center">
-            <h1>Create Listing</h1>
+            <h1>Edit Listing</h1>
           </Form.Row>
 
           <Form.Row className="justify-content-center text-center">
@@ -75,7 +85,7 @@ const EditListing: React.FC<EditListingProps> = ({ user, show, setShow, listingI
                 placeholder="Title"
                 className={styles.input}
                 required
-                ref={ref => titleInput = ref}
+                ref={(ref) => (titleInput = ref)}
                 onChange={(e) => {
                   validated[which.title] = e.target.value.length > 0;
                 }}
@@ -91,7 +101,7 @@ const EditListing: React.FC<EditListingProps> = ({ user, show, setShow, listingI
                   min={0}
                   required
                   className={styles.inputWithPrependAndPostpend}
-                  ref={ref => priceInput = ref}
+                  ref={(ref) => (priceInput = ref)}
                   onChange={(e) => {
                     validated[which.price] = e.target.value.length > 0;
                   }}
@@ -107,7 +117,7 @@ const EditListing: React.FC<EditListingProps> = ({ user, show, setShow, listingI
                 placeholder="Description..."
                 required
                 className={styles.textarea}
-                ref={ref => descriptionInput = ref}
+                ref={(ref) => (descriptionInput = ref)}
                 onChange={(e) => {
                   validated[which.description] = e.target.value.length > 0;
                 }}
@@ -118,19 +128,21 @@ const EditListing: React.FC<EditListingProps> = ({ user, show, setShow, listingI
               <Form.Control
                 required
                 placeholder="Price Center"
+                defaultValue={locationProp}
                 className={styles.input}
-                ref={ref => locationInput = ref}
+                ref={(ref) => (locationInput = ref)}
                 onChange={(e) => {
                   validated[which.location] = e.target.value.length > 0;
                 }}
-                defaultValue={locationProp}
               />
 
               <Form.Label className={styles.text}>Tags</Form.Label>
               <Form.Row className="justify-content-center text-center">
-                {tags.map((tagLabel, i) => {
-                  return <CustomToggleButton value={i}>{tagLabel}</CustomToggleButton>;
-                })}
+                <TagsDiv
+                  tags={dispTags}
+                  initialActiveTags={tagsProp}
+                  setTag={(tag: string, active: boolean) => (tags[tag] = active)}
+                />
               </Form.Row>
             </Form.Group>
 
@@ -138,14 +150,32 @@ const EditListing: React.FC<EditListingProps> = ({ user, show, setShow, listingI
               <Form.Row className="justify-content-center text-center">
                 <Form.Label>Add Images</Form.Label>
                 <Carousel>
-                  {images.map((src, i) => (
-                    <Carousel.Item key={i}>
-                      <img src={src} onClick={() => console.log('hi')} />
+                  {pictures.length !== 0 ? (
+                    pictures.map((src, i) => {
+                      return (
+                        <Carousel.Item key={i}>
+                          <img src={src} />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setPictures(pictures.filter((pic) => pic !== src));
+                              URL.revokeObjectURL(src);
+                            }}
+                            className={styles.deleteButton}
+                          >
+                            <FontAwesomeIcon icon={faTrashAlt} size="lg" />
+                          </button>
+                        </Carousel.Item>
+                      );
+                    })
+                  ) : (
+                    <Carousel.Item key={0}>
+                      <img src={addPhoto} />
                     </Carousel.Item>
-                  ))}
+                  )}
                 </Carousel>
                 <Form.File
-                  id="upload-images-edit-listing"
+                  id="upload-pictures-edit-listing"
                   accept="image/*"
                   multiple
                   label="Browse..."
@@ -159,12 +189,7 @@ const EditListing: React.FC<EditListingProps> = ({ user, show, setShow, listingI
                           uploadingImgs.push(URL.createObjectURL(e.target.files[i]));
                         }
                       }
-                      // check if should remove the 'add photo' or not
-                      if (images[0] == addPhoto) {
-                        setImages(images.slice(1, images.length).concat(uploadingImgs));
-                      } else {
-                        setImages(images.concat(uploadingImgs));
-                      }
+                      setPictures(pictures.concat(uploadingImgs));
                     }
                   }}
                 />
@@ -178,47 +203,95 @@ const EditListing: React.FC<EditListingProps> = ({ user, show, setShow, listingI
               onClick={async () => {
                 // validate form here
                 setDispValidated(true);
-                
+
                 let allValidated = true;
                 for (const i of validated) {
                   allValidated = allValidated && i;
                 }
 
                 if (!allValidated) {
-                  console.log("not all forms are valid!");
+                  console.log('not all forms are valid!');
                   return;
                 }
-                console.log("all forms are valid!");
+                console.log('all forms are valid!');
 
-                // extract values from form
+                // extract values from form and check if they've been changed
                 const title = titleInput.value;
-                const price = parseInt(priceInput.value);
-                const description = descriptionInput.value;
-                const location = locationInput.value;
-                console.log(title, price, description, location);
+                const parsedTitle = title !== titleProp ? title : undefined;
 
-                const success = await updateListing(
+                const price = parseInt(priceInput.value);
+                const parsedPrice = price !== priceProp ? price : undefined;
+
+                const description = descriptionInput.value;
+                const parsedDescription = description !== descriptionProp ? description : undefined;
+
+                const location = locationInput.value;
+                const parsedLocation = location !== locationProp ? location : undefined;
+                console.log(
+                  `title: ${parsedTitle}, price: ${parsedPrice}, description: ${parsedDescription}, location: ${parsedLocation}`,
+                );
+
+                // check which photos/tags have changed
+                const picturesAdded = pictures.filter((pic) => !picturesProp.includes(pic));
+                const picturesDeleted = picturesProp.filter((pic) => !pictures.includes(pic));
+                console.log(`added pictures: ${picturesAdded}`);
+                console.log(`deleted pictures: ${picturesDeleted}`);
+
+                // extract the tags
+                const parsedTags = dispTags.filter((tag) => tags[tag]);
+                console.log(`tags: ${parsedTags}`);
+                const tagsAdded = parsedTags.filter((pic) => !tagsProp.includes(pic));
+                const tagsDeleted = tagsProp.filter((pic) => !parsedTags.includes(pic));
+                console.log(`tags added: ${tagsAdded}`);
+                console.log(`tags deleted: ${tagsDeleted}`);
+
+                /* TODO: test */
+                const successAdd = await updateListing(
                   user,
                   listingId,
                   creationTime,
-                  title,
-                  price,
-                  description,
-                  location,
-                  [],
-                  ['pictures go here'],
+                  parsedTitle,
+                  parsedPrice,
+                  parsedDescription,
+                  parsedLocation,
+                  ['pictures go here'], // add new pictures here
+                  [], // add new tags here
+                  undefined,
+                  false,
+                  false,
+                  undefined,
                 );
-                if (success) {
+                
+                // delete old pictures and tags here
+                const successDelete = await updateListing(
+                  user,
+                  listingId,
+                  creationTime,
+                  undefined,
+                  undefined,
+                  undefined,
+                  undefined,
+                  ['picture srcs go here'], // add deleted pictures here
+                  [], // add deleted tags here
+                  undefined,
+                  true,
+                  true,
+                  undefined,
+                );
+
+                // TODO what would happen if the successAdd works but successDelete fails? wouldn't it add new pictures but tell the user that no new pictures were added? also vice versa
+
+                if (successAdd && successDelete) {
                   setShow(false);
                   toast('The listing was successfully edited!');
                 } else {
                   toast(
-                    'There was an error while editing your listing! Try to create it again or reload.',
+                    'There was an error while editing your listing! Try to edit it again or reload.',
                   );
                 }
               }}
             >
-              Create
+              Update
             </Button>
 
             <Button className={styles.secondaryButton} onClick={() => setShow(false)}>

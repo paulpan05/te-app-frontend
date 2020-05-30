@@ -1,22 +1,38 @@
 $font-stack: Roboto;
-
 h1 {
-  margin-top: 5vh !important;
   justify-content: center !important;
   align-items: center !important;
   font: $font-stack !important;
-  font-weight: 500 !important;
-  font-size: 35px !important;
+  font-weight: 300 !important;
+  font-size: 25px !important;
   line-height: 42px !important;
   text-align: center !important;
+  letter-spacing: 0.2rem;
+}
+
+h3 {
+  font: $font-stack !important;
+  font-weight: 500 !important;
+  font-size: 30px !important;
+  line-height: 30px !important;
+  margin-bottom: 7vh !important;
+  color: #17284A !important;
 }
 
 h4 {
+    font: $font-stack !important;
+    font-weight: 300 !important;
+    font-size: 25px !important;
+    line-height: 30px !important;
+    margin-bottom: 7vh !important;
+    color: #17284A !important;
+  }
+
+.rateSeller {
   font: $font-stack !important;
-  font-weight: 300 !important;
-  font-size: 25px !important;
+  font-weight: 100 !important;
+  font-size: 20px !important;
   line-height: 30px !important;
-  margin-bottom: 7vh !important;
 }
 
 .cropContainer {
@@ -26,19 +42,85 @@ h4 {
   margin-right: auto !important;
   margin-left: auto !important;
 }
-
 .button {
   background-color: #17284A !important;
   border-radius: 40vh !important;
   font: $font-stack !important;
-  margin: 1vh !important;
+  margin: 3vh !important;
+  padding-left: 2vh !important;
+  padding-right: 2vh !important;
   border: 1px solid black !important;
-  box-shadow: none !important;
-
   :hover {
     background-color: #17284A !important;
+    box-shadow: 5px 10px 18px #888888 !important;
   }
 }
+.input {
+  border-radius: 40vh !important;
+  font: $font-stack !important;
+  border: 0px solid black !important;
+  box-shadow: none !important;
+  margin-bottom: 2vh !important;
+  background-color: #E5E5E5 !important;
+  text-indent: 1vw;
+}
+.textarea {
+  border-radius: 6vh !important;
+  font: $font-stack !important;
+  border: 0px solid black !important;
+  box-shadow: none !important;
+  margin-bottom: 2vh !important;
+  background-color: #E5E5E5 !important;
+  text-indent: 1vw;
+  padding-left: 30px !important;
+  padding-top: 15px !important;
+}
+.text {
+  font: $font-stack !important;
+  text-align: center !important;
+}
+.profilePicture {
+  display: block !important;
+  width: 100px !important;
+  height: 100px !important;
+  justify-content: center !important;
+  margin-top: 2vh !important;
+  margin-bottom: 2vh !important;
+  margin-right: auto !important;
+  margin-left: auto !important;
+  border-radius: 100px;
+}
+.profilePictureWrapper {
+  width: 100% !important;
+  justify-content: center;
+}
+
+.comments {
+    margin-top: 20px;
+    padding-top: 20px;
+}
+
+.center {
+  text-align: center !important;
+}
+
+.color{
+  background-color: white;
+  width: 500px !important;
+  height: 550px !important;
+  border-radius: 0 0 40px 0;
+}
+
+
+
+.cropContainer {
+  position: relative !important;
+  width: 180px !important;
+  height: 180px !important;
+  margin-right: auto !important;
+  margin-left: auto !important;
+}
+
 
 .input {
   border-radius: 40vh !important;
@@ -48,6 +130,7 @@ h4 {
   margin-bottom: 2vh !important;
   background-color: #E5E5E5 !important;
   text-indent: 1vw;
+  width: 100%;
 }
 
 .textarea {
@@ -81,7 +164,7 @@ h4 {
   justify-content: center;
 }
 .soldDialog {
-  background-color: #eeeeee!important;
+  background-color: white !important;
   box-shadow: 0px 4px 4px rgba(0,0,0,0.25), inset 0px 4px 1px #E5E5E5;
   border-radius:3rem !important;
 }

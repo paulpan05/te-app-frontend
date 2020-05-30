@@ -22,7 +22,6 @@ interface ListingProps {
   pictures: string[];
   
 }
-
 const Listing: React.FC<ListingProps> = ({title, price, postDate, pictures, userInfo, listingId, user}) => {
   const [show, setShow] = useState(false);
   
@@ -91,9 +90,8 @@ const Listing: React.FC<ListingProps> = ({title, price, postDate, pictures, user
           {/* <button className={styles.btn}>Contact Seller</button> */}
         </div>
       </div>
-      {show && (
-        <ViewListing title="Flower Sweatshirt" seller="Sarah A." show={show} setShow={setShow} />
-      )}
+
+      <ViewListing title="Flower Sweatshirt" seller="Sarah A." show={show} setShow={setShow} />
     </div>
   );
 };

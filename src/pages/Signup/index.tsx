@@ -27,10 +27,10 @@ const mapStateToProps = (state: rootState) => ({
 
 const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
   const [picture, setPicture] = useState(user && user.photoURL ? user.photoURL : 'ignore');
-  const [phone, setPhone] = useState('');
-  const [prefName, setPrefName] = useState('');
   const [dispValidated, setDispValidated] = useState(false);
-  const [validated, setValidated] = useState(true);
+  let nameInput;
+  let phoneInput;
+  let validated = true;
 
   const [cropping, setCropping] = useState(false);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -72,10 +72,7 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
     <Container>
       <Row className="text-center">
         <Col md="12">
-          <h1>
-            Welcome{user && user.displayName ? user.displayName : ''}
-            !
-</h1>
+          <h1>Welcome{user && user.displayName ? user.displayName : ''}!</h1>
         </Col>
         <Col md="12">
           <h4>Finish Setting Up Your Account</h4>
@@ -151,9 +148,7 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
               placeholder="Preferred Name"
               type="text"
               className={styles.input}
-              onChange={(e) => {
-                setPrefName(e.target.value);
-              }}
+              ref={(ref) => nameInput = ref}
             />
             <Form.Text>
               This will be displayed instead of your name (so include your last name)
@@ -169,16 +164,11 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
             <Form.Label className={styles.text}>Phone Number</Form.Label>
             <FormControl
               placeholder="(123) 456-7890"
-              defaultValue={phone}
+              ref={(ref) => phoneInput = ref}
               className={styles.input}
               pattern="([ ]*\+?[ ]*[0-9]{0,4}[ ]*(-|\()?[0-9]{3}[ ]*(-|\))?[ ]*[0-9]{3}[ ]*-?[ ]*[0-9]{4}[ ]*)?"
               onChange={(e) => {
-                if (e.target.validity.patternMismatch) {
-                  setValidated(false);
-                } else {
-                  setValidated(true);
-                  setPhone(e.target.value);
-                }
+                validated = !e.target.validity.patternMismatch;
               }}
             />
             <Form.Control.Feedback type="invalid">
@@ -202,6 +192,7 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
               }
 
               // parse phone number in correct format
+              const phone = phoneInput.value;
               let parsedPhone;
               if (phone.length > 0) {
                 parsedPhone = phone.replace(/( |-|\(|\))/g, '');
@@ -221,8 +212,11 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
                 parsedPhone = undefined;
               }
 
+              // get name from input
+              const parsedName = nameInput.value.length > 0 ? nameInput.value : undefined;
+
               // api request
-              const success = await userSignup(user, parsedPhone, prefName, undefined, 'customPic');
+              const success = await userSignup(user, parsedPhone, parsedName, undefined, 'customPic');
               if (success) {
                 setRedirect(true);
                 toast('You successfully created an account! Welcome to Triton Exchange');
