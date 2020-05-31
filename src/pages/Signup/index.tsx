@@ -27,7 +27,7 @@ const mapStateToProps = (state: rootState) => ({
 
 const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
   const [picture, setPicture] = useState(user && user.photoURL ? user.photoURL : 'ignore');
-  const [pictureFile, setPictureFile] = useState();
+  const [pictureFile, setPictureFile] = useState<File>();
   const [dispValidated, setDispValidated] = useState(false);
   let nameInput;
   let phoneInput;

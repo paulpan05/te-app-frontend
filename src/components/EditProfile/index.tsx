@@ -45,7 +45,7 @@ const EditProfile: React.FC<EditProfileProps> = ({
   renderOnChange,
 }) => {
   const [picture, setPicture] = useState(pictureProp);
-  const [pictureFile, setPictureFile] = useState();
+  const [pictureFile, setPictureFile] = useState<File>();
   const [dispValidated, setDispValidated] = useState(false);
   let nameInput;
   let phoneInput;
@@ -249,8 +249,8 @@ const EditProfile: React.FC<EditProfileProps> = ({
                     }
                     
                     // delete old profile picture. TODO check if old profile picture was Google's 
-                    const failure = await deletePicture(pictureProp);
-                    if (!failure) {
+                    const success = await deletePicture(pictureProp);
+                    if (success) {
                       console.log('successfully deleted old profile picture from s3.');
                     } else {
                       console.log('Error: failed to delete old profile picture from s3. continue to upload new profile picture anyways.');
