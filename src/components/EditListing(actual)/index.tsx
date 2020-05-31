@@ -63,6 +63,7 @@ const EditListing: React.FC<EditListingProps> = ({
   const [addedPictureFiles, setAddedPictureFiles] = useState<File[]>([]); // picture files that were added
   const [toDelFromS3, setToDelFromS3] = useState<string[]>([]); // urls to remove from s3
   const [newUploads, setNewUploads] = useState<any>({}); // newly uploaded pictures/files
+  const [form, setForm] = useState<HTMLFormElement>();
   let titleInput;
   let priceInput;
   let descriptionInput;
@@ -98,9 +99,12 @@ const EditListing: React.FC<EditListingProps> = ({
   const [tags, setTags] = useState<any>({...initTags});
   
   return (
-    <Modal show={show} onHide={() => setShow(false)} size="lg">
+    <Modal show={show} onHide={() => {
+      setShow(false);
+      setDispValidated(false);
+    }} size="lg">
       <Card className="roundedBorder">
-        <Form validated={dispValidated} className={styles.wrapper}>
+        <Form validated={dispValidated} className={styles.wrapper} ref={(ref) => setForm(ref) }>
           <Form.Row className="justify-content-center text-center">
             <p className="mediumHeader">Edit Listing</p>
             <button type="button" onClick={() => setShow(false)} className="exitButton exitPad">
@@ -249,22 +253,23 @@ const EditListing: React.FC<EditListingProps> = ({
             <Button
               className={styles.button}
               onClick={async () => {
+                // validate form here
+                setDispValidated(true);
+
+                // TODO
+                console.log(`checking whole form validity: ${form?.checkValidity()}`);
                 // check if forms are valid
-                if (
-                  !(
-                    titleInput.checkValidity() &&
-                    priceInput.checkValidity() &&
-                    descriptionInput.checkValidity() &&
-                    locationInput.checkValidity()
-                  )
-                ) {
+                if (!form?.checkValidity() || !(titleInput && priceInput && descriptionInput && locationInput)) {
                   console.log('not all forms are valid!');
+                  toast('Make sure to fill out all necessary forms before submitting!');
+                  return;
+                }
+                if (pictures.length <= 0) {
+                  console.log('need to provide at least 1 picture.');
+                  toast('Make sure to upload at least 1 photo before submitting');
                   return;
                 }
                 console.log('all forms are valid!');
-
-                // validate form here
-                setDispValidated(true);
 
                 // extract values from form and check if they've been changed
                 const title = titleInput.value;
