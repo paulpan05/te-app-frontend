@@ -51,6 +51,20 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
     tags[tag] = false;
   });
 
+  const resetForm = async () => {
+    titleInput.value = '';
+    priceInput.value = '';
+    descriptionInput.value = '';
+    locationInput.value = '';
+    setPictures([]);
+    setPictureFiles([]);
+    setDispValidated(false);
+    const tags = {};
+    dispTags.map((tag) => {
+      tags[tag] = false;
+    });
+  }
+
   return (
     <Modal show={show} onHide={() => setShow(false)} size="lg">
       <Card className="myCard">
