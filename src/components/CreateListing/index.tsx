@@ -52,10 +52,6 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
   });
 
   const resetForm = async () => {
-    titleInput.value = '';
-    priceInput.value = '';
-    descriptionInput.value = '';
-    locationInput.value = '';
     setPictures([]);
     setPictureFiles([]);
     setDispValidated(false);
@@ -205,7 +201,7 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                 // check if forms are valid
                 if (!(titleInput.checkValidity() &&  priceInput.checkValidity() && descriptionInput.checkValidity() && locationInput.checkValidity())) {
                   console.log('not all forms are valid!');
-                  //TODO resetForm();
+                  resetForm();
                   return;
                 }
                 console.log('all forms are valid!');
@@ -267,6 +263,7 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                   // TODO in this case, you should delete the pictures you've uploaded (if you don't, they'll just waste space)
                   if (pictureURLs) deletePictures(pictureURLs);
                 }
+                resetForm();
               }}
             >
               Create
