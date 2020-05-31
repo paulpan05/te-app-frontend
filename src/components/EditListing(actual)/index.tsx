@@ -16,7 +16,7 @@ import Card from 'react-bootstrap/Card';
 import { toast } from 'react-toastify';
 import CustomToggleButton from '../CustomToggleButton/index';
 import styles from '../CreateListing/index.module.scss';
-import DeletePopup from '../DeletePopup/index'
+import DeletePopup from '../DeletePopup/index';
 import addPhoto from '../../assets/img/add-photo.png';
 import { rootState } from '../../redux/reducers';
 import { updateListing, uploadPictures, deletePictures } from '../../api/index';
@@ -43,7 +43,7 @@ interface EditListingProps {
 const mapStateToProps = (state: rootState) => ({
   user: state.auth.user,
 });
-// TODO implemenet tags and upload pictures to s3. also make props required, not optional
+
 const EditListing: React.FC<EditListingProps> = ({
   showDeleteSetter,
   user,
@@ -58,40 +58,54 @@ const EditListing: React.FC<EditListingProps> = ({
   tagsProp,
   picturesProp,
 }) => {
-  const [pictures, setPictures]: [string[], Function] = useState(picturesProp);
-  const [dispValidated, setDispValidated] = useState(false);
-  let addedPictureFiles: File[] = [];
-  let picURLsToDelFromS3: string[] = [];
-  const URLtoPictureFile = {};
+  const [pictures, setPictures]: [string[], Function] = useState(picturesProp); // pictures for the preview
+  const [dispValidated, setDispValidated] = useState(false); // should the form display validations?
+  const [addedPictureFiles, setAddedPictureFiles] = useState<File[]>([]); // picture files that were added
+  const [toDelFromS3, setToDelFromS3] = useState<string[]>([]); // urls to remove from s3
+  const [newUploads, setNewUploads] = useState<any>({}); // newly uploaded pictures/files
   let titleInput;
   let priceInput;
   let descriptionInput;
   let locationInput;
 
   // TODO change this to be a const in another file and export it there, import it to here and other files that use dispTags
-  const dispTags = ['Tutoring', 'Housing', 'Rideshare', 'Study Material', 'Clothes', 'Furniture', 'Electronics', 'Appliances', 'Fitness', 'Other', 'On-Campus Pickup', 'Off-Campus Pickup', 'Venmo', 'Cash', 'Dining Dollars', 'Free'];
-  const tags = {};
+  const dispTags = [
+    'Tutoring',
+    'Housing',
+    'Rideshare',
+    'Study Material',
+    'Clothes',
+    'Furniture',
+    'Electronics',
+    'Appliances',
+    'Fitness',
+    'Other',
+    'On-Campus Pickup',
+    'Off-Campus Pickup',
+    'Venmo',
+    'Cash',
+    'Dining Dollars',
+    'Free',
+  ];
+  const initTags = {};
   dispTags.map((tag) => {
-    if (tagsProp[tag]) {
-      tags[tag] = true;
+    if (tagsProp.includes(tag)) {
+      initTags[tag] = true;
     } else {
-      tags[tag] = false;
+      initTags[tag] = false;
     }
   });
-
+  const [tags, setTags] = useState<any>({...initTags});
+  
   return (
     <Modal show={show} onHide={() => setShow(false)} size="lg">
       <Card className="roundedBorder">
         <Form validated={dispValidated} className={styles.wrapper}>
           <Form.Row className="justify-content-center text-center">
-          <p className="mediumHeader">Edit Listing</p>
-                          <button
-                    type="button"
-                    onClick={() => setShow(false)}
-                    className="exitButton exitPad"
-                  >
-                    <FontAwesomeIcon icon={faTimes} size="lg" className={styles.exitFlag} />
-                  </button>
+            <p className="mediumHeader">Edit Listing</p>
+            <button type="button" onClick={() => setShow(false)} className="exitButton exitPad">
+              <FontAwesomeIcon icon={faTimes} size="lg" className={styles.exitFlag} />
+            </button>
           </Form.Row>
 
           <Form.Row className="justify-content-center text-center">
@@ -101,6 +115,7 @@ const EditListing: React.FC<EditListingProps> = ({
                 placeholder="Title"
                 className={styles.input}
                 required
+                maxLength={20}
                 ref={(ref) => (titleInput = ref)}
                 defaultValue={titleProp}
               />
@@ -145,7 +160,11 @@ const EditListing: React.FC<EditListingProps> = ({
                 <TagsDiv
                   tags={dispTags}
                   initialActiveTags={tagsProp}
-                  setTag={(tag: string, active: boolean) => (tags[tag] = active)}
+                  setTag={(tag: string, active: boolean) => {
+                    const temp = {...tags};
+                    temp[tag] = active;
+                    setTags({...temp});
+                  }}
                 />
               </Form.Row>
             </Form.Group>
@@ -162,22 +181,21 @@ const EditListing: React.FC<EditListingProps> = ({
                           <button
                             type="button"
                             onClick={() => {
-                              // remove picture
-                              // TODO right now, if a user uploasd 10 images, then deletes 5, 10 images will be uploaded to s3. this is because addedpicturefiles isnt changed (and this is what gets added to s3)
                               setPictures(
-                                pictures.filter((pic, i) => {
-                                  return pic !== src;
-                                })
+                                // keep the picture if it isn't the src picture
+                                pictures.filter((pic) => pic !== src),
                               );
-                              // if this picture is an old picture (not newly uploaded; if it's in the db)
+                              // if the picture to delete came from the database
                               if (picturesProp.includes(src)) {
-                                // old picture -- need to remove it from database
-                                picURLsToDelFromS3.push(src);
+                                // need to remove it from database
+                                setToDelFromS3(toDelFromS3.concat([src]));
                               } else {
                                 // newly uploaded picture -- remove from addedPictureFiles
-                                addedPictureFiles = addedPictureFiles.filter((file, i) => file !== URLtoPictureFile[src]);
+                                setAddedPictureFiles(
+                                  addedPictureFiles.filter((file) => file !== newUploads[src]),
+                                );
                               }
-                              //URL.revokeObjectURL(src);
+                              //URL.revokeObjectURL(src); TODO
                             }}
                             className={styles.deleteButton}
                           >
@@ -200,20 +218,26 @@ const EditListing: React.FC<EditListingProps> = ({
                   data-browse="+"
                   custom
                   onChange={(e: any) => {
+                    // if the uploaded files exists
                     if (e.target.files && e.target.files.length > 0) {
                       const uploadingPics: string[] = [];
                       const uploadingPicFiles: File[] = [];
                       for (let i = 0; i < e.target.files.length; i++) {
                         if (e.target.files[i]) {
                           const picURL = URL.createObjectURL(e.target.files[i]);
-                          const picFile = new File([e.target.files[i]], e.target.files[i].name, { lastModified: Date.now() });
+                          const picFile = new File([e.target.files[i]], e.target.files[i].name, {
+                            lastModified: Date.now(),
+                          });
                           uploadingPics.push(picURL);
-                          uploadingPicFiles.push(picFile);// TODO this works but need to change it for typescript
-                          URLtoPictureFile[picURL] = picFile;
+                          uploadingPicFiles.push(picFile);
+
+                          const temp = { ...newUploads };
+                          temp[picURL] = picFile;
+                          setNewUploads(temp);
                         }
                       }
                       setPictures(pictures.concat(uploadingPics));
-                      addedPictureFiles = addedPictureFiles.concat(uploadingPicFiles);
+                      setAddedPictureFiles(addedPictureFiles.concat(uploadingPicFiles));
                     }
                   }}
                 />
@@ -226,13 +250,19 @@ const EditListing: React.FC<EditListingProps> = ({
               className={styles.button}
               onClick={async () => {
                 // check if forms are valid
-                if (!(titleInput.checkValidity() &&  priceInput.checkValidity() && descriptionInput.checkValidity() && locationInput.checkValidity())) {
+                if (
+                  !(
+                    titleInput.checkValidity() &&
+                    priceInput.checkValidity() &&
+                    descriptionInput.checkValidity() &&
+                    locationInput.checkValidity()
+                  )
+                ) {
                   console.log('not all forms are valid!');
-                  //TODO resetForm();
                   return;
                 }
                 console.log('all forms are valid!');
-                
+
                 // validate form here
                 setDispValidated(true);
 
@@ -254,46 +284,63 @@ const EditListing: React.FC<EditListingProps> = ({
 
                 // extract the tags
                 const parsedTags = dispTags.filter((tag) => tags[tag]);
-                const addedTags = parsedTags.filter((pic) => !tagsProp.includes(pic));
-                const deletedTags = tagsProp.filter((pic) => !parsedTags.includes(pic));
+                const addedTags = parsedTags.filter((tag) => !tagsProp.includes(tag));
+                const deletedTags = tagsProp.filter((tag) => !parsedTags.includes(tag));
+                console.log(`all tags: ${parsedTags}`);
                 console.log(`tags added: ${addedTags}`);
                 console.log(`tags deleted: ${deletedTags}`);
 
                 // upload new pictures from s3
                 let addedPictureURLs;
-                if (addedPictureFiles.length > 0) { // if uploaded pictures
-                  addedPictureURLs = await uploadPictures(user, addedPictureFiles); // TODO this works but need to change it for typescript
+                if (addedPictureFiles.length > 0) {
+                  // if uploaded pictures
+                  addedPictureURLs = await uploadPictures(user, addedPictureFiles);
                   if (addedPictureURLs) {
-                    console.log("Successfully uploaded listing pictures to s3, urls: ", addedPictureURLs);
+                    console.log(
+                      'Successfully uploaded listing pictures to s3, urls: ',
+                      addedPictureURLs,
+                    );
                   } else {
                     // error while uploading
-                    console.log("Error while uploading the profile picture!");
-                    toast('An error occurred while uploading your listing pictures! Please try resubmitting or reuploading.');
+                    console.log('Error while uploading the profile picture!');
+                    toast(
+                      'An error occurred while uploading your listing pictures! Please try resubmitting or reuploading.',
+                    );
                     return;
                   }
                 } else {
                   // no pictures to upload
+                  console.log('No listing pictures to upload.');
                   addedPictureURLs = [];
-                  console.log("No listing pictures to upload.");
+                  /*
+                  if (pictures.length > 0) {
+                    addedPictureURLs = [];
+                  } else {
+                    // upload the default picture
+                    addedPictureURLs = await uploadPicture(user, new File());
+                    addedPictureURLs = ["https://triton-exchange-bucket-photos.s3.amazonaws.com/full-app-logo.svg"];
+                  }*/
                 }
 
                 // check which photos have been deleted
-                console.log(`pictures to delete from s3: ${picURLsToDelFromS3}`);
+                console.log(`Pictures to delete from s3: ${toDelFromS3}`);
 
                 // delete deleted pictures from s3
-                if (picURLsToDelFromS3.length > 0) { // if uploaded pictures
-                  const failure = await deletePictures(picURLsToDelFromS3); // TODO this works but need to change it for typescript
-                  if (!failure) {
+                if (toDelFromS3.length > 0) {
+                  // if uploaded pictures
+                  const success = await deletePictures(toDelFromS3);
+                  if (success) {
                     console.log('Successfully deleted listing pictures that the user removed!');
                   } else {
-                    console.log(`Error: failed to delete all old listing pictures from s3. continue to upload new listing pictures anyways. URLs: ${failure}`);
+                    console.log(
+                      'Error: failed to delete old listing pictures from s3. Continue to update listing anyways.',
+                    );
                   }
                 } else {
-                  // no pictures to delete
-                  console.log("No listing pictures to delete.");
+                  console.log('No listing pictures to delete.');
                 }
-                
-                console.log("about to run the api to add info to the listing");
+
+                console.log('about to run the api to add info to the listing');
                 /* TODO: test this */
                 const successAdd = await updateListing(
                   user,
@@ -306,12 +353,12 @@ const EditListing: React.FC<EditListingProps> = ({
                   addedPictureURLs,
                   addedTags,
                   undefined,
-                  false,
-                  false,
+                  undefined,
+                  undefined,
                   undefined,
                 );
-                
-                console.log("about to run the api to delete info from the listing");
+
+                console.log('about to run the api to delete info from the listing');
                 // delete old pictures and tags here
                 const successDelete = await updateListing(
                   user,
@@ -321,16 +368,13 @@ const EditListing: React.FC<EditListingProps> = ({
                   undefined,
                   undefined,
                   undefined,
-                  picURLsToDelFromS3,
+                  toDelFromS3,
                   deletedTags,
                   undefined,
                   true,
                   true,
                   undefined,
                 );
-                  console.log(successAdd)
-                  console.log(successDelete)
-                // TODO what would happen if the successAdd works but successDelete fails? wouldn't it add new pictures but tell the user that no new pictures were added? also vice versa
 
                 if (successAdd && successDelete) {
                   setShow(false);
@@ -345,11 +389,8 @@ const EditListing: React.FC<EditListingProps> = ({
               Update
             </Button>
 
-            <Button
-              type="button"
-              onClick={() => showDeleteSetter(true)}
-              className={styles.button}>
-                Delete
+            <Button type="button" onClick={() => showDeleteSetter(true)} className={styles.button}>
+              Delete
             </Button>
           </Form.Row>
         </Form>
@@ -359,6 +400,3 @@ const EditListing: React.FC<EditListingProps> = ({
 };
 
 export default connect(mapStateToProps)(EditListing);
-
-/*
-  */

@@ -20,7 +20,6 @@ const getUserProfile = async (
   // TODO setter: Function, updating the calls
   try {
     const idToken = await user?.getIdToken();
-    console.log(idToken);
     let response;
     if (targetUserId) {
       response = await fetch(
@@ -208,26 +207,11 @@ const uploadPictures = async (
   pictures: File[],
 ) => {
   try {
-    const responses = await Promise.all(
-      pictures.map(async picture => uploadPicture(user, picture))
+    const pictureURLs = await Promise.all(
+      pictures.map(async picture => uploadPicture(user, picture, true))
     );
 
-    let errOccurred = false;
-    const pictureURLs = responses.map((response, i) => {
-      if (response) {
-        return response;
-      } else {
-        console.log("error occured in uploadPictures. couldn't upload all pictures!");
-        errOccurred = true;
-      }
-    });
-
-    if (errOccurred) {
-      // test. when something is mapped, if nothing is returned, will the index at map be undefined or will nothing be added
-      console.log('test in uploadingPicture (false = bad):', (pictures.length === pictureURLs.length));
-      throw Error('error occured in upload pictures!');
-    }
-
+    // success: return the urls
     console.log(`pictureURLs for uploadPictures: ${pictureURLs}`);
     return pictureURLs;
   } catch (err) {
@@ -239,6 +223,7 @@ const uploadPictures = async (
 const uploadPicture = async (
   user: firebase.User | null | undefined,
   picture: File,
+  throwError?: boolean,
 ) => {
   try {
     // get necessary variables for api call
@@ -254,73 +239,62 @@ const uploadPicture = async (
     const response = await fetch('https://triton-exchange-bucket-photos.s3.amazonaws.com', {
       method: 'POST',
       body: formData,
-      /*       headers: {
-        'Content-Type': 'application/json',
-      },? */
     });
 
     if (response.status !== 204) {
       throw Error(await response.json());
     }
 
-    // return the link to access the image
+    // success: return the link to access the image
     console.log("Success! Uploaded file.");
     return `https://triton-exchange-bucket-photos.s3.amazonaws.com/${key}`;
   } catch (err) {
+
     console.log(err);
-    return undefined;
+    if (throwError) {
+      throw err;
+    } else {
+      return undefined;
+    }
   }
 };
 
-/* NOTE: this api wrapper returns the OPPOSITE of the other api wrappers. success: returns undefined. failure: array of failed deletions (the picture urls) */
 const deletePictures = async (pictureURLs: string[]) => {
-  let failures;
   try {
     const responses = await Promise.all(
-      pictureURLs.map(async pictureURL => deletePicture(pictureURL))
+      pictureURLs.map(async pictureURL => deletePicture(pictureURL, true))
     );
 
-    let errOccurred = false;
-    failures = responses.map((response, i) => {
-      if (response) {
-        console.log("are the two URLs equal? test: ", (pictureURLs[i] === response));
-      } else {
-        console.log("error occurred in deletePictures. couldn't delete all pictures!");
-        errOccurred = true;
-        return ;
-      }
-    });
-
-    if (errOccurred) {
-      // test. when something is mapped, if nothing is returned, will the index at map be undefined or will nothing be added
-      console.log('test in deletePictures (false = bad):', (pictureURLs.length === failures.length));
-      throw Error(`error occured in delete pictures!: ${failures}`);
-    }
-
     console.log("Success in deleting all images!");
-    return undefined;
+    return responses;
   } catch (err) {
     console.log(err);
-    return failures;
+    return undefined;
   }
 }
 
-/* NOTE: this api wrapper returns the OPPOSITE of the other api wrappers. success: returns undefined. failure: the failed deletion's URL */
 const deletePicture = async (
-  pictureURL: string,
+  picture: string,
+  throwError?: boolean,
 ) => {
   try {
-    const response = await fetch(pictureURL, {
+    const response = await fetch(picture, {
       method: 'DELETE',
     });
 
     if (response.status !== 204) {
       throw Error(await response.json());
     }
-    return undefined;
+
+    return response;
   } catch (err) {
+    
     console.log(err);
-    return pictureURL;
+    if (throwError) {
+      throw err;
+    } else {
+      return undefined;
+    }
   }
 };
 
