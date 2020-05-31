@@ -33,14 +33,14 @@ const DeletePopup: React.FC<DeletePopupProps> = ({
   listingObject,
 }) => {
   return (
-    <div>
+    <div className="textAlign">
       <div>
         <Modal show={showPopup} onHide={() => setter(false)}>
           <Row className={styles.margin50}>
             <Card className={styles.deleteCard}>
               <Row className={styles.pad}>
-                <Col className={styles.popup}>
-                  <p className={styles.popupHeader}>
+                <Col className="popup blueColor">
+                  <p className="subHeader">
                     Are you sure you want to delete this listing?
                   </p>
                   <div className="mt-auto">

@@ -16,11 +16,13 @@ import Card from 'react-bootstrap/Card';
 import { toast } from 'react-toastify';
 import CustomToggleButton from '../CustomToggleButton/index';
 import styles from '../CreateListing/index.module.scss';
+import DeletePopup from '../DeletePopup/index'
 import addPhoto from '../../assets/img/add-photo.png';
 import { rootState } from '../../redux/reducers';
 import { updateListing, uploadPictures, deletePictures } from '../../api/index';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-regular-svg-icons';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import TagsDiv from '../Tags/Tags';
 
 interface EditListingProps {
@@ -35,6 +37,7 @@ interface EditListingProps {
   locationProp: string;
   tagsProp: string[];
   picturesProp: string[];
+  showDeleteSetter: Function;
 }
 
 const mapStateToProps = (state: rootState) => ({
@@ -42,6 +45,7 @@ const mapStateToProps = (state: rootState) => ({
 });
 // TODO implemenet tags and upload pictures to s3. also make props required, not optional
 const EditListing: React.FC<EditListingProps> = ({
+  showDeleteSetter,
   user,
   show,
   setShow,
@@ -81,12 +85,19 @@ const EditListing: React.FC<EditListingProps> = ({
       <Card>
         <Form validated={dispValidated} className={styles.wrapper}>
           <Form.Row className="justify-content-center text-center">
-            <h1>Edit Listing</h1>
+          <p className="mediumHeader">Edit Listing</p>
+                          <button
+                    type="button"
+                    onClick={() => setShow(false)}
+                    className="exitButton exitPad"
+                  >
+                    <FontAwesomeIcon icon={faTimes} size="lg" className={styles.exitFlag} />
+                  </button>
           </Form.Row>
 
           <Form.Row className="justify-content-center text-center">
             <Form.Group as={Col} md="6">
-              <Form.Label className={styles.text}>What are you selling?</Form.Label>
+              <Form.Label className="bodyText">What are you selling?</Form.Label>
               <Form.Control
                 placeholder="Title"
                 className={styles.input}
@@ -95,7 +106,7 @@ const EditListing: React.FC<EditListingProps> = ({
                 defaultValue={titleProp}
               />
 
-              <Form.Label className={styles.text}>For how much?</Form.Label>
+              <Form.Label className="bodyText">For how much?</Form.Label>
               <InputGroup>
                 <InputGroup.Text className={styles.inputPrepend}>$</InputGroup.Text>
                 <Form.Control
@@ -110,7 +121,7 @@ const EditListing: React.FC<EditListingProps> = ({
                 <InputGroup.Text className={styles.inputPostpend}>.00</InputGroup.Text>
               </InputGroup>
 
-              <Form.Label className={styles.text}>Description</Form.Label>
+              <Form.Label className="bodyText">Description</Form.Label>
               <Form.Control
                 as="textarea"
                 rows={4}
@@ -121,7 +132,7 @@ const EditListing: React.FC<EditListingProps> = ({
                 defaultValue={descriptionProp}
               />
 
-              <Form.Label className={styles.text}>Pickup Location</Form.Label>
+              <Form.Label className="bodyText">Pickup Location</Form.Label>
               <Form.Control
                 required
                 placeholder="Price Center"
@@ -130,7 +141,7 @@ const EditListing: React.FC<EditListingProps> = ({
                 ref={(ref) => (locationInput = ref)}
               />
 
-              <Form.Label className={styles.text}>Tags</Form.Label>
+              <Form.Label className="bodyText">Tags</Form.Label>
               <Form.Row className="justify-content-center text-center">
                 <TagsDiv
                   tags={dispTags}
@@ -324,7 +335,8 @@ const EditListing: React.FC<EditListingProps> = ({
                   true,
                   undefined,
                 );
-
+                  console.log(successAdd)
+                  console.log(successDelete)
                 // TODO what would happen if the successAdd works but successDelete fails? wouldn't it add new pictures but tell the user that no new pictures were added? also vice versa
 
                 if (successAdd && successDelete) {
@@ -340,8 +352,11 @@ const EditListing: React.FC<EditListingProps> = ({
               Update
             </Button>
 
-            <Button className={styles.secondaryButton} onClick={() => setShow(false)}>
-              Cancel
+            <Button
+              type="button"
+              onClick={() => showDeleteSetter(true)}
+              className={styles.button}>
+                Delete
             </Button>
           </Form.Row>
         </Form>
@@ -353,10 +368,4 @@ const EditListing: React.FC<EditListingProps> = ({
 export default connect(mapStateToProps)(EditListing);
 
 /*
-  <button
-    type="button"
-    onClick={() => showDeleteSetter(true)}
-    className={styles.myButton}
-  >
-    <FontAwesomeIcon icon={faTrashAlt} size="lg" className={styles.flag} />
-  </button>*/
+  */

@@ -57,7 +57,7 @@ const Saved: React.FC<SavedProps> = ({ dispatch, user }) => {
 
 
   return (
-  <div>
+  <div className="min-vh-100">
     <h1 className={styles.title}>Saved Listings</h1>
     {listings == null && <h2>No Saved Listings!</h2>}
     {listings && listings.map((aListing, index) => {
