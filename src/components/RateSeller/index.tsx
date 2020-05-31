@@ -13,7 +13,7 @@ import Alert from 'react-bootstrap/Alert';
 import ProfileImg from '../../assets/img/sarah.png';
 import RateSeller from './RateSeller';
 import styles from './index.module.scss';
-import {fetchListing} from '../../api';
+import {fetchListing, getUserProfile} from '../../api';
 
 interface RateProps {
   user: firebase.User | null | undefined;
@@ -22,14 +22,18 @@ interface RateProps {
   creationTime: number; 
 }
 
-const Rate: React.FC<RateProps> = ({user, listingId, creationTime}) => {
+const Rate: React.FC<RateProps> = ({user, listingId, creationTime, sellerId}) => {
   const [show, setShow] = useState(false);
   const [listing, setListing] = useState();
+  const [sellerName, setSellerName] = useState();
 
   const callAPI = async () => {
+    const userProfile = await getUserProfile(user, sellerId);
+    setSellerName(userProfile.name)
+    console.log(sellerName);
     const listingResult = await fetchListing(user, setListing,[listingId], [creationTime]);
-    console.log("wassup");
     console.log(listingResult);
+
   }
 
   useEffect(() => {
@@ -40,10 +44,10 @@ const Rate: React.FC<RateProps> = ({user, listingId, creationTime}) => {
       <Alert className={styles.center} variant="info">
         Recent Purchase!
         <Alert.Link onClick={() => setShow(true)}> Click Here</Alert.Link>
-{' '}
-to Rate Seller.
-</Alert>
-      <RateSeller title="Flower Sweatshirt" seller="Sarah A." show={show} setShow={setShow} />
+        {' '}
+        to Rate Seller.
+      </Alert>
+      {listing && <RateSeller user={user} sellerName={sellerName} buyerId={listing[0].soldTo} listingId={listing[0].listingId} listingCreationTime={listing[0].creationTime} title={listing[0].title} sellerId={listing[0].userId} show={show} setShow={setShow} />}
     </>
   );
 };

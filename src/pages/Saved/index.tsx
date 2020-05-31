@@ -40,10 +40,12 @@ const Saved: React.FC<SavedProps> = ({ dispatch, user }) => {
     const creations = new Array();
     console.log("++++++++",userProfile.savedListings)
     userProfile.savedListings.map((listing) => {
-        if(!ids.includes(listing[0])){
+        console.log(listing[0]);
+        if(!ids.includes(listing[0])) {
           ids.push(listing[0]);
           creations.push(listing[1]);
         }
+
     });
     if(ids.length != 0) {
       await fetchIdListings(user, setListings, ids, creations);
@@ -52,7 +54,6 @@ const Saved: React.FC<SavedProps> = ({ dispatch, user }) => {
       setListings(userProfile.savedListings)
     }
    
-      
    };
 
   useEffect(() => {
@@ -88,8 +89,13 @@ const Saved: React.FC<SavedProps> = ({ dispatch, user }) => {
       } else if(listings.length % 4 === 2 && listings.length - 2 === index) {
         rowArray.push(
         <Row xs={1} md={2} lg={4}>
+<<<<<<< HEAD
              <Listing instantChange={callAPI} user={user} userInfo={userInfo} listingId={aListing.listingId} title={aListing.title} price={aListing.price} postDate={aListing.creationTime} pictures={aListing.pictures}/>
              <Listing instantChange={callAPI} user={user} userInfo={userInfo} listingId={listings[index + 1].listingId} title={listings[index + 1].title} price={listings[index + 1].price} postDate={listings[index + 1].creationTime} pictures={listings[index + 1].pictures}/>
+=======
+             <Listing  user={user} userInfo={userInfo} listingId={aListing.listingId} title={aListing.title} price={aListing.price} postDate={aListing.creationTime} pictures={aListing.pictures}/>
+             <Listing user={user} userInfo={userInfo} listingId={listings[index + 1].listingId} title={listings[index + 1].title} price={listings[index + 1].price} postDate={listings[index + 1].creationTime} pictures={listings[index + 1].pictures}/>
+>>>>>>> 55e627814b902b44a6533a0728e07ff8efe3127b
         </Row>)
       } else if(listings.length % 4 === 3 && listings.length - 3 === index) {
         rowArray.push(

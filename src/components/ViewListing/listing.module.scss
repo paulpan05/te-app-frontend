@@ -44,7 +44,6 @@
   letter-spacing: 0.05rem;
   font-weight: 300;
   max-width: 50%;
-  float: center;
   color: rgba(0, 0, 0, 0.54);
 }
 
@@ -172,8 +171,9 @@ p {
 
 .sellerName {
   font-family: Roboto;
-  font-size:20px !important;
+  font-size:25px !important;
   font-weight: 400;
+  text-transform: capitalize;
 }
 
 .sellerButton {
