@@ -21,7 +21,7 @@ interface RateSellerProps {
 const RateSeller: React.FC<RateSellerProps> = ({ show, setShow, title, seller }) => {
   const [starValue, setStarValue] = React.useState<number | null>(2);
   return (
-    <Modal className={styles.color} show={show} onHide={() => setShow(false)} size="lg">
+    <Modal className="newModal" show={show} onHide={() => setShow(false)} size="lg" centered backdrop="static"  >
       <h1 className="mx-auto text-center">Recent Purchase!</h1>
       <Form className="text-center">
         <h3 className="mx-auto">{title}</h3>

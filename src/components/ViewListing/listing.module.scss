@@ -16,25 +16,26 @@
   margin-left: 0 !important;
 }
 .listingInfo {
-  font-family: Roboto;
   font-weight: 500;
-  font-size: 25px;
   line-height: 20px;
   color: #17284a;
   float: left;
   width: 33%;
+  padding-top: 0.25rem;
+  padding-bottom: 1rem;
 }
 .listingHeader {
   float: left;
   width: 33%;
+  font-weight: lighter;
+
 }
 .listingTitle {
-  font-family: Roboto;
   font-weight: 500;
-  font-size: 40px;
   line-height: 47px;
   color: #17284a;
   margin-bottom: 1rem;
+  text-transform: capitalize;
 }
 .listingSecondaryInfo {
   font-family: Roboto;
@@ -42,6 +43,8 @@
   line-height: 25px;
   letter-spacing: 0.05rem;
   font-weight: 300;
+  max-width: 50%;
+  float: center;
   color: rgba(0, 0, 0, 0.54);
 }
 .listingPicture {
@@ -62,7 +65,7 @@
 .sellerButton {
   background: #17284a;
   border: 1px solid #000000;
-  border-radius: 50px;
+  border-radius: 80px;
   color: white;
   font-family: Roboto;
   font-size: 20px;
@@ -71,6 +74,14 @@
   height: 3rem;
   text-align: center;
   margin-bottom: 1rem;
+  margin-right: 1rem;
+  margin-left: 1rem;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.sellerButton:hover {
+  box-shadow: 0 3px 3px 0 rgba(0,0,0,0.24) !important;
 }
 .comment {
   border: 1px solid #000000;
@@ -98,13 +109,17 @@
 .interestBox {
   background: #eeeeee;
   border-radius: 50px;
-  max-height: 25%;
-  margin-top: 20%;
+  height: 3rem;
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
   display: flex;
   justify-content: center;
 }
 p {
-  margin-top: auto !important;
+  margin-top: 0.7rem;
+  justify-content: center;
+  align-content: center;
 }
 .images img {
   max-width: 75%;
@@ -154,8 +169,14 @@ p {
   background: none;
   border: 0;
   margin-top:3rem;
-  margin-bottom:3rem;
+  margin-bottom:1rem;
   vertical-align: middle;
+}
+
+.sellerName {
+  font-family: Roboto;
+  font-size:20px !important;
+  font-weight: 400;
 }
 
 .sellerButton {
@@ -184,6 +205,6 @@ p {
 }
 .sellerPicture {
   border-radius: 150px;
-  max-width:25%;
+  max-width:40%;
   margin:auto;
 }

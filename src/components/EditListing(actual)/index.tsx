@@ -309,7 +309,7 @@ const EditListing: React.FC<EditListingProps> = ({
             <Button
               type="button"
               onClick={() => showDeleteSetter(true)}
-              className={styles.myButton}>
+              className={styles.button}>
                 Delete
             </Button>
           </Form.Row>
