@@ -199,42 +199,6 @@ const userSignup = async (
   }
 };
 
-// TODO probably need to add '.' between /profile and fileExtension (line 212)
-const uploadProfilePicture = async (
-  user: firebase.User | null | undefined,
-  picture: File,
-) => {
-  try {
-    console.log("In uploadProfilePicture API");
-    // get necessary variables for api call
-    const userId = user?.uid;
-    const key = `${userId}/profile.jpeg`;
-
-    const formData = new FormData();
-    formData.append('key', key); // for listing pictures: key: `${userId}/{uuid}${fileExtension}` 'https://triton-exchange-bucket-photos.s3.amazonaws.com/{key}
-    formData.append('file', picture);
-    console.log(`Creating formData: ${formData}`);
-    const response = await fetch('https://triton-exchange-bucket-photos.s3.amazonaws.com', { // [public] link 'https://triton-exchange-bucket-photos.s3.amazonaws.com/{key}'
-      method: 'POST',
-      body: formData,
-      /*       headers: {
-        'Content-Type': 'application/json', TODO is this needed?
-      },? */
-    });
-
-    if (response.status !== 204) { // TODO can i use handleFetchNotOk? it used .ok, not '200' specifically
-      console.log("Error: response not 204!");
-      throw Error(await response.json());
-    }
-
-    console.log("Success! Uploaded file.");
-    return `https://triton-exchange-bucket-photos.s3.amazonaws.com/${key}`;
-  } catch (err) {
-    console.log(err);
-    return undefined;
-  }
-};
-
 const uploadPictures = async (
   user: firebase.User | null | undefined,
   pictures: File[],
@@ -246,8 +210,6 @@ const uploadPictures = async (
 
     let errOccurred = false;
     const pictureURLs = responses.map((response, i) => {
-      console.log(response);
-      console.log(pictures[i]);
       if (response) {
         return response;
       } else {
@@ -279,12 +241,10 @@ const uploadPicture = async (
     const userId = user?.uid;
     const splitPath = picture.name.split('.');
     const fileExtension = splitPath[splitPath.length - 1];
-    console.log(splitPath);
-    console.log(fileExtension);
     const key = `${userId}/${uuidv4()}.${fileExtension}`;
 
     const formData = new FormData();
-    formData.append('key', key); // ${userId}/{uuid}${fileExtension}
+    formData.append('key', key);
     formData.append('file', picture);
 
     const response = await fetch('https://triton-exchange-bucket-photos.s3.amazonaws.com', {
@@ -318,8 +278,6 @@ const deletePictures = async (pictureURLs: string[]) => {
 
     let errOccurred = false;
     failures = responses.map((response, i) => {
-      console.log(response);
-      console.log(pictureURLs[i]);
       if (response) {
         console.log("are the two URLs equal? test: ", (pictureURLs[i] === response));
       } else {
@@ -731,7 +689,6 @@ export {
   fetchIdListings,
   markAsSold,
   fetchListings,
-  uploadProfilePicture,
   uploadPicture,
   uploadPictures,
   deletePicture,

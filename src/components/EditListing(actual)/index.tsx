@@ -63,7 +63,6 @@ const EditListing: React.FC<EditListingProps> = ({
   let priceInput;
   let descriptionInput;
   let locationInput;
-  console.log(`tags prop: ${tagsProp}`);
 
   // TODO change this to be a const in another file and export it there, import it to here and other files that use dispTags
   const dispTags = ['Tutoring', 'Housing', 'Rideshare', 'Study Material', 'Clothes', 'Furniture', 'Electronics', 'Appliances', 'Fitness', 'Other', 'On-Campus Pickup', 'Off-Campus Pickup', 'Venmo', 'Cash', 'Dining Dollars', 'Free'];
@@ -195,9 +194,8 @@ const EditListing: React.FC<EditListingProps> = ({
                       const uploadingPicFiles: File[] = [];
                       for (let i = 0; i < e.target.files.length; i++) {
                         if (e.target.files[i]) {
-                          console.log(`uploading file: ${e.target.files[i]}`); // TODO
                           const picURL = URL.createObjectURL(e.target.files[i]);
-                          const picFile = new File([e.target.files[i]], "listingPicture.jpeg", { lastModified: Date.now() });
+                          const picFile = new File([e.target.files[i]], e.target.files[i].name, { lastModified: Date.now() });
                           uploadingPics.push(picURL);
                           uploadingPicFiles.push(picFile);// TODO this works but need to change it for typescript
                           URLtoPictureFile[picURL] = picFile;
@@ -245,14 +243,10 @@ const EditListing: React.FC<EditListingProps> = ({
 
                 // extract the tags
                 const parsedTags = dispTags.filter((tag) => tags[tag]);
-                console.log(`tags: ${parsedTags}`);
                 const addedTags = parsedTags.filter((pic) => !tagsProp.includes(pic));
                 const deletedTags = tagsProp.filter((pic) => !parsedTags.includes(pic));
                 console.log(`tags added: ${addedTags}`);
                 console.log(`tags deleted: ${deletedTags}`);
-
-                // TODO printing out added pictures
-                console.log(`addedPictureFiles: ${addedPictureFiles}`);
 
                 // upload new pictures from s3
                 let addedPictureURLs;
@@ -281,7 +275,7 @@ const EditListing: React.FC<EditListingProps> = ({
                   if (!failure) {
                     console.log('Successfully deleted listing pictures that the user removed!');
                   } else {
-                    console.log('Error: failed to delete old listing pictures from s3. continue to upload new listing pictures anyways.');
+                    console.log(`Error: failed to delete all old listing pictures from s3. continue to upload new listing pictures anyways. URLs: ${failure}`);
                   }
                 } else {
                   // no pictures to delete
@@ -289,7 +283,6 @@ const EditListing: React.FC<EditListingProps> = ({
                 }
                 
                 console.log("about to run the api to add info to the listing");
-
                 /* TODO: test this */
                 const successAdd = await updateListing(
                   user,
