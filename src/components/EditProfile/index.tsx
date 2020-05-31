@@ -17,7 +17,7 @@ import { toast } from 'react-toastify';
 import styles from './index.module.scss';
 import blankProfile from '../../assets/img/blank-profile-picture.png';
 import { rootState } from '../../redux/reducers';
-import { updateProfile } from '../../api/index';
+import { updateProfile, uploadPicture, deletePicture } from '../../api/index';
 
 interface EditProfileProps {
   user: firebase.User | null | undefined;
@@ -43,6 +43,7 @@ const EditProfile: React.FC<EditProfileProps> = ({
   nameProp,
 }) => {
   const [picture, setPicture] = useState(pictureProp);
+  const [pictureFile, setPictureFile] = useState();
   const [dispValidated, setDispValidated] = useState(false);
   let nameInput;
   let phoneInput;
@@ -76,8 +77,8 @@ const EditProfile: React.FC<EditProfileProps> = ({
       croppedAreaPixels.height,
     );
 
-    return new Promise((resolve, reject) => {
-      canvas.toBlob((file) => resolve(URL.createObjectURL(file)), 'image/jpeg');
+    return new Promise<Blob | null>((resolve, reject) => {
+      canvas.toBlob((blob) => resolve(blob), 'image/jpeg');
     });
   };
 
@@ -113,10 +114,15 @@ const EditProfile: React.FC<EditProfileProps> = ({
                       <Button
                         className={styles.button}
                         onClick={async () => {
-                          cropImage().then((croppedImg: any) => {
-                            setPicture(croppedImg);
-                            setCropping(false);
-                          });
+                          const croppedPic = await cropImage();
+                          if (croppedPic) {
+                            setPictureFile(new File([croppedPic], "profilePicture.jpeg", { type: "image/jpeg", lastModified: Date.now() }));// TODO this works but need to change it for typescript
+                            setPicture(URL.createObjectURL(croppedPic));
+                          } else {
+                            console.log('Error while trying to parse the uploaded picture!');
+                            toast('Error while trying to crop your image! Please upload a different picture');
+                          }
+                          setCropping(false);
                         }}
                       >
                         Save
@@ -200,7 +206,8 @@ const EditProfile: React.FC<EditProfileProps> = ({
                   const phone = phoneInput.value;
                   let parsedPhone;
                   if (phone.length > 0) {
-                    parsedPhone = phone.replace(/( |-|\(|\))/g, '');
+                    // remove all spaces, -, (, ), +
+                    parsedPhone = phone.replace(/( |-|\(|\)|\+)/g, ''); //TODO test
                     const ppLen = parsedPhone.length;
                     parsedPhone = [
                       ppLen > 11 ? '+' : '',
@@ -226,11 +233,33 @@ const EditProfile: React.FC<EditProfileProps> = ({
                   const val = nameInput.value;
                   const parsedName = val.length > 0 && val !== nameProp ? val : undefined;
 
-                  // check if picture was edited
-                  const parsedPicture = picture !== pictureProp ? picture : undefined;
+                  // if picture was edited & was converted to a file & picture isn't the same as Google account's picture
+                  let pictureURL;
+                  if (picture !== pictureProp && pictureFile && picture !== user?.photoURL) {
+                    // upload new profile picture to s3
+                    pictureURL = await uploadPicture(user, pictureFile); // TODO this works but need to change it for typescript
+                    if (pictureURL) {
+                      console.log("Done uploading profile picture to s3, url: ", pictureURL);
+                    } else {
+                      console.log("Error while uploading the profile picture!");
+                      toast('An error occurred while uploading your profile picture! Please try reuploading or reload the page.');
+                      return;
+                    }
+                    
+                    // delete old profile picture. TODO check if old profile picture was Google's 
+                    const failure = await deletePicture(pictureProp);
+                    if (!failure) {
+                      console.log('successfully deleted old profile picture from s3.');
+                    } else {
+                      console.log('Error: failed to delete old profile picture from s3. continue to upload new profile picture anyways.');
+                    }
+                    
+                  } else {
+                    pictureURL = undefined;
+                  }
 
                   // API PUT to database
-                  const success = await updateProfile(user, parsedPhone, parsedPicture, parsedName);
+                  const success = await updateProfile(user, parsedPhone, pictureURL, parsedName);
                   if (success) {
                     setShow(false);
                     toast('Your profile was edited successfully!');

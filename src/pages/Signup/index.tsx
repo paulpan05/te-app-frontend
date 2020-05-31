@@ -14,7 +14,7 @@ import { Redirect } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import styles from './index.module.scss';
 import { rootState } from '../../redux/reducers';
-import { userSignup, uploadProfilePicture } from '../../api/index';
+import { userSignup, uploadPicture, deletePicture } from '../../api/index';
 
 interface SignupProps {
   user: firebase.User | null | undefined;
@@ -27,7 +27,6 @@ const mapStateToProps = (state: rootState) => ({
 
 const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
   const [picture, setPicture] = useState(user && user.photoURL ? user.photoURL : 'ignore');
-  const [pictureLocalPath, setPictureLocalPath] = useState('');
   const [pictureFile, setPictureFile] = useState();
   const [dispValidated, setDispValidated] = useState(false);
   let nameInput;
@@ -63,8 +62,8 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
       croppedAreaPixels.height,
     );
 
-    return new Promise((resolve, reject) => {
-      canvas.toBlob((blob) => resolve(blob), 'image/jpeg'); //TODO
+    return new Promise<Blob | null>((resolve, reject) => {
+      canvas.toBlob((blob) => resolve(blob), 'image/jpeg');
     });
   };
 
@@ -105,14 +104,15 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
                   <Button
                     className={styles.button}
                     onClick={async () => {
-                      cropImage().then((croppedImg: any) => {
-                        const imgURL = URL.createObjectURL(croppedImg);
-                        const file = new File([croppedImg], "myFile.jpeg", { type: "image/jpeg", lastModified: Date.now() });
-                        setPictureFile(file);
-                        console.log(file);
-                        setPicture(imgURL);
-                        setCropping(false);
-                      });
+                      const croppedPic = await cropImage();
+                      if (croppedPic) {
+                        setPictureFile(new File([croppedPic], "profilePicture.jpeg", { type: "image/jpeg", lastModified: Date.now() }));// TODO this works but need to change it for typescript
+                        setPicture(URL.createObjectURL(croppedPic));
+                      } else {
+                        console.log('Error while trying to parse the uploaded picture!');
+                        toast('Error while trying to crop your image! Please upload a different picture');
+                      }
+                      setCropping(false);
                     }}
                   >
                     Save
@@ -137,7 +137,6 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
                   onChange={(e: any) => {
                     if (e.target.files && e.target.files.length === 1 && e.target.files[0]) {
                       console.log(`e.target.files[0]: ${e.target.files[0]}`);//TODO
-                      setPictureLocalPath(e.target.value);
                       URL.revokeObjectURL(picture);
                       setPicture(URL.createObjectURL(e.target.files[0]));
                       setCropping(true);
@@ -223,28 +222,32 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
 
               // get name from input
               const parsedName = nameInput.value.length > 0 ? nameInput.value : undefined;
-
-              // print picture path (hopefully) TODO
-              console.log(`picture path: ${picture}`);
               
-              // if picture isn't google's picture, try uploading picture to s3 and get the url
+              // if picture isn't google account's picture, upload picture to s3 and get the url
               let pictureURL;
-              if (picture !== user?.photoURL) {
-                pictureURL = await uploadProfilePicture(user, pictureLocalPath, pictureFile);
-                console.log("picture url: ", pictureURL);
-                setPicture(pictureURL);
+              if (pictureFile && picture !== user?.photoURL) {
+                pictureURL = await uploadPicture(user, pictureFile); // TODO this works but need to change it for typescript
+                if (pictureURL) {
+                  console.log("Done uploading profile picture to s3, url: ", pictureURL);
+                } else {
+                  console.log("Error while uploading the profile picture!");
+                  toast('An error occurred while uploading your profile picture! Please try reuploading or reload the page.');
+                  return;
+                }
               } else {
                 pictureURL = undefined;
+                console.log("Using user's google photo. Don't upload it to s3.");
               }
-              console.log("done");
 
-              return;
+              // upload signup information
               const success = await userSignup(user, parsedPhone, parsedName, undefined, pictureURL);
               if (success) {
                 setRedirect(true);
                 toast('You successfully created an account! Welcome to Triton Exchange');
               } else {
                 toast('There was an error while setting up your account! Try to signup again');
+                // TODO in this case, need to delete profile photo from s3
+                if (pictureURL) deletePicture(pictureURL);
               }
             }}
           >

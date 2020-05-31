@@ -202,16 +202,13 @@ const userSignup = async (
 // TODO probably need to add '.' between /profile and fileExtension (line 212)
 const uploadProfilePicture = async (
   user: firebase.User | null | undefined,
-  localPhotoPath: string, // use the local photo path from fileUpload (not the blob thing)
   picture: File,
 ) => {
   try {
     console.log("In uploadProfilePicture API");
     // get necessary variables for api call
     const userId = user?.uid;
-    const splitPath = localPhotoPath.split('.');
-    const fileExtension = splitPath[splitPath.length - 1];
-    const key = `${userId}/profile.${fileExtension}`;
+    const key = `${userId}/profile.jpeg`;
 
     const formData = new FormData();
     formData.append('key', key); // for listing pictures: key: `${userId}/{uuid}${fileExtension}` 'https://triton-exchange-bucket-photos.s3.amazonaws.com/{key}
@@ -240,17 +237,17 @@ const uploadProfilePicture = async (
 
 const uploadPictures = async (
   user: firebase.User | null | undefined,
-  localPhotoPaths: string[], // I create a link for it. would a local photo path work?
+  pictures: File[],
 ) => {
   try {
     const responses = await Promise.all(
-      localPhotoPaths.map(async path => uploadPicture(user, path))
+      pictures.map(async picture => uploadPicture(user, picture))
     );
 
     let errOccurred = false;
     const pictureURLs = responses.map((response, i) => {
       console.log(response);
-      console.log(localPhotoPaths[i]);
+      console.log(pictures[i]);
       if (response) {
         return response;
       } else {
@@ -261,7 +258,7 @@ const uploadPictures = async (
 
     if (errOccurred) {
       // test. when something is mapped, if nothing is returned, will the index at map be undefined or will nothing be added
-      console.log('test in uploadingPicture (false = bad):', (localPhotoPaths.length === pictureURLs.length));
+      console.log('test in uploadingPicture (false = bad):', (pictures.length === pictureURLs.length));
       throw Error('error occured in upload pictures!');
     }
 
@@ -275,18 +272,20 @@ const uploadPictures = async (
 
 const uploadPicture = async (
   user: firebase.User | null | undefined,
-  localPhotoPath: string, // I create a link for it. would a local photo path work?
+  picture: File,
 ) => {
   try {
     // get necessary variables for api call
     const userId = user?.uid;
-    const splitPath = localPhotoPath.split('.');
+    const splitPath = picture.name.split('.');
     const fileExtension = splitPath[splitPath.length - 1];
+    console.log(splitPath);
+    console.log(fileExtension);
     const key = `${userId}/${uuidv4()}.${fileExtension}`;
 
     const formData = new FormData();
     formData.append('key', key); // ${userId}/{uuid}${fileExtension}
-    formData.append('file', localPhotoPath);
+    formData.append('file', picture);
 
     const response = await fetch('https://triton-exchange-bucket-photos.s3.amazonaws.com', {
       method: 'POST',
@@ -296,10 +295,12 @@ const uploadPicture = async (
       },? */
     });
 
-    if (response.status !== 204) { // can i use handleFetchNotOk? it used .ok, not '200' specifically TODO
+    if (response.status !== 204) {
       throw Error(await response.json());
     }
 
+    // return the link to access the image
+    console.log("Success! Uploaded file.");
     return `https://triton-exchange-bucket-photos.s3.amazonaws.com/${key}`;
   } catch (err) {
     console.log(err);
@@ -478,7 +479,7 @@ const updateListing = async (
   location?: string,
   pictures?: string[],
   tags?: string[],
-  comment?: string[], // [commentId: string, userId: string, content: string]
+  comments?: string[][], // [commentId: string, userId: string, content: string]
   deleteTag?: boolean,
   deletePicture?: boolean,
   deleteComment?: boolean,
@@ -488,20 +489,20 @@ const updateListing = async (
   try {
     const idToken = await user?.getIdToken();
     const response = await fetch(`${endpoint}/listings/update?idToken=${idToken}`, {
-      method: 'POST',
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         listingId,
         creationTime,
-        /* title, */
+        title,
+        description,
         price,
-        /* description, */
         location,
-        pictures /* TODO upload to s3 also */,
+        pictures,
         tags,
-        comment,
+        comments,
         deleteTag,
         deletePicture,
         deleteComment,
@@ -509,9 +510,9 @@ const updateListing = async (
     });
 
     const result = await handleFetchNotOk(response);
-    return true;
+    return result;
   } catch (err) {
-    return false;
+    return undefined;
   }
 };
 
@@ -566,10 +567,10 @@ const updateProfile = async (
 
     const result = await handleFetchNotOk(response);
     console.log(result);
-    return true;
+    return result;
   } catch (err) {
     console.log(err.message);
-    return false;
+    return undefined;
   }
 };
 
