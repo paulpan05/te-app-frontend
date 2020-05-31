@@ -43,7 +43,7 @@ const EditProfile: React.FC<EditProfileProps> = ({
   nameProp,
 }) => {
   const [picture, setPicture] = useState(pictureProp);
-  const [pictureFile, setPictureFile] = useState();
+  const [pictureFile, setPictureFile] = useState<File>();
   const [dispValidated, setDispValidated] = useState(false);
   let nameInput;
   let phoneInput;
