@@ -88,6 +88,14 @@
   align-items: center;
   display:flex;
 }
+.modalImgWrapper {
+  width: 100% !important;
+  height:350px !important;
+  background-color: #545b6221;
+  align-items: center;
+  display:flex;
+}
+
 .header {
   font-size: 3rem !important;
   text-align:center;
@@ -161,3 +169,6 @@ body {
   display: flex !important;
   overflow: hidden !important;
 }*/
+.roundedBorder {
+  border-radius:40px !important;
+}
