@@ -67,7 +67,7 @@ const ViewListing: React.FC<ViewListingProps> = ({
   const [isUsersListing, setIsUsersListing] = useState<any>();
   const [clickedOnProfile, setClickedOnProfile] = useState(false);
   const [markSold, markSoldSetter] = useState(false);
-
+  const [reloadSaved, setReloadSaved] =useState(false);
   useEffect(() => {
     const fetchListingData = async () => {
       //gets single listing object
@@ -100,9 +100,12 @@ const ViewListing: React.FC<ViewListingProps> = ({
         );
       }
     };
-    
+    if(reloadSaved===true) {
+      fetchListingData();
+      setReloadSaved(false);
+    }
     fetchListingData();
-  }, []);
+  }, [reloadSaved]);
 
   return clickedOnProfile ? (
     <>
@@ -220,8 +223,9 @@ const ViewListing: React.FC<ViewListingProps> = ({
                               creationTime,
                             );
                             if (success) {
-                              setNumSaved(numSaved + 1);
+                              //setNumSaved(numSaved + 1);
                               setLiked(!liked);
+                              setReloadSaved(true);
                               toast('This listing has been added to your Saved collection!');
                             } else {
                               toast(
@@ -235,8 +239,9 @@ const ViewListing: React.FC<ViewListingProps> = ({
                               creationTime,
                             );
                             if (success) {
-                              setNumSaved(numSaved - 1);
+                             // setNumSaved(numSaved - 1);
                               setLiked(!liked);
+                              setReloadSaved(true);
                               toast('This listing has been removed from your Saved collection!');
                             } else {
                               toast(
@@ -291,7 +296,7 @@ const ViewListing: React.FC<ViewListingProps> = ({
                     <p>{sellerInfo.name}</p>
                     <p>{sellerInfo.ratings}</p>
                     <div className={styles.interestBox}>
-                      <p>{numSaved} people have this item saved!</p>
+                      <p>{listingData.savedCount} people have this item saved!</p>
                     </div>
                     {/*This displays either Mark as Sold & Edit Listing OR Contact Seller*/}
                     {isUsersListing ? 
