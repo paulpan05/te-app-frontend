@@ -30,9 +30,6 @@ const RateBuyer: React.FC<RateBuyerProps> = ({ dispatch, show, setShow, title , 
   const callAPI = async () => {
 
     const userProfile = await searchUser(user, buyerName);
-    console.log(userProfile[0].userId);
-    console.log(sellerInfo);
-    console.log(listingData);
     setShow(false);
     if(userProfile.length != 0) {
       await markAsSold(user, listingData.listingId, listingData.creationTime, sellerInfo.userId, userProfile[0].userId);

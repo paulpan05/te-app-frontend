@@ -20,16 +20,27 @@ interface ListingProps {
   price: string;
   postDate: number;
   pictures: string[];
-  
+  instantChange?: Function;
+  lastSaved?: any;
 }
 
-const Listing: React.FC<ListingProps> = ({title, price, postDate, pictures, userInfo, listingId, user}) => {
+const Listing: React.FC<ListingProps> = ({lastSaved, instantChange, title, price, postDate, pictures, userInfo, listingId, user}) => {
   const [show, setShow] = useState(false);
-  
+  /*const [instant,setInstant] = useState(()=>{
+    if(instantChange){
+      if(userInfo!=null && userInfo.savedListings.length>1){
+        return true;
+      }
+      else{
+        return false
+      }
+    }
+  })*/
   const [toggled, setToggled] = useState(false);
 
-  useEffect(() => {
-    if(userInfo != null) {
+    useEffect(() => {
+    //console.log(instant)
+    if(userInfo != null && !lastSaved && instantChange) {
       for (let i = 0; i < userInfo.savedListings.length; i++) {
         if (userInfo.savedListings[i][0] === listingId) {
           setToggled(true);
@@ -38,7 +49,7 @@ const Listing: React.FC<ListingProps> = ({title, price, postDate, pictures, user
       }
     }
 
-  }, []);
+  });
 
   return (
     <div className="hoverPointer" style={{ margin: '5%' }}>
@@ -68,6 +79,9 @@ const Listing: React.FC<ListingProps> = ({title, price, postDate, pictures, user
                 postDate
               );
               if (successUnsave) {
+                if(instantChange){
+                  instantChange();
+                }
                 toast('This listing has been removed from your Saved collection!');
               } else {
                 toast(
