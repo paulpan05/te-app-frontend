@@ -170,9 +170,8 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                       const uploadingPicFiles: File[] = [];
                       for (let i = 0; i < e.target.files.length; i++) {
                         if (e.target.files[i]) {
-                          console.log(`uploading file: ${e.target.files[i]}`); // TODO
                           uploadingPics.push(URL.createObjectURL(e.target.files[i]));
-                          uploadingPicFiles.push(new File([e.target.files[i]], "listingPicture.jpeg", { lastModified: Date.now() }));// TODO this works but need to change it for typescript
+                          uploadingPicFiles.push(new File([e.target.files[i]], e.target.files[i].name, { lastModified: Date.now() }));
                         }
                       }
                       setPictures(pictures.concat(uploadingPics));
