@@ -17,6 +17,7 @@ import { faFlag, faHeart, faTrashAlt } from '@fortawesome/free-regular-svg-icons
 import { faLink } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './listing.module.scss';
+import './listing.module.scss';
 import FlowerImg from '../../assets/img/books.jpg';
 import DeletePopup from '../DeletePopup/index';
 import ContactSeller from '../ContactSeller/index';
@@ -30,6 +31,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ReportListing } from '../ReportModals';
 import ProfileImg from '../../assets/img/sarah.png';
 import Profile from '../../pages/Profile/index';
+import RateBuyer from '../RateBuyer';
+import FlowerImg2 from '../../assets/img/GreenTshirt.png';
 
 interface ViewListingProps {
   show: boolean;
@@ -74,9 +77,9 @@ const ViewListing: React.FC<ViewListingProps> = ({
       const result = await fetchListing(user, setData, [listingId], [creationTime]);
 
       if (result) {
-        // gets the seller profile
         const resultData = result[0];
         setData(resultData);
+        // gets the seller profile
         getUserProfile(user, resultData.userId, sellerInfoSetter);
         if (user?.uid === resultData.userId) {
           setIsUsersListing(true);
@@ -109,10 +112,12 @@ const ViewListing: React.FC<ViewListingProps> = ({
 
   return clickedOnProfile ? (
     <>
-      <Modal show={clickedOnProfile} onHide={() => setClickedOnProfile(false)} size="xl">
+      <Modal show={clickedOnProfile} onHide={() => setClickedOnProfile(false)} size="xl" exit>
       <Container style={{ maxHeight: '50%' }} className="no-gutters">
         <Card className="myCard">
+          <Modal.Header closeButton>
           <Profile targetUserId={listingData.userId} />
+          </Modal.Header>
         </Card>
       </Container>
       </Modal>
@@ -123,6 +128,7 @@ const ViewListing: React.FC<ViewListingProps> = ({
     <div>
       {showEditListing && (
         <ActualEditListing
+          showDeleteSetter={setshowDelete}
           show={showEditListing}
           setShow={setShowEditListing}
           listingId={listingId}
@@ -160,10 +166,10 @@ const ViewListing: React.FC<ViewListingProps> = ({
           <Row style={{ maxHeight: '100%' }} className="no-gutters">
             <Card className="myCard">
               <Row className={styles.pad}>
-                <Col xs={12} md={4} className={styles.textAlign}>
+                <Col xs={12} md={5} className={styles.textAlign}>
                   <Carousel interval={null}>
                     <Carousel.Item>
-                      <img className={styles.listingPicture} src={FlowerImg} alt="Item" />
+                      <img className={styles.listingPicture} src={FlowerImg2} alt="Item" />
                     </Carousel.Item>
                     <Carousel.Item>
                       <img className={styles.listingPicture} src={FlowerImg} alt="Item" />
@@ -173,18 +179,19 @@ const ViewListing: React.FC<ViewListingProps> = ({
                     </Carousel.Item>
                   </Carousel>
                 </Col>
-                <Col xs={12} md={7} className={styles.textAlign}>
-                  <h1 className={styles.listingTitle}>{listingData.title}</h1>
-                  <p>{listingData.location}</p>
-                  <p className={styles.listingHeader}>Price</p>
-                  <p className={styles.listingHeader}>Posted</p>
-                  <p className={styles.listingHeader}>Pickup</p>
-                  <p className={styles.listingInfo}>${listingData.price}</p>
-                  <p className={styles.listingInfo}>
+                <Col xs={12} md={6} className="textAlign blueColor">
+                  <h1 className={`${styles.listingTitle} header`}>{listingData.title}</h1>
+                  <p className={`${styles.listingHeader} subHeader`}>Price</p>
+                  <p className={`${styles.listingHeader} subHeader`}>Posted</p>
+                  <p className={`${styles.listingHeader} subHeader`}>Pickup</p>
+                  <div>
+                  <p className={`${styles.listingInfo} subHeader`}>${listingData.price}</p>
+                  <p className={`${styles.listingInfo} subHeader`}>
                     {new Date(creationTime).toDateString()}
                   </p>
-                  <p className={styles.listingInfo}>{listingData.location}</p>
-                  <p className={styles.listingSecondaryInfo}>{listingData.description}</p>
+                  <p className={`${styles.listingInfo} subHeader`}>{listingData.location}</p>
+                  
+                  </div><div><p className="bodyText">{listingData.description}</p></div>
                 </Col>
                 {/* Button to close the listing modal */}
                 <Col xs={1}>
@@ -293,7 +300,7 @@ const ViewListing: React.FC<ViewListingProps> = ({
                       <img src={ProfileImg} className={styles.sellerPicture} alt="Seller" />
                     </button>
 
-                    <p>{sellerInfo.name}</p>
+                    <p className={styles.sellerName}>{sellerInfo.name}</p>
                     <p>{sellerInfo.ratings}</p>
                     <div className={styles.interestBox}>
                       <p>{listingData.savedCount} people have this item saved!</p>
@@ -309,6 +316,7 @@ const ViewListing: React.FC<ViewListingProps> = ({
                             >
                               Mark as Sold
                           </button>
+                          <RateBuyer user={user} listingData={listingData} sellerInfo={sellerInfo} title={listingData.title} show={markSold} setShow={markSoldSetter} />
                           <button type="button" className={styles.sellerButton} onClick={() => {setShowEditListing(true);}}>
                               Edit Listing
                             </button>

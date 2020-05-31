@@ -16,7 +16,7 @@ import Card from 'react-bootstrap/Card';
 import { toast } from 'react-toastify';
 import CustomToggleButton from '../CustomToggleButton/index';
 import styles from '../CreateListing/index.module.scss';
-import deletePopup from '../DeletePopup/index'
+import DeletePopup from '../DeletePopup/index'
 import addPhoto from '../../assets/img/add-photo.png';
 import { rootState } from '../../redux/reducers';
 import { updateListing } from '../../api/index';
@@ -37,6 +37,7 @@ interface EditListingProps {
   locationProp: string;
   tagsProp: string[];
   picturesProp: string[];
+  showDeleteSetter: Function;
 }
 
 const mapStateToProps = (state: rootState) => ({
@@ -44,6 +45,7 @@ const mapStateToProps = (state: rootState) => ({
 });
 // TODO implemenet tags and upload pictures to s3. also make props required, not optional
 const EditListing: React.FC<EditListingProps> = ({
+  showDeleteSetter,
   user,
   show,
   setShow,
@@ -304,8 +306,11 @@ const EditListing: React.FC<EditListingProps> = ({
               Update
             </Button>
 
-            <Button className={styles.button} onClick={() => setShow(false)}>
-              Cancel
+            <Button
+              type="button"
+              onClick={() => showDeleteSetter(true)}
+              className={styles.button}>
+                Delete
             </Button>
           </Form.Row>
         </Form>
@@ -317,10 +322,4 @@ const EditListing: React.FC<EditListingProps> = ({
 export default connect(mapStateToProps)(EditListing);
 
 /*
-  <button
-    type="button"
-    onClick={() => showDeleteSetter(true)}
-    className={styles.myButton}
-  >
-    <FontAwesomeIcon icon={faTrashAlt} size="lg" className={styles.flag} />
-  </button>*/
+  */

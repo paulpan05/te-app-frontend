@@ -9,7 +9,7 @@ const ButtonExample: React.FC = ({}) => {
   return (
     <div>
       <Button onClick={() => setShow(true)}>Click me</Button>
-      <RateBuyer title="Flower Sweatshirt" show={show} setShow={setShow} />
+      {/* <RateBuyer title="Flower Sweatshirt" show={show} setShow={setShow} /> */}
     </div>
   );
 };
