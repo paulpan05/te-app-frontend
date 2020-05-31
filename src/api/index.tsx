@@ -3,6 +3,7 @@ import endpoint from '../configs/endpoint';
 
 const handleFetchNotOk = async (res: Response) => {
   const jsonResult = await res.json();
+  console.log("HELLOOO");
   console.log(jsonResult);
   if (!res.ok) {
     throw Error(jsonResult);
@@ -747,7 +748,33 @@ const addListingToRate = async (
   }
 };
 
-const addBuyerRating = async (
+const deleteListingToRate = async (
+  user: firebase.User | null | undefined,
+  listingId: string,
+  creationTime: number,
+) => {
+  try {
+    const idToken = await user?.getIdToken();
+    const response = await fetch(`${endpoint}/users/remove-listing-to-rate?idToken=${idToken}`, {
+      method: 'DELETE',
+      body: JSON.stringify({
+        listingId,
+        creationTime,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const result = await handleFetchNotOk(response);
+    console.log("DEELLTEEEEEE");
+    console.log(result);
+    return true;
+  } catch (err) {
+    return false;
+  }
+};
+
+const addUserRating = async (
   user: firebase.User | null | undefined,
   toRateUserId: string,
   rating: number
@@ -765,6 +792,8 @@ const addBuyerRating = async (
       },
     });
     const result = await handleFetchNotOk(response);
+    console.log("DEELLTEEEEEE");
+    console.log(result);
     return true;
   } catch (err) {
     return false;
@@ -795,5 +824,6 @@ export {
   fetchListings,
   searchUser,
   addListingToRate,
-  addBuyerRating
+  addUserRating,
+  deleteListingToRate
 };

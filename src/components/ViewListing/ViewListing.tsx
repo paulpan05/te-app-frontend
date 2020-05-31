@@ -188,7 +188,7 @@ const ViewListing: React.FC<ViewListingProps> = ({
                   </p>
                   <p className={`${styles.listingInfo} subHeader`}>{listingData.location}</p>
                   
-                  </div><div><p className="bodyText">{listingData.description}</p></div>
+                  </div><div><p className={`${styles.listingSecondaryInfo} bodyText`}>{listingData.description}</p></div>
                 </Col>
                 {/* Button to close the listing modal */}
                 <Col xs={1}>

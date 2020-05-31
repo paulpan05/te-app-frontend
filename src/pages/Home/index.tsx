@@ -59,6 +59,20 @@ const Home: React.FC<HomeProps> = ({ dispatch, user }) => {
     }
   }
 
+  const onKeyPressed = async (e) => {
+    if(e.keyCode == 13) {
+      if(searchInput.length != 0) {
+        await getListingsBySearch(user, searchInput, setSearchListings); 
+        setListings(null); 
+        rowArray = new Array(); 
+      } else {
+        await getListings(user, setListings); 
+        setSearchListings(null); 
+        rowArray = new Array();
+      }
+    }
+  }
+
   useEffect(() => {
          callAPI();
          getListings(user, setListings);
@@ -81,7 +95,7 @@ const Home: React.FC<HomeProps> = ({ dispatch, user }) => {
                 let parsedCreationTimes = new Array();
                 // console.log(response1);
                 if(response1 != false) {
-                response1.map((taggedArray) => {taggedArray.map((listing) => { if(!parsedIds.includes(listing[0])) { parsedIds.push(listing[0]); parsedCreationTimes.push(listing[1]);} })})
+                response1.map((listing) => {if(!parsedIds.includes(listing.listingId)) {parsedIds.push(listing.listingId); parsedCreationTimes.push(listing.creationTime); }    })
                 const response2 = await fetchIdListings(user, setSearchListings, parsedIds, parsedCreationTimes);
                 setListings(null); rowArray = new Array();
                 } else {
@@ -95,7 +109,7 @@ const Home: React.FC<HomeProps> = ({ dispatch, user }) => {
       </Row>
       <Row className="justify-content-center">
         <InputGroup className={styles.inputGroup}>
-          <FormControl className={styles.input} type="text" placeholder="Search.." onChange={(e) => {searchInput = e.target.value}} name="search" />
+          <FormControl className={styles.input} onKeyDown={(e) => {onKeyPressed(e);}} type="text" placeholder="Search.." onChange={(e) => {searchInput = e.target.value}} name="search" />
           <button className={styles.searchButton}  onClick={async () => { if(searchInput.length != 0) {await getListingsBySearch(user, searchInput, setSearchListings); setListings(null); rowArray = new Array(); } else {await getListings(user, setListings); setSearchListings(null); rowArray = new Array();}}}>
             <FontAwesomeIcon icon={faSearch} size="lg" />
           </button> 

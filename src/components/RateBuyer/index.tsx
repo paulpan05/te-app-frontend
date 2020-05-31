@@ -10,7 +10,7 @@ import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
 import styles from './index.module.scss';
 import Rating from '@material-ui/lab/Rating';
-import {searchUser, markAsSold, addListingToRate, addBuyerRating} from '../../api';
+import {searchUser, markAsSold, addListingToRate, addUserRating} from '../../api';
 import { toast } from 'react-toastify';
 
 interface RateBuyerProps {
@@ -25,7 +25,7 @@ interface RateBuyerProps {
 
 const RateBuyer: React.FC<RateBuyerProps> = ({ dispatch, show, setShow, title , user, sellerInfo, listingData}) => {
   const [starValue, setStarValue] = React.useState<number | null>(2);
-  let buyerName = "";
+  const [buyerName, setBuyerName] = useState();
 
   const callAPI = async () => {
 
@@ -37,7 +37,7 @@ const RateBuyer: React.FC<RateBuyerProps> = ({ dispatch, show, setShow, title , 
     if(userProfile.length != 0) {
       await markAsSold(user, listingData.listingId, listingData.creationTime, sellerInfo.userId, userProfile[0].userId);
       //TODO: how do i update the buyers rating
-      await addBuyerRating(user, userProfile[0].userId, starValue?starValue: 1); 
+      await addUserRating(user, userProfile[0].userId, starValue?starValue: 1); 
       // await addBuyerRating();
       await addListingToRate(user, userProfile[0].userId, listingData.listingId, listingData.creationTime);
       toast(`Successfully Marked Listing as Sold`);
@@ -57,7 +57,7 @@ const RateBuyer: React.FC<RateBuyerProps> = ({ dispatch, show, setShow, title , 
         <h4 className="mx-auto">{title}</h4>
         <Form.Row className="justify-content-center">
           <Form.Group as={Col} className="text-center">
-            <Form.Control placeholder="Enter Buyer Name" className={styles.input} required onChange={(e) => {buyerName = e.target.value}} />
+            <Form.Control placeholder="Enter Buyer Name" className={styles.input} required onChange={(e) => {setBuyerName(e.target.value);}} />
           </Form.Group>
         </Form.Row>
 

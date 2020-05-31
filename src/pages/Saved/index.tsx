@@ -41,14 +41,16 @@ const Saved: React.FC<SavedProps> = ({ dispatch, user }) => {
 
     userProfile.savedListings.map((listing) => {
         console.log(listing[0]);
-        ids.push(listing[0]);
-        creations.push(listing[1]);
+        if(!ids.includes(listing[0])) {
+          ids.push(listing[0]);
+          creations.push(listing[1]);
+        }
+
     });
     if(ids.length != 0) {
       const savedListings = await fetchIdListings(user, setListings, ids, creations);
     }
    
-      
    };
 
   useEffect(() => {
@@ -83,7 +85,7 @@ const Saved: React.FC<SavedProps> = ({ dispatch, user }) => {
       } else if(listings.length % 4 === 2 && listings.length - 2 === index) {
         rowArray.push(
         <Row xs={1} md={2} lg={4}>
-             <Listing user={user} userInfo={userInfo} listingId={aListing.listingId} title={aListing.title} price={aListing.price} postDate={aListing.creationTime} pictures={aListing.pictures}/>
+             <Listing  user={user} userInfo={userInfo} listingId={aListing.listingId} title={aListing.title} price={aListing.price} postDate={aListing.creationTime} pictures={aListing.pictures}/>
              <Listing user={user} userInfo={userInfo} listingId={listings[index + 1].listingId} title={listings[index + 1].title} price={listings[index + 1].price} postDate={listings[index + 1].creationTime} pictures={listings[index + 1].pictures}/>
         </Row>)
       } else if(listings.length % 4 === 3 && listings.length - 3 === index) {
