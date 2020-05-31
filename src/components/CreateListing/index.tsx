@@ -46,10 +46,11 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
 
   // TODO change this to be a const in another file and export it there, import it to here and other files that use dispTags
   const dispTags = ['Tutoring', 'Housing', 'Rideshare', 'Study Material', 'Clothes', 'Furniture', 'Electronics', 'Appliances', 'Fitness', 'Other', 'On-Campus Pickup', 'Off-Campus Pickup', 'Venmo', 'Cash', 'Dining Dollars', 'Free'];
-  const tags = {};
+  const initTags = {};
   dispTags.map((tag) => {
-    tags[tag] = false;
+    initTags[tag] = false;
   });
+  const [tags, setTags] = useState<any>({...initTags});
 
   const resetForm = async (clearValidate: boolean) => {
     setPictures([]);
@@ -57,10 +58,11 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
     if (clearValidate) {
       setDispValidated(false);
     }
-    const tags = {};
+    const resetTags = {};
     dispTags.map((tag) => {
-      tags[tag] = false;
+      resetTags[tag] = false;
     });
+    setTags(resetTags);
   }
 
   return (
@@ -127,7 +129,11 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
               <Form.Row className="justify-content-center text-center">
                 <TagsDiv
                   tags={dispTags}
-                  setTag={(tag: string, active: boolean) => (tags[tag] = active)}
+                  setTag={(tag: string, active: boolean) => {
+                    const temp = {...tags};
+                    temp[tag] = active;
+                    setTags({...temp});
+                  }}
                 />
               </Form.Row>
             </Form.Group>
@@ -225,7 +231,7 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                 );
 
                 // extract tags
-                console.log(`tags: ${tags}`);
+                console.log(tags);
                 const parsedTags = dispTags.filter((tag) => tags[tag]);
                 console.log(`parsedTags: ${parsedTags}`);
 
@@ -244,6 +250,7 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                   }
                 } else {
                   // no pictures to upload
+                  /*                   pictureURLs = ["https://triton-exchange-bucket-photos.s3.amazonaws.com/full-app-logo.svg"]; */
                   pictureURLs = undefined;
                   console.log("No listing pictures to upload.");
                 }

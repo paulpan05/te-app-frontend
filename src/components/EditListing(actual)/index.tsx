@@ -43,7 +43,7 @@ interface EditListingProps {
 const mapStateToProps = (state: rootState) => ({
   user: state.auth.user,
 });
-// TODO implemenet tags and upload pictures to s3. also make props required, not optional
+
 const EditListing: React.FC<EditListingProps> = ({
   showDeleteSetter,
   user,
@@ -58,14 +58,11 @@ const EditListing: React.FC<EditListingProps> = ({
   tagsProp,
   picturesProp,
 }) => {
-  const [pictures, setPictures]: [string[], Function] = useState(picturesProp);
-  const [dispValidated, setDispValidated] = useState(false);
-  //console.log("reseting the addedPictureFiles here");
-  const [addedPictureFiles, setAddedPictureFiles] = useState<File[]>([]);
-  // urls to remove from s3
-  const [toDelFromS3, setToDelFromS3] = useState<string[]>([]);
-  const [newUploads, setNewUploads] = useState<any>({});
-  const URLtoPictureFile = {};
+  const [pictures, setPictures]: [string[], Function] = useState(picturesProp); // pictures for the preview
+  const [dispValidated, setDispValidated] = useState(false); // should the form display validations?
+  const [addedPictureFiles, setAddedPictureFiles] = useState<File[]>([]); // picture files that were added
+  const [toDelFromS3, setToDelFromS3] = useState<string[]>([]); // urls to remove from s3
+  const [newUploads, setNewUploads] = useState<any>({}); // newly uploaded pictures/files
   let titleInput;
   let priceInput;
   let descriptionInput;
@@ -90,15 +87,16 @@ const EditListing: React.FC<EditListingProps> = ({
     'Dining Dollars',
     'Free',
   ];
-  const tags = {};
+  const initTags = {};
   dispTags.map((tag) => {
-    if (tagsProp[tag]) {
-      tags[tag] = true;
+    if (tagsProp.includes(tag)) {
+      initTags[tag] = true;
     } else {
-      tags[tag] = false;
+      initTags[tag] = false;
     }
   });
-
+  const [tags, setTags] = useState<any>({...initTags});
+  
   return (
     <Modal show={show} onHide={() => setShow(false)} size="lg">
       <Card className="roundedBorder">
@@ -162,7 +160,11 @@ const EditListing: React.FC<EditListingProps> = ({
                 <TagsDiv
                   tags={dispTags}
                   initialActiveTags={tagsProp}
-                  setTag={(tag: string, active: boolean) => (tags[tag] = active)}
+                  setTag={(tag: string, active: boolean) => {
+                    const temp = {...tags};
+                    temp[tag] = active;
+                    setTags({...temp});
+                  }}
                 />
               </Form.Row>
             </Form.Group>
@@ -283,7 +285,7 @@ const EditListing: React.FC<EditListingProps> = ({
                 // extract the tags
                 const parsedTags = dispTags.filter((tag) => tags[tag]);
                 const addedTags = parsedTags.filter((tag) => !tagsProp.includes(tag));
-                const deletedTags = parsedTags.filter((tag) => tagsProp.includes(tag)); // TODO doesnt work
+                const deletedTags = tagsProp.filter((tag) => !parsedTags.includes(tag));
                 console.log(`all tags: ${parsedTags}`);
                 console.log(`tags added: ${addedTags}`);
                 console.log(`tags deleted: ${deletedTags}`);
@@ -292,7 +294,7 @@ const EditListing: React.FC<EditListingProps> = ({
                 let addedPictureURLs;
                 if (addedPictureFiles.length > 0) {
                   // if uploaded pictures
-                  addedPictureURLs = await uploadPictures(user, addedPictureFiles); // TODO this works but need to change it for typescript
+                  addedPictureURLs = await uploadPictures(user, addedPictureFiles);
                   if (addedPictureURLs) {
                     console.log(
                       'Successfully uploaded listing pictures to s3, urls: ',
@@ -308,8 +310,16 @@ const EditListing: React.FC<EditListingProps> = ({
                   }
                 } else {
                   // no pictures to upload
-                  addedPictureURLs = [];
                   console.log('No listing pictures to upload.');
+                  addedPictureURLs = [];
+                  /*
+                  if (pictures.length > 0) {
+                    addedPictureURLs = [];
+                  } else {
+                    // upload the default picture
+                    addedPictureURLs = await uploadPicture(user, new File());
+                    addedPictureURLs = ["https://triton-exchange-bucket-photos.s3.amazonaws.com/full-app-logo.svg"];
+                  }*/
                 }
 
                 // check which photos have been deleted
