@@ -17,7 +17,6 @@ const getUserProfile = async (
   targetUserId?: string,
   setter?: Function,
 ) => {
-  // TODO setter: Function, updating the calls
   try {
     const idToken = await user?.getIdToken();
     let response;
@@ -144,8 +143,6 @@ const createListing = async (
   tags: string[],
   pictures: string[],
 ) => {
-  /* TODO need to upload pictures to s3! */
-  /* TODO incorporate the uuid thing */
   try {
     const idToken = await user?.getIdToken();
     const response = await fetch(`${endpoint}/users/make-listing?idToken=${idToken}`, {
@@ -161,7 +158,7 @@ const createListing = async (
         description,
         location,
         tags,
-        pictures /* TODO upload to s3 also */,
+        pictures,
       }),
     });
     const result = await handleFetchNotOk(response);
@@ -420,8 +417,6 @@ const updateListing = async (
   deletePicture?: boolean,
   deleteComment?: boolean,
 ) => {
-  /* TODO need to upload pictures to s3! */
-  /* TODO incorporate the uuid thing */
   try {
     const idToken = await user?.getIdToken();
     const response = await fetch(`${endpoint}/listings/update?idToken=${idToken}`, {
@@ -486,7 +481,6 @@ const updateProfile = async (
   picture?: string,
   name?: string,
 ) => {
-  /* TODO need to upload pictures to s3! */
   try {
     const idToken = await user?.getIdToken();
     const response = await fetch(`${endpoint}/users/update?idToken=${idToken}`, {
