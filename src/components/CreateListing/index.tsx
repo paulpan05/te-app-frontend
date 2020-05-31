@@ -170,8 +170,9 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                       const uploadingPicFiles: File[] = [];
                       for (let i = 0; i < e.target.files.length; i++) {
                         if (e.target.files[i]) {
+                          console.log(`uploading file: ${e.target.files[i]}`); // TODO
                           uploadingPics.push(URL.createObjectURL(e.target.files[i]));
-                          uploadingPicFiles.push(new File([e.target.files[i]], e.target.files[i].name, { lastModified: Date.now() }));
+                          uploadingPicFiles.push(new File([e.target.files[i]], "listingPicture.jpeg", { lastModified: Date.now() }));// TODO this works but need to change it for typescript
                         }
                       }
                       setPictures(pictures.concat(uploadingPics));
@@ -187,20 +188,8 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
             <Button
               className={styles.button}
               onClick={async () => {
-<<<<<<< HEAD
                 // check if forms are valid
                 if (!(titleInput.checkValidity() &&  priceInput.checkValidity() && descriptionInput.checkValidity() && locationInput.checkValidity())) {
-=======
-                // validate form here
-                setDispValidated(true);
-
-                let allValidated = true;
-                for (const singleValidation of validated) {
-                  allValidated = allValidated && singleValidation;
-                }
-                console.log(validated)
-                if (!allValidated) {
->>>>>>> 70f359074f2fb3caa21a330237d9186ca910b32e
                   console.log('not all forms are valid!');
                   //TODO resetForm();
                   return;
