@@ -51,10 +51,12 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
     tags[tag] = false;
   });
 
-  const resetForm = async () => {
+  const resetForm = async (clearValidate: boolean) => {
     setPictures([]);
     setPictureFiles([]);
-    setDispValidated(false);
+    if (clearValidate) {
+      setDispValidated(false);
+    }
     const tags = {};
     dispTags.map((tag) => {
       tags[tag] = false;
@@ -84,6 +86,7 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                 placeholder="Title"
                 className={styles.input}
                 required
+                maxLength={20}
                 ref={(ref) => (titleInput = ref)}
               />
 
@@ -142,15 +145,18 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                             type="button"
                             onClick={() => {
                               // remove picture
-                              const removedPicIndexes: number[] = [];
+                              let removedPicIndex: number;
                               setPictures(
                                 pictures.filter((pic, i) => {
-                                  if (pic !== src) removedPicIndexes.push(i);
+                                  if (pic === src) {
+                                    console.log(`removing picture: ${src}`);
+                                    removedPicIndex = i;
+                                  }
                                   return pic !== src;
                                 })
                               );
                               setPictureFiles(
-                                pictureFiles.filter((file, i) => !removedPicIndexes.includes(i))
+                                pictureFiles.filter((file, i) => !(removedPicIndex === i))
                               );
                               URL.revokeObjectURL(src);
                             }}
@@ -198,16 +204,16 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
             <Button
               className={styles.button}
               onClick={async () => {
+                // validate form here
+                setDispValidated(true);
+
                 // check if forms are valid
                 if (!(titleInput.checkValidity() &&  priceInput.checkValidity() && descriptionInput.checkValidity() && locationInput.checkValidity())) {
                   console.log('not all forms are valid!');
-                  resetForm();
+                  resetForm(false);
                   return;
                 }
                 console.log('all forms are valid!');
-
-                // validate form here
-                setDispValidated(true);
 
                 // extract values from form
                 const parsedTitle = titleInput.value;
@@ -263,7 +269,7 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                   // TODO in this case, you should delete the pictures you've uploaded (if you don't, they'll just waste space)
                   if (pictureURLs) deletePictures(pictureURLs);
                 }
-                resetForm();
+                resetForm(true);
               }}
             >
               Create
