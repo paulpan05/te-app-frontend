@@ -81,9 +81,10 @@ const Home: React.FC<HomeProps> = ({ dispatch, user }) => {
   return (
     <div>
       {rateListing && <Rate user={user} sellerId={rateListing[2]} creationTime={rateListing[1]} listingId={rateListing[0]}/>}
-      <Row className="justify-content-md-center">
-        
+      <Row className="justify-content-md-center" >
+        <div style={{  zIndex: 0}}>
         <Tags tags={dispTags} setTag={(tag: string, active: boolean) => (tags[tag] = active)}/>
+        </div>
       </Row>
       <Row className="justify-content-center">
       <button className={styles.filterButton} onClick={async () => {

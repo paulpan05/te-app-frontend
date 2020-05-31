@@ -2,7 +2,7 @@
   border: 0 !important;
 }
 .listingModal .modal-content {
-  font-size: 100px !important;
+  
   border: 0 !important;
   max-width: 100% !important;
 }
@@ -38,21 +38,15 @@
   text-transform: capitalize;
 }
 .listingSecondaryInfo {
-  font-family: Roboto;
-  font-size: 12px;
-  line-height: 25px;
   letter-spacing: 0.05rem;
   font-weight: 300;
-  max-width: 50%;
+  max-width: 100%;
   color: rgba(0, 0, 0, 0.54);
 }
-
-
 
 .sellerPicture {
   border-radius: 150px;
   max-width: 50%;
-  // margin:auto;
   margin-top: 10px;
 }
 .exit {

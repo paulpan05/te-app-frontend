@@ -33,6 +33,8 @@ import ProfileImg from '../../assets/img/sarah.png';
 import Profile from '../../pages/Profile/index';
 import RateBuyer from '../RateBuyer';
 import FlowerImg2 from '../../assets/img/GreenTshirt.png';
+import Rating from '@material-ui/lab/Rating';
+import Box from '@material-ui/core/Box';
 
 interface ViewListingProps {
   show: boolean;
@@ -71,6 +73,16 @@ const ViewListing: React.FC<ViewListingProps> = ({
   const [clickedOnProfile, setClickedOnProfile] = useState(false);
   const [markSold, markSoldSetter] = useState(false);
   const [reloadSaved, setReloadSaved] =useState(false);
+  
+  function getPictures() {
+    return listingData.pictures.map((picture) => {
+      return (
+      <Carousel.Item className={styles.myCarousel}>
+        <img src={picture} alt="Item"/>
+      </Carousel.Item>
+      )
+    })
+  }
   useEffect(() => {
     const fetchListingData = async () => {
       //gets single listing object
@@ -163,20 +175,12 @@ const ViewListing: React.FC<ViewListingProps> = ({
 
       {sellerInfo && (
         <Modal show={show} onHide={() => setShow(false)} size="xl" className="responsiveModal">
-          <Row style={{ maxHeight: '100%' }} className="no-gutters">
+          <Row style={{ maxHeight: '100%', maxWidth:'100%' }} className="no-gutters">
             <Card className="myCard">
               <Row className={styles.pad}>
                 <Col xs={12} md={5} className={styles.textAlign}>
                   <Carousel interval={null} className={`modalImgWrapper ${styles.carouselTest}`} >
-                    <Carousel.Item className={styles.myCarousel}>
-                      <img src={FlowerImg2} alt="Item" />
-                    </Carousel.Item>
-                    <Carousel.Item className={styles.myCarousel}>
-                      <img src={FlowerImg} alt="Item" />
-                    </Carousel.Item>
-                    <Carousel.Item className={styles.myCarousel}>
-                      <img src={FlowerImg} alt="Item" />
-                    </Carousel.Item>
+                 {getPictures()}
                   </Carousel>
                 </Col>
                 <Col xs={12} md={6} className="textAlign blueColor">
@@ -305,11 +309,23 @@ const ViewListing: React.FC<ViewListingProps> = ({
                       className={styles.myButton}
                       onClick={() => setClickedOnProfile(true)}
                     >
-                      <img src={ProfileImg} className={styles.sellerPicture} alt="Seller" />
+                      <img src={sellerInfo.picture} className={styles.sellerPicture} alt="Seller Picture" />
                     </button>
 
                     <p className={styles.sellerName}>{sellerInfo.name}</p>
-                    <p>{sellerInfo.ratings}</p>
+                   
+                <Rating name="read-only" value={ (() => {
+                  let sum = 0 ;
+                  console.log(sellerInfo?.ratings)
+                  if(sellerInfo?.ratings.length===0){
+                    return 0
+                  }
+                  for(let i=0;i<(sellerInfo?.ratings).length;i++){
+                    sum+=sellerInfo?.ratings[i]
+                  }
+                  return Math.floor(sum/(sellerInfo?.ratings).length)})()
+                  } readOnly />
+                    
                     <div className={styles.interestBox}>
                       <p>{listingData.savedCount} people have this item saved!</p>
                     </div>
