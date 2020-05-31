@@ -39,12 +39,13 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
   const [pictures, setPictures]: [string[], Function] = useState([]);
   const [pictureFiles, setPictureFiles]: [File[], Function] = useState([]);
   const [dispValidated, setDispValidated] = useState(false);
+  const [form, setForm] = useState<HTMLFormElement>();
   let titleInput;
   let priceInput;
   let descriptionInput;
   let locationInput;
 
-  // TODO change this to be a const in another file and export it there, import it to here and other files that use dispTags
+  // tags
   const dispTags = ['Tutoring', 'Housing', 'Rideshare', 'Study Material', 'Clothes', 'Furniture', 'Electronics', 'Appliances', 'Fitness', 'Other', 'On-Campus Pickup', 'Off-Campus Pickup', 'Venmo', 'Cash', 'Dining Dollars', 'Free'];
   const initTags = {};
   dispTags.map((tag) => {
@@ -53,11 +54,16 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
   const [tags, setTags] = useState<any>({...initTags});
 
   const resetForm = async (clearValidate: boolean) => {
+    // reset pictures
     setPictures([]);
     setPictureFiles([]);
+
+    // reset validation
     if (clearValidate) {
       setDispValidated(false);
     }
+
+    // reset tags
     const resetTags = {};
     dispTags.map((tag) => {
       resetTags[tag] = false;
@@ -66,9 +72,12 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
   }
 
   return (
-    <Modal show={show} onHide={() => setShow(false)} size="lg">
+    <Modal show={show} onHide={() => {
+      setShow(false);
+      resetForm(true);
+    }} size="lg">
       <Card className="myCard">
-        <Form validated={dispValidated} className={styles.wrapper}>
+        <Form validated={dispValidated} className={styles.wrapper} ref={(ref) => setForm(ref)} >
           <Form.Row className="justify-content-center text-center">
           
             <p className="mediumHeader">Create Listing</p>
@@ -186,6 +195,7 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                   label="Browse..."
                   data-browse="+"
                   custom
+                  isValid={false}
                   onChange={(e: any) => {
                     if (e.target.files && e.target.files.length > 0) {
                       const uploadingPics: string[] = [];
@@ -213,10 +223,17 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                 // validate form here
                 setDispValidated(true);
 
+                // TODO
+                console.log(`checking whole form validity: ${form?.checkValidity()}`);
                 // check if forms are valid
-                if (!(titleInput.checkValidity() &&  priceInput.checkValidity() && descriptionInput.checkValidity() && locationInput.checkValidity())) {
+                if (!form?.checkValidity() || !(titleInput && priceInput && descriptionInput && locationInput)) {
                   console.log('not all forms are valid!');
-                  resetForm(false);
+                  toast('Make sure to fill out all necessary forms before submitting!');
+                  return;
+                }
+                if (pictures.length <= 0) {
+                  console.log('need to provide at least 1 picture.');
+                  toast('Make sure to upload at least 1 photo before submitting');
                   return;
                 }
                 console.log('all forms are valid!');
