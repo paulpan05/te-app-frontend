@@ -81,7 +81,7 @@ const EditListing: React.FC<EditListingProps> = ({
 
   return (
     <Modal show={show} onHide={() => setShow(false)} size="lg">
-      <Card>
+      <Card className="roundedBorder">
         <Form validated={dispValidated} className={styles.wrapper}>
           <Form.Row className="justify-content-center text-center">
           <p className="mediumHeader">Edit Listing</p>

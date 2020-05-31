@@ -47,10 +47,7 @@
   float: center;
   color: rgba(0, 0, 0, 0.54);
 }
-.listingPicture {
-  box-shadow: 0px 4px 4px #e5e5e5;
-  border-radius: 40px;
-}
+
 
 
 .sellerPicture {
@@ -207,4 +204,12 @@ p {
   border-radius: 150px;
   max-width:40%;
   margin:auto;
+}
+.myCarousel {
+  height:100% !important;
+  overflow: scroll !important;
+}
+.carouselTest>div {
+  height:350px !important;
+  width: auto !important;
 }

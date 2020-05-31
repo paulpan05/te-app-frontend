@@ -70,7 +70,7 @@ const ViewListing: React.FC<ViewListingProps> = ({
   const [isUsersListing, setIsUsersListing] = useState<any>();
   const [clickedOnProfile, setClickedOnProfile] = useState(false);
   const [markSold, markSoldSetter] = useState(false);
-
+  const [reloadSaved, setReloadSaved] =useState(false);
   useEffect(() => {
     const fetchListingData = async () => {
       //gets single listing object
@@ -103,9 +103,12 @@ const ViewListing: React.FC<ViewListingProps> = ({
         );
       }
     };
-    
+    if(reloadSaved===true) {
+      fetchListingData();
+      setReloadSaved(false);
+    }
     fetchListingData();
-  }, []);
+  }, [reloadSaved]);
 
   return clickedOnProfile ? (
     <>
@@ -164,31 +167,39 @@ const ViewListing: React.FC<ViewListingProps> = ({
             <Card className="myCard">
               <Row className={styles.pad}>
                 <Col xs={12} md={5} className={styles.textAlign}>
-                  <Carousel interval={null}>
-                    <Carousel.Item>
-                      <img className={styles.listingPicture} src={FlowerImg2} alt="Item" />
+                  <Carousel interval={null} className={`modalImgWrapper ${styles.carouselTest}`} >
+                    <Carousel.Item className={styles.myCarousel}>
+                      <img src={FlowerImg2} alt="Item" />
                     </Carousel.Item>
-                    <Carousel.Item>
-                      <img className={styles.listingPicture} src={FlowerImg} alt="Item" />
+                    <Carousel.Item className={styles.myCarousel}>
+                      <img src={FlowerImg} alt="Item" />
                     </Carousel.Item>
-                    <Carousel.Item>
-                      <img className={styles.listingPicture} src={FlowerImg} alt="Item" />
+                    <Carousel.Item className={styles.myCarousel}>
+                      <img src={FlowerImg} alt="Item" />
                     </Carousel.Item>
                   </Carousel>
                 </Col>
                 <Col xs={12} md={6} className="textAlign blueColor">
+                  <Row className="justify-content-center">
                   <h1 className={`${styles.listingTitle} header`}>{listingData.title}</h1>
+                  </Row>
+                  <Row>
                   <p className={`${styles.listingHeader} subHeader`}>Price</p>
                   <p className={`${styles.listingHeader} subHeader`}>Posted</p>
                   <p className={`${styles.listingHeader} subHeader`}>Pickup</p>
-                  <div>
+                  </Row>
+                  <Row>
+           
                   <p className={`${styles.listingInfo} subHeader`}>${listingData.price}</p>
                   <p className={`${styles.listingInfo} subHeader`}>
                     {new Date(creationTime).toDateString()}
                   </p>
                   <p className={`${styles.listingInfo} subHeader`}>{listingData.location}</p>
                   
-                  </div><div><p className="bodyText">{listingData.description}</p></div>
+                  </Row>
+                  <Row>
+                  <p className="bodyText">{listingData.description}</p>
+                  </Row>
                 </Col>
                 {/* Button to close the listing modal */}
                 <Col xs={1}>
@@ -227,8 +238,9 @@ const ViewListing: React.FC<ViewListingProps> = ({
                               creationTime,
                             );
                             if (success) {
-                              setNumSaved(numSaved + 1);
+                              //setNumSaved(numSaved + 1);
                               setLiked(!liked);
+                              setReloadSaved(true);
                               toast('This listing has been added to your Saved collection!');
                             } else {
                               toast(
@@ -242,8 +254,9 @@ const ViewListing: React.FC<ViewListingProps> = ({
                               creationTime,
                             );
                             if (success) {
-                              setNumSaved(numSaved - 1);
+                             // setNumSaved(numSaved - 1);
                               setLiked(!liked);
+                              setReloadSaved(true);
                               toast('This listing has been removed from your Saved collection!');
                             } else {
                               toast(
@@ -298,7 +311,7 @@ const ViewListing: React.FC<ViewListingProps> = ({
                     <p className={styles.sellerName}>{sellerInfo.name}</p>
                     <p>{sellerInfo.ratings}</p>
                     <div className={styles.interestBox}>
-                      <p>{numSaved} people have this item saved!</p>
+                      <p>{listingData.savedCount} people have this item saved!</p>
                     </div>
                     {/*This displays either Mark as Sold & Edit Listing OR Contact Seller*/}
                     {isUsersListing ? 
