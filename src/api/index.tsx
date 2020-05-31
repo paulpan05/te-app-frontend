@@ -3,6 +3,7 @@ import endpoint from '../configs/endpoint';
 
 const handleFetchNotOk = async (res: Response) => {
   const jsonResult = await res.json();
+  console.log("HELLOOO");
   console.log(jsonResult);
   if (!res.ok) {
     throw Error(jsonResult);
@@ -28,13 +29,14 @@ const getUserProfile = async (
       response = await fetch(`${endpoint}/users/profile?idToken=${idToken}`);
     }
     const result = await handleFetchNotOk(response);
-    console.log(result);
+    // console.log(result);
     if (setter) {
       setter(result);
     }
     return result;
   } catch (err) {
     console.log(err);
+    return undefined;
   }
 };
 
@@ -70,8 +72,9 @@ const getListings = async (user: firebase.User | null | undefined, setter: Funct
     const idToken = await user?.getIdToken();
     const response = await fetch(`${endpoint}/listings?idToken=${idToken}`);
     const result = await handleFetchNotOk(response);
+    
     setter(result);
-    console.log(result);
+    //console.log(result);
     return true;
   } catch (err) {
     console.log(err);
@@ -92,7 +95,7 @@ const fetchIdListings = async (
     );
     const result = await handleFetchNotOk(response);
     setter(result);
-    return true;
+    return result;
   } catch (err) {
     return false;
   }
@@ -110,9 +113,9 @@ const getListingsBySearch = async (
     );
     const result = await handleFetchNotOk(response);
     console.log(`searchTitle=${searchTerm} result=`);
-    console.log(result);
+    // console.log(result);
     setter(result);
-    return result;
+    return true;
   } catch (err) {
     console.log(err);
     return err;
@@ -124,8 +127,8 @@ const getListingsByTags = async (user: firebase.User | null | undefined, tags: s
     const idToken = await user?.getIdToken();
     const response = await fetch(`${endpoint}/listings/byTags?idToken=${idToken}&tags=${tags}`);
     const result = await handleFetchNotOk(response);
-    console.log(result);
-    return true;
+    // console.log(result);
+    return result;
   } catch (err) {
     console.log(err);
     return false;
@@ -162,7 +165,7 @@ const createListing = async (
       }),
     });
     const result = await handleFetchNotOk(response);
-    console.log(result);
+    // console.log(result);
     return true;
   } catch (err) {
     console.log(err.message);
@@ -199,66 +202,16 @@ const userSignup = async (
   }
 };
 
-const uploadProfilePicture = async (
-  user: firebase.User | null | undefined,
-  localPhotoPath: string, // use the local photo path from fileUpload (not the blob thing)
-) => {
-  try {
-    // get necessary variables for api call
-    const userId = user?.uid;
-    const splitPath = localPhotoPath.split('.');
-    const fileExtension = splitPath[splitPath.length - 1];
-    const key = `${userId}/profile${fileExtension}`;
-
-    const formData = new FormData();
-    formData.append('key', key); // for listing pictures: key: `${userId}/{uuid}${fileExtension}` 'https://triton-exchange-bucket-photos.s3.amazonaws.com/{key}
-    formData.append('file', localPhotoPath);
-    const response = await fetch('https://triton-exchange-bucket-photos.s3.amazonaws.com', { // [public] link 'https://triton-exchange-bucket-photos.s3.amazonaws.com/{key}'
-      method: 'POST',
-      body: formData,
-      /*       headers: {
-        'Content-Type': 'application/json', TODO is this needed?
-      },? */
-    });
-
-    if (response.status !== 204) { // TODO can i use handleFetchNotOk? it used .ok, not '200' specifically
-      throw Error(await response.json());
-    }
-    
-    return `https://triton-exchange-bucket-photos.s3.amazonaws.com/${key}`;
-  } catch (err) {
-    console.log(err);
-    return undefined;
-  }
-};
-
 const uploadPictures = async (
   user: firebase.User | null | undefined,
-  localPhotoPaths: string[], // I create a link for it. would a local photo path work?
+  pictures: File[],
 ) => {
   try {
-    const responses = await Promise.all(
-      localPhotoPaths.map(async path => uploadPicture(user, path))
+    const pictureURLs = await Promise.all(
+      pictures.map(async picture => uploadPicture(user, picture, true))
     );
 
-    let errOccurred = false;
-    const pictureURLs = responses.map((response, i) => {
-      console.log(response);
-      console.log(localPhotoPaths[i]);
-      if (response) {
-        return response;
-      } else {
-        console.log("error occured in uploadPictures. couldn't upload all pictures!");
-        errOccurred = true;
-      }
-    });
-
-    if (errOccurred) {
-      // test. when something is mapped, if nothing is returned, will the index at map be undefined or will nothing be added
-      console.log('test in uploadingPicture (false = bad):', (localPhotoPaths.length === pictureURLs.length));
-      throw Error('error occured in upload pictures!');
-    }
-
+    // success: return the urls
     console.log(`pictureURLs for uploadPictures: ${pictureURLs}`);
     return pictureURLs;
   } catch (err) {
@@ -269,89 +222,79 @@ const uploadPictures = async (
 
 const uploadPicture = async (
   user: firebase.User | null | undefined,
-  localPhotoPath: string, // I create a link for it. would a local photo path work?
+  picture: File,
+  throwError?: boolean,
 ) => {
   try {
     // get necessary variables for api call
     const userId = user?.uid;
-    const splitPath = localPhotoPath.split('.');
+    const splitPath = picture.name.split('.');
     const fileExtension = splitPath[splitPath.length - 1];
-    const key = `${userId}/${uuidv4()}${fileExtension}`;
+    const key = `${userId}/${uuidv4()}.${fileExtension}`;
 
     const formData = new FormData();
-    formData.append('key', key); // ${userId}/{uuid}${fileExtension}
-    formData.append('file', localPhotoPath);
+    formData.append('key', key);
+    formData.append('file', picture);
 
     const response = await fetch('https://triton-exchange-bucket-photos.s3.amazonaws.com', {
       method: 'POST',
       body: formData,
-      /*       headers: {
-        'Content-Type': 'application/json',
-      },? */
     });
 
-    if (response.status !== 204) { // can i use handleFetchNotOk? it used .ok, not '200' specifically TODO
+    if (response.status !== 204) {
       throw Error(await response.json());
     }
 
+    // success: return the link to access the image
+    console.log("Success! Uploaded file.");
     return `https://triton-exchange-bucket-photos.s3.amazonaws.com/${key}`;
   } catch (err) {
+
     console.log(err);
-    return undefined;
+    if (throwError) {
+      throw err;
+    } else {
+      return undefined;
+    }
   }
 };
 
-/* NOTE: this api wrapper returns the OPPOSITE of the other api wrappers. success: returns undefined. failure: array of failed deletions (the picture urls) */
 const deletePictures = async (pictureURLs: string[]) => {
-  let failures;
   try {
     const responses = await Promise.all(
-      pictureURLs.map(async pictureURL => deletePicture(pictureURL))
+      pictureURLs.map(async pictureURL => deletePicture(pictureURL, true))
     );
 
-    let errOccurred = false;
-    failures = responses.map((response, i) => {
-      console.log(response);
-      console.log(pictureURLs[i]);
-      if (response) {
-        console.log("are the two URLs equal? test: ", (pictureURLs[i] === response));
-      } else {
-        console.log("error occurred in deletePictures. couldn't delete all pictures!");
-        errOccurred = true;
-        return ;
-      }
-    });
-
-    if (errOccurred) {
-      // test. when something is mapped, if nothing is returned, will the index at map be undefined or will nothing be added
-      console.log('test in deletePictures (false = bad):', (pictureURLs.length === failures.length));
-      throw Error(`error occured in delete pictures!: ${failures}`);
-    }
-
     console.log("Success in deleting all images!");
-    return undefined;
+    return responses;
   } catch (err) {
     console.log(err);
-    return failures;
+    return undefined;
   }
 }
 
-/* NOTE: this api wrapper returns the OPPOSITE of the other api wrappers. success: returns undefined. failure: the failed deletion's URL */
 const deletePicture = async (
-  pictureURL: string,
+  picture: string,
+  throwError?: boolean,
 ) => {
   try {
-    const response = await fetch(pictureURL, {
+    const response = await fetch(picture, {
       method: 'DELETE',
     });
 
     if (response.status !== 204) {
       throw Error(await response.json());
     }
-    return undefined;
+
+    return response;
   } catch (err) {
+    
     console.log(err);
-    return pictureURL;
+    if (throwError) {
+      throw err;
+    } else {
+      return undefined;
+    }
   }
 };
 
@@ -472,7 +415,7 @@ const updateListing = async (
   location?: string,
   pictures?: string[],
   tags?: string[],
-  comment?: string[], // [commentId: string, userId: string, content: string]
+  comments?: string[][], // [commentId: string, userId: string, content: string]
   deleteTag?: boolean,
   deletePicture?: boolean,
   deleteComment?: boolean,
@@ -489,13 +432,13 @@ const updateListing = async (
       body: JSON.stringify({
         listingId,
         creationTime,
-        /* title, */
+        title,
+        description,
         price,
-        /* description, */
         location,
-        pictures /* TODO upload to s3 also */,
+        pictures,
         tags,
-        comment,
+        comments,
         deleteTag,
         deletePicture,
         deleteComment,
@@ -503,9 +446,9 @@ const updateListing = async (
     });
 
     const result = await handleFetchNotOk(response);
-    return true;
+    return result;
   } catch (err) {
-    return false;
+    return undefined;
   }
 };
 
@@ -560,10 +503,10 @@ const updateProfile = async (
 
     const result = await handleFetchNotOk(response);
     console.log(result);
-    return true;
+    return result;
   } catch (err) {
     console.log(err.message);
-    return false;
+    return undefined;
   }
 };
 
@@ -612,7 +555,7 @@ const unsaveListing = async (
   try {
     const idToken = await user?.getIdToken();
     const response = await fetch(`${endpoint}/users/unsave-listing?idToken=${idToken}`, {
-      method: 'POST',
+      method: 'DELETE',
       body: JSON.stringify({
         listingId,
         creationTime,
@@ -640,7 +583,23 @@ const fetchListing = async (
       `${endpoint}/listings/byIds?idToken=${idToken}&ids=${ids}&creationTimes=${creationTimes}`,
     );
     const result = await handleFetchNotOk(response);
-    // setter(result);
+    setter(result);
+    return result;
+  } catch (err) {
+    return undefined;
+  }
+};
+
+const searchUser = async (
+  user: firebase.User | null | undefined,
+  name: string,
+) => {
+  try {
+    const idToken = await user?.getIdToken();
+    const response = await fetch(
+      `${endpoint}/users/search?idToken=${idToken}&name=${name}`,
+    );
+    const result = await handleFetchNotOk(response);
     return result;
   } catch (err) {
     return undefined;
@@ -702,6 +661,84 @@ const markAsSold = async (
   }
 };
 
+const addListingToRate = async (
+  user: firebase.User | null | undefined,
+  buyerId: string,
+  listingId: string,
+  creationTime: string,
+) => {
+  try {
+    const idToken = await user?.getIdToken();
+    const response = await fetch(`${endpoint}/users/add-listing-to-rate?idToken=${idToken}`, {
+      method: 'POST',
+      body: JSON.stringify({
+        buyerId,
+        listingId,
+        creationTime,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const result = await handleFetchNotOk(response);
+    return true;
+  } catch (err) {
+    return false;
+  }
+};
+
+const deleteListingToRate = async (
+  user: firebase.User | null | undefined,
+  listingId: string,
+  creationTime: number,
+) => {
+  try {
+    const idToken = await user?.getIdToken();
+    const response = await fetch(`${endpoint}/users/remove-listing-to-rate?idToken=${idToken}`, {
+      method: 'DELETE',
+      body: JSON.stringify({
+        listingId,
+        creationTime,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const result = await handleFetchNotOk(response);
+    console.log("DEELLTEEEEEE");
+    console.log(result);
+    return true;
+  } catch (err) {
+    return false;
+  }
+};
+
+const addUserRating = async (
+  user: firebase.User | null | undefined,
+  toRateUserId: string,
+  rating: number
+) => {
+  try {
+    const idToken = await user?.getIdToken();
+    const response = await fetch(`${endpoint}/users/rate-user?idToken=${idToken}`, {
+      method: 'POST',
+      body: JSON.stringify({
+        toRateUserId,
+        rating
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const result = await handleFetchNotOk(response);
+    console.log("DEELLTEEEEEE");
+    console.log(result);
+    return true;
+  } catch (err) {
+    return false;
+  }
+};
+
 export {
   handleFetchNotOk,
   getUserProfile,
@@ -724,4 +761,12 @@ export {
   fetchIdListings,
   markAsSold,
   fetchListings,
+  uploadPicture,
+  uploadPictures,
+  deletePicture,
+  deletePictures,
+  searchUser,
+  addListingToRate,
+  addUserRating,
+  deleteListingToRate
 };

@@ -59,7 +59,7 @@ const Profile: React.FC<ProfileProps> = ({ user, targetUserId, dispatch}) => {
     }
     listings = await fetchListings(user, ids, creationTimes)
     if (listings) {listings.map((listing) => {
-      listingArray.push(<Listing user={listing.user} title={listing.title} postDate={listing.creationTime} pictures={listing.picture} price={listing.price} listingId={listing.listingId}/>);
+      listingArray.push(<Listing user={listing.user} title={listing.title} postDate={listing.creationTime} pictures={listing.pictures} price={listing.price} listingId={listing.listingId}/>);
     })
 	
     setAvailArray(listingArray);

@@ -21,6 +21,7 @@ import { createListing } from '../../api/index';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { uploadPictures, deletePictures } from '../../api/index';
 
 import TagsDiv from '../Tags/Tags';
 
@@ -36,20 +37,33 @@ const mapStateToProps = (state: rootState) => ({
 // TODO implemenet tags and upload pictures to s3
 const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) => {
   const [pictures, setPictures]: [string[], Function] = useState([]);
+  const [pictureFiles, setPictureFiles]: [File[], Function] = useState([]);
   const [dispValidated, setDispValidated] = useState(false);
-  const validated = [false, false, false, true];
-  const which = { title: 0, price: 1, description: 2, location: 3 };
   let titleInput;
   let priceInput;
   let descriptionInput;
   let locationInput;
 
-  /* const tags = await // API call to database for list of tags goes here */
+  // TODO change this to be a const in another file and export it there, import it to here and other files that use dispTags
   const dispTags = ['Tutoring', 'Housing', 'Rideshare', 'Study Material', 'Clothes', 'Furniture', 'Electronics', 'Appliances', 'Fitness', 'Other', 'On-Campus Pickup', 'Off-Campus Pickup', 'Venmo', 'Cash', 'Dining Dollars', 'Free'];
-  const tags = {};
+  const initTags = {};
   dispTags.map((tag) => {
-    tags[tag] = false;
+    initTags[tag] = false;
   });
+  const [tags, setTags] = useState<any>({...initTags});
+
+  const resetForm = async (clearValidate: boolean) => {
+    setPictures([]);
+    setPictureFiles([]);
+    if (clearValidate) {
+      setDispValidated(false);
+    }
+    const resetTags = {};
+    dispTags.map((tag) => {
+      resetTags[tag] = false;
+    });
+    setTags(resetTags);
+  }
 
   return (
     <Modal show={show} onHide={() => setShow(false)} size="lg">
@@ -74,10 +88,8 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                 placeholder="Title"
                 className={styles.input}
                 required
+                maxLength={20}
                 ref={(ref) => (titleInput = ref)}
-                onChange={(e) => {
-                  validated[which.title] = e.target.value.length > 0;
-                }}
               />
 
               <Form.Label className="bodyText">For how much?</Form.Label>
@@ -90,9 +102,6 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                   required
                   className={styles.inputWithPrependAndPostpend}
                   ref={(ref) => (priceInput = ref)}
-                  onChange={(e) => {
-                    validated[which.price] = e.target.value.length > 0;
-                  }}
                 />
                 <InputGroup.Text className={styles.inputPostpend}>.00</InputGroup.Text>
               </InputGroup>
@@ -105,9 +114,6 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                 required
                 className={styles.textarea}
                 ref={(ref) => (descriptionInput = ref)}
-                onChange={(e) => {
-                  validated[which.description] = e.target.value.length > 0;
-                }}
               />
 
               <Form.Label className="bodyText">Pickup Location</Form.Label>
@@ -117,16 +123,17 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                 defaultValue="Price Center"
                 className={styles.input}
                 ref={(ref) => (locationInput = ref)}
-                onChange={(e) => {
-                  validated[which.location] = e.target.value.length > 0;
-                }}
               />
 
               <Form.Label className="bodyText">Tags</Form.Label>
               <Form.Row className="justify-content-center text-center">
                 <TagsDiv
                   tags={dispTags}
-                  setTag={(tag: string, active: boolean) => (tags[tag] = active)}
+                  setTag={(tag: string, active: boolean) => {
+                    const temp = {...tags};
+                    temp[tag] = active;
+                    setTags({...temp});
+                  }}
                 />
               </Form.Row>
             </Form.Group>
@@ -139,11 +146,24 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                     pictures.map((src, i) => {
                       return (
                         <Carousel.Item key={i}>
-                          <img src={src} />
+                          <img src={src} style={{minWidth: "30vh"}}/>
                           <button
                             type="button"
                             onClick={() => {
-                              setPictures(pictures.filter((pic) => pic !== src));
+                              // remove picture
+                              let removedPicIndex: number;
+                              setPictures(
+                                pictures.filter((pic, i) => {
+                                  if (pic === src) {
+                                    console.log(`removing picture: ${src}`);
+                                    removedPicIndex = i;
+                                  }
+                                  return pic !== src;
+                                })
+                              );
+                              setPictureFiles(
+                                pictureFiles.filter((file, i) => !(removedPicIndex === i))
+                              );
                               URL.revokeObjectURL(src);
                             }}
                             className={styles.deleteButton}
@@ -168,13 +188,17 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                   custom
                   onChange={(e: any) => {
                     if (e.target.files && e.target.files.length > 0) {
-                      const uploadingImgs: string[] = [];
+                      const uploadingPics: string[] = [];
+                      const uploadingPicFiles: File[] = [];
                       for (let i = 0; i < e.target.files.length; i++) {
                         if (e.target.files[i]) {
-                          uploadingImgs.push(URL.createObjectURL(e.target.files[i]));
+                          console.log(`uploading file: ${e.target.files[i]}`); // TODO
+                          uploadingPics.push(URL.createObjectURL(e.target.files[i]));
+                          uploadingPicFiles.push(new File([e.target.files[i]], "listingPicture.jpeg", { lastModified: Date.now() }));// TODO this works but need to change it for typescript
                         }
                       }
-                      setPictures(pictures.concat(uploadingImgs));
+                      setPictures(pictures.concat(uploadingPics));
+                      setPictureFiles(pictureFiles.concat(uploadingPicFiles));
                     }
                   }}
                 />
@@ -189,13 +213,10 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                 // validate form here
                 setDispValidated(true);
 
-                let allValidated = true;
-                for (const singleValidation of validated) {
-                  allValidated = allValidated && singleValidation;
-                }
-                console.log(validated)
-                if (!allValidated) {
+                // check if forms are valid
+                if (!(titleInput.checkValidity() &&  priceInput.checkValidity() && descriptionInput.checkValidity() && locationInput.checkValidity())) {
                   console.log('not all forms are valid!');
+                  resetForm(false);
                   return;
                 }
                 console.log('all forms are valid!');
@@ -209,14 +230,32 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                   `title: ${parsedTitle}, price: ${parsedPrice}, description: ${parsedDescription}, location: ${parsedLocation}`,
                 );
 
-                // TODO upload pics to s3, then extract the links and send them to database
-                const pictures = ['picture srcs go here'];
-
                 // extract tags
+                console.log(tags);
                 const parsedTags = dispTags.filter((tag) => tags[tag]);
-                console.log(`tags: ${parsedTags}`);
+                console.log(`parsedTags: ${parsedTags}`);
 
-                // api call
+                // upload pics to s3
+                let pictureURLs;
+                if (pictureFiles.length > 0 && pictures.length > 0) { // if uploaded pictures
+                  console.log(`pictureFiles before upload: ${pictureFiles}`);
+                  pictureURLs = await uploadPictures(user, pictureFiles); // TODO this works but need to change it for typescript
+                  if (pictureURLs) {
+                    console.log("Successfully uploaded listing pictures to s3, urls: ", pictureURLs);
+                  } else {
+                    // error while uploading
+                    console.log("Error while uploading the profile picture!");
+                    toast('An error occurred while uploading your listing pictures! Please try resubmitting or reuploading.');
+                    return;
+                  }
+                } else {
+                  // no pictures to upload
+                  /*                   pictureURLs = ["https://triton-exchange-bucket-photos.s3.amazonaws.com/full-app-logo.svg"]; */
+                  pictureURLs = undefined;
+                  console.log("No listing pictures to upload.");
+                }
+
+                // create the listing in the db
                 const success = await createListing(
                   user,
                   parsedTitle,
@@ -224,7 +263,7 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                   parsedDescription,
                   parsedLocation,
                   parsedTags,
-                  pictures,
+                  pictureURLs,
                 );
 
                 if (success) {
@@ -234,7 +273,10 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                   toast(
                     'There was an error while creating your listing! Try to create it again or reload.',
                   );
+                  // TODO in this case, you should delete the pictures you've uploaded (if you don't, they'll just waste space)
+                  if (pictureURLs) deletePictures(pictureURLs);
                 }
+                resetForm(true);
               }}
             >
               Create

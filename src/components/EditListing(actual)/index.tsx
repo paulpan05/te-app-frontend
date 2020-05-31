@@ -16,10 +16,10 @@ import Card from 'react-bootstrap/Card';
 import { toast } from 'react-toastify';
 import CustomToggleButton from '../CustomToggleButton/index';
 import styles from '../CreateListing/index.module.scss';
-import deletePopup from '../DeletePopup/index';
+import DeletePopup from '../DeletePopup/index';
 import addPhoto from '../../assets/img/add-photo.png';
 import { rootState } from '../../redux/reducers';
-import { updateListing } from '../../api/index';
+import { updateListing, uploadPictures, deletePictures } from '../../api/index';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
@@ -37,14 +37,15 @@ interface EditListingProps {
   locationProp: string;
   tagsProp: string[];
   picturesProp: string[];
-  setPrice: Function;
+  showDeleteSetter: Function;
 }
 
 const mapStateToProps = (state: rootState) => ({
   user: state.auth.user,
 });
-// TODO implemenet tags and upload pictures to s3. also make props required, not optional
+
 const EditListing: React.FC<EditListingProps> = ({
+  showDeleteSetter,
   user,
   show,
   setShow,
@@ -56,27 +57,49 @@ const EditListing: React.FC<EditListingProps> = ({
   locationProp,
   tagsProp,
   picturesProp,
-  setPrice,
 }) => {
-  const [pictures, setPictures]: [string[], Function] = useState(picturesProp);
-  const [dispValidated, setDispValidated] = useState(false);
-  const validated = [true, true, true, true];
-  const which = { title: 0, price: 1, description: 2, location: 3 };
+  const [pictures, setPictures]: [string[], Function] = useState(picturesProp); // pictures for the preview
+  const [dispValidated, setDispValidated] = useState(false); // should the form display validations?
+  const [addedPictureFiles, setAddedPictureFiles] = useState<File[]>([]); // picture files that were added
+  const [toDelFromS3, setToDelFromS3] = useState<string[]>([]); // urls to remove from s3
+  const [newUploads, setNewUploads] = useState<any>({}); // newly uploaded pictures/files
   let titleInput;
   let priceInput;
   let descriptionInput;
   let locationInput;
 
-  /* const tags = await // API call to database for list of tags goes here. paul needs to make an endpoint for it. hard code it for now */
-  const dispTags = ['Furniture', 'Rides', 'Tutoring', 'Appliances', 'Technology'];
-  const tags = {};
+  // TODO change this to be a const in another file and export it there, import it to here and other files that use dispTags
+  const dispTags = [
+    'Tutoring',
+    'Housing',
+    'Rideshare',
+    'Study Material',
+    'Clothes',
+    'Furniture',
+    'Electronics',
+    'Appliances',
+    'Fitness',
+    'Other',
+    'On-Campus Pickup',
+    'Off-Campus Pickup',
+    'Venmo',
+    'Cash',
+    'Dining Dollars',
+    'Free',
+  ];
+  const initTags = {};
   dispTags.map((tag) => {
-    tags[tag] = false;
+    if (tagsProp.includes(tag)) {
+      initTags[tag] = true;
+    } else {
+      initTags[tag] = false;
+    }
   });
-
+  const [tags, setTags] = useState<any>({...initTags});
+  
   return (
     <Modal show={show} onHide={() => setShow(false)} size="lg">
-      <Card>
+      <Card className="roundedBorder">
         <Form validated={dispValidated} className={styles.wrapper}>
           <Form.Row className="justify-content-center text-center">
             <p className="mediumHeader">Edit Listing</p>
@@ -92,10 +115,8 @@ const EditListing: React.FC<EditListingProps> = ({
                 placeholder="Title"
                 className={styles.input}
                 required
+                maxLength={20}
                 ref={(ref) => (titleInput = ref)}
-                onChange={(e) => {
-                  validated[which.title] = e.target.value.length > 0;
-                }}
                 defaultValue={titleProp}
               />
 
@@ -109,9 +130,6 @@ const EditListing: React.FC<EditListingProps> = ({
                   required
                   className={styles.inputWithPrependAndPostpend}
                   ref={(ref) => (priceInput = ref)}
-                  onChange={(e) => {
-                    validated[which.price] = e.target.value.length > 0;
-                  }}
                   defaultValue={priceProp}
                 />
                 <InputGroup.Text className={styles.inputPostpend}>.00</InputGroup.Text>
@@ -125,9 +143,6 @@ const EditListing: React.FC<EditListingProps> = ({
                 required
                 className={styles.textarea}
                 ref={(ref) => (descriptionInput = ref)}
-                onChange={(e) => {
-                  validated[which.description] = e.target.value.length > 0;
-                }}
                 defaultValue={descriptionProp}
               />
 
@@ -138,9 +153,6 @@ const EditListing: React.FC<EditListingProps> = ({
                 defaultValue={locationProp}
                 className={styles.input}
                 ref={(ref) => (locationInput = ref)}
-                onChange={(e) => {
-                  validated[which.location] = e.target.value.length > 0;
-                }}
               />
 
               <Form.Label className="bodyText">Tags</Form.Label>
@@ -148,7 +160,11 @@ const EditListing: React.FC<EditListingProps> = ({
                 <TagsDiv
                   tags={dispTags}
                   initialActiveTags={tagsProp}
-                  setTag={(tag: string, active: boolean) => (tags[tag] = active)}
+                  setTag={(tag: string, active: boolean) => {
+                    const temp = {...tags};
+                    temp[tag] = active;
+                    setTags({...temp});
+                  }}
                 />
               </Form.Row>
             </Form.Group>
@@ -165,8 +181,21 @@ const EditListing: React.FC<EditListingProps> = ({
                           <button
                             type="button"
                             onClick={() => {
-                              setPictures(pictures.filter((pic) => pic !== src));
-                              URL.revokeObjectURL(src);
+                              setPictures(
+                                // keep the picture if it isn't the src picture
+                                pictures.filter((pic) => pic !== src),
+                              );
+                              // if the picture to delete came from the database
+                              if (picturesProp.includes(src)) {
+                                // need to remove it from database
+                                setToDelFromS3(toDelFromS3.concat([src]));
+                              } else {
+                                // newly uploaded picture -- remove from addedPictureFiles
+                                setAddedPictureFiles(
+                                  addedPictureFiles.filter((file) => file !== newUploads[src]),
+                                );
+                              }
+                              //URL.revokeObjectURL(src); TODO
                             }}
                             className={styles.deleteButton}
                           >
@@ -189,14 +218,26 @@ const EditListing: React.FC<EditListingProps> = ({
                   data-browse="+"
                   custom
                   onChange={(e: any) => {
+                    // if the uploaded files exists
                     if (e.target.files && e.target.files.length > 0) {
-                      const uploadingImgs: string[] = [];
+                      const uploadingPics: string[] = [];
+                      const uploadingPicFiles: File[] = [];
                       for (let i = 0; i < e.target.files.length; i++) {
                         if (e.target.files[i]) {
-                          uploadingImgs.push(URL.createObjectURL(e.target.files[i]));
+                          const picURL = URL.createObjectURL(e.target.files[i]);
+                          const picFile = new File([e.target.files[i]], e.target.files[i].name, {
+                            lastModified: Date.now(),
+                          });
+                          uploadingPics.push(picURL);
+                          uploadingPicFiles.push(picFile);
+
+                          const temp = { ...newUploads };
+                          temp[picURL] = picFile;
+                          setNewUploads(temp);
                         }
                       }
-                      setPictures(pictures.concat(uploadingImgs));
+                      setPictures(pictures.concat(uploadingPics));
+                      setAddedPictureFiles(addedPictureFiles.concat(uploadingPicFiles));
                     }
                   }}
                 />
@@ -208,19 +249,22 @@ const EditListing: React.FC<EditListingProps> = ({
             <Button
               className={styles.button}
               onClick={async () => {
-                // validate form here
-                setDispValidated(true);
-
-                let allValidated = true;
-                for (const i of validated) {
-                  allValidated = allValidated && i;
-                }
-
-                if (!allValidated) {
+                // check if forms are valid
+                if (
+                  !(
+                    titleInput.checkValidity() &&
+                    priceInput.checkValidity() &&
+                    descriptionInput.checkValidity() &&
+                    locationInput.checkValidity()
+                  )
+                ) {
                   console.log('not all forms are valid!');
                   return;
                 }
                 console.log('all forms are valid!');
+
+                // validate form here
+                setDispValidated(true);
 
                 // extract values from form and check if they've been changed
                 const title = titleInput.value;
@@ -235,24 +279,69 @@ const EditListing: React.FC<EditListingProps> = ({
                 const location = locationInput.value;
                 const parsedLocation = location !== locationProp ? location : undefined;
                 console.log(
-                  `title: ${parsedTitle}, price: ${parsedPrice}, description: ${parsedDescription}, location: ${parsedLocation}`,
+                  `(undefined = unchanged) title: ${parsedTitle}, price: ${parsedPrice}, description: ${parsedDescription}, location: ${parsedLocation}`,
                 );
-
-                // check which photos/tags have changed
-                const picturesAdded = pictures.filter((pic) => !picturesProp.includes(pic));
-                const picturesDeleted = picturesProp.filter((pic) => !pictures.includes(pic));
-                console.log(`added pictures: ${picturesAdded}`);
-                console.log(`deleted pictures: ${picturesDeleted}`);
 
                 // extract the tags
                 const parsedTags = dispTags.filter((tag) => tags[tag]);
-                console.log(`tags: ${parsedTags}`);
-                const tagsAdded = parsedTags.filter((pic) => !tagsProp.includes(pic));
-                const tagsDeleted = tagsProp.filter((pic) => !parsedTags.includes(pic));
-                console.log(`tags added: ${tagsAdded}`);
-                console.log(`tags deleted: ${tagsDeleted}`);
+                const addedTags = parsedTags.filter((tag) => !tagsProp.includes(tag));
+                const deletedTags = tagsProp.filter((tag) => !parsedTags.includes(tag));
+                console.log(`all tags: ${parsedTags}`);
+                console.log(`tags added: ${addedTags}`);
+                console.log(`tags deleted: ${deletedTags}`);
 
-                /* TODO: test */
+                // upload new pictures from s3
+                let addedPictureURLs;
+                if (addedPictureFiles.length > 0) {
+                  // if uploaded pictures
+                  addedPictureURLs = await uploadPictures(user, addedPictureFiles);
+                  if (addedPictureURLs) {
+                    console.log(
+                      'Successfully uploaded listing pictures to s3, urls: ',
+                      addedPictureURLs,
+                    );
+                  } else {
+                    // error while uploading
+                    console.log('Error while uploading the profile picture!');
+                    toast(
+                      'An error occurred while uploading your listing pictures! Please try resubmitting or reuploading.',
+                    );
+                    return;
+                  }
+                } else {
+                  // no pictures to upload
+                  console.log('No listing pictures to upload.');
+                  addedPictureURLs = [];
+                  /*
+                  if (pictures.length > 0) {
+                    addedPictureURLs = [];
+                  } else {
+                    // upload the default picture
+                    addedPictureURLs = await uploadPicture(user, new File());
+                    addedPictureURLs = ["https://triton-exchange-bucket-photos.s3.amazonaws.com/full-app-logo.svg"];
+                  }*/
+                }
+
+                // check which photos have been deleted
+                console.log(`Pictures to delete from s3: ${toDelFromS3}`);
+
+                // delete deleted pictures from s3
+                if (toDelFromS3.length > 0) {
+                  // if uploaded pictures
+                  const success = await deletePictures(toDelFromS3);
+                  if (success) {
+                    console.log('Successfully deleted listing pictures that the user removed!');
+                  } else {
+                    console.log(
+                      'Error: failed to delete old listing pictures from s3. Continue to update listing anyways.',
+                    );
+                  }
+                } else {
+                  console.log('No listing pictures to delete.');
+                }
+
+                console.log('about to run the api to add info to the listing');
+                /* TODO: test this */
                 const successAdd = await updateListing(
                   user,
                   listingId,
@@ -261,14 +350,15 @@ const EditListing: React.FC<EditListingProps> = ({
                   parsedPrice,
                   parsedDescription,
                   parsedLocation,
-                  ['pictures go here'], // add new pictures here
-                  [], // add new tags here
+                  addedPictureURLs,
+                  addedTags,
                   undefined,
-                  false,
-                  false,
+                  undefined,
+                  undefined,
                   undefined,
                 );
 
+                console.log('about to run the api to delete info from the listing');
                 // delete old pictures and tags here
                 const successDelete = await updateListing(
                   user,
@@ -278,21 +368,17 @@ const EditListing: React.FC<EditListingProps> = ({
                   undefined,
                   undefined,
                   undefined,
-                  ['picture srcs go here'], // add deleted pictures here
-                  [], // add deleted tags here
+                  toDelFromS3,
+                  deletedTags,
                   undefined,
                   true,
                   true,
                   undefined,
                 );
-                console.log(successAdd);
-                console.log(successDelete);
-                // TODO what would happen if the successAdd works but successDelete fails? wouldn't it add new pictures but tell the user that no new pictures were added? also vice versa
 
                 if (successAdd && successDelete) {
                   setShow(false);
                   toast('The listing was successfully edited!');
-                  setPrice(parsedPrice);
                 } else {
                   toast(
                     'There was an error while editing your listing! Try to edit it again or reload.',
@@ -303,8 +389,8 @@ const EditListing: React.FC<EditListingProps> = ({
               Update
             </Button>
 
-            <Button className={styles.button} onClick={() => setShow(false)}>
-              Cancel
+            <Button type="button" onClick={() => showDeleteSetter(true)} className={styles.button}>
+              Delete
             </Button>
           </Form.Row>
         </Form>
@@ -314,12 +400,3 @@ const EditListing: React.FC<EditListingProps> = ({
 };
 
 export default connect(mapStateToProps)(EditListing);
-
-/*
-  <button
-    type="button"
-    onClick={() => showDeleteSetter(true)}
-    className={styles.myButton}
-  >
-    <FontAwesomeIcon icon={faTrashAlt} size="lg" className={styles.flag} />
-  </button>*/

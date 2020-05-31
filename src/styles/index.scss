@@ -1,8 +1,22 @@
 * {
   font-family: Roboto, 'Open Sans', Arial, Helvetica, sans-serif;
+  @media (min-width:768px) {
   p {
-    font-size:2vmin !important;
+    font-size:14px !important;
+    line-break:anywhere !important;
   }
+  h1 {
+    line-break:anywhere !important;
+  }
+}
+@media (max-width:767px) {
+  p {
+    font-size:20px !important;
+  }
+  h1 {
+    line-break:anywhere !important;
+  }
+}
 }
 
 // hide the focus indicator if element receives focus via mouse, but show on keyboard focus (on tab).
@@ -51,13 +65,33 @@
     font-size:3rem;
   }
   .responsiveModal {
-    max-width:90% !important;
-    left:5% !important;
+    width:80% !important;
+    display: flex !important;
+    left:10% !important;
+    padding:auto !important;
+    overflow-x: hidden !important;
   }
+  .newModal {
+  width: 75% !important;
+  left: 12.5% !important;
+  border-radius: 40px !important;
+  padding: auto !important;
+  background-color: white !important;
+  top:5% !important;
+  height: 90% !important;
+  display: flex !important;
+  overflow: hidden !important;
+}
+.modal-dialog {
+  max-width:100% !important;
+}
 }
 @media (min-width:768px) {
   .responsiveModal {
     max-width:100% !important;
+    display: flex !important;
+    overflow: scroll !important;
+    padding:auto;
   }
   .exitFlag {
     font-size:3rem;
@@ -68,18 +102,40 @@
 .likedFlag {
   font-size:5rem;
 }
+.newModal {
+  width: 50% !important;
+  left: 25% !important;
+  top:5% !important;
+  height: 90% !important;
+  border-radius: 40px !important;
+  padding: auto !important;
+  background-color: white !important;
+  top:5% !important;
+  height: 90% !important;
+  display: flex !important;
+  overflow: hidden !important;
+}
 }
 .hoverPointer:hover {
   cursor: pointer !important;
 }
 .imgWrapper {
   width: 100% !important;
-  height:300px !important;
+  height: 30vh !important;
   max-width: 400px !important;
   max-height:400px !important;
-  display: flex;
+  background-color: #545b6221;
   align-items: center;
+  display:flex;
 }
+.modalImgWrapper {
+  width: 100% !important;
+  height:350px !important;
+  background-color: #545b6221;
+  align-items: center;
+  display:flex;
+}
+
 .header {
   font-size: 3rem !important;
   text-align:center;
@@ -129,4 +185,9 @@ body {
   background: #ffffff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), inset 0px 4px 1px #e5e5e5;
   border-radius: 3rem !important;
+}
+
+
+.roundedBorder {
+  border-radius:40px !important;
 }

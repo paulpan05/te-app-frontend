@@ -20,6 +20,7 @@ const TagsDiv: React.FC<TagsDivProps> = ({ tags, setTag, initialActiveTags }) =>
       {tags.map((tag, i) => {
         return (
           <Button
+            key={i}
             onClick={() => {
               const activeTagsCopy = Object.create(activeTags);
               activeTagsCopy[tag] = !activeTagsCopy[tag];

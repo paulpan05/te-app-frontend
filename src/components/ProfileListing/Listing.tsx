@@ -27,7 +27,15 @@ const Listing: React.FC<ListingProps> = ({title, price, postDate, pictures, user
   const [show, setShow] = useState(false);
   
   const [toggled, setToggled] = useState(false);
-
+  function getPictures() {
+    return pictures.map((picture) => {
+      return (
+      <Carousel.Item onClick={() => setShow(true)} className={styles.myCarousel}>
+        <img onClick={() => setShow(true)} className={styles.cardImgTop} src={picture} />
+      </Carousel.Item>
+      )
+    })
+  }
   useEffect(() => {
     if(userInfo != null) {
       for (let i = 0; i < userInfo.savedListings.length; i++) {
@@ -45,7 +53,7 @@ const Listing: React.FC<ListingProps> = ({title, price, postDate, pictures, user
       <div className={styles.card}>
         <div className="cardImage imgWrapper">
           <Carousel className={styles.zIndx} interval={null}>
-            <Carousel.Item>
+            {/* <Carousel.Item>
               <img onClick={() => setShow(true)} className={styles.cardImgTop} src={GreenShirt} />
             </Carousel.Item>
             <Carousel.Item>
@@ -53,7 +61,8 @@ const Listing: React.FC<ListingProps> = ({title, price, postDate, pictures, user
             </Carousel.Item>
             <Carousel.Item>
               <img onClick={() => setShow(true)} className={styles.cardImgTop} src={FlowerImg} />
-            </Carousel.Item>
+            </Carousel.Item> */}
+            {pictures && getPictures()}
           </Carousel>
         </div>
         <div className={styles.card_content}>

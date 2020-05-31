@@ -17,9 +17,10 @@ import { faFlag, faHeart, faTrashAlt } from '@fortawesome/free-regular-svg-icons
 import { faLink } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './listing.module.scss';
+import './listing.module.scss';
 import FlowerImg from '../../assets/img/books.jpg';
 import DeletePopup from '../DeletePopup/index';
-import ContactSeller from '../ContactSeller';
+import ContactSeller from '../ContactSeller/index';
 import SellerInfo from '../SellerInfo';
 import CommentBox from '../CommentBox';
 import ActualEditListing from '../EditListing(actual)/index';
@@ -30,6 +31,10 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ReportListing } from '../ReportModals';
 import ProfileImg from '../../assets/img/sarah.png';
 import Profile from '../../pages/Profile/index';
+import RateBuyer from '../RateBuyer';
+import FlowerImg2 from '../../assets/img/GreenTshirt.png';
+import Rating from '@material-ui/lab/Rating';
+import Box from '@material-ui/core/Box';
 
 interface ViewListingProps {
   show: boolean;
@@ -67,18 +72,26 @@ const ViewListing: React.FC<ViewListingProps> = ({
   const [isUsersListing, setIsUsersListing] = useState<any>();
   const [clickedOnProfile, setClickedOnProfile] = useState(false);
   const [markSold, markSoldSetter] = useState(false);
-
-  const [price, setPrice] = useState(listingData.price);
-
+  const [reloadSaved, setReloadSaved] =useState(false);
+  
+  function getPictures() {
+    return listingData.pictures.map((picture) => {
+      return (
+      <Carousel.Item className={styles.myCarousel}>
+        <img src={picture} alt="Item"/>
+      </Carousel.Item>
+      )
+    })
+  }
   useEffect(() => {
     const fetchListingData = async () => {
       //gets single listing object
       const result = await fetchListing(user, setData, [listingId], [creationTime]);
 
       if (result) {
-        // gets the seller profile
         const resultData = result[0];
         setData(resultData);
+        // gets the seller profile
         getUserProfile(user, resultData.userId, sellerInfoSetter);
         if (user?.uid === resultData.userId) {
           setIsUsersListing(true);
@@ -102,16 +115,21 @@ const ViewListing: React.FC<ViewListingProps> = ({
         );
       }
     };
-    
+    if(reloadSaved===true) {
+      fetchListingData();
+      setReloadSaved(false);
+    }
     fetchListingData();
-  }, []);
+  }, [reloadSaved]);
 
   return clickedOnProfile ? (
     <>
-      <Modal show={clickedOnProfile} onHide={() => setClickedOnProfile(false)} size="xl">
+      <Modal show={clickedOnProfile} onHide={() => setClickedOnProfile(false)} size="xl" exit>
       <Container style={{ maxHeight: '50%' }} className="no-gutters">
         <Card className="myCard">
+          <Modal.Header closeButton>
           <Profile targetUserId={listingData.userId} />
+          </Modal.Header>
         </Card>
       </Container>
       </Modal>
@@ -122,6 +140,7 @@ const ViewListing: React.FC<ViewListingProps> = ({
     <div>
       {showEditListing && (
         <ActualEditListing
+          showDeleteSetter={setshowDelete}
           show={showEditListing}
           setShow={setShowEditListing}
           listingId={listingId}
@@ -132,7 +151,6 @@ const ViewListing: React.FC<ViewListingProps> = ({
           locationProp={listingData.location}
           tagsProp={listingData.tags}
           picturesProp={listingData.pictures}
-          setPrice={setPrice}
         />
       )}
 
@@ -157,34 +175,35 @@ const ViewListing: React.FC<ViewListingProps> = ({
 
       {sellerInfo && (
         <Modal show={show} onHide={() => setShow(false)} size="xl" className="responsiveModal">
-          <Row style={{ maxHeight: '100%' }} className="no-gutters">
+          <Row style={{ maxHeight: '100%', maxWidth:'100%' }} className="no-gutters">
             <Card className="myCard">
               <Row className={styles.pad}>
-                <Col xs={12} md={4} className={styles.textAlign}>
-                  <Carousel interval={null}>
-                    <Carousel.Item>
-                      <img className={styles.listingPicture} src={FlowerImg} alt="Item" />
-                    </Carousel.Item>
-                    <Carousel.Item>
-                      <img className={styles.listingPicture} src={FlowerImg} alt="Item" />
-                    </Carousel.Item>
-                    <Carousel.Item>
-                      <img className={styles.listingPicture} src={FlowerImg} alt="Item" />
-                    </Carousel.Item>
+                <Col xs={12} md={5} className={styles.textAlign}>
+                  <Carousel interval={null} className={`modalImgWrapper ${styles.carouselTest}`} >
+                 {getPictures()}
                   </Carousel>
                 </Col>
-                <Col xs={12} md={7} className={styles.textAlign}>
-                  <h1 className={styles.listingTitle}>{listingData.title}</h1>
-                  <p>{listingData.location}</p>
-                  <p className={styles.listingHeader}>Price</p>
-                  <p className={styles.listingHeader}>Posted</p>
-                  <p className={styles.listingHeader}>Pickup</p>
-                  <p className={styles.listingInfo}>${price}</p>
-                  <p className={styles.listingInfo}>
+                <Col xs={12} md={6} className="textAlign blueColor">
+                  <Row className="justify-content-center">
+                  <h1 className={`${styles.listingTitle} header`}>{listingData.title}</h1>
+                  </Row>
+                  <Row>
+                  <p className={`${styles.listingHeader} subHeader`}>Price</p>
+                  <p className={`${styles.listingHeader} subHeader`}>Posted</p>
+                  <p className={`${styles.listingHeader} subHeader`}>Pickup</p>
+                  </Row>
+                  <Row>
+           
+                  <p className={`${styles.listingInfo} subHeader`}>${listingData.price}</p>
+                  <p className={`${styles.listingInfo} subHeader`}>
                     {new Date(creationTime).toDateString()}
                   </p>
-                  <p className={styles.listingInfo}>{listingData.location}</p>
-                  <p className={styles.listingSecondaryInfo}>{listingData.description}</p>
+                  <p className={`${styles.listingInfo} subHeader`}>{listingData.location}</p>
+                  
+                  </Row>
+                  <Row>
+                  <p className={`${styles.listingSecondaryInfo} bodyText`}>{listingData.description}</p>
+                  </Row>
                 </Col>
                 {/* Button to close the listing modal */}
                 <Col xs={1}>
@@ -223,8 +242,9 @@ const ViewListing: React.FC<ViewListingProps> = ({
                               creationTime,
                             );
                             if (success) {
-                              setNumSaved(numSaved + 1);
+                              //setNumSaved(numSaved + 1);
                               setLiked(!liked);
+                              setReloadSaved(true);
                               toast('This listing has been added to your Saved collection!');
                             } else {
                               toast(
@@ -238,8 +258,9 @@ const ViewListing: React.FC<ViewListingProps> = ({
                               creationTime,
                             );
                             if (success) {
-                              setNumSaved(numSaved - 1);
+                             // setNumSaved(numSaved - 1);
                               setLiked(!liked);
+                              setReloadSaved(true);
                               toast('This listing has been removed from your Saved collection!');
                             } else {
                               toast(
@@ -288,13 +309,25 @@ const ViewListing: React.FC<ViewListingProps> = ({
                       className={styles.myButton}
                       onClick={() => setClickedOnProfile(true)}
                     >
-                      <img src={ProfileImg} className={styles.sellerPicture} alt="Seller" />
+                      <img src={sellerInfo.picture} className={styles.sellerPicture} alt="Seller Picture" />
                     </button>
 
-                    <p>{sellerInfo.name}</p>
-                    <p>{sellerInfo.ratings}</p>
+                    <p className={styles.sellerName}>{sellerInfo.name}</p>
+                   
+                <Rating name="read-only" value={ (() => {
+                  let sum = 0 ;
+                  console.log(sellerInfo?.ratings)
+                  if(sellerInfo?.ratings.length===0){
+                    return 0
+                  }
+                  for(let i=0;i<(sellerInfo?.ratings).length;i++){
+                    sum+=sellerInfo?.ratings[i]
+                  }
+                  return Math.floor(sum/(sellerInfo?.ratings).length)})()
+                  } readOnly />
+                    
                     <div className={styles.interestBox}>
-                      <p>{numSaved} people have this item saved!</p>
+                      <p>{listingData.savedCount} people have this item saved!</p>
                     </div>
                     {/*This displays either Mark as Sold & Edit Listing OR Contact Seller*/}
                     {isUsersListing ? 
@@ -307,6 +340,7 @@ const ViewListing: React.FC<ViewListingProps> = ({
                             >
                               Mark as Sold
                           </button>
+                          <RateBuyer user={user} listingData={listingData} sellerInfo={sellerInfo} title={listingData.title} show={markSold} setShow={markSoldSetter} />
                           <button type="button" className={styles.sellerButton} onClick={() => {setShowEditListing(true);}}>
                               Edit Listing
                             </button>

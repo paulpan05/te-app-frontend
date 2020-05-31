@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import Modal from 'react-bootstrap/Modal';
@@ -13,27 +13,42 @@ import Alert from 'react-bootstrap/Alert';
 import ProfileImg from '../../assets/img/sarah.png';
 import RateSeller from './RateSeller';
 import styles from './index.module.scss';
+import {fetchListing, getUserProfile} from '../../api';
 
-/* <StarRatings
-          rating={2.403}
-          starRatedColor="#FDCC0D"
-          starDimension="40px"
-          starSpacing="15px"
-          className={styles.rating}
-        /> */
+interface RateProps {
+  user: firebase.User | null | undefined;
+  sellerId: string;
+  listingId: string;
+  creationTime: number; 
+}
 
-const Rate: React.FC = ({}) => {
+const Rate: React.FC<RateProps> = ({user, listingId, creationTime, sellerId}) => {
   const [show, setShow] = useState(false);
+  const [listing, setListing] = useState();
+  const [sellerName, setSellerName] = useState();
+
+  const callAPI = async () => {
+    const userProfile = await getUserProfile(user, sellerId);
+    setSellerName(userProfile.name)
+    console.log(sellerName);
+    const listingResult = await fetchListing(user, setListing,[listingId], [creationTime]);
+    console.log(listingResult);
+
+  }
+
+  useEffect(() => {
+    callAPI();
+  }, [true]);
   return (
-    <div>
+    <>
       <Alert className={styles.center} variant="info">
         Recent Purchase!
         <Alert.Link onClick={() => setShow(true)}> Click Here</Alert.Link>
-{' '}
-to Rate Seller.
-</Alert>
-      <RateSeller title="Flower Sweatshirt" seller="Sarah A." show={show} setShow={setShow} />
-    </div>
+        {' '}
+        to Rate Seller.
+      </Alert>
+      {listing && <RateSeller user={user} sellerName={sellerName} buyerId={listing[0].soldTo} listingId={listing[0].listingId} listingCreationTime={listing[0].creationTime} title={listing[0].title} sellerId={listing[0].userId} show={show} setShow={setShow} />}
+    </>
   );
 };
 export default connect()(Rate);

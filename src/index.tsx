@@ -47,7 +47,6 @@ const AppComponent: React.FC<AppProps> = ({ dispatch }) => {
           newestOnTop
           closeOnClick
           rtl={false}
-          pauseOnFocusLoss
           draggable
           pauseOnHover
           progressClassName="myProgress"
