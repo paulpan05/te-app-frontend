@@ -30,8 +30,6 @@ const Login: React.FC<LoginProps> = ({ dispatch, user, loggingIn }) =>
     else {
       setUserProfile(true);
     }
-    console.log('SUCCESS!');
-    console.log(userProfile);
   }
   useEffect(() => {
     if (user) 
