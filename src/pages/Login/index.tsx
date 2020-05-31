@@ -23,8 +23,8 @@ const Login: React.FC<LoginProps> = ({ dispatch, user, loggingIn }) =>
   const [userProfile, setUserProfile] = useState();
 
   const loginFunction = async () => {
-    const userProfile = await getUserProfile(user);
-    if (!userProfile) {
+    const result = await getUserProfile(user);
+    if (!result) {
       setUserProfile(null);
     }
     else {

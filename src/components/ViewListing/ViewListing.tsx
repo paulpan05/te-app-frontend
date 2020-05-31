@@ -75,6 +75,7 @@ const ViewListing: React.FC<ViewListingProps> = ({
   const [reloadSaved, setReloadSaved] =useState(false);
   
   function getPictures() {
+    if (listingData.pictures) {
     return listingData.pictures.map((picture) => {
       return (
       <Carousel.Item className={styles.myCarousel}>
@@ -82,6 +83,7 @@ const ViewListing: React.FC<ViewListingProps> = ({
       </Carousel.Item>
       )
     })
+  }
   }
   useEffect(() => {
     const fetchListingData = async () => {
