@@ -34,7 +34,7 @@ interface CreateListingProps {
 const mapStateToProps = (state: rootState) => ({
   user: state.auth.user,
 });
-// TODO implemenet tags and upload pictures to s3
+
 const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) => {
   const [pictures, setPictures]: [string[], Function] = useState([]);
   const [pictureFiles, setPictureFiles]: [File[], Function] = useState([]);
@@ -202,9 +202,8 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                       const uploadingPicFiles: File[] = [];
                       for (let i = 0; i < e.target.files.length; i++) {
                         if (e.target.files[i]) {
-                          console.log(`uploading file: ${e.target.files[i]}`); // TODO
                           uploadingPics.push(URL.createObjectURL(e.target.files[i]));
-                          uploadingPicFiles.push(new File([e.target.files[i]], "listingPicture.jpeg", { lastModified: Date.now() }));// TODO this works but need to change it for typescript
+                          uploadingPicFiles.push(new File([e.target.files[i]], "listingPicture.jpeg", { lastModified: Date.now() }));
                         }
                       }
                       setPictures(pictures.concat(uploadingPics));
@@ -223,8 +222,6 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                 // validate form here
                 setDispValidated(true);
 
-                // TODO
-                console.log(`checking whole form validity: ${form?.checkValidity()}`);
                 // check if forms are valid
                 if (!form?.checkValidity() || !(titleInput && priceInput && descriptionInput && locationInput)) {
                   console.log('not all forms are valid!');
@@ -256,7 +253,7 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                 let pictureURLs;
                 if (pictureFiles.length > 0 && pictures.length > 0) { // if uploaded pictures
                   console.log(`pictureFiles before upload: ${pictureFiles}`);
-                  pictureURLs = await uploadPictures(user, pictureFiles); // TODO this works but need to change it for typescript
+                  pictureURLs = await uploadPictures(user, pictureFiles);
                   if (pictureURLs) {
                     console.log("Successfully uploaded listing pictures to s3, urls: ", pictureURLs);
                   } else {
@@ -290,8 +287,6 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                   toast(
                     'There was an error while creating your listing! Try to create it again or reload.',
                   );
-                  // TODO in this case, you should delete the pictures you've uploaded (if you don't, they'll just waste space)
-                  if (pictureURLs) deletePictures(pictureURLs);
                 }
                 resetForm(true);
               }}

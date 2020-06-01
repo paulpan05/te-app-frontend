@@ -106,7 +106,7 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
                     onClick={async () => {
                       const croppedPic = await cropImage();
                       if (croppedPic) {
-                        setPictureFile(new File([croppedPic], "profilePicture.jpeg", { type: "image/jpeg", lastModified: Date.now() }));// TODO this works but need to change it for typescript
+                        setPictureFile(new File([croppedPic], "profilePicture.jpeg", { type: "image/jpeg", lastModified: Date.now() }));
                         setPicture(URL.createObjectURL(croppedPic));
                       } else {
                         console.log('Error while trying to parse the uploaded picture!');
@@ -136,7 +136,6 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
                   hidden
                   onChange={(e: any) => {
                     if (e.target.files && e.target.files.length === 1 && e.target.files[0]) {
-                      console.log(`e.target.files[0]: ${e.target.files[0]}`);//TODO
                       URL.revokeObjectURL(picture);
                       setPicture(URL.createObjectURL(e.target.files[0]));
                       setCropping(true);
@@ -203,7 +202,7 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
               let parsedPhone;
               if (phone.length > 0) {
                 // remove all spaces, -, (, ), +
-                parsedPhone = phone.replace(/( |-|\(|\)|\+)/g, ''); //TODO test
+                parsedPhone = phone.replace(/( |-|\(|\)|\+)/g, '');
                 const ppLen = parsedPhone.length;
                 parsedPhone = [
                   ppLen > 11 ? '+' : '',
@@ -226,7 +225,7 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
               // if picture isn't google account's picture, upload picture to s3 and get the url
               let pictureURL;
               if (pictureFile && picture !== user?.photoURL) {
-                pictureURL = await uploadPicture(user, pictureFile); // TODO this works but need to change it for typescript
+                pictureURL = await uploadPicture(user, pictureFile);
                 if (pictureURL) {
                   console.log("Done uploading profile picture to s3, url: ", pictureURL);
                 } else {
@@ -246,8 +245,6 @@ const Signup: React.FC<SignupProps> = ({ user, dispatch }) => {
                 toast('You successfully created an account! Welcome to Triton Exchange');
               } else {
                 toast('There was an error while setting up your account! Try to signup again');
-                // TODO in this case, need to delete profile photo from s3
-                if (pictureURL) deletePicture(pictureURL);
               }
             }}
           >
