@@ -62,9 +62,6 @@
     height: 50px !important;
     width: 50px !important;
   }
-  .sellButton:hover {
-    box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.24) !important;
-  }
   .exitFlag {
     font-size: 1rem;
   }
@@ -96,11 +93,14 @@
     max-width: 100% !important;
   }
 }
+.sellButton:hover {
+  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.24) !important;
+}
 @media (min-width: 768px) {
   .sellButton {
-    height: 100px !important;
-    width: 100px !important;
-    font-size: 4rem !important;
+    height: 75px !important;
+    width: 75px !important;
+    font-size: 2.5rem !important;
     margin-right: 1.5rem !important;
     margin-bottom: 1.5rem !important;
   }
@@ -167,25 +167,31 @@
   max-height: 400px !important;
   background-color: #545b6221;
   align-items: center;
-  overflow: auto !important;
   display: flex;
 }
-
-.imgWrapper2 {
+.modalImgWrapper {
   width: 100% !important;
-  height: 25vh !important;
+  height: 30vh !important;
   max-width: 400px !important;
   max-height: 400px !important;
   background-color: #545b6221;
   align-items: center;
   display: flex;
 }
-.modalImgWrapper {
-  width: 400px !important;
-  height: 350px !important;
+.modalImgWrapper > div {
+  width:100% !important;
+}
+.modalImgWrapper > div > div {
+  width: 100% !important;
+  height: 30vh !important;
+  max-width: 400px !important;
+  max-height: 400px !important;
   background-color: #545b6221;
-  align-items: center;
   display: flex;
+  overflow:auto !important;
+}
+.modalImgWrapper > div > div > div {
+  margin:auto !important;
 }
 
 .header {
