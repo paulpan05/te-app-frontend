@@ -31,7 +31,7 @@ const Listing: React.FC<ListingProps> = ({title, price, postDate, pictures, user
   function getPictures() {
     return pictures.map((picture) => {
       return (
-      <Carousel.Item onClick={() => setShow(true)} className={styles.myCarousel}>
+      <Carousel.Item onClick={() => setShow(true)}>
         <img onClick={() => setShow(true)} className={styles.cardImgTop} src={picture} />
       </Carousel.Item>
       )
@@ -57,17 +57,8 @@ const Listing: React.FC<ListingProps> = ({title, price, postDate, pictures, user
   return (
     <div className="hoverPointer" style={{ margin: '5%' }}>
       <div className={styles.card}>
-        <div className="cardImage imgWrapper" onClick={() => setShow(true)}>
+        <div className="cardImage imgWrapper">
           <Carousel className={styles.zIndx} interval={null}>
-            {/* <Carousel.Item>
-              <img onClick={() => setShow(true)} className={styles.cardImgTop} src={GreenShirt} />
-            </Carousel.Item>
-            <Carousel.Item>
-              <img onClick={() => setShow(true)} className={styles.cardImgTop} src={book} />
-            </Carousel.Item>
-            <Carousel.Item>
-              <img onClick={() => setShow(true)} className={styles.cardImgTop} src={FlowerImg} />
-            </Carousel.Item> */}
             {pictures && getPictures()}
           </Carousel>
         </div>

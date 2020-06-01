@@ -1,33 +1,32 @@
 /* AARUSHI's */
 
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap");
 .button {
-    background-color: #F2F2F2;
-    border: none;
-    color: black;
-    padding: 10px 20px 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 6px;
-    border-radius: 30px
+  background-color: #f2f2f2;
+  border: none;
+  color: black;
+  padding: 10px 20px 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 6px;
+  border-radius: 30px;
 }
 .button:hover {
-    box-shadow: 0 3px 3px 0 rgba(0,0,0,0.24);
+  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.24);
 }
 /* Font */
-@import url('https://fonts.googleapis.com/css?family=Quicksand:400,700');
+@import url("https://fonts.googleapis.com/css?family=Quicksand:400,700");
 /* Design */
 
 .heartInactive {
-  color: 	#D3D3D3 !important;
+  color: #d3d3d3 !important;
 }
 
 .heartActive {
   color: red !important;
 }
-
 
 *,
 *::before,
@@ -35,24 +34,24 @@
   box-sizing: border-box;
 }
 html {
-  background-color: #ECF9FF;
+  background-color: #ecf9ff;
 }
 body {
   color: #272727;
-  font-family: 'Roboto', serif;
+  font-family: "Roboto", serif;
   font-style: normal;
   font-weight: 400;
   letter-spacing: 0;
   padding: 1rem;
 }
-.main{
+.main {
   max-width: 1100px;
   margin: 0 auto;
 }
 h1 {
-    font-size: 24px;
-    font-weight: 400;
-    text-align: center;
+  font-size: 24px;
+  font-weight: 400;
+  text-align: center;
 }
 img {
   height: auto;
@@ -74,7 +73,7 @@ img {
   background: transparent;
 }
 .btn:hover {
-  background-color: #17284A;
+  background-color: #17284a;
   color: white;
   border: 1px solid white;
 }
@@ -100,7 +99,6 @@ img {
   margin-top: 3rem;
   margin-left: 0.5rem;
   margin-right: 0.5rem;
-
 }
 .card_content {
   padding: 1rem;
@@ -109,7 +107,7 @@ img {
   //background: linear-gradient(to bottom left, #17284A 40%, #F2F2F2 100%);
 }
 .card_title {
-  color: #17284A !important;
+  color: #17284a !important;
   font-size: 1.5rem;
   font-weight: 400 !important;
   letter-spacing: 1px;
@@ -117,10 +115,10 @@ img {
   margin-bottom: 1rem;
   margin-top: 1rem;
   text-align: center;
-  font-family: 'Roboto', serif;
+  font-family: "Roboto", serif;
 }
 .card_text {
-  color: #17284A;
+  color: #17284a;
   font-size: 1.5rem !important;
   line-height: 1.5;
   margin-top: 1rem;
@@ -135,52 +133,43 @@ img {
   text-align: center;
   font-size: 0.8rem;
   padding-bottom: 0.5rem;
-  line-height:25px;
+  line-height: 25px;
   letter-spacing: 0.05rem;
   font-weight: 300;
-  color: rgba(0,0,0,0.54);
+  color: rgba(0, 0, 0, 0.54);
 }
 .like_btn {
-        position: absolute !important;
-        bottom: 0;
-        right: 0;
-        transform: translate(100%, 100%);
-        //-ms-transform: translate(-50%, -50%);
-        background: transparent;
-        color: white;
-        font-size: 16px;
-        padding: 1.0rem 1.2rem;
-        border: 2px solid black;
-        border-radius: 0.5rem 0 0 0;
-        cursor: pointer;
+  position: absolute !important;
+  bottom: 0;
+  right: 0;
+  transform: translate(100%, 100%);
+  //-ms-transform: translate(-50%, -50%);
+  background: transparent;
+  color: white;
+  font-size: 16px;
+  padding: 1rem 1.2rem;
+  border: 2px solid black;
+  border-radius: 0.5rem 0 0 0;
+  cursor: pointer;
 }
 
-.card:hover .like_btn{
-    transform: translate(0,0);
-    transition: all 0.5s linear;
+.card:hover .like_btn {
+  transform: translate(0, 0);
+  transition: all 0.5s linear;
 }
 
 .cardImage {
-    position:relative !important;
-    overflow: hidden;
+  position: relative !important;
+  overflow: hidden;
 }
 .cardImgTop {
-    transition: all 0.5s linear;
+  display:block !important;
+  margin:auto !important;
+  transition: all 0.5s linear;
 }
 .cardImage:hover .cardImgTop {
-    transform: scale(1.05);
+  transform: scale(1.05);
 }
 .filterContainer {
-    margin-top: 1rem;
+  margin-top: 1rem;
 }
-
-
-
-
-
-
-
-
-
-
-

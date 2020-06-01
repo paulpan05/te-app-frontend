@@ -1,22 +1,22 @@
 * {
-  font-family: Roboto, 'Open Sans', Arial, Helvetica, sans-serif;
-  @media (min-width:768px) {
-  p {
-    font-size:14px !important;
-    line-break:anywhere !important;
+  font-family: Roboto, "Open Sans", Arial, Helvetica, sans-serif;
+  @media (min-width: 768px) {
+    p {
+      font-size: 14px !important;
+      line-break: anywhere !important;
+    }
+    h1 {
+      line-break: anywhere !important;
+    }
   }
-  h1 {
-    line-break:anywhere !important;
+  @media (max-width: 767px) {
+    p {
+      font-size: 20px !important;
+    }
+    h1 {
+      line-break: anywhere !important;
+    }
   }
-}
-@media (max-width:767px) {
-  p {
-    font-size:20px !important;
-  }
-  h1 {
-    line-break:anywhere !important;
-  }
-}
 }
 
 // hide the focus indicator if element receives focus via mouse, but show on keyboard focus (on tab).
@@ -33,11 +33,11 @@
 .modal-content {
   border: 0 !important;
   background-color: transparent !important;
-  align-items:center !important;
+  align-items: center !important;
 }
 .carousel-control-next,
 .carousel-control-prev {
-    filter: invert(100%);
+  filter: invert(100%);
 }
 
 .notification {
@@ -46,7 +46,7 @@
   position: absolute !important;
   top: 13vh !important;
   right: 0 !important;
-  z-index:100 !important;
+  z-index: 100 !important;
 }
 .myProgress {
   background: gold !important;
@@ -54,67 +54,96 @@
 .myToast {
   font-family: Roboto !important;
 }
-@media(max-width:767px) {
+@media (max-width: 767px) {
+  .sellButton {
+    font-size: 2rem !important;
+    margin-right: 1rem !important;
+    margin-bottom: 1rem !important;
+    height: 50px !important;
+    width: 50px !important;
+  }
+  .sellButton:hover {
+    box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.24) !important;
+  }
   .exitFlag {
-    font-size:1rem;
+    font-size: 1rem;
   }
   .flag {
-    font-size:3rem;
+    font-size: 3rem;
   }
   .likedFlag {
-    font-size:3rem;
+    font-size: 3rem;
   }
   .responsiveModal {
-    width:80% !important;
+    width: 80% !important;
     display: flex !important;
-    left:10% !important;
-    padding:auto !important;
+    left: 10% !important;
+    padding: auto !important;
     overflow-x: hidden !important;
   }
   .newModal {
-  width: 75% !important;
-  left: 12.5% !important;
-  border-radius: 40px !important;
-  padding: auto !important;
-  background-color: white !important;
-  top:5% !important;
-  height: 90% !important;
-  display: flex !important;
-  overflow: hidden !important;
+    width: 75% !important;
+    left: 12.5% !important;
+    border-radius: 40px !important;
+    padding: auto !important;
+    background-color: white !important;
+    top: 5% !important;
+    height: 90% !important;
+    display: flex !important;
+    overflow: hidden !important;
+  }
+  .modal-dialog {
+    max-width: 100% !important;
+  }
 }
-.modal-dialog {
-  max-width:100% !important;
-}
-}
-@media (min-width:768px) {
+@media (min-width: 768px) {
+  .sellButton {
+    height: 100px !important;
+    width: 100px !important;
+    font-size: 4rem !important;
+    margin-right: 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+  }
+
   .responsiveModal {
-    max-width:100% !important;
+    max-width: 100% !important;
     display: flex !important;
     overflow: scroll !important;
-    padding:auto;
+    padding: auto;
   }
   .exitFlag {
-    font-size:3rem;
+    font-size: 3rem;
   }
-.flag {
-  font-size:5rem;
+  .flag {
+    font-size: 5rem;
+  }
+  .likedFlag {
+    font-size: 5rem;
+  }
+  .newModal {
+    width: 50% !important;
+    left: 25% !important;
+    top: 5% !important;
+    height: 90% !important;
+    border-radius: 40px !important;
+    padding: auto !important;
+    background-color: white !important;
+    top: 5% !important;
+    height: 90% !important;
+    display: flex !important;
+    overflow: hidden !important;
+  }
 }
-.likedFlag {
-  font-size:5rem;
-}
-.newModal {
-  width: 50% !important;
-  left: 25% !important;
-  top:5% !important;
-  height: 90% !important;
-  border-radius: 40px !important;
-  padding: auto !important;
-  background-color: white !important;
-  top:5% !important;
-  height: 90% !important;
-  display: flex !important;
-  overflow: hidden !important;
-}
+.sellButton {
+  background-color: #17284a !important;
+  z-index: 999 !important;
+  border-radius: 50% !important;
+  position: fixed !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  font-family: Roboto !important;
+  padding: initial !important;
+  border: 0 !important;
 }
 .hoverPointer:hover {
   cursor: pointer !important;
@@ -123,70 +152,82 @@
   width: 100% !important;
   height: 30vh !important;
   max-width: 400px !important;
-  max-height:400px !important;
+  max-height: 400px !important;
   background-color: #545b6221;
   align-items: center;
-  display:flex;
+  display: flex;
+}
+.imgWrapper > div {
+  width: 100% !important;
+}
+.imgWrapper > div > div {
+  width: 100% !important;
+  height: 30vh !important;
+  max-width: 400px !important;
+  max-height: 400px !important;
+  background-color: #545b6221;
+  align-items: center;
+  display: flex;
 }
 
 .imgWrapper2 {
   width: 100% !important;
   height: 25vh !important;
   max-width: 400px !important;
-  max-height:400px !important;
+  max-height: 400px !important;
   background-color: #545b6221;
   align-items: center;
-  display:flex;
+  display: flex;
 }
 .modalImgWrapper {
-  width: 100% !important;
-  height:350px !important;
+  width: 400px !important;
+  height: 350px !important;
   background-color: #545b6221;
   align-items: center;
-  display:flex;
+  display: flex;
 }
 
 .header {
   font-size: 3rem !important;
-  text-align:center;
+  text-align: center;
 }
 .mediumHeader {
   font-size: 2.25rem !important;
   padding-bottom: 1rem !important;
 }
 .subHeader {
-  font-size:1.5rem !important;
+  font-size: 1.5rem !important;
 }
 .bodyText {
-  font-size:1rem !important;
+  font-size: 1rem !important;
 }
 .blueColor {
-  color: #17284A !important;
+  color: #17284a !important;
 }
 body {
   padding: 0 !important;
 }
 .maxWidth95 {
-  max-width:95% !important;
+  max-width: 95% !important;
 }
 .textAlign {
-  text-align:center;
+  text-align: center;
 }
 .myButton {
   background: none;
   border: 0;
-  margin-top:3rem;
-  margin-bottom:3rem;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
   vertical-align: middle;
 }
 .exitButton {
-  background:none !important;
+  background: none !important;
   border: 0 !important;
-  vertical-align:middle !important;
-  font-size:1.5rem !important;
+  vertical-align: middle !important;
+  font-size: 1.5rem !important;
 }
 .exitPad {
-  position:absolute !important;
+  position: absolute !important;
   right: 0 !important;
   padding-top: 1rem !important;
   padding-right: 2rem !important;
@@ -197,13 +238,18 @@ body {
   border-radius: 3rem !important;
 }
 
-
 .roundedBorder {
-  border-radius:40px !important;
+  border-radius: 40px !important;
 }
 .profileModal {
-  max-width:1340px !important;
+  max-width: 1340px !important;
 }
-.profileModal>div>div {
-  max-width:100% !important;
+.profileModal > div > div {
+  max-width: 100% !important;
+}
+
+.row {
+  max-width: 100% !important;
+  margin-right: 0 !important;
+  margin-left: 0 !important;
 }

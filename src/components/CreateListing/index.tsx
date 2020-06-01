@@ -29,13 +29,14 @@ interface CreateListingProps {
   user: firebase.User | null | undefined;
   show: boolean;
   setShow: Function;
+  setReloadHome: Function;
 }
 
 const mapStateToProps = (state: rootState) => ({
   user: state.auth.user,
 });
 
-const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) => {
+const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow, setReloadHome }) => {
   const [pictures, setPictures]: [string[], Function] = useState([]);
   const [pictureFiles, setPictureFiles]: [File[], Function] = useState([]);
   const [dispValidated, setDispValidated] = useState(false);
@@ -281,6 +282,7 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
                 );
 
                 if (success) {
+                  setReloadHome(true);
                   setShow(false);
                   toast('The listing was successfully created!');
                 } else {

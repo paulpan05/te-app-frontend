@@ -47,7 +47,6 @@ const Navbar: React.FC<NavbarProps> = ({ user, dispatch, profilePicture }) => {
           <Nav className="ml-auto">
             <Nav.Link onClick={() => redirectTo('/')}>Home</Nav.Link>
             <Nav.Link onClick={() => redirectTo('/saved')}>Saved</Nav.Link>
-            <Nav.Link onClick={() => setShowCreateListing(true)}>Sell</Nav.Link>
             <NavDropdown
               eventKey={1}
               drop="left"
@@ -74,7 +73,7 @@ const Navbar: React.FC<NavbarProps> = ({ user, dispatch, profilePicture }) => {
 
       <Redirect to={redirect} />
 
-      <CreateListing show={showCreateListing} setShow={setShowCreateListing} />
+     
     </div>
   );
 };
