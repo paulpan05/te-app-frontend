@@ -13,8 +13,8 @@ import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import Container from 'react-bootstrap/Container';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import { faFlag, faHeart, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
-import { faLink } from '@fortawesome/free-solid-svg-icons';
+import { faFlag, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
+import { faLink,faHeart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './listing.module.scss';
 import './listing.module.scss';
@@ -82,7 +82,7 @@ const ViewListing: React.FC<ViewListingProps> = ({
     if (listingData.pictures) {
     return listingData.pictures.map((picture) => {
       return (
-      <Carousel.Item className={styles.myCarousel}>
+      <Carousel.Item>
         <img src={picture} alt="Item"/>
       </Carousel.Item>
       )
@@ -191,9 +191,11 @@ const ViewListing: React.FC<ViewListingProps> = ({
             <Card className="myCard">
               <Row className={styles.pad}>
                 <Col xs={12} md={5} className={styles.textAlign}>
-                  <Carousel interval={null} className={`modalImgWrapper ${styles.carouselTest}`} >
+                  <div className="cardImage imgWrapper">
+                  <Carousel interval={null} >
                  {getPictures()}
                   </Carousel>
+                  </div>
                 </Col>
                 <Col xs={12} md={6} className="textAlign blueColor">
                   <Row className="justify-content-center">

@@ -9,12 +9,14 @@
     margin-bottom: 0px !important;
     width: 900px;
     padding-top: 5px;
+    max-width: 100% !important;
 }
 .scrolls { 
     overflow-x: scroll;
     overflow-y: hidden;
     height: 80px;
-    white-space:nowrap
+    white-space:nowrap;
+    max-width: 100% !important;
 } 
 .imageDiv img { 
     box-shadow: 1px 1px 10px #999; 

@@ -23,6 +23,7 @@ import { toast } from 'react-toastify';
 import { rootState } from '../../redux/reducers';
 import endpoint from '../../configs/endpoint';
 import { getUserProfile, userSignup, updateProfile, getListings, getListingsBySearch, getListingsByTags, createListing, fetchIdListings} from '../../api';
+import CreateListing from '../../components/CreateListing';
 
 // Note: as of now there has to be at least 4 things in the database in order for listings to appear
 interface HomeProps {
@@ -38,7 +39,7 @@ const Home: React.FC<HomeProps> = ({ dispatch, user }) => {
   const[searchListings, setSearchListings] = useState();
   const [userInfo, userInfoSetter] = useState<any>(null);
   const [reloadHome, setReloadHome] = useState(true);
-
+  const [showCreateListing, setShowCreateListing] = useState(false);
   //holds the listing of the listing that needs to be rated
   const [rateListing, rateListingSetter] = useState();
   let rowArray = new Array();
@@ -85,9 +86,11 @@ const Home: React.FC<HomeProps> = ({ dispatch, user }) => {
 
   return (
     <div>
+      <CreateListing show={showCreateListing} setShow={setShowCreateListing} setReloadHome={setReloadHome} />
+      <Button className="sellButton" onClick={()=>setShowCreateListing(true)}>+</Button>
       {rateListing && <Rate user={user} sellerId={rateListing[2]} creationTime={rateListing[1]} listingId={rateListing[0]}/>}
       <Row className="justify-content-md-center" >
-        <div style={{  zIndex: 0}}>
+        <div style={{  zIndex: 0, maxWidth:'100%'}}>
         <Tags tags={dispTags} setTag={(tag: string, active: boolean) => (tags[tag] = active)}/>
         </div>
       </Row>
@@ -219,7 +222,7 @@ const Home: React.FC<HomeProps> = ({ dispatch, user }) => {
       }
     }
     ) && <Container fluid>{rowArray.map((row) => <div>{row}</div>)}</Container>}
-
+    
     </div>
   );
 };
