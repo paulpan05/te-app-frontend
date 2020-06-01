@@ -163,6 +163,8 @@ img {
   overflow: hidden;
 }
 .cardImgTop {
+  display:block !important;
+  margin:auto !important;
   transition: all 0.5s linear;
 }
 .cardImage:hover .cardImgTop {
