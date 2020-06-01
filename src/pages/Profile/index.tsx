@@ -25,18 +25,19 @@ const mapStateToProps = (state: rootState) => ({
 });
 
 const Profile: React.FC<ProfileProps> = ({ user, targetUserId, dispatch}) => {
+  const [reloadProfile, setReloadProfile] = useState(true);
   const [profile, setProfile] = useState<any>()
   const [userEquals, setUserEquals] = useState(false);
   const getAndSetProfile = async () => {
     const result = await getUserProfile(user, targetUserId);
-    console.log(result)
+    //console.log(result)
     setProfile(result)
-    console.log(result)
+    //console.log(result)
     return result;
   }
   const functionHandler= async () =>{
     const result = await getAndSetProfile();
-    console.log(result)
+    //console.log(result)
     await availListings(result);
     await soldListings(result);
     await boughtListings(result);
@@ -58,7 +59,7 @@ const Profile: React.FC<ProfileProps> = ({ user, targetUserId, dispatch}) => {
     }
     listings = await fetchListings(user, ids, creationTimes)
     if (listings) {listings.map((listing) => {
-      listingArray.push(<Listing user={listing.user} title={listing.title} postDate={listing.creationTime} pictures={listing.pictures} price={listing.price} listingId={listing.listingId}/>);
+      listingArray.push(<Listing reloadProfile={setReloadProfile} user={listing.user} title={listing.title} postDate={listing.creationTime} pictures={listing.pictures} price={listing.price} listingId={listing.listingId}/>);
     })
 	
     setAvailArray(listingArray);
@@ -72,7 +73,7 @@ const Profile: React.FC<ProfileProps> = ({ user, targetUserId, dispatch}) => {
       if(result === undefined || result.soldListings.length===0){
         return;
       }
-      console.log(result.soldListings)
+      //console.log(result.soldListings)
       for(let k=0; k<result.soldListings.length; k++){
         ids.push(result.soldListings[k][0]);
         creationTimes.push(result.soldListings[k][1]);
@@ -80,7 +81,7 @@ const Profile: React.FC<ProfileProps> = ({ user, targetUserId, dispatch}) => {
       listings = await fetchListings(user, ids, creationTimes)
      
       listings.map((listing)=>{
-        listingArray.push(<Listing user={listing.user} title={listing.title} postDate={listing.creationTime} pictures={listing.picture} price={listing.price} listingId={listing.listingId}/>);
+        listingArray.push(<Listing reloadProfile={setReloadProfile} user={listing.user} title={listing.title} postDate={listing.creationTime} pictures={listing.picture} price={listing.price} listingId={listing.listingId}/>);
       })
       setSoldArray(listingArray);
       }
@@ -92,7 +93,7 @@ const Profile: React.FC<ProfileProps> = ({ user, targetUserId, dispatch}) => {
         if(result === undefined || result.boughtListings.length===0){
           return;
         }
-        console.log(result.boughtListings)
+        //console.log(result.boughtListings)
         for(let k=0; k<result.boughtListings.length; k++){
           ids.push(result.boughtListings[k][0]);
           creationTimes.push(result.boughtListings[k][1]);
@@ -100,7 +101,7 @@ const Profile: React.FC<ProfileProps> = ({ user, targetUserId, dispatch}) => {
         listings = await fetchListings(user, ids, creationTimes)
        
         listings.map((listing)=>{
-          listingArray.push(<Listing user={listing.user} title={listing.title} postDate={listing.creationTime} pictures={listing.picture} price={listing.price} listingId={listing.listingId}/>);
+          listingArray.push(<Listing reloadProfile={setReloadProfile} user={listing.user} title={listing.title} postDate={listing.creationTime} pictures={listing.picture} price={listing.price} listingId={listing.listingId}/>);
         })
         setBoughtArray(listingArray);
         }
@@ -108,8 +109,11 @@ const Profile: React.FC<ProfileProps> = ({ user, targetUserId, dispatch}) => {
     if(targetUserId===undefined){
       setUserEquals(true)
     }
-    functionHandler();
-  }, [])
+    if (reloadProfile===true) {
+      functionHandler();
+      setReloadProfile(false);
+    }
+  }, [reloadProfile])
   const [showReportUser, setShowReportUser] = useState(false);
   const [showEditProfile, setShowEditProfile] = useState(false);
   const [contactSeller, contactSellerSetter] = useState(false);
@@ -150,7 +154,7 @@ const Profile: React.FC<ProfileProps> = ({ user, targetUserId, dispatch}) => {
                 <Box>
                 <Rating name="read-only" value={ (() => {
                   let sum = 0 ;
-                  console.log(profile?.ratings)
+                  //console.log(profile?.ratings)
                   if(profile?.ratings.length===0){
                     return 0
                   }

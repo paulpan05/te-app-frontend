@@ -586,13 +586,22 @@ const fetchListing = async (
 
 const searchUser = async (
   user: firebase.User | null | undefined,
-  name: string,
+  name?: string,
+  email?: string
 ) => {
   try {
     const idToken = await user?.getIdToken();
-    const response = await fetch(
-      `${endpoint}/users/search?idToken=${idToken}&name=${name}`,
-    );
+    let response; 
+    if(name) {
+      response = await fetch(
+        `${endpoint}/users/search?idToken=${idToken}&name=${name}`,
+      );
+    }
+    else {
+      response = await fetch(
+        `${endpoint}/users/search?idToken=${idToken}&email=${email}`,
+      );
+    }
     const result = await handleFetchNotOk(response);
     return result;
   } catch (err) {

@@ -21,16 +21,21 @@ interface RateBuyerProps {
   user: firebase.User | null | undefined;
   sellerInfo: any; 
   listingData: any;
+  setReload?: Function;
 }
 
-const RateBuyer: React.FC<RateBuyerProps> = ({ dispatch, show, setShow, title , user, sellerInfo, listingData}) => {
+const RateBuyer: React.FC<RateBuyerProps> = ({ dispatch, show, setShow, title , user, sellerInfo, listingData, setReload}) => {
   const [starValue, setStarValue] = React.useState<number | null>(2);
   const [buyerName, setBuyerName] = useState();
 
   const callAPI = async () => {
-
-    const userProfile = await searchUser(user, buyerName);
-    setShow(false);
+    let userProfile;
+    if(buyerName.includes('@')) {
+      userProfile = await searchUser(user, undefined, buyerName);
+    } else {
+      userProfile = await searchUser(user, buyerName);
+    } 
+    
     if(userProfile.length != 0) {
       await markAsSold(user, listingData.listingId, listingData.creationTime, sellerInfo.userId, userProfile[0].userId);
       await addUserRating(user, userProfile[0].userId, starValue?starValue: 1); 
@@ -40,6 +45,7 @@ const RateBuyer: React.FC<RateBuyerProps> = ({ dispatch, show, setShow, title , 
     } else {
       toast(`No Such User as ${buyerName} found. Try again!`);
     }
+    setShow(false);
     // userProfile.savedListings.map((listing) => {
     //     console.log(listing[0]);
     //     ids.push(listing[0]);
@@ -78,6 +84,7 @@ const RateBuyer: React.FC<RateBuyerProps> = ({ dispatch, show, setShow, title , 
               if(buyerName.length !== 0) {
                 callAPI();
               }
+              setReload && setReload(true);
             }}
           >
             Mark as Sold

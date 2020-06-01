@@ -37,6 +37,8 @@ const Home: React.FC<HomeProps> = ({ dispatch, user }) => {
   const [listings, setListings] = useState();
   const[searchListings, setSearchListings] = useState();
   const [userInfo, userInfoSetter] = useState<any>(null);
+  const [reloadHome, setReloadHome] = useState(true);
+
   //holds the listing of the listing that needs to be rated
   const [rateListing, rateListingSetter] = useState();
   let rowArray = new Array();
@@ -74,9 +76,12 @@ const Home: React.FC<HomeProps> = ({ dispatch, user }) => {
   }
 
   useEffect(() => {
+    if (reloadHome===true) {
          callAPI();
          getListings(user, setListings);
-  }, [false]);
+         setReloadHome(false);
+    }
+  }, [reloadHome]);
 
   return (
     <div>
@@ -125,43 +130,43 @@ const Home: React.FC<HomeProps> = ({ dispatch, user }) => {
   if(index % 4 === 0 && index + 3 < listings.Items.length) {
     rowArray.push (<Row xs={1} md={2} lg={4}>
       <Col>
-      <Listing user={user} userInfo={userInfo} listingId={listingItem.listingId} title={listingItem.title === null ? "No Name" : listingItem.title  } price={listingItem.price} postDate={listingItem.creationTime} pictures={listingItem.pictures}/>
+      <Listing reloadHome={setReloadHome} user={user} userInfo={userInfo} listingId={listingItem.listingId} title={listingItem.title === null ? "No Name" : listingItem.title  } price={listingItem.price} postDate={listingItem.creationTime} pictures={listingItem.pictures}/>
       </Col>
       <Col>
-      <Listing user={user} userInfo={userInfo} listingId={listings.Items[index + 1].listingId} title={listings.Items[index + 1].title} price={listings.Items[index + 1].price} postDate={listings.Items[index + 1].creationTime} pictures={listings.Items[index + 1].pictures}/>
+      <Listing reloadHome={setReloadHome} user={user} userInfo={userInfo} listingId={listings.Items[index + 1].listingId} title={listings.Items[index + 1].title} price={listings.Items[index + 1].price} postDate={listings.Items[index + 1].creationTime} pictures={listings.Items[index + 1].pictures}/>
       </Col>
       <Col>
-      <Listing user={user} userInfo={userInfo} listingId={listings.Items[index + 2].listingId} title={listings.Items[index + 2].title} price={listings.Items[index + 2].price} postDate={listings.Items[index + 2].creationTime} pictures={listings.Items[index + 2].pictures}/>
+      <Listing reloadHome={setReloadHome} user={user} userInfo={userInfo} listingId={listings.Items[index + 2].listingId} title={listings.Items[index + 2].title} price={listings.Items[index + 2].price} postDate={listings.Items[index + 2].creationTime} pictures={listings.Items[index + 2].pictures}/>
       </Col>
       <Col>
-      <Listing user={user} userInfo={userInfo} listingId={listings.Items[index + 3].listingId}  title={listings.Items[index + 3].title === null ? "No Name": listingItem.title } price={listings.Items[index + 3].price} postDate={listings.Items[index + 3].creationTime} pictures={listings.Items[index + 3].pictures}/>
+      <Listing reloadHome={setReloadHome} user={user} userInfo={userInfo} listingId={listings.Items[index + 3].listingId}  title={listings.Items[index + 3].title === null ? "No Name": listingItem.title } price={listings.Items[index + 3].price} postDate={listings.Items[index + 3].creationTime} pictures={listings.Items[index + 3].pictures}/>
       </Col>
     </Row>)
   } else if (listings.Items.length % 4 == 1 && listings.Items.length - 1 == index) {
     rowArray.push(<Row xs={1} md={2} lg={4}>
       <Col>
-      <Listing user={user} userInfo={userInfo} listingId={listingItem.listingId} title={listingItem.title} price={listingItem.price} postDate={listingItem.creationTime} pictures={listingItem.pictures}/>
+      <Listing reloadHome={setReloadHome} user={user} userInfo={userInfo} listingId={listingItem.listingId} title={listingItem.title} price={listingItem.price} postDate={listingItem.creationTime} pictures={listingItem.pictures}/>
       </Col>
     </Row>)
   } else if (listings.Items.length % 4 == 2 && listings.Items.length - 2 == index) {
     rowArray.push(<Row xs={1} md={2} lg={4}>
       <Col>
-      <Listing user={user} userInfo={userInfo} listingId={listingItem.listingId} title={listingItem.title} price={listingItem.price} postDate={listingItem.creationTime} pictures={listingItem.pictures}/>
+      <Listing reloadHome={setReloadHome} user={user} userInfo={userInfo} listingId={listingItem.listingId} title={listingItem.title} price={listingItem.price} postDate={listingItem.creationTime} pictures={listingItem.pictures}/>
       </Col>
       <Col>
-      <Listing user={user} userInfo={userInfo} listingId={listings.Items[index + 1].listingId} title={listings.Items[index + 1].title} price={listings.Items[index + 1].price} postDate={listings.Items[index + 1].creationTime} pictures={listings.Items[index + 1].pictures}/>
+      <Listing reloadHome={setReloadHome} user={user} userInfo={userInfo} listingId={listings.Items[index + 1].listingId} title={listings.Items[index + 1].title} price={listings.Items[index + 1].price} postDate={listings.Items[index + 1].creationTime} pictures={listings.Items[index + 1].pictures}/>
       </Col>
     </Row>)
   } else if (listings.Items.length % 4 == 3 && listings.Items.length - 3 == index) {
     rowArray.push(<Row xs={1} md={2} lg={4}>
       <Col>
-      <Listing user={user} userInfo={userInfo} listingId={listingItem.listingId} title={listingItem.title} price={listingItem.price} postDate={listingItem.creationTime} pictures={listingItem.pictures}/>
+      <Listing reloadHome={setReloadHome} user={user} userInfo={userInfo} listingId={listingItem.listingId} title={listingItem.title} price={listingItem.price} postDate={listingItem.creationTime} pictures={listingItem.pictures}/>
       </Col>
       <Col>
-      <Listing user={user} userInfo={userInfo} listingId={listings.Items[index + 1].listingId} title={listings.Items[index + 1].title} price={listings.Items[index + 1].price} postDate={listings.Items[index + 1].creationTime} pictures={listings.Items[index + 1].pictures}/>
+      <Listing reloadHome={setReloadHome} user={user} userInfo={userInfo} listingId={listings.Items[index + 1].listingId} title={listings.Items[index + 1].title} price={listings.Items[index + 1].price} postDate={listings.Items[index + 1].creationTime} pictures={listings.Items[index + 1].pictures}/>
       </Col>
       <Col>
-      <Listing user={user} userInfo={userInfo} listingId={listings.Items[index + 2].listingId} title={listings.Items[index + 2].title} price={listings.Items[index + 2].price} postDate={listings.Items[index + 2].creationTime} pictures={listings.Items[index + 2].pictures}/>
+      <Listing reloadHome={setReloadHome} user={user} userInfo={userInfo} listingId={listings.Items[index + 2].listingId} title={listings.Items[index + 2].title} price={listings.Items[index + 2].price} postDate={listings.Items[index + 2].creationTime} pictures={listings.Items[index + 2].pictures}/>
       </Col>
     </Row>)
   } 
@@ -172,43 +177,43 @@ const Home: React.FC<HomeProps> = ({ dispatch, user }) => {
       if(index % 4 === 0 && index + 3 < searchListings.length) {
         rowArray.push (<Row xs={1} md={2} lg={4}>
           <Col>
-          <Listing user={user} userInfo={userInfo} listingId={aListing.listingId} title={aListing.title} price={aListing.price} postDate={aListing.creationTime} pictures={aListing.pictures}/>          </Col>
+          <Listing reloadHome={setReloadHome} user={user} userInfo={userInfo} listingId={aListing.listingId} title={aListing.title} price={aListing.price} postDate={aListing.creationTime} pictures={aListing.pictures}/>          </Col>
           <Col>
-          <Listing user={user} userInfo={userInfo} listingId={searchListings[index + 1].listingId} title={searchListings[index + 1].title} price={searchListings[index + 1].price} postDate={searchListings[index + 1].creationTime} pictures={searchListings[index + 1].pictures}/>
+          <Listing reloadHome={setReloadHome} user={user} userInfo={userInfo} listingId={searchListings[index + 1].listingId} title={searchListings[index + 1].title} price={searchListings[index + 1].price} postDate={searchListings[index + 1].creationTime} pictures={searchListings[index + 1].pictures}/>
           </Col>
           <Col>
-          <Listing user={user} userInfo={userInfo} listingId={searchListings[index + 2].listingId} title={searchListings[index + 2].title} price={searchListings[index + 2].price} postDate={searchListings[index + 2].creationTime} pictures={searchListings[index + 2].pictures}/>
+          <Listing reloadHome={setReloadHome} user={user} userInfo={userInfo} listingId={searchListings[index + 2].listingId} title={searchListings[index + 2].title} price={searchListings[index + 2].price} postDate={searchListings[index + 2].creationTime} pictures={searchListings[index + 2].pictures}/>
           </Col>
           <Col>
-          <Listing user={user} userInfo={userInfo} listingId={searchListings[index + 3].listingId} title={searchListings[index + 3].title} price={searchListings[index + 3].price} postDate={searchListings[index + 3].creationTime} pictures={searchListings[index + 3].pictures}/>
+          <Listing reloadHome={setReloadHome} user={user} userInfo={userInfo} listingId={searchListings[index + 3].listingId} title={searchListings[index + 3].title} price={searchListings[index + 3].price} postDate={searchListings[index + 3].creationTime} pictures={searchListings[index + 3].pictures}/>
           </Col>
           </Row>)
         } else if(searchListings.length % 4 === 1 && searchListings.length - 1 === index) {
         rowArray.push(
         <Row xs={1} md={2} lg={4}>
-             <Listing user={user} userInfo={userInfo} listingId={aListing.listingId} title={aListing.title} price={aListing.price} postDate={aListing.creationTime} pictures={aListing.pictures}/>
+             <Listing reloadHome={setReloadHome} user={user} userInfo={userInfo} listingId={aListing.listingId} title={aListing.title} price={aListing.price} postDate={aListing.creationTime} pictures={aListing.pictures}/>
         </Row>)
       } else if(searchListings.length % 4 === 2 && searchListings.length - 2 === index) {
         rowArray.push(
         <Row xs={1} md={2} lg={4}>
           <Col>
-             <Listing user={user} userInfo={userInfo} listingId={aListing.listingId} title={aListing.title} price={aListing.price} postDate={aListing.creationTime} pictures={aListing.pictures}/>
+             <Listing reloadHome={setReloadHome} user={user} userInfo={userInfo} listingId={aListing.listingId} title={aListing.title} price={aListing.price} postDate={aListing.creationTime} pictures={aListing.pictures}/>
              </Col>
              <Col>
-             <Listing user={user} userInfo={userInfo} listingId={searchListings[index + 1].listingId} title={searchListings[index + 1].title} price={searchListings[index + 1].price} postDate={searchListings[index + 1].creationTime} pictures={searchListings[index + 1].pictures}/>
+             <Listing reloadHome={setReloadHome} user={user} userInfo={userInfo} listingId={searchListings[index + 1].listingId} title={searchListings[index + 1].title} price={searchListings[index + 1].price} postDate={searchListings[index + 1].creationTime} pictures={searchListings[index + 1].pictures}/>
             </Col>
         </Row>)
       } else if(searchListings.length % 4 === 3 && searchListings.length - 3 === index) {
         rowArray.push(
         <Row xs={1} md={2} lg={4}>
               <Col>
-             <Listing user={user} userInfo={userInfo} listingId={aListing.listingId} title={aListing.title} price={aListing.price} postDate={aListing.creationTime} pictures={aListing.pictures}/>
+             <Listing reloadHome={setReloadHome} user={user} userInfo={userInfo} listingId={aListing.listingId} title={aListing.title} price={aListing.price} postDate={aListing.creationTime} pictures={aListing.pictures}/>
              </Col>
              <Col>
-             <Listing user={user} userInfo={userInfo} listingId={searchListings[index + 1].listingId} title={searchListings[index + 1].title} price={searchListings[index + 1].price} postDate={searchListings[index + 1].creationTime} pictures={searchListings[index + 1].pictures}/>
+             <Listing reloadHome={setReloadHome} user={user} userInfo={userInfo} listingId={searchListings[index + 1].listingId} title={searchListings[index + 1].title} price={searchListings[index + 1].price} postDate={searchListings[index + 1].creationTime} pictures={searchListings[index + 1].pictures}/>
              </Col>
              <Col>
-             <Listing user={user} userInfo={userInfo} listingId={searchListings[index + 2].listingId} title={searchListings[index + 2].title} price={searchListings[index + 2].price} postDate={searchListings[index + 2].creationTime} pictures={searchListings[index + 2].pictures}/>
+             <Listing reloadHome={setReloadHome} user={user} userInfo={userInfo} listingId={searchListings[index + 2].listingId} title={searchListings[index + 2].title} price={searchListings[index + 2].price} postDate={searchListings[index + 2].creationTime} pictures={searchListings[index + 2].pictures}/>
              </Col>
         </Row>)
       }

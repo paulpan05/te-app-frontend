@@ -38,6 +38,8 @@ interface EditListingProps {
   tagsProp: string[];
   picturesProp: string[];
   showDeleteSetter: Function;
+  instantChange?: Function;
+  reloadSetter?: Function;
 }
 
 const mapStateToProps = (state: rootState) => ({
@@ -57,6 +59,8 @@ const EditListing: React.FC<EditListingProps> = ({
   locationProp,
   tagsProp,
   picturesProp,
+  instantChange,
+  reloadSetter,
 }) => {
   const [pictures, setPictures]: [string[], Function] = useState(picturesProp); // pictures for the preview
   const [dispValidated, setDispValidated] = useState(false); // should the form display validations?
@@ -378,6 +382,9 @@ const EditListing: React.FC<EditListingProps> = ({
                 );
 
                 if (successAdd && successDelete) {
+                  if (instantChange)
+                    instantChange();
+                  reloadSetter && reloadSetter(true);
                   setShow(false);
                   toast('The listing was successfully edited!');
                 } else {
