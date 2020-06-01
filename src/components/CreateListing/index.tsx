@@ -148,14 +148,14 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow }) =>
             </Form.Group>
 
             <Form.Group as={Col} md={{ span: 5, offset: 1 }}>
+              <Form.Label>Add Images</Form.Label>
               <Form.Row className="justify-content-center text-center">
-                <Form.Label>Add Images</Form.Label>
-                <Carousel>
+                <Carousel className={styles.editListingCarousel} >
                   {pictures.length !== 0 ? (
                     pictures.map((src, i) => {
                       return (
                         <Carousel.Item key={i}>
-                          <img src={src} style={{minWidth: "30vh"}}/>
+                          <img src={src} className={styles.carouselImage} /> {/*TODO*/}
                           <button
                             type="button"
                             onClick={() => {

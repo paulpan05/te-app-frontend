@@ -177,14 +177,14 @@ const EditListing: React.FC<EditListingProps> = ({
             </Form.Group>
 
             <Form.Group as={Col} md={{ span: 5, offset: 1 }}>
+              <Form.Label>Add Images</Form.Label>
               <Form.Row className="justify-content-center text-center">
-                <Form.Label>Add Images</Form.Label>
-                <Carousel>
+                <Carousel className={styles.editListingCarousel} >
                   {pictures.length !== 0 ? (
                     pictures.map((src, i) => {
                       return (
                         <Carousel.Item key={i}>
-                          <img src={src} />
+                          <img src={src} className={styles.carouselImage} />
                           <button
                             type="button"
                             onClick={() => {
