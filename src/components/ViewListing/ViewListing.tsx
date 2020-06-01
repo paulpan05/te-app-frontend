@@ -76,7 +76,7 @@ const ViewListing: React.FC<ViewListingProps> = ({
   const [isUsersListing, setIsUsersListing] = useState<any>();
   const [clickedOnProfile, setClickedOnProfile] = useState(false);
   const [markSold, markSoldSetter] = useState(false);
-  const [reloadSaved, setReloadSaved] =useState(false);
+  const [reloadSaved, setReloadSaved] = useState(false);
   
   function getPictures() {
     if (listingData.pictures) {
@@ -95,6 +95,7 @@ const ViewListing: React.FC<ViewListingProps> = ({
       const result = await fetchListing(user, setData, [listingId], [creationTime]);
 
       if (result) {
+        console.log(result);
         const resultData = result[0];
         setData(resultData);
         // gets the seller profile
@@ -122,7 +123,7 @@ const ViewListing: React.FC<ViewListingProps> = ({
         );
       }
     };
-    if(reloadSaved===true) {
+    if(reloadSaved === true) {
       fetchListingData();
       if (reloadListing){
        reloadListing(true);
@@ -171,6 +172,7 @@ const ViewListing: React.FC<ViewListingProps> = ({
         setter={setshowDelete}
         listingSetter={setShow}
         listingObject={listingData}
+        reloadSetter={reloadListing}
       />
 
       {sellerInfo && <ReportListing

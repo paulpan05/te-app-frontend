@@ -19,6 +19,7 @@ interface DeletePopupProps extends Omit<RouteProps, 'render'> {
   setter: React.Dispatch<any>;
   listingSetter: Function;
   listingObject: any;
+  reloadSetter?: Function;
 }
 
 const mapStateToProps = (state: rootState) => ({
@@ -31,6 +32,7 @@ const DeletePopup: React.FC<DeletePopupProps> = ({
   setter,
   listingSetter,
   listingObject,
+  reloadSetter,
 }) => {
   return (
     <div className="textAlign">
@@ -58,6 +60,7 @@ const DeletePopup: React.FC<DeletePopupProps> = ({
                         if (success) {
                           setter(false);
                           listingSetter(false);
+                          reloadSetter && reloadSetter(true);
                           toast('This listing has been deleted!');
                         } else {
                           toast(
