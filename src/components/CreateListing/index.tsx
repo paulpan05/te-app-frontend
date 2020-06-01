@@ -134,18 +134,6 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow, setR
                 className={styles.input}
                 ref={(ref) => (locationInput = ref)}
               />
-
-              <Form.Label className="bodyText">Tags</Form.Label>
-              <Form.Row className="justify-content-center text-center">
-                <TagsDiv
-                  tags={dispTags}
-                  setTag={(tag: string, active: boolean) => {
-                    const temp = {...tags};
-                    temp[tag] = active;
-                    setTags({...temp});
-                  }}
-                />
-              </Form.Row>
             </Form.Group>
 
             <Form.Group as={Col} md={{ span: 5, offset: 1 }}>
@@ -214,6 +202,20 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow, setR
                 />
               </Form.Row>
             </Form.Group>
+          </Form.Row>
+
+          <Form.Row className="justify-content-center text-center">
+              <Form.Label className="bodyText">Tags</Form.Label>
+              <Form.Row className="justify-content-center text-center">
+                <TagsDiv
+                  tags={dispTags}
+                  setTag={(tag: string, active: boolean) => {
+                    const temp = {...tags};
+                    temp[tag] = active;
+                    setTags({...temp});
+                  }}
+                />
+              </Form.Row>
           </Form.Row>
 
           <Form.Row className="justify-content-center text-center">

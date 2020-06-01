@@ -349,7 +349,7 @@ const ViewListing: React.FC<ViewListingProps> = ({
                   } readOnly />
                     
                     <div className={styles.interestBox}>
-                      <p>{listingData.savedCount} people have this item saved!</p>
+                      <p>{listingData.savedCount} people saved this item</p>
                     </div>
                     {/*This displays either Mark as Sold & Edit Listing OR Contact Seller*/}
                     {isUsersListing ? 

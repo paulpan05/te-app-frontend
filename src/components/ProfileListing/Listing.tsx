@@ -65,7 +65,7 @@ const Listing: React.FC<ListingProps> = ({title, price, postDate, pictures, user
         <div className={styles.card_content}>
           <h2 className={styles.card_title}>{title}</h2>
           <p className={styles.card_text}>${price}</p>
-          <p className={styles.description}>Posted {new Date(postDate).toDateString()}</p>
+          <p className={styles.description}>Posted {new Date(postDate).toDateString().split(' ').slice(1).join(' ')}</p>
           <button onClick = {async () => {setToggled(!toggled)
             if(toggled === true) {
               const successUnsave = await unsaveListing(
