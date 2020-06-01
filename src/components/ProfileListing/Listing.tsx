@@ -20,12 +20,13 @@ interface ListingProps {
   price: string;
   postDate: number;
   pictures: string[];
+  reloadProfile?: Function;
   
 }
 
-const Listing: React.FC<ListingProps> = ({title, price, postDate, pictures, userInfo, listingId, user}) => {
+const Listing: React.FC<ListingProps> = ({title, price, postDate, pictures, userInfo, listingId, user, reloadProfile}) => {
   const [show, setShow] = useState(false);
-  
+  const [reload, setReload] = useState(false);
   const [toggled, setToggled] = useState(false);
   function getPictures() {
     return pictures.map((picture) => {
@@ -45,12 +46,17 @@ const Listing: React.FC<ListingProps> = ({title, price, postDate, pictures, user
         }
       }
     }
-
-  }, []);
+    if (reload===true) {
+      if (reloadProfile) {
+        reloadProfile(true);
+      }
+      setReload(false);
+    }
+  }, [reload]);
 
   return (
     <div className="hoverPointer" style={{ margin: '5%' }}>
-      <div className={styles.card}>
+      <div className={styles.card} onClick={() => setShow(true)}>
         <div className="cardImage imgWrapper">
           <Carousel className={styles.zIndx} interval={null}>
             {/* <Carousel.Item>
@@ -100,7 +106,7 @@ const Listing: React.FC<ListingProps> = ({title, price, postDate, pictures, user
         </div>
       </div>
       {show && (
-        <ViewListing listingId={listingId} creationTime={postDate} show={show} setShow={setShow} />
+        <ViewListing reloadListing={setReload} listingId={listingId} creationTime={postDate} show={show} setShow={setShow} />
       )}
     </div>
   );

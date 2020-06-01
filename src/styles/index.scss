@@ -191,3 +191,9 @@ body {
 .roundedBorder {
   border-radius:40px !important;
 }
+.profileModal {
+  max-width:1340px !important;
+}
+.profileModal>div>div {
+  max-width:100% !important;
+}

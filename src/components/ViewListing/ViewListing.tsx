@@ -42,6 +42,8 @@ interface ViewListingProps {
   user: firebase.User | null | undefined;
   listingId: string;
   creationTime: number;
+  instantChange?: Function;
+  reloadListing?: Function;
 }
 
 const mapStateToProps = (state: rootState) => ({
@@ -54,6 +56,8 @@ const ViewListing: React.FC<ViewListingProps> = ({
   setShow,
   listingId,
   creationTime,
+  instantChange,
+  reloadListing,
 }) => {
   /* Popup to show the seller contact information */
   const [contactSeller, contactSellerSetter] = useState(false);
@@ -99,6 +103,7 @@ const ViewListing: React.FC<ViewListingProps> = ({
           setIsUsersListing(true);
         }
         setNumSaved(resultData.savedCount);
+        //gets your own profile 
         const userProfileResult = await getUserProfile(user);
         if (userProfileResult) {
           for (let savedListing of userProfileResult.savedListings) {
@@ -119,6 +124,9 @@ const ViewListing: React.FC<ViewListingProps> = ({
     };
     if(reloadSaved===true) {
       fetchListingData();
+      if (reloadListing){
+       reloadListing(true);
+      }
       setReloadSaved(false);
     }
     fetchListingData();
@@ -126,7 +134,7 @@ const ViewListing: React.FC<ViewListingProps> = ({
 
   return clickedOnProfile ? (
     <>
-      <Modal show={clickedOnProfile} onHide={() => setClickedOnProfile(false)} size="xl" exit>
+      <Modal show={clickedOnProfile} onHide={() => setClickedOnProfile(false)} size="xl" exit dialogClassName="profileModal">
       <Container style={{ maxHeight: '50%' }} className="no-gutters">
         <Card className="myCard">
           <Modal.Header closeButton>
@@ -153,6 +161,8 @@ const ViewListing: React.FC<ViewListingProps> = ({
           locationProp={listingData.location}
           tagsProp={listingData.tags}
           picturesProp={listingData.pictures}
+          instantChange={instantChange}
+          reloadSetter={setReloadSaved}
         />
       )}
 
@@ -198,13 +208,13 @@ const ViewListing: React.FC<ViewListingProps> = ({
            
                   <p className={`${styles.listingInfo} subHeader`}>${listingData.price}</p>
                   <p className={`${styles.listingInfo} subHeader`}>
-                    {new Date(creationTime).toDateString()}
+                    {new Date(creationTime).toDateString().split(' ').slice(1).join(' ')}
                   </p>
                   <p className={`${styles.listingInfo} subHeader`}>{listingData.location}</p>
                   
                   </Row>
                   <Row>
-                  <p className={`${styles.listingSecondaryInfo} bodyText`}>{listingData.description}</p>
+                  <p className={`${styles.listingSecondaryInfo} bodyText justify-content-center`}>{listingData.description}</p>
                   </Row>
                 </Col>
                 {/* Button to close the listing modal */}
@@ -244,6 +254,8 @@ const ViewListing: React.FC<ViewListingProps> = ({
                               creationTime,
                             );
                             if (success) {
+                              if (instantChange)
+                                instantChange();
                               //setNumSaved(numSaved + 1);
                               setLiked(!liked);
                               setReloadSaved(true);
@@ -260,6 +272,8 @@ const ViewListing: React.FC<ViewListingProps> = ({
                               creationTime,
                             );
                             if (success) {
+                              if (instantChange)
+                                instantChange();
                              // setNumSaved(numSaved - 1);
                               setLiked(!liked);
                               setReloadSaved(true);
@@ -318,7 +332,7 @@ const ViewListing: React.FC<ViewListingProps> = ({
                    
                 <Rating name="read-only" value={ (() => {
                   let sum = 0 ;
-                  console.log(sellerInfo?.ratings)
+                  //console.log(sellerInfo?.ratings)
                   if(sellerInfo?.ratings.length===0){
                     return 0
                   }
@@ -342,7 +356,7 @@ const ViewListing: React.FC<ViewListingProps> = ({
                             >
                               Mark as Sold
                           </button>
-                          <RateBuyer user={user} listingData={listingData} sellerInfo={sellerInfo} title={listingData.title} show={markSold} setShow={markSoldSetter} />
+                          <RateBuyer user={user} listingData={listingData} sellerInfo={sellerInfo} title={listingData.title} show={markSold} setShow={markSoldSetter} setReload={setReloadSaved} />
                           <button type="button" className={styles.sellerButton} onClick={() => {setShowEditListing(true);}}>
                               Edit Listing
                             </button>

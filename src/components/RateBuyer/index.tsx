@@ -21,9 +21,10 @@ interface RateBuyerProps {
   user: firebase.User | null | undefined;
   sellerInfo: any; 
   listingData: any;
+  setReload?: Function;
 }
 
-const RateBuyer: React.FC<RateBuyerProps> = ({ dispatch, show, setShow, title , user, sellerInfo, listingData}) => {
+const RateBuyer: React.FC<RateBuyerProps> = ({ dispatch, show, setShow, title , user, sellerInfo, listingData, setReload}) => {
   const [starValue, setStarValue] = React.useState<number | null>(2);
   const [buyerName, setBuyerName] = useState();
 
@@ -79,6 +80,7 @@ const RateBuyer: React.FC<RateBuyerProps> = ({ dispatch, show, setShow, title , 
               if(buyerName.length !== 0) {
                 callAPI();
               }
+              setReload && setReload(true);
             }}
           >
             Mark as Sold

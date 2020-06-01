@@ -22,20 +22,13 @@ interface ListingProps {
   pictures: string[];
   instantChange?: Function;
   lastSaved?: any;
+  reloadHome?: Function;
 }
 
-const Listing: React.FC<ListingProps> = ({lastSaved, instantChange, title, price, postDate, pictures, userInfo, listingId, user}) => {
+const Listing: React.FC<ListingProps> = ({lastSaved, instantChange, title, price, postDate, pictures, userInfo, listingId, user, reloadHome}) => {
   const [show, setShow] = useState(false);
-  /*const [instant,setInstant] = useState(()=>{
-    if(instantChange){
-      if(userInfo!=null && userInfo.savedListings.length>1){
-        return true;
-      }
-      else{
-        return false
-      }
-    }
-  })*/
+  const [reload, setReload] = useState(false);
+
   function getPictures() {
     return pictures.map((picture) => {
       return (
@@ -46,7 +39,6 @@ const Listing: React.FC<ListingProps> = ({lastSaved, instantChange, title, price
     })
   }
   const [toggled, setToggled] = useState(false);
-
     useEffect(() => {
     //console.log(instant)
     if(userInfo != null && !lastSaved && instantChange) {
@@ -57,12 +49,18 @@ const Listing: React.FC<ListingProps> = ({lastSaved, instantChange, title, price
         }
       }
     }
+    if (reload===true) {
+      if (reloadHome) {
+        reloadHome(true);
+      }
+      setReload(false);
+    }
 
-  });
+  }, [reload]);
 
   return (
     <div className="hoverPointer" style={{ margin: '5%' }}>
-      <div className={styles.card}>
+      <div className={styles.card} onClick={() => setShow(true)}>
         <div className="cardImage imgWrapper">
           <Carousel className={styles.zIndx} interval={null}>
             {getPictures()}
@@ -111,8 +109,9 @@ const Listing: React.FC<ListingProps> = ({lastSaved, instantChange, title, price
           </button>
         </div>
       </div>
+      
       {show && (
-        <ViewListing listingId={listingId} creationTime={postDate} show={show} setShow={setShow} />
+        <ViewListing reloadListing={setReload} instantChange={instantChange} listingId={listingId} creationTime={postDate} show={show} setShow={setShow} />
       )}
     </div>
   );
