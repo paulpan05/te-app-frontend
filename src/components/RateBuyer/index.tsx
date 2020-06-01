@@ -27,7 +27,7 @@ interface RateBuyerProps {
 
 const RateBuyer: React.FC<RateBuyerProps> = ({ dispatch, show, setShow, title , user, sellerInfo, listingData, setReload, closeListing}) => {
   const [starValue, setStarValue] = React.useState<number | null>(2);
-  const [buyerName, setBuyerName] = useState();
+  const [buyerName, setBuyerName] = useState("");
 
   const callAPI = async () => {
     let userProfile;
@@ -87,6 +87,8 @@ const RateBuyer: React.FC<RateBuyerProps> = ({ dispatch, show, setShow, title , 
             onClick={() => {
               if(buyerName.length !== 0) {
                 callAPI();
+              } else {
+                toast("No Buyer Name Entered. Try Again.");
               }
             }}
           >

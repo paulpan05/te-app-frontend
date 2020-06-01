@@ -9,7 +9,7 @@ import FlowerImg from '../../assets/img/FlowerShirt.png';
 import ViewListing from '../ViewListing/ViewListing';
 import book from '../../assets/img/books.jpg';
 import CustomToggleButton from '../CustomToggleButton';
-import {saveListing, unsaveListing} from '../../api';
+import {saveListing, unsaveListing, getUserProfile} from '../../api';
 import { toast } from 'react-toastify';
 
 interface ListingProps {
@@ -38,17 +38,22 @@ const Listing: React.FC<ListingProps> = ({lastSaved, instantChange, title, price
       )
     })
   }
-  const [toggled, setToggled] = useState(false);
-    useEffect(() => {
-    //console.log(instant)
-    if(userInfo != null && !lastSaved && instantChange) {
-      for (let i = 0; i < userInfo.savedListings.length; i++) {
-        if (userInfo.savedListings[i][0] === listingId) {
+  const fetchUserProfile = async () => {
+    const userInfoResult = await getUserProfile(user);
+    if(userInfoResult != null ) {
+      for (let i = 0; i < userInfoResult.savedListings.length; i++) {
+        if (userInfoResult.savedListings[i][0] === listingId) {
+          console.log("TRUE");
           setToggled(true);
           break;
         }
       }
     }
+  };
+
+  const [toggled, setToggled] = useState(false);
+    useEffect(() => {
+      fetchUserProfile();
     if (reload===true) {
       if (reloadHome) {
         reloadHome(true);
