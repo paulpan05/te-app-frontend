@@ -1,21 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import NavBar from 'react-bootstrap/Navbar';
 import { NavDropdown, Nav, Image, DropdownButton, Dropdown } from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
 import { Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import profile from '../../assets/img/sarah.png';
 import b from '../../assets/img/full-app-logo.svg';
 import { authActions } from '../../redux/actions';
 import CreateListing from '../CreateListing/index';
 import styles from './index.module.scss';
+import { rootState } from '../../redux/reducers';
+import { getUserProfile } from '../../api/index';
 
 interface NavbarProps {
   dispatch: Dispatch<any>;
+  user: firebase.User | null | undefined;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ dispatch }) => {
+const mapStateToProps = (state: rootState) => ({
+  user: state.auth.user,
+});
+
+const Navbar: React.FC<NavbarProps> = ({ user, dispatch }) => {
   const [redirect, redirectTo] = useState('/');
   const [showCreateListing, setShowCreateListing] = useState(false);
+  const [profile, setProfile] = useState<string>();
+
+  const getAndSetProfile = async () => {
+    if (user) {
+      const result = await getUserProfile(user);
+      setProfile(result.picture);
+    }
+  }
+
+  useEffect(() => {
+    getAndSetProfile();
+  }, [user]);
 
   return (
     <div>
@@ -58,4 +78,4 @@ const Navbar: React.FC<NavbarProps> = ({ dispatch }) => {
   );
 };
 
-export default Navbar;
+export default connect(mapStateToProps)(Navbar);

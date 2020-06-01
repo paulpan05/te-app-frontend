@@ -3,7 +3,6 @@ import endpoint from '../configs/endpoint';
 
 const handleFetchNotOk = async (res: Response) => {
   const jsonResult = await res.json();
-  console.log("HELLOOO");
   console.log(jsonResult);
   if (!res.ok) {
     throw Error(jsonResult);
