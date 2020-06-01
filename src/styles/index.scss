@@ -188,10 +188,11 @@
   max-height: 400px !important;
   background-color: #545b6221;
   display: flex;
-  overflow:auto !important;
+  overflow-y:auto !important;
+  //margin:auto !important;
 }
 .modalImgWrapper > div > div > div {
-  margin:auto !important;
+  margin-block: auto;
 }
 
 .header {
