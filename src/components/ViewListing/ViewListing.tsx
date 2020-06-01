@@ -195,7 +195,7 @@ const ViewListing: React.FC<ViewListingProps> = ({
                 <Col xs={12} md={5} className={styles.textAlign}>
                   <div className="cardImage imgWrapper">
                   <Carousel interval={null} >
-                 {getPictures()}
+                    {getPictures()}
                   </Carousel>
                   </div>
                 </Col>
