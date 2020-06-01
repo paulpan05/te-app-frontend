@@ -24,16 +24,17 @@ interface RateSellerProps {
   listingId: string;
   listingCreationTime: number;
   sellerName: string; 
-  reloadHome: Function; 
+  reloadHome: Function;
+  picture: string; 
 }
-const RateSeller: React.FC<RateSellerProps> = ({ user, sellerName, show, setShow, title, sellerId, buyerId, listingId, listingCreationTime, reloadHome }) => {
+const RateSeller: React.FC<RateSellerProps> = ({ user, sellerName, picture, show, setShow, title, sellerId, buyerId, listingId, listingCreationTime, reloadHome }) => {
   const [starValue, setStarValue] = React.useState<number | null>(2);
   return (
     <Modal className="newModal" show={show} onHide={() => setShow(false)} size="lg" centered backdrop="static"  >
       <h1 className="mx-auto text-center">Recent Purchase!</h1>
       <Form className="text-center">
         <h3 className="mx-auto">{title}</h3>
-        <img className={styles.profilePicture} src={ProfileImg} />
+        <img className={styles.profilePicture} src={picture} />
         <h4 className="mx-auto">
           Sold By: {sellerName} 
         </h4>
