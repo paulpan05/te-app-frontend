@@ -139,7 +139,7 @@ const Home: React.FC<HomeProps> = ({ dispatch, user }) => {
       <Listing reloadHome={setReloadHome} user={user} userInfo={userInfo} listingId={listings.Items[index + 2].listingId} title={listings.Items[index + 2].title} price={listings.Items[index + 2].price} postDate={listings.Items[index + 2].creationTime} pictures={listings.Items[index + 2].pictures}/>
       </Col>
       <Col>
-      <Listing reloadHome={setReloadHome} user={user} userInfo={userInfo} listingId={listings.Items[index + 3].listingId}  title={listings.Items[index + 3].title === null ? "No Name": listingItem.title } price={listings.Items[index + 3].price} postDate={listings.Items[index + 3].creationTime} pictures={listings.Items[index + 3].pictures}/>
+      <Listing reloadHome={setReloadHome} user={user} userInfo={userInfo} listingId={listings.Items[index + 3].listingId}  title={listings.Items[index + 3].title} price={listings.Items[index + 3].price} postDate={listings.Items[index + 3].creationTime} pictures={listings.Items[index + 3].pictures}/>
       </Col>
     </Row>)
   } else if (listings.Items.length % 4 == 1 && listings.Items.length - 1 == index) {

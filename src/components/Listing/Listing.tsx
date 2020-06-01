@@ -60,8 +60,8 @@ const Listing: React.FC<ListingProps> = ({lastSaved, instantChange, title, price
 
   return (
     <div className="hoverPointer" style={{ margin: '5%' }}>
-      <div className={styles.card} onClick={() => setShow(true)}>
-        <div className="cardImage imgWrapper">
+      <div className={styles.card}>
+        <div className="cardImage imgWrapper"  onClick={() => setShow(true)}>
           <Carousel className={styles.zIndx} interval={null}>
             {getPictures()}
           </Carousel>
