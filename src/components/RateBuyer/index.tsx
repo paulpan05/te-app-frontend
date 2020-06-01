@@ -29,9 +29,13 @@ const RateBuyer: React.FC<RateBuyerProps> = ({ dispatch, show, setShow, title , 
   const [buyerName, setBuyerName] = useState();
 
   const callAPI = async () => {
-
-    const userProfile = await searchUser(user, buyerName);
-    setShow(false);
+    let userProfile;
+    if(buyerName.includes('@')) {
+      userProfile = await searchUser(user, undefined, buyerName);
+    } else {
+      userProfile = await searchUser(user, buyerName);
+    } 
+    
     if(userProfile.length != 0) {
       await markAsSold(user, listingData.listingId, listingData.creationTime, sellerInfo.userId, userProfile[0].userId);
       //TODO: how do i update the buyers rating
@@ -42,6 +46,7 @@ const RateBuyer: React.FC<RateBuyerProps> = ({ dispatch, show, setShow, title , 
     } else {
       toast(`No Such User as ${buyerName} found. Try again!`);
     }
+    setShow(false);
     // userProfile.savedListings.map((listing) => {
     //     console.log(listing[0]);
     //     ids.push(listing[0]);
