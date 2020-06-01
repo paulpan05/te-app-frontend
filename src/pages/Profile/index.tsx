@@ -81,7 +81,7 @@ const Profile: React.FC<ProfileProps> = ({ user, targetUserId, dispatch}) => {
       listings = await fetchListings(user, ids, creationTimes)
      
       listings.map((listing)=>{
-        listingArray.push(<Listing reloadProfile={setReloadProfile} user={listing.user} title={listing.title} postDate={listing.creationTime} pictures={listing.picture} price={listing.price} listingId={listing.listingId}/>);
+        listingArray.push(<Listing reloadProfile={setReloadProfile} user={listing.user} title={listing.title} postDate={listing.creationTime} pictures={listing.pictures} price={listing.price} listingId={listing.listingId}/>);
       })
       setSoldArray(listingArray);
       }
@@ -101,7 +101,7 @@ const Profile: React.FC<ProfileProps> = ({ user, targetUserId, dispatch}) => {
         listings = await fetchListings(user, ids, creationTimes)
        
         listings.map((listing)=>{
-          listingArray.push(<Listing reloadProfile={setReloadProfile} user={listing.user} title={listing.title} postDate={listing.creationTime} pictures={listing.picture} price={listing.price} listingId={listing.listingId}/>);
+          listingArray.push(<Listing reloadProfile={setReloadProfile} user={listing.user} title={listing.title} postDate={listing.creationTime} pictures={listing.pictures} price={listing.price} listingId={listing.listingId}/>);
         })
         setBoughtArray(listingArray);
         }
