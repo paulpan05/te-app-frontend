@@ -150,7 +150,7 @@ const Profile: React.FC<ProfileProps> = ({ user, targetUserId, dispatch, profile
           <Row>
             <Col lg={5} xl={3} className={styles.column}>
               <div>
-                <Image src={profilePicture} roundedCircle alt="profile" className={styles.img} fluid />
+                <Image src={userEquals ? profilePicture : profile?.picture} roundedCircle alt="profile" className={styles.img} fluid />
               </div>
               <div>
                 <Box>
