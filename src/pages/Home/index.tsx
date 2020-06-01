@@ -44,7 +44,7 @@ const Home: React.FC<HomeProps> = ({ dispatch, user }) => {
   const [rateListing, rateListingSetter] = useState();
   const [showRateSeller, setShowRateSeller] = useState(false);
   let rowArray = new Array();
-  let searchInput;
+  let searchInput = "";
   const dispTags = ['Tutoring', 'Housing', 'Rideshare', 'Study Material', 'Clothes', 'Furniture', 'Electronics', 'Appliances', 'Fitness', 'Other', 'On-Campus Pickup', 'Off-Campus Pickup', 'Venmo', 'Cash', 'Dining Dollars', 'Free'];
   let tags = {};
   dispTags.map((tag) => {
