@@ -49,7 +49,7 @@ const Profile: React.FC<ProfileProps> = ({ user, targetUserId, dispatch}) => {
     const listingArray=[] as any;
     const ids = new Array();
     const creationTimes = new Array();
-    if (result.activeListings.length===0) {
+    if (result === undefined || result.activeListings.length===0 ) {
       return;
     }
     for (let k=0; k<result.activeListings.length; k++) {
@@ -69,7 +69,7 @@ const Profile: React.FC<ProfileProps> = ({ user, targetUserId, dispatch}) => {
       const listingArray=[] as any;
       const ids = new Array()
       const creationTimes = new Array()
-      if(result.soldListings.length===0){
+      if(result === undefined || result.soldListings.length===0){
         return;
       }
       console.log(result.soldListings)
@@ -89,7 +89,7 @@ const Profile: React.FC<ProfileProps> = ({ user, targetUserId, dispatch}) => {
         const listingArray=[] as any;
         const ids = new Array()
         const creationTimes = new Array()
-        if(result.boughtListings.length===0){
+        if(result === undefined || result.boughtListings.length===0){
           return;
         }
         console.log(result.boughtListings)
@@ -136,7 +136,7 @@ const Profile: React.FC<ProfileProps> = ({ user, targetUserId, dispatch}) => {
   document.body.style.minHeight = '100%';
   return profile ? (
     <>
-      <EditProfile show={showEditProfile} setShow={setShowEditProfile} phoneProp={profile?.phone} pictureProp={profile?.picture} nameProp={profile?.name} />
+      <EditProfile renderOnChange={getAndSetProfile} show={showEditProfile} setShow={setShowEditProfile} phoneProp={profile?.phone} pictureProp={profile?.picture} nameProp={profile?.name} />
       <ContactSeller showPopup={contactSeller} setter={contactSellerSetter} sellerInfo={profile} />
 
       <Container className={styles.con} fluid>
