@@ -41,6 +41,7 @@ const Home: React.FC<HomeProps> = ({ dispatch, user }) => {
 
   //holds the listing of the listing that needs to be rated
   const [rateListing, rateListingSetter] = useState();
+  const [showRateSeller, setShowRateSeller] = useState(false);
   let rowArray = new Array();
   let searchInput;
   const dispTags = ['Tutoring', 'Housing', 'Rideshare', 'Study Material', 'Clothes', 'Furniture', 'Electronics', 'Appliances', 'Fitness', 'Other', 'On-Campus Pickup', 'Off-Campus Pickup', 'Venmo', 'Cash', 'Dining Dollars', 'Free'];
@@ -57,7 +58,12 @@ const Home: React.FC<HomeProps> = ({ dispatch, user }) => {
       if(userResult.listingsToRate != undefined && userResult.listingsToRate.length != 0) {
         // take the first listing that needs to be rated
         rateListingSetter(userResult.listingsToRate[0]);
+        setShowRateSeller(true);
+      }  else {
+        setShowRateSeller(false);
       }
+    } else {
+      setShowRateSeller(false);
     }
   }
 
@@ -76,6 +82,7 @@ const Home: React.FC<HomeProps> = ({ dispatch, user }) => {
   }
 
   useEffect(() => {
+    console.log("reloading home");
     if (reloadHome===true) {
          callAPI();
          getListings(user, setListings);
@@ -85,7 +92,7 @@ const Home: React.FC<HomeProps> = ({ dispatch, user }) => {
 
   return (
     <div>
-      {rateListing && <Rate user={user} sellerId={rateListing[2]} creationTime={rateListing[1]} listingId={rateListing[0]}/>}
+      {rateListing && showRateSeller && <Rate user={user} reloadHome={setReloadHome} sellerId={rateListing[2]} creationTime={rateListing[1]} listingId={rateListing[0]}/>}
       <Row className="justify-content-md-center" >
         <div style={{  zIndex: 0}}>
         <Tags tags={dispTags} setTag={(tag: string, active: boolean) => (tags[tag] = active)}/>

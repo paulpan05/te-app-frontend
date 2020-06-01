@@ -111,7 +111,7 @@ const Listing: React.FC<ListingProps> = ({lastSaved, instantChange, title, price
       </div>
       
       {show && (
-        <ViewListing reloadListing={setReload} instantChange={instantChange} listingId={listingId} creationTime={postDate} show={show} setShow={setShow} />
+        <ViewListing reloadHome={reloadHome? reloadHome : undefined} reloadListing={setReload} instantChange={instantChange} listingId={listingId} creationTime={postDate} show={show} setShow={setShow} />
       )}
     </div>
   );

@@ -44,6 +44,7 @@ interface ViewListingProps {
   creationTime: number;
   instantChange?: Function;
   reloadListing?: Function;
+  reloadHome?: Function, 
 }
 
 const mapStateToProps = (state: rootState) => ({
@@ -58,6 +59,7 @@ const ViewListing: React.FC<ViewListingProps> = ({
   creationTime,
   instantChange,
   reloadListing,
+  reloadHome, 
 }) => {
   /* Popup to show the seller contact information */
   const [contactSeller, contactSellerSetter] = useState(false);
@@ -356,7 +358,7 @@ const ViewListing: React.FC<ViewListingProps> = ({
                             >
                               Mark as Sold
                           </button>
-                          <RateBuyer user={user} listingData={listingData} sellerInfo={sellerInfo} title={listingData.title} show={markSold} setShow={markSoldSetter} setReload={setReloadSaved} />
+                          <RateBuyer user={user} closeListing={setShow} setReload={reloadHome? reloadHome : undefined } listingData={listingData} sellerInfo={sellerInfo} title={listingData.title} show={markSold} setShow={markSoldSetter} />
                           <button type="button" className={styles.sellerButton} onClick={() => {setShowEditListing(true);}}>
                               Edit Listing
                             </button>

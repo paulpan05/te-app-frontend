@@ -22,9 +22,10 @@ interface RateBuyerProps {
   sellerInfo: any; 
   listingData: any;
   setReload?: Function;
+  closeListing?: Function; 
 }
 
-const RateBuyer: React.FC<RateBuyerProps> = ({ dispatch, show, setShow, title , user, sellerInfo, listingData, setReload}) => {
+const RateBuyer: React.FC<RateBuyerProps> = ({ dispatch, show, setShow, title , user, sellerInfo, listingData, setReload, closeListing}) => {
   const [starValue, setStarValue] = React.useState<number | null>(2);
   const [buyerName, setBuyerName] = useState();
 
@@ -38,6 +39,7 @@ const RateBuyer: React.FC<RateBuyerProps> = ({ dispatch, show, setShow, title , 
     
     if(userProfile.length != 0) {
       await markAsSold(user, listingData.listingId, listingData.creationTime, sellerInfo.userId, userProfile[0].userId);
+      //TODO: how do i update the buyers rating
       await addUserRating(user, userProfile[0].userId, starValue?starValue: 1); 
       // await addBuyerRating();
       await addListingToRate(user, userProfile[0].userId, listingData.listingId, listingData.creationTime);
@@ -46,6 +48,8 @@ const RateBuyer: React.FC<RateBuyerProps> = ({ dispatch, show, setShow, title , 
       toast(`No Such User as ${buyerName} found. Try again!`);
     }
     setShow(false);
+    setReload && setReload(true);
+    closeListing && closeListing(false);
     // userProfile.savedListings.map((listing) => {
     //     console.log(listing[0]);
     //     ids.push(listing[0]);
@@ -84,7 +88,6 @@ const RateBuyer: React.FC<RateBuyerProps> = ({ dispatch, show, setShow, title , 
               if(buyerName.length !== 0) {
                 callAPI();
               }
-              setReload && setReload(true);
             }}
           >
             Mark as Sold
