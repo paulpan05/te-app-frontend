@@ -73,7 +73,6 @@ const EditListing: React.FC<EditListingProps> = ({
   let descriptionInput;
   let locationInput;
 
-  // TODO change this to be a const in another file and export it there, import it to here and other files that use dispTags
   const dispTags = [
     'Tutoring',
     'Housing',
@@ -260,8 +259,6 @@ const EditListing: React.FC<EditListingProps> = ({
                 // validate form here
                 setDispValidated(true);
 
-                // TODO
-                console.log(`checking whole form validity: ${form?.checkValidity()}`);
                 // check if forms are valid
                 if (!form?.checkValidity() || !(titleInput && priceInput && descriptionInput && locationInput)) {
                   console.log('not all forms are valid!');
@@ -350,7 +347,6 @@ const EditListing: React.FC<EditListingProps> = ({
                 }
 
                 console.log('about to run the api to add info to the listing');
-                /* TODO: test this */
                 const successAdd = await updateListing(
                   user,
                   listingId,

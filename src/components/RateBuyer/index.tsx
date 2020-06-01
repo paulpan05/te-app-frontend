@@ -38,7 +38,6 @@ const RateBuyer: React.FC<RateBuyerProps> = ({ dispatch, show, setShow, title , 
     
     if(userProfile.length != 0) {
       await markAsSold(user, listingData.listingId, listingData.creationTime, sellerInfo.userId, userProfile[0].userId);
-      //TODO: how do i update the buyers rating
       await addUserRating(user, userProfile[0].userId, starValue?starValue: 1); 
       // await addBuyerRating();
       await addListingToRate(user, userProfile[0].userId, listingData.listingId, listingData.creationTime);

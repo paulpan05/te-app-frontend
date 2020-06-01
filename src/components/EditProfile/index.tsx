@@ -118,7 +118,7 @@ const EditProfile: React.FC<EditProfileProps> = ({
                         onClick={async () => {
                           const croppedPic = await cropImage();
                           if (croppedPic) {
-                            setPictureFile(new File([croppedPic], "profilePicture.jpeg", { type: "image/jpeg", lastModified: Date.now() }));// TODO this works but need to change it for typescript
+                            setPictureFile(new File([croppedPic], "profilePicture.jpeg", { type: "image/jpeg", lastModified: Date.now() }));
                             setPicture(URL.createObjectURL(croppedPic));
                           } else {
                             console.log('Error while trying to parse the uploaded picture!');
@@ -209,7 +209,7 @@ const EditProfile: React.FC<EditProfileProps> = ({
                   let parsedPhone;
                   if (phone.length > 0) {
                     // remove all spaces, -, (, ), +
-                    parsedPhone = phone.replace(/( |-|\(|\)|\+)/g, ''); //TODO test
+                    parsedPhone = phone.replace(/( |-|\(|\)|\+)/g, '');
                     const ppLen = parsedPhone.length;
                     parsedPhone = [
                       ppLen > 11 ? '+' : '',
@@ -239,7 +239,7 @@ const EditProfile: React.FC<EditProfileProps> = ({
                   let pictureURL;
                   if (picture !== pictureProp && pictureFile && picture !== user?.photoURL) {
                     // upload new profile picture to s3
-                    pictureURL = await uploadPicture(user, pictureFile); // TODO this works but need to change it for typescript
+                    pictureURL = await uploadPicture(user, pictureFile);
                     if (pictureURL) {
                       console.log("Done uploading profile picture to s3, url: ", pictureURL);
                     } else {

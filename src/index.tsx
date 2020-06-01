@@ -53,7 +53,7 @@ const AppComponent: React.FC<AppProps> = ({ dispatch }) => {
           bodyClassName="myToast"
           transition={Zoom}
         />
-        <Navbar dispatch={dispatch} />
+        <Navbar />
         <Switch>
           <PrivateRoute exact path="/ratebuyer" component={RateBuyerButton} />
           <PrivateRoute exact path="/profile" component={Profile} />
