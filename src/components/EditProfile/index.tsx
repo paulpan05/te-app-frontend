@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import Form from 'react-bootstrap/Form';
@@ -18,33 +18,35 @@ import styles from './index.module.scss';
 import blankProfile from '../../assets/img/blank-profile-picture.png';
 import { rootState } from '../../redux/reducers';
 import { updateProfile, uploadPicture, deletePicture } from '../../api/index';
+import { authActions } from '../../redux/actions';
 
 interface EditProfileProps {
   user: firebase.User | null | undefined;
   dispatch: Dispatch<any>;
+  profilePicture: string;
   show: boolean;
   setShow: Function;
   phoneProp?: string;
   pictureProp: string;
   nameProp: string;
-  renderOnChange: Function;
 }
 
 const mapStateToProps = (state: rootState) => ({
   user: state.auth.user,
+  profilePicture: state.auth.profilePicture,
 });
 
 const EditProfile: React.FC<EditProfileProps> = ({
   user,
   dispatch,
+  profilePicture,
   show,
   setShow,
   phoneProp,
   pictureProp,
   nameProp,
-  renderOnChange,
 }) => {
-  const [picture, setPicture] = useState(pictureProp);
+  const [picture, setPicture] = useState<string>(pictureProp);
   const [pictureFile, setPictureFile] = useState<File>();
   const [dispValidated, setDispValidated] = useState(false);
   let nameInput;
@@ -264,7 +266,7 @@ const EditProfile: React.FC<EditProfileProps> = ({
                   const success = await updateProfile(user, parsedPhone, pictureURL, parsedName);
                   if (success) {
                     setShow(false);
-                    renderOnChange();
+                    dispatch(authActions.setProfilePic(picture));
                     toast('Your profile was edited successfully!');
                   } else {
                     toast(

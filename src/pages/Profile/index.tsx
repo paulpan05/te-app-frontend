@@ -18,13 +18,15 @@ interface ProfileProps {
   dispatch: Dispatch<any>;
   user: firebase.User | null | undefined;
   targetUserId: string | undefined;
+  profilePicture: string,
 }
 
 const mapStateToProps = (state: rootState) => ({
   user: state.auth.user,
+  profilePicture: state.auth.profilePicture,
 });
 
-const Profile: React.FC<ProfileProps> = ({ user, targetUserId, dispatch}) => {
+const Profile: React.FC<ProfileProps> = ({ user, targetUserId, dispatch, profilePicture}) => {
   const [reloadProfile, setReloadProfile] = useState(true);
   const [profile, setProfile] = useState<any>()
   const [userEquals, setUserEquals] = useState(false);
@@ -140,7 +142,7 @@ const Profile: React.FC<ProfileProps> = ({ user, targetUserId, dispatch}) => {
   document.body.style.minHeight = '100%';
   return profile ? (
     <>
-      <EditProfile renderOnChange={getAndSetProfile} show={showEditProfile} setShow={setShowEditProfile} phoneProp={profile?.phone} pictureProp={profile?.picture} nameProp={profile?.name} />
+      <EditProfile show={showEditProfile} setShow={setShowEditProfile} phoneProp={profile?.phone} pictureProp={profilePicture} nameProp={profile?.name} />
       <ContactSeller showPopup={contactSeller} setter={contactSellerSetter} sellerInfo={profile} />
 
       <Container className={styles.con} fluid>
@@ -148,7 +150,7 @@ const Profile: React.FC<ProfileProps> = ({ user, targetUserId, dispatch}) => {
           <Row>
             <Col lg={5} xl={3} className={styles.column}>
               <div>
-                <Image src={profile?.picture} roundedCircle alt="profile" className={styles.img} fluid />
+                <Image src={profilePicture} roundedCircle alt="profile" className={styles.img} fluid />
               </div>
               <div>
                 <Box>

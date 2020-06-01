@@ -8,6 +8,7 @@ enum authConstants {
   SIGNOUT_SUCCESS,
   SIGNOUT_FAILED,
   DISMISS_SIGNOUT_FAILED,
+  SET_PROFILE_PIC,
 }
 
 export default authConstants;

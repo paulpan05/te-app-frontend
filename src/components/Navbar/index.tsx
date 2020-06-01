@@ -15,21 +15,22 @@ import { getUserProfile } from '../../api/index';
 interface NavbarProps {
   dispatch: Dispatch<any>;
   user: firebase.User | null | undefined;
+  profilePicture: string;
 }
 
 const mapStateToProps = (state: rootState) => ({
   user: state.auth.user,
+  profilePicture: state.auth.profilePicture,
 });
 
-const Navbar: React.FC<NavbarProps> = ({ user, dispatch }) => {
+const Navbar: React.FC<NavbarProps> = ({ user, dispatch, profilePicture }) => {
   const [redirect, redirectTo] = useState('/');
   const [showCreateListing, setShowCreateListing] = useState(false);
-  const [profile, setProfile] = useState<string>();
 
   const getAndSetProfile = async () => {
     if (user) {
       const result = await getUserProfile(user);
-      setProfile(result.picture);
+      dispatch(authActions.setProfilePic(result.picture));
     }
   }
 
@@ -50,7 +51,7 @@ const Navbar: React.FC<NavbarProps> = ({ user, dispatch }) => {
             <NavDropdown
               eventKey={1}
               drop="left"
-              title={<img className={styles.thumbnail_image} src={profile} alt="user pic" />}
+              title={<img className={styles.thumbnail_image} src={profilePicture} alt="user pic" />}
               id="dropdown-button-drop-left"
             >
               <Dropdown.Item eventKey="1" onClick={() => redirectTo('/profile')} active={false}>
