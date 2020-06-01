@@ -20,9 +20,10 @@ interface RateProps {
   sellerId: string;
   listingId: string;
   creationTime: number; 
+  reloadHome: Function; 
 }
 
-const Rate: React.FC<RateProps> = ({user, listingId, creationTime, sellerId}) => {
+const Rate: React.FC<RateProps> = ({user, listingId, creationTime, sellerId, reloadHome }) => {
   const [show, setShow] = useState(false);
   const [listing, setListing] = useState();
   const [sellerName, setSellerName] = useState();
@@ -47,7 +48,7 @@ const Rate: React.FC<RateProps> = ({user, listingId, creationTime, sellerId}) =>
         {' '}
         to Rate Seller.
       </Alert>
-      {listing && <RateSeller user={user} sellerName={sellerName} buyerId={listing[0].soldTo} listingId={listing[0].listingId} listingCreationTime={listing[0].creationTime} title={listing[0].title} sellerId={listing[0].userId} show={show} setShow={setShow} />}
+      {listing && <RateSeller  user={user} reloadHome={reloadHome} sellerName={sellerName} buyerId={listing[0].soldTo} listingId={listing[0].listingId} listingCreationTime={listing[0].creationTime} title={listing[0].title} sellerId={listing[0].userId} show={show} setShow={setShow} />}
     </>
   );
 };

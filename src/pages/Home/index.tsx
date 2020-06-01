@@ -42,6 +42,7 @@ const Home: React.FC<HomeProps> = ({ dispatch, user }) => {
   const [showCreateListing, setShowCreateListing] = useState(false);
   //holds the listing of the listing that needs to be rated
   const [rateListing, rateListingSetter] = useState();
+  const [showRateSeller, setShowRateSeller] = useState(false);
   let rowArray = new Array();
   let searchInput;
   const dispTags = ['Tutoring', 'Housing', 'Rideshare', 'Study Material', 'Clothes', 'Furniture', 'Electronics', 'Appliances', 'Fitness', 'Other', 'On-Campus Pickup', 'Off-Campus Pickup', 'Venmo', 'Cash', 'Dining Dollars', 'Free'];
@@ -58,7 +59,12 @@ const Home: React.FC<HomeProps> = ({ dispatch, user }) => {
       if(userResult.listingsToRate != undefined && userResult.listingsToRate.length != 0) {
         // take the first listing that needs to be rated
         rateListingSetter(userResult.listingsToRate[0]);
+        setShowRateSeller(true);
+      }  else {
+        setShowRateSeller(false);
       }
+    } else {
+      setShowRateSeller(false);
     }
   }
 
@@ -77,6 +83,7 @@ const Home: React.FC<HomeProps> = ({ dispatch, user }) => {
   }
 
   useEffect(() => {
+    console.log("reloading home");
     if (reloadHome===true) {
          callAPI();
          getListings(user, setListings);
@@ -88,7 +95,7 @@ const Home: React.FC<HomeProps> = ({ dispatch, user }) => {
     <div>
       <CreateListing show={showCreateListing} setShow={setShowCreateListing} setReloadHome={setReloadHome} />
       <Button className="sellButton" onClick={()=>setShowCreateListing(true)}>+</Button>
-      {rateListing && <Rate user={user} sellerId={rateListing[2]} creationTime={rateListing[1]} listingId={rateListing[0]}/>}
+      {rateListing && showRateSeller && <Rate user={user} reloadHome={setReloadHome} sellerId={rateListing[2]} creationTime={rateListing[1]} listingId={rateListing[0]}/>}
       <Row className="justify-content-md-center" >
         <div style={{  zIndex: 0, maxWidth:'100%'}}>
         <Tags tags={dispTags} setTag={(tag: string, active: boolean) => (tags[tag] = active)}/>
@@ -133,7 +140,7 @@ const Home: React.FC<HomeProps> = ({ dispatch, user }) => {
   if(index % 4 === 0 && index + 3 < listings.Items.length) {
     rowArray.push (<Row xs={1} md={2} lg={4}>
       <Col>
-      <Listing reloadHome={setReloadHome} user={user} userInfo={userInfo} listingId={listingItem.listingId} title={listingItem.title === null ? "No Name" : listingItem.title  } price={listingItem.price} postDate={listingItem.creationTime} pictures={listingItem.pictures}/>
+      <Listing reloadHome={setReloadHome} user={user} userInfo={userInfo} listingId={listingItem.listingId} title={listingItem.title} price={listingItem.price} postDate={listingItem.creationTime} pictures={listingItem.pictures}/>
       </Col>
       <Col>
       <Listing reloadHome={setReloadHome} user={user} userInfo={userInfo} listingId={listings.Items[index + 1].listingId} title={listings.Items[index + 1].title} price={listings.Items[index + 1].price} postDate={listings.Items[index + 1].creationTime} pictures={listings.Items[index + 1].pictures}/>

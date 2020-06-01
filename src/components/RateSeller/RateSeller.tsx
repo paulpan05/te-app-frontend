@@ -24,8 +24,9 @@ interface RateSellerProps {
   listingId: string;
   listingCreationTime: number;
   sellerName: string; 
+  reloadHome: Function; 
 }
-const RateSeller: React.FC<RateSellerProps> = ({ user, sellerName, show, setShow, title, sellerId, buyerId, listingId, listingCreationTime }) => {
+const RateSeller: React.FC<RateSellerProps> = ({ user, sellerName, show, setShow, title, sellerId, buyerId, listingId, listingCreationTime, reloadHome }) => {
   const [starValue, setStarValue] = React.useState<number | null>(2);
   return (
     <Modal className="newModal" show={show} onHide={() => setShow(false)} size="lg" centered backdrop="static"  >
@@ -60,6 +61,7 @@ const RateSeller: React.FC<RateSellerProps> = ({ user, sellerName, show, setShow
                 toast("Something is WRONG");
               }
               setShow(false);
+              reloadHome(true);
             }}
           >
             Mark as Sold
