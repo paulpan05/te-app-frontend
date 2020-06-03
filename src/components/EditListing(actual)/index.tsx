@@ -68,6 +68,7 @@ const EditListing: React.FC<EditListingProps> = ({
   const [toDelFromS3, setToDelFromS3] = useState<string[]>([]); // urls to remove from s3
   const [newUploads, setNewUploads] = useState<any>({}); // newly uploaded pictures/files
   const [form, setForm] = useState<HTMLFormElement>();
+  const [activeIndex, setActiveIndex] = useState(0);
   let titleInput;
   let priceInput;
   let descriptionInput;
@@ -166,7 +167,7 @@ const EditListing: React.FC<EditListingProps> = ({
             <Form.Group as={Col} md={{ span: 5, offset: 1 }}>
               <Form.Label>Add Images</Form.Label>
               <Form.Row className="justify-content-center text-center">
-                <Carousel className={styles.editListingCarousel} >
+                <Carousel activeIndex={activeIndex} onSelect={(selectedIndex, e) => setActiveIndex(selectedIndex)} className={styles.editListingCarousel} >
                   {pictures.length !== 0 ? (
                     pictures.map((src, i) => {
                       return (
@@ -189,6 +190,7 @@ const EditListing: React.FC<EditListingProps> = ({
                                   addedPictureFiles.filter((file) => file !== newUploads[src]),
                                 );
                               }
+                              if (activeIndex !== 0) setActiveIndex(activeIndex - 1);
                               //URL.revokeObjectURL(src); TODO
                             }}
                             className={styles.deleteButton}
@@ -232,6 +234,7 @@ const EditListing: React.FC<EditListingProps> = ({
                       }
                       setPictures(pictures.concat(uploadingPics));
                       setAddedPictureFiles(addedPictureFiles.concat(uploadingPicFiles));
+                      e.target.value = '';
                     }
                   }}
                 />

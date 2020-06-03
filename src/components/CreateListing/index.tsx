@@ -41,6 +41,7 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow, setR
   const [pictureFiles, setPictureFiles]: [File[], Function] = useState([]);
   const [dispValidated, setDispValidated] = useState(false);
   const [form, setForm] = useState<HTMLFormElement>();
+  const [activeIndex, setActiveIndex] = useState(0);
   let titleInput;
   let priceInput;
   let descriptionInput;
@@ -139,7 +140,7 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow, setR
             <Form.Group as={Col} md={{ span: 5, offset: 1 }}>
               <Form.Label>Add Images</Form.Label>
               <Form.Row className="justify-content-center text-center">
-                <Carousel className={styles.editListingCarousel} >
+                <Carousel activeIndex={activeIndex} onSelect={(selectedIndex, e) => setActiveIndex(selectedIndex)} className={styles.editListingCarousel} >
                   {pictures.length !== 0 ? (
                     pictures.map((src, i) => {
                       return (
@@ -162,7 +163,8 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow, setR
                               setPictureFiles(
                                 pictureFiles.filter((file, i) => !(removedPicIndex === i))
                               );
-                              URL.revokeObjectURL(src);
+                              if (activeIndex !== 0) setActiveIndex(activeIndex - 1);
+                              //URL.revokeObjectURL(src);
                             }}
                             className={styles.deleteButton}
                           >
@@ -197,6 +199,7 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow, setR
                       }
                       setPictures(pictures.concat(uploadingPics));
                       setPictureFiles(pictureFiles.concat(uploadingPicFiles));
+                      e.target.value = '';
                     }
                   }}
                 />
