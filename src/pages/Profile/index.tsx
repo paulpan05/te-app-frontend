@@ -180,7 +180,7 @@ const Profile: React.FC<ProfileProps> = ({ user, targetUserId, dispatch, profile
                 onClick={() => setShowReportUser(true)}>
                 Report Seller
               </Button>
-                {targetUserId && <ReportUser show={showReportUser} setShow={setShowReportUser} reportedUserId={targetUserId} reportedUserName={profile.name}/>}</>)}
+                {targetUserId && <ReportUser show={showReportUser} setShow={setShowReportUser} reportedUserId={targetUserId} reportedUserName={profile.name} reportedProfilePicture={profile?.picture} />}</>)}
             </Col>
             <Col lg={7} xl={9}>
               <h2 style={{ textAlign: 'center' }}>

@@ -183,6 +183,7 @@ const ViewListing: React.FC<ViewListingProps> = ({
         listingId={listingId}
         reportedUserName={sellerInfo.name}
         reportedListingName={listingData.title}
+        reportedProfilePicture={sellerInfo.picture}
       />}
 
       {sellerInfo && (

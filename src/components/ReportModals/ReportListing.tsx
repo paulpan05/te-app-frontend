@@ -22,13 +22,14 @@ interface ReportListingProps {
   listingId: string;
   reportedListingName: string
   reportedUserName: string;
+  reportedProfilePicture: string;
 }
 
 const mapStateToProps = (state: rootState) => ({
   user: state.auth.user,
 });
 
-const ReportListing: React.FC<ReportListingProps> = ({ dispatch, user, show, setShow, listingId, reportedListingName, reportedUserName, }) => {
+const ReportListing: React.FC<ReportListingProps> = ({ dispatch, user, show, setShow, listingId, reportedListingName, reportedUserName, reportedProfilePicture }) => {
   const [reportReason, setReportReason] = useState('');
 
   const handleTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -79,7 +80,7 @@ const ReportListing: React.FC<ReportListingProps> = ({ dispatch, user, show, set
               <div className={styles.listingTitle}>{reportedListingName}</div>
             </Row>
             <Row className={styles.pad2}>
-              <img src={ProfileImg} className={styles.sellerPicture} alt="seller" />
+              <img src={reportedProfilePicture} className={styles.sellerPicture} alt="seller" />
               <div className={styles.reportTitle} style={{ paddingLeft: '1rem' }}>
                 Seller: {reportedUserName}
               </div>

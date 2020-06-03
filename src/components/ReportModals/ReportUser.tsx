@@ -21,13 +21,14 @@ interface ReportUserProps {
   setShow: Function;
   reportedUserId: string;
   reportedUserName: string;
+  reportedProfilePicture: string;
 }
 
 const mapStateToProps = (state: rootState) => ({
   user: state.auth.user,
 });
 
-const ReportUser: React.FC<ReportUserProps> = ({ dispatch, user, show, setShow, reportedUserId, reportedUserName}) => {
+const ReportUser: React.FC<ReportUserProps> = ({ dispatch, user, show, setShow, reportedUserId, reportedUserName, reportedProfilePicture }) => {
   const [reportReason, setReportReason] = useState('');
 
   const handleTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -73,7 +74,7 @@ const ReportUser: React.FC<ReportUserProps> = ({ dispatch, user, show, setShow, 
               <div className={styles.reportTitle}>Report User</div>
             </Row>
             <Row className={styles.pad2}>
-              <img src={ProfileImg} className={styles.sellerPicture} alt="seller" />
+              <img src={reportedProfilePicture} className={styles.sellerPicture} alt="seller" />
               <div className={styles.reportTitle} style={{ paddingLeft: '1rem' }}>
                 {reportedUserName}
               </div>
