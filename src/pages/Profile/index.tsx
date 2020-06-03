@@ -102,7 +102,7 @@ const Profile: React.FC<ProfileProps> = ({ user, targetUserId, dispatch, profile
         }
         listings = await fetchListings(user, ids, creationTimes)
        
-        listings.map((listing)=>{
+        if (listings) listings.map((listing)=>{
           listingArray.push(<Listing reloadProfile={setReloadProfile} user={listing.user} title={listing.title} postDate={listing.creationTime} pictures={listing.pictures} price={listing.price} listingId={listing.listingId}/>);
         })
         setBoughtArray(listingArray);
@@ -142,7 +142,7 @@ const Profile: React.FC<ProfileProps> = ({ user, targetUserId, dispatch, profile
   document.body.style.minHeight = '100%';
   return profile ? (
     <>
-      <EditProfile show={showEditProfile} setShow={setShowEditProfile} phoneProp={profile?.phone} pictureProp={profilePicture} nameProp={profile?.name} />
+      <EditProfile show={showEditProfile} setShow={setShowEditProfile} phoneProp={profile?.phone} pictureProp={profilePicture} nameProp={profile?.name} updateProfilePage={getAndSetProfile} />
       <ContactSeller showPopup={contactSeller} setter={contactSellerSetter} sellerInfo={profile} />
 
       <Container className={styles.con} fluid>
@@ -180,7 +180,7 @@ const Profile: React.FC<ProfileProps> = ({ user, targetUserId, dispatch, profile
                 onClick={() => setShowReportUser(true)}>
                 Report Seller
               </Button>
-                {targetUserId && <ReportUser show={showReportUser} setShow={setShowReportUser} reportedUserId={targetUserId} reportedUserName={profile.name} reportedProfilePicture={profile?.picture} />}</>)}
+                {targetUserId && <ReportUser show={showReportUser} setShow={setShowReportUser} reportedUserId={targetUserId} reportedUserName={profile?.name} reportedProfilePicture={profile?.picture} />}</>)}
             </Col>
             <Col lg={7} xl={9}>
               <h2 style={{ textAlign: 'center' }}>

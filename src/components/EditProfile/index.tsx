@@ -29,6 +29,7 @@ interface EditProfileProps {
   phoneProp?: string;
   pictureProp: string;
   nameProp: string;
+  updateProfilePage: Function;
 }
 
 const mapStateToProps = (state: rootState) => ({
@@ -45,6 +46,7 @@ const EditProfile: React.FC<EditProfileProps> = ({
   phoneProp,
   pictureProp,
   nameProp,
+  updateProfilePage,
 }) => {
   const [picture, setPicture] = useState<string>(pictureProp);
   const [pictureFile, setPictureFile] = useState<File>();
@@ -267,6 +269,7 @@ const EditProfile: React.FC<EditProfileProps> = ({
                   if (success) {
                     setShow(false);
                     dispatch(authActions.setProfilePic(picture));
+                    updateProfilePage();
                     toast('Your profile was edited successfully!');
                   } else {
                     toast(

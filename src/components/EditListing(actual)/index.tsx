@@ -387,8 +387,7 @@ const EditListing: React.FC<EditListingProps> = ({
                 );
 
                 if (successAdd && successDelete) {
-                  if (instantChange)
-                    instantChange();
+                  if (instantChange) instantChange();
                   reloadSetter && reloadSetter(true);
                   setShow(false);
                   toast('The listing was successfully edited!');
