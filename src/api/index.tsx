@@ -412,9 +412,9 @@ const updateListing = async (
   pictures?: string[],
   tags?: string[],
   comments?: string[][], // [commentId: string, userId: string, content: string]
-  deleteTag?: boolean,
-  deletePicture?: boolean,
-  deleteComment?: boolean,
+  deleteTags?: boolean,
+  deletePictures?: boolean,
+  deleteComments?: boolean,
 ) => {
   try {
     const idToken = await user?.getIdToken();
@@ -433,9 +433,9 @@ const updateListing = async (
         pictures,
         tags,
         comments,
-        deleteTag,
-        deletePicture,
-        deleteComment,
+        deleteTags,
+        deletePictures,
+        deleteComments,
       }),
     });
 
