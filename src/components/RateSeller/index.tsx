@@ -10,7 +10,6 @@ import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
 // import StarRatings from 'react-star-ratings';
 import Alert from 'react-bootstrap/Alert';
-import ProfileImg from '../../assets/img/sarah.png';
 import RateSeller from './RateSeller';
 import styles from './index.module.scss';
 import {fetchListing, getUserProfile} from '../../api';

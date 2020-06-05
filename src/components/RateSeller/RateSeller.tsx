@@ -10,7 +10,6 @@ import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
 import Rating from '@material-ui/lab/Rating';
 import styles from './index.module.scss';
-import ProfileImg from '../../assets/img/sarah.png';
 import {addUserRating, deleteListingToRate} from '../../api';
 import { toast } from 'react-toastify';
 

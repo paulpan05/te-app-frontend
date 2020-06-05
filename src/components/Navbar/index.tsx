@@ -4,7 +4,6 @@ import { NavDropdown, Nav, Image, DropdownButton, Dropdown } from 'react-bootstr
 import { Redirect } from 'react-router-dom';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import profile from '../../assets/img/sarah.png';
 import b from '../../assets/img/full-app-logo.svg';
 import { authActions } from '../../redux/actions';
 import CreateListing from '../CreateListing/index';

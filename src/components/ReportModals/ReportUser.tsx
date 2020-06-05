@@ -8,7 +8,6 @@ import Card from 'react-bootstrap/Card';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { toast } from 'react-toastify';
-import ProfileImg from '../../assets/img/sarah.png';
 import styles from './index.module.scss';
 import { reportUser } from '../../api';
 import { rootState } from '../../redux/reducers';
@@ -38,16 +37,20 @@ const ReportUser: React.FC<ReportUserProps> = ({ dispatch, user, show, setShow, 
   const handleSubmit = async () => {
     const textVal = reportReason.trim();
     if (!textVal) {
+      toast('Make sure to submit a reason for your report.');
       return;
     }
-    setShow(false);
     const type = 'User Report';
     const reportId = uuidv4();
     const description = textVal;
     const success = await reportUser(user, type, reportId, description, reportedUserId);
-    success
-      ? toast('Report submitted. Thank you for keeping Triton Exchange safe and secure!')
-      : toast('Error submitting report. Please try again!');
+    if (success) {
+      setShow(false);
+      setReportReason('');
+      toast('Report submitted. Thank you for keeping Triton Exchange safe and secure!');
+    } else {
+      toast('Error submitting report. Please try again!');
+    }
   };
 
   return (

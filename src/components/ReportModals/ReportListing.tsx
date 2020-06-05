@@ -8,7 +8,6 @@ import Card from 'react-bootstrap/Card';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { toast } from 'react-toastify';
-import ProfileImg from '../../assets/img/sarah.png';
 import { rootState } from '../../redux/reducers';
 import styles from './index.module.scss';
 import { reportListing } from '../../api';
@@ -39,14 +38,16 @@ const ReportListing: React.FC<ReportListingProps> = ({ dispatch, user, show, set
   const handleSubmit = async () => {
     const textVal = reportReason.trim();
     if (!textVal) {
+      toast('Make sure to submit a reason for your report.');
       return;
     }
-    setShow(false);
     const type = 'Listing Report';
     const reportId = uuidv4();
     const description = textVal;
     const success = await reportListing(user, type, reportId, description, listingId);
     if (success) {
+      setShow(false);
+      setReportReason('');
       toast('Report submitted. Thank you for keeping Triton Exchange safe and secure!');
     } else {
       toast('Error submitting report. Please try again!');

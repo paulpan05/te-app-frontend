@@ -2,7 +2,6 @@ import React, { useState, FormEvent, ChangeEvent, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import styles from './index.module.scss';
-import ProfileImg from '../../assets/img/sarah.png';
 import { v4 as uuidv4 } from 'uuid';
 import { text } from '@fortawesome/fontawesome-svg-core';
 import {getUserProfile} from '../../api';

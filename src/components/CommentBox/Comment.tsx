@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from './index.module.scss';
-import ProfileImg from '../../assets/img/sarah.png';
+import BlankProfile from '../../assets/img/blank-profile-picture.png';
 import FlagImg from '../../assets/img/flag.png';
 import { ReportComment } from '../ReportModals';
 import { getUserProfile } from '../../api';
@@ -16,7 +16,7 @@ interface CommentProps {
 const Comment: React.FC<CommentProps> = ({ currentUser, commentId, userId, content, listingId}) => {
   const [showReportButton, setShowReportButton] = useState(false);
   const [showReportModal, setShowReportModal] = useState(false);
-  const [profilePicture, setProfilePicture] = useState(ProfileImg);
+  const [profilePicture, setProfilePicture] = useState(BlankProfile);
   const [reportedUserName, setReportedUserName] = useState('');
 
   const getProfilePicture = async () => {
