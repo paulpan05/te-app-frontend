@@ -1,24 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
-import Card from 'react-bootstrap/Card';
-import Button from 'react-bootstrap/Button';
 import { Row, Col } from 'react-bootstrap';
-import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart, faSearch } from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import FlowerImg from '../../assets/GreenShirt.png';
 import styles from './index.module.scss';
 import Listing from '../../components/Listing/Listing';
-import TagButton from '../../components/Button';
-import Tags from '../../components/Tags';
 import { getUserProfile, fetchIdListings } from '../../api';
 import { rootState } from '../../redux/reducers';
 
 interface SavedProps {
-  dispatch: Dispatch<any>;
   user: firebase.User | null | undefined;
 }
 
@@ -26,34 +16,32 @@ const mapStateToProps = (state: rootState) => ({
   user: state.auth.user,
 });
 
-const Saved: React.FC<SavedProps> = ({ dispatch, user }) => {
+const Saved: React.FC<SavedProps> = ({ user }) => {
   const [listings, setListings] = useState();
   const [userInfo, userInfoSetter] = useState<any>(null);
 
-  const rowArray = new Array();
+  const rowArray: any = [];
 
-  const callAPI = async () => {
+  const callAPI = useCallback(async () => {
     const userProfile = await getUserProfile(user, undefined, userInfoSetter);
-    const ids = new Array();
-    const creations = new Array();
-    console.log('++++++++', userProfile.savedListings);
+    const ids: any = [];
+    const creations: any = [];
     userProfile.savedListings.map((listing) => {
-      console.log(listing[0]);
       if (!ids.includes(listing[0])) {
         ids.push(listing[0]);
         creations.push(listing[1]);
       }
     });
-    if (ids.length != 0) {
+    if (ids.length !== 0) {
       await fetchIdListings(user, setListings, ids, creations);
     } else {
       setListings(userProfile.savedListings);
     }
-  };
+  }, [user]);
 
   useEffect(() => {
     callAPI();
-  }, [user]);
+  }, [callAPI]);
 
   return (
     <div className="min-vh-100">
@@ -74,7 +62,7 @@ const Saved: React.FC<SavedProps> = ({ dispatch, user }) => {
                     price={aListing.price}
                     postDate={aListing.creationTime}
                     pictures={aListing.pictures}
-                  />{' '}
+                  />
                 </Col>
                 <Col>
                   <Listing
