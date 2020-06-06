@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styles from './index.module.scss';
 import BlankProfile from '../../assets/img/blank-profile-picture.png';
 import FlagImg from '../../assets/img/flag.png';
@@ -13,30 +13,41 @@ interface CommentProps {
   listingId: string;
 }
 
-const Comment: React.FC<CommentProps> = ({ currentUser, commentId, userId, content, listingId}) => {
+const Comment: React.FC<CommentProps> = ({
+  currentUser,
+  commentId,
+  userId,
+  content,
+  listingId,
+}) => {
   const [showReportButton, setShowReportButton] = useState(false);
   const [showReportModal, setShowReportModal] = useState(false);
   const [profilePicture, setProfilePicture] = useState(BlankProfile);
   const [reportedUserName, setReportedUserName] = useState('');
 
-  const getProfilePicture = async () => {
+  const getProfilePicture = useCallback(async () => {
     const userProfile = await getUserProfile(currentUser, userId);
-    if(!userProfile)
-      return
+    if (!userProfile) {
+      return;
+    }
     setProfilePicture(userProfile.picture);
     setReportedUserName(userProfile.name);
-  };
+  }, [currentUser, userId]);
 
-  useEffect(() => {getProfilePicture()}, [currentUser]);
+  useEffect(() => {
+    getProfilePicture();
+  }, [getProfilePicture]);
 
   return (
     <>
-      <ReportComment show={showReportModal} 
-        setShow={setShowReportModal} 
-        userId={userId} listingId={listingId} 
-        commentId={commentId} 
+      <ReportComment
+        show={showReportModal}
+        setShow={setShowReportModal}
+        userId={userId}
+        listingId={listingId}
+        commentId={commentId}
         reportedUserName={reportedUserName}
-        reportedProfilePicture={profilePicture} 
+        reportedProfilePicture={profilePicture}
       />
       <div className={styles.comment}>
         <img src={profilePicture} className={styles.authorPicture} alt="author" />
@@ -44,13 +55,16 @@ const Comment: React.FC<CommentProps> = ({ currentUser, commentId, userId, conte
           className={styles.commentText}
           onMouseEnter={() => {
             setShowReportButton(true);
-            console.log(currentUser?.photoURL);
           }}
           onMouseLeave={() => setShowReportButton(false)}
         >
           {content}
           {showReportButton && (
-            <button className={styles.reportComment} onClick={() => setShowReportModal(true)}>
+            <button
+              type="submit"
+              className={styles.reportComment}
+              onClick={() => setShowReportModal(true)}
+            >
               <img src={FlagImg} alt="report flag" className={styles.reportCommentImg} />
             </button>
           )}

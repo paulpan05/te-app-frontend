@@ -8,16 +8,23 @@ interface CommentListProps {
   listingId: string;
 }
 
-const CommentList: React.FC<CommentListProps> = ({currentUser, commentsData, listingId }) => {
+const CommentList: React.FC<CommentListProps> = ({ currentUser, commentsData, listingId }) => {
   const messagesEndRef = React.useRef<null | HTMLDivElement>(null);
   const scrollToBottom = () => {
     messagesEndRef.current!.scrollIntoView({ behavior: 'smooth' });
   };
 
-
   const commentNodes = commentsData.map((comment: string[]) => {
-    if (!comment[0]) return;
-    return <Comment currentUser={currentUser} commentId={comment[0]} userId={comment[1]} content={comment[2]} listingId={listingId} />;
+    if (!comment[0]) return undefined;
+    return (
+      <Comment
+        currentUser={currentUser}
+        commentId={comment[0]}
+        userId={comment[1]}
+        content={comment[2]}
+        listingId={listingId}
+      />
+    );
   });
 
   React.useEffect(scrollToBottom, [commentNodes]);
