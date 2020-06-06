@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider, connect } from 'react-redux';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
@@ -8,7 +8,6 @@ import 'focus-visible/dist/focus-visible.min';
 import './styles/index.scss';
 import { Dispatch } from 'redux';
 import { ToastContainer, Zoom } from 'react-toastify';
-import { FirebaseError } from 'firebase';
 import * as serviceWorker from './serviceWorker';
 import rootStore from './redux/stores';
 import authActions from './redux/actions/auth';
@@ -21,7 +20,6 @@ import RateBuyerButton from './components/RateBuyer/buttonExample';
 import Profile from './pages/Profile';
 import Saved from './pages/Saved';
 import AllReports from './components/ReportModals/AllReports';
-import { rootState } from './redux/reducers';
 
 interface AppProps {
   dispatch: Dispatch<any>;
@@ -31,8 +29,6 @@ const AppComponent: React.FC<AppProps> = ({ dispatch }) => {
   React.useEffect(() => {
     dispatch(authActions.retrieveUserSession());
   }, [dispatch]);
-
-  const [signingUp, setSigningUp] = useState(false);
 
   return (
     <Switch>

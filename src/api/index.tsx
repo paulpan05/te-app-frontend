@@ -3,7 +3,6 @@ import endpoint from '../configs/endpoint';
 
 const handleFetchNotOk = async (res: Response) => {
   const jsonResult = await res.json();
-  console.log(jsonResult);
   if (!res.ok) {
     throw Error(jsonResult);
   }
@@ -33,7 +32,6 @@ const getUserProfile = async (
     }
     return result;
   } catch (err) {
-    console.log(err);
     return undefined;
   }
 };
@@ -70,12 +68,9 @@ const getListings = async (user: firebase.User | null | undefined, setter: Funct
     const idToken = await user?.getIdToken();
     const response = await fetch(`${endpoint}/listings?idToken=${idToken}`);
     const result = await handleFetchNotOk(response);
-    
     setter(result);
-    //console.log(result);
     return true;
   } catch (err) {
-    console.log(err);
     return false;
   }
 };
@@ -110,12 +105,9 @@ const getListingsBySearch = async (
       `${endpoint}/listings/search?idToken=${idToken}&searchTerm=${searchTerm}`,
     );
     const result = await handleFetchNotOk(response);
-    console.log(`searchTitle=${searchTerm} result=`);
-    // console.log(result);
     setter(result);
     return true;
   } catch (err) {
-    console.log(err);
     return err;
   }
 };
@@ -128,7 +120,6 @@ const getListingsByTags = async (user: firebase.User | null | undefined, tags: s
     // console.log(result);
     return result;
   } catch (err) {
-    console.log(err);
     return false;
   }
 };
@@ -160,11 +151,9 @@ const createListing = async (
         pictures,
       }),
     });
-    const result = await handleFetchNotOk(response);
-    // console.log(result);
+    await handleFetchNotOk(response);
     return true;
   } catch (err) {
-    console.log(err.message);
     return false;
   }
 };
@@ -191,28 +180,10 @@ const userSignup = async (
       }),
     });
 
-    const result = await handleFetchNotOk(response);
+    await handleFetchNotOk(response);
     return true;
   } catch (err) {
     return false;
-  }
-};
-
-const uploadPictures = async (
-  user: firebase.User | null | undefined,
-  pictures: File[],
-) => {
-  try {
-    const pictureURLs = await Promise.all(
-      pictures.map(async picture => uploadPicture(user, picture, true))
-    );
-
-    // success: return the urls
-    console.log(`pictureURLs for uploadPictures: ${pictureURLs}`);
-    return pictureURLs;
-  } catch (err) {
-    console.log(err);
-    return undefined;
   }
 };
 
@@ -242,11 +213,8 @@ const uploadPicture = async (
     }
 
     // success: return the link to access the image
-    console.log("Success! Uploaded file.");
     return `https://triton-exchange-bucket-photos.s3.amazonaws.com/${key}`;
   } catch (err) {
-
-    console.log(err);
     if (throwError) {
       throw err;
     } else {
@@ -255,24 +223,20 @@ const uploadPicture = async (
   }
 };
 
-const deletePictures = async (pictureURLs: string[]) => {
+const uploadPictures = async (user: firebase.User | null | undefined, pictures: File[]) => {
   try {
-    const responses = await Promise.all(
-      pictureURLs.map(async pictureURL => deletePicture(pictureURL, true))
+    const pictureURLs = await Promise.all(
+      pictures.map(async (picture) => uploadPicture(user, picture, true)),
     );
 
-    console.log("Success in deleting all images!");
-    return responses;
+    // success: return the urls
+    return pictureURLs;
   } catch (err) {
-    console.log(err);
     return undefined;
   }
-}
+};
 
-const deletePicture = async (
-  picture: string,
-  throwError?: boolean,
-) => {
+const deletePicture = async (picture: string, throwError?: boolean) => {
   try {
     const response = await fetch(picture, {
       method: 'DELETE',
@@ -284,13 +248,23 @@ const deletePicture = async (
 
     return response;
   } catch (err) {
-    
-    console.log(err);
     if (throwError) {
       throw err;
     } else {
       return undefined;
     }
+  }
+};
+
+const deletePictures = async (pictureURLs: string[]) => {
+  try {
+    const responses = await Promise.all(
+      pictureURLs.map(async (pictureURL) => deletePicture(pictureURL, true)),
+    );
+
+    return responses;
+  } catch (err) {
+    return undefined;
   }
 };
 
@@ -316,10 +290,9 @@ const reportUser = async (
         'Content-Type': 'application/json',
       },
     });
-    const result = await handleFetchNotOk(response);
+    await handleFetchNotOk(response);
     return true;
   } catch (err) {
-    console.log(err);
     return false;
   }
 };
@@ -346,10 +319,9 @@ const reportListing = async (
         'Content-Type': 'application/json',
       },
     });
-    const result = await handleFetchNotOk(response);
+    await handleFetchNotOk(response);
     return true;
   } catch (err) {
-    console.log(err);
     return false;
   }
 };
@@ -378,10 +350,9 @@ const reportComment = async (
         'Content-Type': 'application/json',
       },
     });
-    const result = await handleFetchNotOk(response);
+    await handleFetchNotOk(response);
     return true;
   } catch (err) {
-    console.log(err);
     return false;
   }
 };
@@ -397,7 +368,7 @@ const getReports = async (user: firebase.User | null | undefined) => {
     const result = await handleFetchNotOk(response);
     return result;
   } catch (err) {
-    console.log(err);
+    return undefined;
   }
 };
 
@@ -413,7 +384,7 @@ const updateListing = async (
   tags?: string[],
   comments?: string[][], // [commentId: string, userId: string, content: string]
   deleteTags?: boolean,
-  deletePictures?: boolean,
+  toDeletePictures?: boolean,
   deleteComments?: boolean,
 ) => {
   try {
@@ -434,7 +405,7 @@ const updateListing = async (
         tags,
         comments,
         deleteTags,
-        deletePictures,
+        deletePictures: toDeletePictures,
         deleteComments,
       }),
     });
@@ -465,11 +436,9 @@ const updateComments = async (
         comments,
       }),
     });
-    console.log('comment:' + JSON.stringify(comments));
-    const result = await handleFetchNotOk(response);
+    await handleFetchNotOk(response);
     return true;
   } catch (err) {
-    console.log(err);
     return false;
   }
 };
@@ -495,25 +464,9 @@ const updateProfile = async (
     });
 
     const result = await handleFetchNotOk(response);
-    console.log(result);
     return result;
   } catch (err) {
-    console.log(err.message);
     return undefined;
-  }
-};
-
-const compareUserId = async (
-  user: firebase.User | null | undefined,
-  setter: Function,
-  targetId: string,
-) => {
-  try {
-    const idToken = await user?.getIdToken();
-    if (idToken === targetId) setter(true);
-    return true;
-  } catch (err) {
-    return false;
   }
 };
 
@@ -534,7 +487,7 @@ const saveListing = async (
         'Content-Type': 'application/json',
       },
     });
-    const result = await handleFetchNotOk(response);
+    await handleFetchNotOk(response);
     return true;
   } catch (err) {
     return false;
@@ -557,7 +510,7 @@ const unsaveListing = async (
         'Content-Type': 'application/json',
       },
     });
-    const result = await handleFetchNotOk(response);
+    await handleFetchNotOk(response);
     return true;
   } catch (err) {
     return false;
@@ -586,20 +539,15 @@ const fetchListing = async (
 const searchUser = async (
   user: firebase.User | null | undefined,
   name?: string,
-  email?: string
+  email?: string,
 ) => {
   try {
     const idToken = await user?.getIdToken();
-    let response; 
-    if(name) {
-      response = await fetch(
-        `${endpoint}/users/search?idToken=${idToken}&name=${name}`,
-      );
-    }
-    else {
-      response = await fetch(
-        `${endpoint}/users/search?idToken=${idToken}&email=${email}`,
-      );
+    let response;
+    if (name) {
+      response = await fetch(`${endpoint}/users/search?idToken=${idToken}&name=${name}`);
+    } else {
+      response = await fetch(`${endpoint}/users/search?idToken=${idToken}&email=${email}`);
     }
     const result = await handleFetchNotOk(response);
     return result;
@@ -607,7 +555,6 @@ const searchUser = async (
     return undefined;
   }
 };
-
 
 const deleteListing = async (
   user: firebase.User | null | undefined,
@@ -628,7 +575,7 @@ const deleteListing = async (
         tags,
       }),
     });
-    const result = await handleFetchNotOk(response);
+    await handleFetchNotOk(response);
     return true;
   } catch (err) {
     return false;
@@ -656,7 +603,7 @@ const markAsSold = async (
         'Content-Type': 'application/json',
       },
     });
-    const result = await handleFetchNotOk(response);
+    await handleFetchNotOk(response);
     return true;
   } catch (err) {
     return false;
@@ -682,7 +629,7 @@ const addListingToRate = async (
         'Content-Type': 'application/json',
       },
     });
-    const result = await handleFetchNotOk(response);
+    await handleFetchNotOk(response);
     return true;
   } catch (err) {
     return false;
@@ -706,9 +653,7 @@ const deleteListingToRate = async (
         'Content-Type': 'application/json',
       },
     });
-    const result = await handleFetchNotOk(response);
-    console.log("DEELLTEEEEEE");
-    console.log(result);
+    await handleFetchNotOk(response);
     return true;
   } catch (err) {
     return false;
@@ -718,7 +663,7 @@ const deleteListingToRate = async (
 const addUserRating = async (
   user: firebase.User | null | undefined,
   toRateUserId: string,
-  rating: number
+  rating: number,
 ) => {
   try {
     const idToken = await user?.getIdToken();
@@ -726,15 +671,13 @@ const addUserRating = async (
       method: 'POST',
       body: JSON.stringify({
         toRateUserId,
-        rating
+        rating,
       }),
       headers: {
         'Content-Type': 'application/json',
       },
     });
-    const result = await handleFetchNotOk(response);
-    console.log("DEELLTEEEEEE");
-    console.log(result);
+    await handleFetchNotOk(response);
     return true;
   } catch (err) {
     return false;
@@ -770,5 +713,5 @@ export {
   searchUser,
   addListingToRate,
   addUserRating,
-  deleteListingToRate
+  deleteListingToRate,
 };
