@@ -43,7 +43,6 @@ const Comment: React.FC<CommentProps> = ({
       <ReportComment
         show={showReportModal}
         setShow={setShowReportModal}
-        userId={userId}
         listingId={listingId}
         commentId={commentId}
         reportedUserName={reportedUserName}
