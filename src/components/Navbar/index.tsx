@@ -31,16 +31,18 @@ const Navbar: React.FC<NavbarProps> = ({ user, dispatch, profilePicture }) => {
       const result = await getUserProfile(user);
       dispatch(authActions.setProfilePic(result.picture));
     }
-  }
+  };
 
   useEffect(() => {
     getAndSetProfile();
-  }, [user]);
+  }, [getAndSetProfile, user]);
 
   return (
     <div>
       <NavBar collapseOnSelect className={styles.navbar} expand="lg" variant="dark">
-        <NavBar.Brand className="hoverPointer" onClick={() => redirectTo('/')}>Triton Exchange</NavBar.Brand>
+        <NavBar.Brand className="hoverPointer" onClick={() => redirectTo('/')}>
+          Triton Exchange
+        </NavBar.Brand>
         <NavBar.Toggle aria-controls="responsive-navbar-nav" />
         <NavBar.Collapse id="responsive-navbar-nav">
           <Nav className="ml-auto">
@@ -71,8 +73,6 @@ const Navbar: React.FC<NavbarProps> = ({ user, dispatch, profilePicture }) => {
       </NavBar>
 
       <Redirect to={redirect} />
-
-     
     </div>
   );
 };

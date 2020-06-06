@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import styles from '../Button/index.module.scss';
 import Button from 'react-bootstrap/Button';
+import styles from '../Button/index.module.scss';
 
 interface TagsDivProps {
   tags: string[];

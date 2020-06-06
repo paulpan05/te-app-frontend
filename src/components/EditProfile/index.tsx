@@ -93,7 +93,10 @@ const EditProfile: React.FC<EditProfileProps> = ({
       <Card>
         <Container>
           <Row className="justify-content-center text-center">
-            <h1>Hi {nameProp}, Edit Your Profile Below</h1>
+            <h1>
+Hi{nameProp}
+, Edit Your Profile Below
+</h1>
           </Row>
 
           <Form validated={dispValidated}>
@@ -122,11 +125,18 @@ const EditProfile: React.FC<EditProfileProps> = ({
                         onClick={async () => {
                           const croppedPic = await cropImage();
                           if (croppedPic) {
-                            setPictureFile(new File([croppedPic], "profilePicture.jpeg", { type: "image/jpeg", lastModified: Date.now() }));
+                            setPictureFile(
+                              new File([croppedPic], 'profilePicture.jpeg', {
+                                type: 'image/jpeg',
+                                lastModified: Date.now(),
+                              }),
+                            );
                             setPicture(URL.createObjectURL(croppedPic));
                           } else {
                             console.log('Error while trying to parse the uploaded picture!');
-                            toast('Error while trying to crop your image! Please upload a different picture');
+                            toast(
+                              'Error while trying to crop your image! Please upload a different picture',
+                            );
                           }
                           setCropping(false);
                         }}
@@ -245,21 +255,24 @@ const EditProfile: React.FC<EditProfileProps> = ({
                     // upload new profile picture to s3
                     pictureURL = await uploadPicture(user, pictureFile);
                     if (pictureURL) {
-                      console.log("Done uploading profile picture to s3, url: ", pictureURL);
+                      console.log('Done uploading profile picture to s3, url: ', pictureURL);
                     } else {
-                      console.log("Error while uploading the profile picture!");
-                      toast('An error occurred while uploading your profile picture! Please try reuploading or reload the page.');
+                      console.log('Error while uploading the profile picture!');
+                      toast(
+                        'An error occurred while uploading your profile picture! Please try reuploading or reload the page.',
+                      );
                       return;
                     }
-                    
-                    // delete old profile picture. TODO check if old profile picture was Google's 
+
+                    // delete old profile picture. TODO check if old profile picture was Google's
                     const success = await deletePicture(pictureProp);
                     if (success) {
                       console.log('successfully deleted old profile picture from s3.');
                     } else {
-                      console.log('Error: failed to delete old profile picture from s3. continue to upload new profile picture anyways.');
+                      console.log(
+                        'Error: failed to delete old profile picture from s3. continue to upload new profile picture anyways.',
+                      );
                     }
-                    
                   } else {
                     pictureURL = undefined;
                   }

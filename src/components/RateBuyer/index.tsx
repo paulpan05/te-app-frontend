@@ -8,10 +8,10 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
-import styles from './index.module.scss';
 import Rating from '@material-ui/lab/Rating';
-import {searchUser, markAsSold, addListingToRate, addUserRating} from '../../api';
 import { toast } from 'react-toastify';
+import styles from './index.module.scss';
+import { searchUser, markAsSold, addListingToRate, addUserRating } from '../../api';
 
 interface RateBuyerProps {
   dispatch: Dispatch<any>;
@@ -19,30 +19,51 @@ interface RateBuyerProps {
   setShow: Function;
   title: string;
   user: firebase.User | null | undefined;
-  sellerInfo: any; 
+  sellerInfo: any;
   listingData: any;
   setReload?: Function;
-  closeListing?: Function; 
+  closeListing?: Function;
 }
 
-const RateBuyer: React.FC<RateBuyerProps> = ({ dispatch, show, setShow, title , user, sellerInfo, listingData, setReload, closeListing}) => {
+const RateBuyer: React.FC<RateBuyerProps> = ({
+  dispatch,
+  show,
+  setShow,
+  title,
+  user,
+  sellerInfo,
+  listingData,
+  setReload,
+  closeListing,
+}) => {
   const [starValue, setStarValue] = React.useState<number | null>(2);
-  const [buyerName, setBuyerName] = useState("");
+  const [buyerName, setBuyerName] = useState('');
 
   const callAPI = async () => {
     let userProfile;
-    if(buyerName.includes('@')) {
+    if (buyerName.includes('@')) {
       userProfile = await searchUser(user, undefined, buyerName);
     } else {
       userProfile = await searchUser(user, buyerName);
-    } 
-    
-    if(userProfile.length != 0) {
-      await markAsSold(user, listingData.listingId, listingData.creationTime, sellerInfo.userId, userProfile[0].userId);
-      //TODO: how do i update the buyers rating
-      await addUserRating(user, userProfile[0].userId, starValue?starValue: 1); 
+    }
+
+    if (userProfile.length != 0) {
+      await markAsSold(
+        user,
+        listingData.listingId,
+        listingData.creationTime,
+        sellerInfo.userId,
+        userProfile[0].userId,
+      );
+      // TODO: how do i update the buyers rating
+      await addUserRating(user, userProfile[0].userId, starValue || 1);
       // await addBuyerRating();
-      await addListingToRate(user, userProfile[0].userId, listingData.listingId, listingData.creationTime);
+      await addListingToRate(
+        user,
+        userProfile[0].userId,
+        listingData.listingId,
+        listingData.creationTime,
+      );
       toast(`Successfully Marked Listing as Sold`);
     } else {
       toast(`No Such User as ${buyerName} found. Try again!`);
@@ -55,7 +76,7 @@ const RateBuyer: React.FC<RateBuyerProps> = ({ dispatch, show, setShow, title , 
     //     ids.push(listing[0]);
     //     creations.push(listing[1]);
     // });
-  }
+  };
   return (
     <Modal show={show} onHide={() => setShow(false)} size="lg" dialogClassName={styles.soldDialog}>
       <h1 className="mx-auto text-center">Rate Seller</h1>
@@ -63,7 +84,14 @@ const RateBuyer: React.FC<RateBuyerProps> = ({ dispatch, show, setShow, title , 
         <h4 className="mx-auto">{title}</h4>
         <Form.Row className="justify-content-center">
           <Form.Group as={Col} className="text-center">
-            <Form.Control placeholder="Enter Buyer Name" className={styles.input} required onChange={(e) => {setBuyerName(e.target.value);}} />
+            <Form.Control
+              placeholder="Enter Buyer Name"
+              className={styles.input}
+              required
+              onChange={(e) => {
+                setBuyerName(e.target.value);
+              }}
+            />
           </Form.Group>
         </Form.Row>
 
@@ -85,10 +113,10 @@ const RateBuyer: React.FC<RateBuyerProps> = ({ dispatch, show, setShow, title , 
           <Button
             className={styles.button}
             onClick={() => {
-              if(buyerName.length !== 0) {
+              if (buyerName.length !== 0) {
                 callAPI();
               } else {
-                toast("No Buyer Name Entered. Try Again.");
+                toast('No Buyer Name Entered. Try Again.');
               }
             }}
           >

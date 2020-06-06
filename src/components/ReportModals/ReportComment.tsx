@@ -8,10 +8,10 @@ import Card from 'react-bootstrap/Card';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { toast } from 'react-toastify';
+import { v4 as uuidv4 } from 'uuid';
 import { rootState } from '../../redux/reducers';
 import styles from './index.module.scss';
 import { reportComment } from '../../api';
-import { v4 as uuidv4 } from 'uuid';
 
 interface ReportCommentProps {
   dispatch?: Dispatch<any>;
@@ -29,7 +29,17 @@ const mapStateToProps = (state: rootState) => ({
   user: state.auth.user,
 });
 
-const ReportComment: React.FC<ReportCommentProps> = ({ dispatch, user, show, setShow, userId, listingId, commentId, reportedUserName, reportedProfilePicture }) => {
+const ReportComment: React.FC<ReportCommentProps> = ({
+  dispatch,
+  user,
+  show,
+  setShow,
+  userId,
+  listingId,
+  commentId,
+  reportedUserName,
+  reportedProfilePicture,
+}) => {
   const [reportReason, setReportReason] = useState('');
 
   const handleTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -45,14 +55,7 @@ const ReportComment: React.FC<ReportCommentProps> = ({ dispatch, user, show, set
     const type = 'Comment Report';
     const reportId = uuidv4();
     const description = textVal;
-    const success = await reportComment(
-      user,
-      type,
-      reportId,
-      description,
-      listingId,
-      commentId,
-    );
+    const success = await reportComment(user, type, reportId, description, listingId, commentId);
     if (success) {
       setShow(false);
       setReportReason('');

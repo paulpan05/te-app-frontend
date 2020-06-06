@@ -42,9 +42,7 @@ const DeletePopup: React.FC<DeletePopupProps> = ({
             <Card className={styles.deleteCard}>
               <Row className={styles.pad}>
                 <Col className="popup blueColor">
-                  <p className="subHeader">
-                    Are you sure you want to delete this listing?
-                  </p>
+                  <p className="subHeader">Are you sure you want to delete this listing?</p>
                   <div className="mt-auto">
                     {/* Hides the listing and shows toast indicating listing was deleted */}
                     <button

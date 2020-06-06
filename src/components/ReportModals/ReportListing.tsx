@@ -8,10 +8,10 @@ import Card from 'react-bootstrap/Card';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { toast } from 'react-toastify';
+import { v4 as uuidv4 } from 'uuid';
 import { rootState } from '../../redux/reducers';
 import styles from './index.module.scss';
 import { reportListing } from '../../api';
-import { v4 as uuidv4 } from 'uuid';
 
 interface ReportListingProps {
   dispatch?: Dispatch<any>;
@@ -19,7 +19,7 @@ interface ReportListingProps {
   show: boolean;
   setShow: Function;
   listingId: string;
-  reportedListingName: string
+  reportedListingName: string;
   reportedUserName: string;
   reportedProfilePicture: string;
 }
@@ -28,7 +28,16 @@ const mapStateToProps = (state: rootState) => ({
   user: state.auth.user,
 });
 
-const ReportListing: React.FC<ReportListingProps> = ({ dispatch, user, show, setShow, listingId, reportedListingName, reportedUserName, reportedProfilePicture }) => {
+const ReportListing: React.FC<ReportListingProps> = ({
+  dispatch,
+  user,
+  show,
+  setShow,
+  listingId,
+  reportedListingName,
+  reportedUserName,
+  reportedProfilePicture,
+}) => {
   const [reportReason, setReportReason] = useState('');
 
   const handleTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {

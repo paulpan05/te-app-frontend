@@ -30,28 +30,20 @@ const AllReports: React.FC<HomeProps> = ({ user }) => {
               reportedUserId?: string;
               commentId?: string;
             }) => {
-              let str =
-                '\n\r' +
-                'type: ' +
-                report.type +
-                '\n\rreportId: ' +
-                report.reportId +
-                '\n\ruserId: ' +
-                report.userId +
-                '\n\rdescription: ' +
-                report.description +
-                '\n\rId: ' +
-                (report.listingId ? report.listingId : '') +
-                (report.reportedUserId ? report.reportedUserId : '') +
-                (report.commentId ? report.commentId : '') +
-                '\n\r';
-              //let str1 = reportString.concat(str);
+              const str = `${'\n\r' + 'type: '}${report.type}\n\rreportId: ${
+                report.reportId
+              }\n\ruserId: ${report.userId}\n\rdescription: ${report.description}\n\rId: ${
+                report.listingId ? report.listingId : ''
+              }${report.reportedUserId ? report.reportedUserId : ''}${
+                report.commentId ? report.commentId : ''
+              }\n\r`;
+              // let str1 = reportString.concat(str);
               updateReportString((reportString) => reportString.concat(str));
-              //console.log(str1);
+              // console.log(str1);
             },
           );
 
-          //updateReportString(JSON.stringify(reports));
+          // updateReportString(JSON.stringify(reports));
         }}
         type="submit"
       >
