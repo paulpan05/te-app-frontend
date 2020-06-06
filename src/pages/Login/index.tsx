@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { Redirect } from 'react-router-dom';
@@ -6,7 +6,8 @@ import { authActions } from '../../redux/actions';
 import { rootState } from '../../redux/reducers';
 import styles from './index.module.scss';
 import AppLogo from '../../assets/img/full-app-logo.svg';
-import {getUserProfile} from '../../api';
+import { getUserProfile } from '../../api';
+
 interface LoginProps {
   dispatch: Dispatch<any>;
   user: firebase.User | null | undefined;
@@ -18,28 +19,24 @@ const mapStateToProps = (state: rootState) => ({
   loggingIn: state.auth.loggingIn,
 });
 
-const Login: React.FC<LoginProps> = ({ dispatch, user, loggingIn }) =>
-{
+const Login: React.FC<LoginProps> = ({ dispatch, user, loggingIn }) => {
   const [userProfile, setUserProfile] = useState();
 
-  const loginFunction = async () => {
+  const loginFunction = useCallback(async () => {
     const result = await getUserProfile(user);
     if (!result) {
       setUserProfile(null);
-    }
-    else {
+    } else {
       setUserProfile(true);
     }
-  }
-  useEffect(() => {
-    if (user) 
-      loginFunction();
   }, [user]);
-  return (
-  user ? (
+  useEffect(() => {
+    if (user) loginFunction();
+  }, [loginFunction, user]);
+  return user ? (
     <>
-    {userProfile===true && <Redirect to="/"/>}
-    {userProfile===null && <Redirect to="/signup"/>}
+      {userProfile === true && <Redirect to="/" />}
+      {userProfile === null && <Redirect to="/signup" />}
     </>
   ) : (
     <div className={styles.background}>
@@ -59,6 +56,6 @@ const Login: React.FC<LoginProps> = ({ dispatch, user, loggingIn }) =>
       </div>
       <div className={styles.aboutContainer} />
     </div>
-  ));
-}
+  );
+};
 export default connect(mapStateToProps)(Login);
