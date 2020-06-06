@@ -43,7 +43,6 @@ const Rate: React.FC<RateProps> = ({ user, listingId, creationTime, sellerId, re
           picture={sellerPic}
           reloadHome={reloadHome}
           sellerName={sellerName}
-          buyerId={listing[0].soldTo}
           listingId={listing[0].listingId}
           listingCreationTime={listing[0].creationTime}
           title={listing[0].title}

@@ -56,7 +56,6 @@ const Saved: React.FC<SavedProps> = ({ user }) => {
                   <Listing
                     instantChange={callAPI}
                     user={user}
-                    userInfo={userInfo}
                     listingId={aListing.listingId}
                     title={aListing.title}
                     price={aListing.price}
@@ -68,7 +67,6 @@ const Saved: React.FC<SavedProps> = ({ user }) => {
                   <Listing
                     instantChange={callAPI}
                     user={user}
-                    userInfo={userInfo}
                     listingId={listings[index + 1].listingId}
                     title={listings[index + 1].title}
                     price={listings[index + 1].price}
@@ -80,7 +78,6 @@ const Saved: React.FC<SavedProps> = ({ user }) => {
                   <Listing
                     instantChange={callAPI}
                     user={user}
-                    userInfo={userInfo}
                     listingId={listings[index + 2].listingId}
                     title={listings[index + 2].title}
                     price={listings[index + 2].price}
@@ -92,7 +89,6 @@ const Saved: React.FC<SavedProps> = ({ user }) => {
                   <Listing
                     instantChange={callAPI}
                     user={user}
-                    userInfo={userInfo}
                     listingId={listings[index + 3].listingId}
                     title={listings[index + 3].title}
                     price={listings[index + 3].price}
@@ -108,7 +104,6 @@ const Saved: React.FC<SavedProps> = ({ user }) => {
                 <Listing
                   instantChange={callAPI}
                   user={user}
-                  userInfo={userInfo}
                   listingId={aListing.listingId}
                   title={aListing.title}
                   price={aListing.price}
@@ -123,7 +118,6 @@ const Saved: React.FC<SavedProps> = ({ user }) => {
                 <Listing
                   instantChange={callAPI}
                   user={user}
-                  userInfo={userInfo}
                   listingId={aListing.listingId}
                   title={aListing.title}
                   price={aListing.price}
@@ -133,7 +127,6 @@ const Saved: React.FC<SavedProps> = ({ user }) => {
                 <Listing
                   instantChange={callAPI}
                   user={user}
-                  userInfo={userInfo}
                   listingId={listings[index + 1].listingId}
                   title={listings[index + 1].title}
                   price={listings[index + 1].price}
@@ -149,7 +142,6 @@ const Saved: React.FC<SavedProps> = ({ user }) => {
                   <Listing
                     instantChange={callAPI}
                     user={user}
-                    userInfo={userInfo}
                     listingId={aListing.listingId}
                     title={aListing.title}
                     price={aListing.price}
@@ -161,7 +153,6 @@ const Saved: React.FC<SavedProps> = ({ user }) => {
                   <Listing
                     instantChange={callAPI}
                     user={user}
-                    userInfo={userInfo}
                     listingId={listings[index + 1].listingId}
                     title={listings[index + 1].title}
                     price={listings[index + 1].price}
@@ -173,7 +164,6 @@ const Saved: React.FC<SavedProps> = ({ user }) => {
                   <Listing
                     instantChange={callAPI}
                     user={user}
-                    userInfo={userInfo}
                     listingId={listings[index + 2].listingId}
                     title={listings[index + 2].title}
                     price={listings[index + 2].price}
@@ -194,4 +184,5 @@ const Saved: React.FC<SavedProps> = ({ user }) => {
     </div>
   );
 };
+
 export default connect(mapStateToProps)(Saved);

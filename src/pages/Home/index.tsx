@@ -212,7 +212,6 @@ const Home: React.FC<HomeProps> = ({ user }) => {
                   <Listing
                     reloadHome={setReloadHome}
                     user={user}
-                    userInfo={userInfo}
                     listingId={listingItem.listingId}
                     title={listingItem.title}
                     price={listingItem.price}
@@ -224,7 +223,6 @@ const Home: React.FC<HomeProps> = ({ user }) => {
                   <Listing
                     reloadHome={setReloadHome}
                     user={user}
-                    userInfo={userInfo}
                     listingId={listings.Items[index + 1].listingId}
                     title={listings.Items[index + 1].title}
                     price={listings.Items[index + 1].price}
@@ -236,7 +234,6 @@ const Home: React.FC<HomeProps> = ({ user }) => {
                   <Listing
                     reloadHome={setReloadHome}
                     user={user}
-                    userInfo={userInfo}
                     listingId={listings.Items[index + 2].listingId}
                     title={listings.Items[index + 2].title}
                     price={listings.Items[index + 2].price}
@@ -248,7 +245,6 @@ const Home: React.FC<HomeProps> = ({ user }) => {
                   <Listing
                     reloadHome={setReloadHome}
                     user={user}
-                    userInfo={userInfo}
                     listingId={listings.Items[index + 3].listingId}
                     title={listings.Items[index + 3].title}
                     price={listings.Items[index + 3].price}
@@ -265,7 +261,6 @@ const Home: React.FC<HomeProps> = ({ user }) => {
                   <Listing
                     reloadHome={setReloadHome}
                     user={user}
-                    userInfo={userInfo}
                     listingId={listingItem.listingId}
                     title={listingItem.title}
                     price={listingItem.price}
@@ -282,7 +277,6 @@ const Home: React.FC<HomeProps> = ({ user }) => {
                   <Listing
                     reloadHome={setReloadHome}
                     user={user}
-                    userInfo={userInfo}
                     listingId={listingItem.listingId}
                     title={listingItem.title}
                     price={listingItem.price}
@@ -294,7 +288,6 @@ const Home: React.FC<HomeProps> = ({ user }) => {
                   <Listing
                     reloadHome={setReloadHome}
                     user={user}
-                    userInfo={userInfo}
                     listingId={listings.Items[index + 1].listingId}
                     title={listings.Items[index + 1].title}
                     price={listings.Items[index + 1].price}
@@ -311,7 +304,6 @@ const Home: React.FC<HomeProps> = ({ user }) => {
                   <Listing
                     reloadHome={setReloadHome}
                     user={user}
-                    userInfo={userInfo}
                     listingId={listingItem.listingId}
                     title={listingItem.title}
                     price={listingItem.price}
@@ -323,7 +315,6 @@ const Home: React.FC<HomeProps> = ({ user }) => {
                   <Listing
                     reloadHome={setReloadHome}
                     user={user}
-                    userInfo={userInfo}
                     listingId={listings.Items[index + 1].listingId}
                     title={listings.Items[index + 1].title}
                     price={listings.Items[index + 1].price}
@@ -335,7 +326,6 @@ const Home: React.FC<HomeProps> = ({ user }) => {
                   <Listing
                     reloadHome={setReloadHome}
                     user={user}
-                    userInfo={userInfo}
                     listingId={listings.Items[index + 2].listingId}
                     title={listings.Items[index + 2].title}
                     price={listings.Items[index + 2].price}
@@ -364,7 +354,6 @@ const Home: React.FC<HomeProps> = ({ user }) => {
                   <Listing
                     reloadHome={setReloadHome}
                     user={user}
-                    userInfo={userInfo}
                     listingId={aListing.listingId}
                     title={aListing.title}
                     price={aListing.price}
@@ -376,7 +365,6 @@ const Home: React.FC<HomeProps> = ({ user }) => {
                   <Listing
                     reloadHome={setReloadHome}
                     user={user}
-                    userInfo={userInfo}
                     listingId={searchListings[index + 1].listingId}
                     title={searchListings[index + 1].title}
                     price={searchListings[index + 1].price}
@@ -388,7 +376,6 @@ const Home: React.FC<HomeProps> = ({ user }) => {
                   <Listing
                     reloadHome={setReloadHome}
                     user={user}
-                    userInfo={userInfo}
                     listingId={searchListings[index + 2].listingId}
                     title={searchListings[index + 2].title}
                     price={searchListings[index + 2].price}
@@ -400,7 +387,6 @@ const Home: React.FC<HomeProps> = ({ user }) => {
                   <Listing
                     reloadHome={setReloadHome}
                     user={user}
-                    userInfo={userInfo}
                     listingId={searchListings[index + 3].listingId}
                     title={searchListings[index + 3].title}
                     price={searchListings[index + 3].price}
@@ -416,7 +402,6 @@ const Home: React.FC<HomeProps> = ({ user }) => {
                 <Listing
                   reloadHome={setReloadHome}
                   user={user}
-                  userInfo={userInfo}
                   listingId={aListing.listingId}
                   title={aListing.title}
                   price={aListing.price}
@@ -432,7 +417,6 @@ const Home: React.FC<HomeProps> = ({ user }) => {
                   <Listing
                     reloadHome={setReloadHome}
                     user={user}
-                    userInfo={userInfo}
                     listingId={aListing.listingId}
                     title={aListing.title}
                     price={aListing.price}
@@ -444,7 +428,6 @@ const Home: React.FC<HomeProps> = ({ user }) => {
                   <Listing
                     reloadHome={setReloadHome}
                     user={user}
-                    userInfo={userInfo}
                     listingId={searchListings[index + 1].listingId}
                     title={searchListings[index + 1].title}
                     price={searchListings[index + 1].price}
@@ -461,7 +444,6 @@ const Home: React.FC<HomeProps> = ({ user }) => {
                   <Listing
                     reloadHome={setReloadHome}
                     user={user}
-                    userInfo={userInfo}
                     listingId={aListing.listingId}
                     title={aListing.title}
                     price={aListing.price}
@@ -473,7 +455,6 @@ const Home: React.FC<HomeProps> = ({ user }) => {
                   <Listing
                     reloadHome={setReloadHome}
                     user={user}
-                    userInfo={userInfo}
                     listingId={searchListings[index + 1].listingId}
                     title={searchListings[index + 1].title}
                     price={searchListings[index + 1].price}
@@ -485,7 +466,6 @@ const Home: React.FC<HomeProps> = ({ user }) => {
                   <Listing
                     reloadHome={setReloadHome}
                     user={user}
-                    userInfo={userInfo}
                     listingId={searchListings[index + 2].listingId}
                     title={searchListings[index + 2].title}
                     price={searchListings[index + 2].price}
