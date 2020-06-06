@@ -73,7 +73,7 @@ const auth = (state = initialState, action: AnyAction) => {
       return {
         ...state,
         profilePicture: action.picture,
-      }
+      };
     default:
       return state;
   }

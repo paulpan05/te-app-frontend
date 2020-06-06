@@ -216,13 +216,9 @@ const CreateListing: React.FC<CreateListingProps> = ({ user, show, setShow, setR
                         if (e.target.files[i]) {
                           uploadingPics.push(URL.createObjectURL(e.target.files[i]));
                           uploadingPicFiles.push(
-                            new File(
-                              [e.target.files[i]], 
-                              "listingPicture.jpeg", 
-                              {
-                                lastModified: Date.now()
-                              },
-                            ),
+                            new File([e.target.files[i]], 'listingPicture.jpeg', {
+                              lastModified: Date.now(),
+                            }),
                           );
                         }
                       }

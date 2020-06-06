@@ -1,11 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
 import Form from 'react-bootstrap/Form';
-import FormControl from 'react-bootstrap/FormControl';
-import Image from 'react-bootstrap/Image';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -14,15 +9,13 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Carousel from 'react-bootstrap/Carousel';
 import Card from 'react-bootstrap/Card';
 import { toast } from 'react-toastify';
-import CustomToggleButton from '../CustomToggleButton/index';
-import styles from '../CreateListing/index.module.scss';
-import DeletePopup from '../DeletePopup/index';
-import addPhoto from '../../assets/img/add-photo.png';
-import { rootState } from '../../redux/reducers';
-import { updateListing, uploadPictures, deletePictures } from '../../api/index';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import styles from '../CreateListing/index.module.scss';
+import addPhoto from '../../assets/img/add-photo.png';
+import { rootState } from '../../redux/reducers';
+import { updateListing, uploadPictures, deletePictures } from '../../api/index';
 import TagsDiv from '../Tags/Tags';
 
 interface EditListingProps {
@@ -100,15 +93,19 @@ const EditListing: React.FC<EditListingProps> = ({
       initTags[tag] = false;
     }
   });
-  const [tags, setTags] = useState<any>({...initTags});
-  
+
+  const [tags, setTags] = useState<any>({ ...initTags });
   return (
-    <Modal show={show} onHide={() => {
-      setShow(false);
-      setDispValidated(false);
-    }} size="lg">
+    <Modal
+      show={show}
+      onHide={() => {
+        setShow(false);
+        setDispValidated(false);
+      }}
+      size="lg"
+    >
       <Card className="roundedBorder">
-        <Form validated={dispValidated} className={styles.wrapper} ref={(ref) => setForm(ref) }>
+        <Form validated={dispValidated} className={styles.wrapper} ref={(ref) => setForm(ref)}>
           <Form.Row className="justify-content-center text-center">
             <p className="mediumHeader">Edit Listing</p>
             <button type="button" onClick={() => setShow(false)} className="exitButton exitPad">
@@ -124,7 +121,9 @@ const EditListing: React.FC<EditListingProps> = ({
                 className={styles.input}
                 required
                 maxLength={20}
-                ref={(ref) => (titleInput = ref)}
+                ref={(ref) => {
+                  titleInput = ref;
+                }}
                 defaultValue={titleProp}
               />
 
@@ -137,7 +136,9 @@ const EditListing: React.FC<EditListingProps> = ({
                   min={0}
                   required
                   className={styles.inputWithPrependAndPostpend}
-                  ref={(ref) => (priceInput = ref)}
+                  ref={(ref) => {
+                    priceInput = ref;
+                  }}
                   defaultValue={priceProp}
                 />
                 <InputGroup.Text className={styles.inputPostpend}>.00</InputGroup.Text>
@@ -150,7 +151,9 @@ const EditListing: React.FC<EditListingProps> = ({
                 placeholder="Description..."
                 required
                 className={styles.textarea}
-                ref={(ref) => (descriptionInput = ref)}
+                ref={(ref) => {
+                  descriptionInput = ref;
+                }}
                 defaultValue={descriptionProp}
               />
 
@@ -160,19 +163,25 @@ const EditListing: React.FC<EditListingProps> = ({
                 placeholder="Price Center"
                 defaultValue={locationProp}
                 className={styles.input}
-                ref={(ref) => (locationInput = ref)}
+                ref={(ref) => {
+                  locationInput = ref;
+                }}
               />
             </Form.Group>
 
             <Form.Group as={Col} md={{ span: 5, offset: 1 }}>
               <Form.Label>Add Images</Form.Label>
               <Form.Row className="justify-content-center text-center">
-                <Carousel activeIndex={activeIndex} onSelect={(selectedIndex, e) => setActiveIndex(selectedIndex)} className={styles.editListingCarousel} >
+                <Carousel
+                  activeIndex={activeIndex}
+                  onSelect={(selectedIndex) => setActiveIndex(selectedIndex)}
+                  className={styles.editListingCarousel}
+                >
                   {pictures.length !== 0 ? (
                     pictures.map((src, i) => {
                       return (
                         <Carousel.Item key={i}>
-                          <img src={src} className={styles.carouselImage} />
+                          <img src={src} className={styles.carouselImage} alt="carousel" />
                           <button
                             type="button"
                             onClick={() => {
@@ -191,7 +200,6 @@ const EditListing: React.FC<EditListingProps> = ({
                                 );
                               }
                               if (activeIndex !== 0) setActiveIndex(activeIndex - 1);
-                              //URL.revokeObjectURL(src); TODO
                             }}
                             className={styles.deleteButton}
                           >
@@ -202,7 +210,7 @@ const EditListing: React.FC<EditListingProps> = ({
                     })
                   ) : (
                     <Carousel.Item key={0}>
-                      <img src={addPhoto} />
+                      <img src={addPhoto} alt="add" />
                     </Carousel.Item>
                   )}
                 </Carousel>
@@ -218,7 +226,7 @@ const EditListing: React.FC<EditListingProps> = ({
                     if (e.target.files && e.target.files.length > 0) {
                       const uploadingPics: string[] = [];
                       const uploadingPicFiles: File[] = [];
-                      for (let i = 0; i < e.target.files.length; i++) {
+                      for (let i = 0; i < e.target.files.length; i += 1) {
                         if (e.target.files[i]) {
                           const picURL = URL.createObjectURL(e.target.files[i]);
                           const picFile = new File([e.target.files[i]], e.target.files[i].name, {
@@ -249,9 +257,9 @@ const EditListing: React.FC<EditListingProps> = ({
                 tags={dispTags}
                 initialActiveTags={tagsProp}
                 setTag={(tag: string, active: boolean) => {
-                  const temp = {...tags};
+                  const temp = { ...tags };
                   temp[tag] = active;
-                  setTags({...temp});
+                  setTags({ ...temp });
                 }}
               />
             </Form.Row>
@@ -265,23 +273,22 @@ const EditListing: React.FC<EditListingProps> = ({
                 setDispValidated(true);
 
                 // check if forms are valid
-                if (!form?.checkValidity() || !(titleInput && priceInput && descriptionInput && locationInput)) {
-                  console.log('not all forms are valid!');
+                if (
+                  !form?.checkValidity() ||
+                  !(titleInput && priceInput && descriptionInput && locationInput)
+                ) {
                   toast('Make sure to fill out all necessary forms before submitting!');
                   return;
                 }
                 if (pictures.length <= 0) {
-                  console.log('need to provide at least 1 picture.');
                   toast('Make sure to upload at least 1 photo before submitting');
                   return;
                 }
-                console.log('all forms are valid!');
-
                 // extract values from form and check if they've been changed
                 const title = titleInput.value;
                 const parsedTitle = title !== titleProp ? title : undefined;
 
-                const price = parseInt(priceInput.value);
+                const price = Number(priceInput.value);
                 const parsedPrice = price !== priceProp ? price : undefined;
 
                 const description = descriptionInput.value;
@@ -289,31 +296,19 @@ const EditListing: React.FC<EditListingProps> = ({
 
                 const location = locationInput.value;
                 const parsedLocation = location !== locationProp ? location : undefined;
-                console.log(
-                  `(undefined = unchanged) title: ${parsedTitle}, price: ${parsedPrice}, description: ${parsedDescription}, location: ${parsedLocation}`,
-                );
 
                 // extract the tags
                 const parsedTags = dispTags.filter((tag) => tags[tag]);
                 const addedTags = parsedTags.filter((tag) => !tagsProp.includes(tag));
                 const deletedTags = tagsProp.filter((tag) => !parsedTags.includes(tag));
-                console.log(`all tags: ${parsedTags}`);
-                console.log(`tags added: ${addedTags}`);
-                console.log(`tags deleted: ${deletedTags}`);
 
                 // upload new pictures from s3
                 let addedPictureURLs;
                 if (addedPictureFiles.length > 0) {
                   // if uploaded pictures
                   addedPictureURLs = await uploadPictures(user, addedPictureFiles);
-                  if (addedPictureURLs) {
-                    console.log(
-                      'Successfully uploaded listing pictures to s3, urls: ',
-                      addedPictureURLs,
-                    );
-                  } else {
+                  if (!addedPictureURLs) {
                     // error while uploading
-                    console.log('Error while uploading the profile picture!');
                     toast(
                       'An error occurred while uploading your listing pictures! Please try resubmitting or reuploading.',
                     );
@@ -321,37 +316,15 @@ const EditListing: React.FC<EditListingProps> = ({
                   }
                 } else {
                   // no pictures to upload
-                  console.log('No listing pictures to upload.');
                   addedPictureURLs = [];
-                  /*
-                  if (pictures.length > 0) {
-                    addedPictureURLs = [];
-                  } else {
-                    // upload the default picture
-                    addedPictureURLs = await uploadPicture(user, new File());
-                    addedPictureURLs = ["https://triton-exchange-bucket-photos.s3.amazonaws.com/full-app-logo.svg"];
-                  }*/
                 }
-
-                // check which photos have been deleted
-                console.log(`Pictures to delete from s3: ${toDelFromS3}`);
 
                 // delete deleted pictures from s3
                 if (toDelFromS3.length > 0) {
                   // if uploaded pictures
-                  const success = await deletePictures(toDelFromS3);
-                  if (success) {
-                    console.log('Successfully deleted listing pictures that the user removed!');
-                  } else {
-                    console.log(
-                      'Error: failed to delete old listing pictures from s3. Continue to update listing anyways.',
-                    );
-                  }
-                } else {
-                  console.log('No listing pictures to delete.');
+                  await deletePictures(toDelFromS3);
                 }
 
-                console.log('about to run the api to add info to the listing');
                 const successAdd = await updateListing(
                   user,
                   listingId,
@@ -368,7 +341,6 @@ const EditListing: React.FC<EditListingProps> = ({
                   undefined,
                 );
 
-                console.log('about to run the api to delete info from the listing');
                 // delete old pictures and tags here
                 const successDelete = await updateListing(
                   user,
@@ -388,7 +360,9 @@ const EditListing: React.FC<EditListingProps> = ({
 
                 if (successAdd && successDelete) {
                   if (instantChange) instantChange();
-                  reloadSetter && reloadSetter(true);
+                  if (reloadSetter) {
+                    reloadSetter(true);
+                  }
                   setShow(false);
                   toast('The listing was successfully edited!');
                 } else {

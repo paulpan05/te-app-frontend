@@ -1,6 +1,5 @@
 import React, { useState, ChangeEvent } from 'react';
 import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
 import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -8,13 +7,12 @@ import Card from 'react-bootstrap/Card';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { toast } from 'react-toastify';
+import { v4 as uuidv4 } from 'uuid';
 import styles from './index.module.scss';
 import { reportUser } from '../../api';
 import { rootState } from '../../redux/reducers';
-import { v4 as uuidv4 } from 'uuid';
 
 interface ReportUserProps {
-  dispatch?: Dispatch<any>;
   user?: firebase.User | null | undefined;
   show: boolean;
   setShow: Function;
@@ -27,7 +25,14 @@ const mapStateToProps = (state: rootState) => ({
   user: state.auth.user,
 });
 
-const ReportUser: React.FC<ReportUserProps> = ({ dispatch, user, show, setShow, reportedUserId, reportedUserName, reportedProfilePicture }) => {
+const ReportUser: React.FC<ReportUserProps> = ({
+  user,
+  show,
+  setShow,
+  reportedUserId,
+  reportedUserName,
+  reportedProfilePicture,
+}) => {
   const [reportReason, setReportReason] = useState('');
 
   const handleTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
