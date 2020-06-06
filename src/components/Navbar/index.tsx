@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import NavBar from 'react-bootstrap/Navbar';
-import { NavDropdown, Nav, Image, DropdownButton, Dropdown } from 'react-bootstrap';
+import { NavDropdown, Nav, Dropdown } from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import b from '../../assets/img/full-app-logo.svg';
 import { authActions } from '../../redux/actions';
-import CreateListing from '../CreateListing/index';
 import styles from './index.module.scss';
 import { rootState } from '../../redux/reducers';
 import { getUserProfile } from '../../api/index';
@@ -24,14 +22,13 @@ const mapStateToProps = (state: rootState) => ({
 
 const Navbar: React.FC<NavbarProps> = ({ user, dispatch, profilePicture }) => {
   const [redirect, redirectTo] = useState('/');
-  const [showCreateListing, setShowCreateListing] = useState(false);
 
-  const getAndSetProfile = async () => {
+  const getAndSetProfile = useCallback(async () => {
     if (user) {
       const result = await getUserProfile(user);
       dispatch(authActions.setProfilePic(result.picture));
     }
-  };
+  }, [dispatch, user]);
 
   useEffect(() => {
     getAndSetProfile();

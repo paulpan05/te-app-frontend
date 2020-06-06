@@ -1,20 +1,15 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
 import Modal from 'react-bootstrap/Modal';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import FormControl from 'react-bootstrap/FormControl';
 import Rating from '@material-ui/lab/Rating';
 import { toast } from 'react-toastify';
 import styles from './index.module.scss';
 import { searchUser, markAsSold, addListingToRate, addUserRating } from '../../api';
 
 interface RateBuyerProps {
-  dispatch: Dispatch<any>;
   show: boolean;
   setShow: Function;
   title: string;
@@ -26,7 +21,6 @@ interface RateBuyerProps {
 }
 
 const RateBuyer: React.FC<RateBuyerProps> = ({
-  dispatch,
   show,
   setShow,
   title,
@@ -47,7 +41,7 @@ const RateBuyer: React.FC<RateBuyerProps> = ({
       userProfile = await searchUser(user, buyerName);
     }
 
-    if (userProfile.length != 0) {
+    if (userProfile.length !== 0) {
       await markAsSold(
         user,
         listingData.listingId,
@@ -69,8 +63,8 @@ const RateBuyer: React.FC<RateBuyerProps> = ({
       toast(`No Such User as ${buyerName} found. Try again!`);
     }
     setShow(false);
-    setReload && setReload(true);
-    closeListing && closeListing(false);
+    if (setReload) setReload(true);
+    if (closeListing) closeListing(false);
     // userProfile.savedListings.map((listing) => {
     //     console.log(listing[0]);
     //     ids.push(listing[0]);

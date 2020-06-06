@@ -1,13 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
 import Modal from 'react-bootstrap/Modal';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import FormControl from 'react-bootstrap/FormControl';
 import Rating from '@material-ui/lab/Rating';
 import { toast } from 'react-toastify';
 import styles from './index.module.scss';
@@ -19,13 +15,13 @@ interface RateSellerProps {
   setShow: Function;
   title: string;
   sellerId: string;
-  buyerId: string;
   listingId: string;
   listingCreationTime: number;
   sellerName: string;
   reloadHome: Function;
   picture: string;
 }
+
 const RateSeller: React.FC<RateSellerProps> = ({
   user,
   sellerName,
@@ -34,7 +30,6 @@ const RateSeller: React.FC<RateSellerProps> = ({
   setShow,
   title,
   sellerId,
-  buyerId,
   listingId,
   listingCreationTime,
   reloadHome,
@@ -52,7 +47,7 @@ const RateSeller: React.FC<RateSellerProps> = ({
       <h1 className="mx-auto text-center">Recent Purchase!</h1>
       <Form className="text-center">
         <h3 className="mx-auto">{title}</h3>
-        <img className={styles.profilePicture} src={picture} />
+        <img className={styles.profilePicture} src={picture} alt="profile" />
         <h4 className="mx-auto">
           Sold By:
           {sellerName}
@@ -91,4 +86,5 @@ const RateSeller: React.FC<RateSellerProps> = ({
     </Modal>
   );
 };
+
 export default connect()(RateSeller);
