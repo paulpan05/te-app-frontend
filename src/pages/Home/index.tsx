@@ -85,8 +85,8 @@ const Home: React.FC<HomeProps> = ({ user }) => {
   };
 
   const onKeyPressed = async (e) => {
-    if (e.keyCode == 13) {
-      if (searchInput.length != 0) {
+    if (e.keyCode === 13) {
+      if (searchInput.length !== 0) {
         await getListingsBySearch(user, searchInput, setSearchListings);
         setListings(null);
         rowArray = [];
@@ -99,7 +99,6 @@ const Home: React.FC<HomeProps> = ({ user }) => {
   };
 
   useEffect(() => {
-    console.log('reloading home');
     if (reloadHome === true) {
       callAPI();
       getListings(user, setListings);
@@ -128,7 +127,7 @@ const Home: React.FC<HomeProps> = ({ user }) => {
       )}
       <Row className="justify-content-md-center">
         <div style={{ zIndex: 0, maxWidth: '100%' }}>
-          <Tags tags={dispTags} setTag={(tag: string, active: boolean) => (tags[tag] = active)} />
+          <Tags tags={dispTags} setTag={(tag: string, active: boolean) => {tags[tag] = active}} />
         </div>
       </Row>
       <Row className="justify-content-center">
@@ -137,20 +136,19 @@ const Home: React.FC<HomeProps> = ({ user }) => {
           className={styles.filterButton}
           onClick={async () => {
             const parsedTags = dispTags.filter((tag) => tags[tag]);
-            // console.log(`tags: ${parsedTags}`);
-            if (parsedTags.length != 0) {
+            if (parsedTags.length !== 0) {
               const response1 = await getListingsByTags(user, parsedTags);
               const parsedIds: any = [];
               const parsedCreationTimes: any = [];
               // console.log(response1);
-              if (response1 != false) {
+              if (response1 !== false) {
                 response1.map((listing) => {
                   if (!parsedIds.includes(listing.listingId)) {
                     parsedIds.push(listing.listingId);
                     parsedCreationTimes.push(listing.creationTime);
                   }
                 });
-                const response2 = await fetchIdListings(
+                await fetchIdListings(
                   user,
                   setSearchListings,
                   parsedIds,
@@ -189,7 +187,7 @@ const Home: React.FC<HomeProps> = ({ user }) => {
             type="submit"
             className={styles.searchButton}
             onClick={async () => {
-              if (searchInput.length != 0) {
+              if (searchInput.length !== 0) {
                 await getListingsBySearch(user, searchInput, setSearchListings);
                 setListings(null);
                 rowArray = [];
@@ -264,7 +262,7 @@ const Home: React.FC<HomeProps> = ({ user }) => {
                 </Col>
               </Row>,
             );
-          } else if (listings.Items.length % 4 == 1 && listings.Items.length - 1 == index) {
+          } else if (listings.Items.length % 4 === 1 && listings.Items.length - 1 === index) {
             rowArray.push(
               <Row xs={1} md={2} lg={4}>
                 <Col>
@@ -281,7 +279,7 @@ const Home: React.FC<HomeProps> = ({ user }) => {
                 </Col>
               </Row>,
             );
-          } else if (listings.Items.length % 4 == 2 && listings.Items.length - 2 == index) {
+          } else if (listings.Items.length % 4 === 2 && listings.Items.length - 2 === index) {
             rowArray.push(
               <Row xs={1} md={2} lg={4}>
                 <Col>
@@ -310,7 +308,7 @@ const Home: React.FC<HomeProps> = ({ user }) => {
                 </Col>
               </Row>,
             );
-          } else if (listings.Items.length % 4 == 3 && listings.Items.length - 3 == index) {
+          } else if (listings.Items.length % 4 === 3 && listings.Items.length - 3 === index) {
             rowArray.push(
               <Row xs={1} md={2} lg={4}>
                 <Col>
