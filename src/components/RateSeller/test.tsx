@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import RateSeller from './RateSeller';
 
-const ButtonExample: React.FC = ({}) => {
+const ButtonExample: React.FC = () => {
   const [show, setShow] = useState(false);
   return (
     <div>

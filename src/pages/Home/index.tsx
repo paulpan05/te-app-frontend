@@ -36,7 +36,6 @@ const mapStateToProps = (state: rootState) => ({
 const Home: React.FC<HomeProps> = ({ user }) => {
   const [listings, setListings] = useState();
   const [searchListings, setSearchListings] = useState();
-  const [userInfo, userInfoSetter] = useState<any>(null);
   const [reloadHome, setReloadHome] = useState(true);
   const [showCreateListing, setShowCreateListing] = useState(false);
   // holds the listing of the listing that needs to be rated
@@ -68,7 +67,7 @@ const Home: React.FC<HomeProps> = ({ user }) => {
   });
 
   const callAPI = useCallback(async () => {
-    const userResult = await getUserProfile(user, undefined, userInfoSetter);
+    const userResult = await getUserProfile(user);
     // check if user profile came back valid
     if (userResult !== undefined && userResult !== null) {
       // check if there are any listings that need to be rated

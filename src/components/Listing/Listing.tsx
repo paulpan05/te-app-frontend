@@ -86,7 +86,7 @@ const Listing: React.FC<ListingProps> = ({
           <button
             type="submit"
             onClick={async () => {
-              setToggled(!toggled)
+              setToggled(!toggled);
               if (toggled === true) {
                 const successUnsave = await unsaveListing(user, listingId, postDate);
                 if (successUnsave) {

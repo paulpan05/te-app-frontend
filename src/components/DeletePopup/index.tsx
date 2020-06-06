@@ -58,7 +58,7 @@ const DeletePopup: React.FC<DeletePopupProps> = ({
                         if (success) {
                           setter(false);
                           listingSetter(false);
-                          reloadSetter && reloadSetter(true);
+                          if (reloadSetter) reloadSetter(true);
                           toast('This listing has been deleted!');
                         } else {
                           toast(

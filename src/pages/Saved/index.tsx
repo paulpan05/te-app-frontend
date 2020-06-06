@@ -18,12 +18,11 @@ const mapStateToProps = (state: rootState) => ({
 
 const Saved: React.FC<SavedProps> = ({ user }) => {
   const [listings, setListings] = useState();
-  const [userInfo, userInfoSetter] = useState<any>(null);
 
   const rowArray: any = [];
 
   const callAPI = useCallback(async () => {
-    const userProfile = await getUserProfile(user, undefined, userInfoSetter);
+    const userProfile = await getUserProfile(user);
     const ids: any = [];
     const creations: any = [];
     userProfile.savedListings.map((listing) => {

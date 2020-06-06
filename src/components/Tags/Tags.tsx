@@ -11,7 +11,9 @@ interface TagsDivProps {
 
 const TagsDiv: React.FC<TagsDivProps> = ({ tags, setTag, initialActiveTags }) => {
   const init = {};
-  tags.map((tag) => (init[tag] = initialActiveTags?.includes(tag)));
+  tags.map((tag) => {
+    init[tag] = initialActiveTags?.includes(tag);
+  });
 
   const [activeTags, setActiveTags] = useState(init);
 

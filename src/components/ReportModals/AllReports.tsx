@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { rootState } from '../../redux/reducers';
 import { getReports } from '../../api';
@@ -30,7 +30,7 @@ const AllReports: React.FC<HomeProps> = ({ user }) => {
               reportedUserId?: string;
               commentId?: string;
             }) => {
-              const str = `${'\n\r' + 'type: '}${report.type}\n\rreportId: ${
+              const str = `${'\n\rtype: '}${report.type}\n\rreportId: ${
                 report.reportId
               }\n\ruserId: ${report.userId}\n\rdescription: ${report.description}\n\rId: ${
                 report.listingId ? report.listingId : ''
@@ -38,7 +38,7 @@ const AllReports: React.FC<HomeProps> = ({ user }) => {
                 report.commentId ? report.commentId : ''
               }\n\r`;
               // let str1 = reportString.concat(str);
-              updateReportString((reportString) => reportString.concat(str));
+              updateReportString((thisReportString) => thisReportString.concat(str));
               // console.log(str1);
             },
           );

@@ -1,6 +1,5 @@
 import React, { useState, ChangeEvent } from 'react';
 import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
 import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -14,11 +13,9 @@ import styles from './index.module.scss';
 import { reportComment } from '../../api';
 
 interface ReportCommentProps {
-  dispatch?: Dispatch<any>;
   user: firebase.User | null | undefined;
   show: boolean;
   setShow: Function;
-  userId: string;
   listingId: string;
   commentId: string;
   reportedUserName: string;
@@ -30,11 +27,9 @@ const mapStateToProps = (state: rootState) => ({
 });
 
 const ReportComment: React.FC<ReportCommentProps> = ({
-  dispatch,
   user,
   show,
   setShow,
-  userId,
   listingId,
   commentId,
   reportedUserName,

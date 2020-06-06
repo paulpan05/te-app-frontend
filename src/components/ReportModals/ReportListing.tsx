@@ -1,6 +1,5 @@
 import React, { useState, ChangeEvent } from 'react';
 import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
 import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -14,7 +13,6 @@ import styles from './index.module.scss';
 import { reportListing } from '../../api';
 
 interface ReportListingProps {
-  dispatch?: Dispatch<any>;
   user: firebase.User | null | undefined;
   show: boolean;
   setShow: Function;
@@ -29,7 +27,6 @@ const mapStateToProps = (state: rootState) => ({
 });
 
 const ReportListing: React.FC<ReportListingProps> = ({
-  dispatch,
   user,
   show,
   setShow,
@@ -92,7 +89,8 @@ const ReportListing: React.FC<ReportListingProps> = ({
             <Row className={styles.pad2}>
               <img src={reportedProfilePicture} className={styles.sellerPicture} alt="seller" />
               <div className={styles.reportTitle} style={{ paddingLeft: '1rem' }}>
-                Seller: {reportedUserName}
+                Seller:
+                {reportedUserName}
               </div>
             </Row>
             <Row className={styles.pad2}>
