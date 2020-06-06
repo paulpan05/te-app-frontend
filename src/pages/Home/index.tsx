@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import Button from 'react-bootstrap/Button';
@@ -67,12 +67,12 @@ const Home: React.FC<HomeProps> = ({ user }) => {
     tags[tag] = false;
   });
 
-  const callAPI = async () => {
+  const callAPI = useCallback(async () => {
     const userResult = await getUserProfile(user, undefined, userInfoSetter);
     // check if user profile came back valid
-    if (userResult != undefined && userResult != null) {
+    if (userResult !== undefined && userResult !== null) {
       // check if there are any listings that need to be rated
-      if (userResult.listingsToRate != undefined && userResult.listingsToRate.length != 0) {
+      if (userResult.listingsToRate !== undefined && userResult.listingsToRate.length !== 0) {
         // take the first listing that needs to be rated
         rateListingSetter(userResult.listingsToRate[0]);
         setShowRateSeller(true);
@@ -82,7 +82,7 @@ const Home: React.FC<HomeProps> = ({ user }) => {
     } else {
       setShowRateSeller(false);
     }
-  };
+  }, [user]);
 
   const onKeyPressed = async (e) => {
     if (e.keyCode === 13) {
@@ -127,7 +127,12 @@ const Home: React.FC<HomeProps> = ({ user }) => {
       )}
       <Row className="justify-content-md-center">
         <div style={{ zIndex: 0, maxWidth: '100%' }}>
-          <Tags tags={dispTags} setTag={(tag: string, active: boolean) => {tags[tag] = active}} />
+          <Tags
+            tags={dispTags}
+            setTag={(tag: string, active: boolean) => {
+              tags[tag] = active;
+            }}
+          />
         </div>
       </Row>
       <Row className="justify-content-center">
@@ -148,12 +153,7 @@ const Home: React.FC<HomeProps> = ({ user }) => {
                     parsedCreationTimes.push(listing.creationTime);
                   }
                 });
-                await fetchIdListings(
-                  user,
-                  setSearchListings,
-                  parsedIds,
-                  parsedCreationTimes,
-                );
+                await fetchIdListings(user, setSearchListings, parsedIds, parsedCreationTimes);
                 setListings(null);
                 rowArray = [];
               } else {
@@ -202,10 +202,6 @@ const Home: React.FC<HomeProps> = ({ user }) => {
           </button>
         </InputGroup>
       </Row>
-
-      {/* <Form>
-     <Form.Control className="mr-sm-2" type="text" placeholder="Search for an Item" />
-     </Form> */}
       {listings &&
         listings !== null &&
         listings.Items.map((listingItem, index) => {
