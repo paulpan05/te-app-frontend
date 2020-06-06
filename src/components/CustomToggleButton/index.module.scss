@@ -1,0 +1,20 @@
+$font-stack: Roboto;
+
+.toggleButtonInactive {
+  background-color: rgb(210, 210, 210)!important;
+  color: black !important;
+  border-radius: 40vh !important;
+  font: $font-stack !important;
+  margin: 1vh !important;
+  border: 1px solid black !important;
+  box-shadow: none !important;
+}
+
+.toggleButtonActive {
+  background-color: #17284A!important;
+  border-radius: 40vh !important;
+  font: $font-stack !important;
+  margin: 1vh !important;
+  border: 1px solid black !important;
+  box-shadow: none !important;
+}

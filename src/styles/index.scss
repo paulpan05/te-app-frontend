@@ -1,5 +1,22 @@
 * {
-  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+  font-family: Roboto, "Open Sans", Arial, Helvetica, sans-serif;
+  @media (min-width: 768px) {
+    p {
+      font-size: 14px !important;
+      line-break: anywhere !important;
+    }
+    h1 {
+      line-break: anywhere !important;
+    }
+  }
+  @media (max-width: 767px) {
+    p {
+      font-size: 20px !important;
+    }
+    h1 {
+      line-break: anywhere !important;
+    }
+  }
 }
 
 // hide the focus indicator if element receives focus via mouse, but show on keyboard focus (on tab).
@@ -12,4 +29,235 @@
 // ideally use outline property for those users using windows high contrast mode
 .js-focus-visible .focus-visible {
   outline: magenta auto 5px;
+}
+.modal-content {
+  border: 0 !important;
+  background-color: transparent !important;
+  align-items: center !important;
+}
+.carousel-control-next,
+.carousel-control-prev {
+  filter: invert(100%);
+}
+
+.notification {
+  background-color: rgb(51, 86, 155) !important;
+  color: white !important;
+  position: absolute !important;
+  top: 13vh !important;
+  right: 0 !important;
+  z-index: 100 !important;
+}
+.myProgress {
+  background: gold !important;
+}
+.myToast {
+  font-family: Roboto !important;
+}
+@media (max-width: 767px) {
+  .sellButton {
+    font-size: 2rem !important;
+    margin-right: 1rem !important;
+    margin-bottom: 1rem !important;
+    height: 50px !important;
+    width: 50px !important;
+  }
+  .exitFlag {
+    font-size: 1rem;
+  }
+  .flag {
+    font-size: 3rem;
+  }
+  .likedFlag {
+    font-size: 3rem;
+  }
+  .responsiveModal {
+    width: 80% !important;
+    display: flex !important;
+    left: 10% !important;
+    padding: auto !important;
+    overflow-x: hidden !important;
+  }
+  .newModal {
+    width: 75% !important;
+    left: 12.5% !important;
+    border-radius: 40px !important;
+    padding: auto !important;
+    background-color: white !important;
+    top: 5% !important;
+    height: 90% !important;
+    display: flex !important;
+    overflow: hidden !important;
+  }
+  .modal-dialog {
+    max-width: 100% !important;
+  }
+}
+.sellButton:hover {
+  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.24) !important;
+}
+@media (min-width: 768px) {
+  .sellButton {
+    height: 75px !important;
+    width: 75px !important;
+    font-size: 2.5rem !important;
+    margin-right: 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+  }
+
+  .responsiveModal {
+    max-width: 100% !important;
+    display: flex !important;
+    overflow: scroll !important;
+    padding: auto;
+  }
+  .exitFlag {
+    font-size: 3rem;
+  }
+  .flag {
+    font-size: 5rem;
+  }
+  .likedFlag {
+    font-size: 5rem;
+  }
+  .newModal {
+    width: 50% !important;
+    left: 25% !important;
+    top: 5% !important;
+    height: 90% !important;
+    border-radius: 40px !important;
+    padding: auto !important;
+    background-color: white !important;
+    top: 5% !important;
+    height: 90% !important;
+    display: flex !important;
+    overflow: hidden !important;
+  }
+}
+.sellButton {
+  background-color: #17284a !important;
+  z-index: 999 !important;
+  border-radius: 50% !important;
+  position: fixed !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  font-family: Roboto !important;
+  padding: initial !important;
+  border: 0 !important;
+}
+.hoverPointer:hover {
+  cursor: pointer !important;
+}
+.imgWrapper {
+  width: 100% !important;
+  height: 30vh !important;
+  max-width: 400px !important;
+  max-height: 400px !important;
+  background-color: #545b6221;
+  align-items: center;
+  display: flex;
+}
+.imgWrapper > div {
+  width: 100% !important;
+}
+.imgWrapper > div > div {
+  width: 100% !important;
+  height: 30vh !important;
+  max-width: 400px !important;
+  max-height: 400px !important;
+  background-color: #545b6221;
+  align-items: center;
+  display: flex;
+}
+.modalImgWrapper {
+  width: 100% !important;
+  height: 30vh !important;
+  max-width: 400px !important;
+  max-height: 400px !important;
+  background-color: #545b6221;
+  align-items: center;
+  display: flex;
+}
+.modalImgWrapper > div {
+  width:100% !important;
+}
+.modalImgWrapper > div > div {
+  width: 100% !important;
+  height: 30vh !important;
+  max-width: 400px !important;
+  max-height: 400px !important;
+  background-color: #545b6221;
+  display: flex;
+  overflow-y:auto !important;
+  //margin:auto !important;
+}
+.modalImgWrapper > div > div > div {
+  margin-block: auto;
+}
+
+.header {
+  font-size: 3rem !important;
+  text-align: center;
+}
+.mediumHeader {
+  font-size: 2.25rem !important;
+  padding-bottom: 1rem !important;
+}
+.subHeader {
+  font-size: 1.5rem !important;
+}
+.bodyText {
+  font-size: 1rem !important;
+}
+.blueColor {
+  color: #17284a !important;
+}
+body {
+  padding: 0 !important;
+}
+.maxWidth95 {
+  max-width: 95% !important;
+}
+.textAlign {
+  text-align: center;
+}
+.myButton {
+  background: none;
+  border: 0;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+  vertical-align: middle;
+}
+.exitButton {
+  background: none !important;
+  border: 0 !important;
+  vertical-align: middle !important;
+  font-size: 1.5rem !important;
+}
+.exitPad {
+  position: absolute !important;
+  right: 0 !important;
+  padding-top: 1rem !important;
+  padding-right: 2rem !important;
+}
+.myCard {
+  background: #ffffff;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), inset 0px 4px 1px #e5e5e5;
+  border-radius: 3rem !important;
+}
+
+.roundedBorder {
+  border-radius: 40px !important;
+}
+.profileModal {
+  max-width: 1340px !important;
+}
+.profileModal > div > div {
+  max-width: 100% !important;
+}
+
+.row {
+  max-width: 100% !important;
+  margin-right: 0 !important;
+  margin-left: 0 !important;
 }

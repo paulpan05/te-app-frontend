@@ -1,0 +1,30 @@
+.wrapper { 
+    margin-top: 1rem;
+    //margin: auto; 
+    text-align: center; 
+    position: relative;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    margin-bottom: 0px !important;
+    width: 900px;
+    padding-top: 5px;
+    max-width: 100% !important;
+}
+.scrolls { 
+    overflow-x: scroll;
+    overflow-y: hidden;
+    height: 80px;
+    white-space:nowrap;
+    max-width: 100% !important;
+} 
+.imageDiv img { 
+    box-shadow: 1px 1px 10px #999; 
+    margin: 1rem;
+    max-height: 50px;
+    cursor: pointer;
+display:inline-block;
+*display:inline;
+*zoom:1;
+vertical-align:top;
+}

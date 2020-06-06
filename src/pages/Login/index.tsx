@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { Redirect } from 'react-router-dom';
@@ -6,6 +6,7 @@ import { authActions } from '../../redux/actions';
 import { rootState } from '../../redux/reducers';
 import styles from './index.module.scss';
 import AppLogo from '../../assets/img/full-app-logo.svg';
+import { getUserProfile } from '../../api';
 
 interface LoginProps {
   dispatch: Dispatch<any>;
@@ -18,11 +19,27 @@ const mapStateToProps = (state: rootState) => ({
   loggingIn: state.auth.loggingIn,
 });
 
-const Login: React.FC<LoginProps> = ({ dispatch, user, loggingIn }) =>
-  user ? (
-    <Redirect to="/" />
+const Login: React.FC<LoginProps> = ({ dispatch, user, loggingIn }) => {
+  const [userProfile, setUserProfile] = useState();
+
+  const loginFunction = useCallback(async () => {
+    const result = await getUserProfile(user);
+    if (!result) {
+      setUserProfile(null);
+    } else {
+      setUserProfile(true);
+    }
+  }, [user]);
+  useEffect(() => {
+    if (user) loginFunction();
+  }, [loginFunction, user]);
+  return user ? (
+    <>
+      {userProfile === true && <Redirect to="/" />}
+      {userProfile === null && <Redirect to="/signup" />}
+    </>
   ) : (
-    <div className={styles.page}>
+    <div className={styles.background}>
       <div className={styles.authContainer}>
         <div>
           <img src={AppLogo} alt="Full App Logo" draggable={false} />
@@ -40,5 +57,5 @@ const Login: React.FC<LoginProps> = ({ dispatch, user, loggingIn }) =>
       <div className={styles.aboutContainer} />
     </div>
   );
-
+};
 export default connect(mapStateToProps)(Login);

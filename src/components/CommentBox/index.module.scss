@@ -1,0 +1,103 @@
+$font-stack: Roboto;
+.comment {
+  padding-top: 10px;
+  max-width: 100%;
+  max-height: 50%;
+  display: inline-flex;
+  align-items: center;
+  margin-left: 10px;
+  position: relative;
+}
+
+.commentText {
+  display: inline-block !important;
+  font-size: 1em;
+  background-color: #EEEEEE;
+  border-radius: 20px;
+  height: 100%;
+  padding-left: 15px;
+  padding-right: 20px;
+  padding-top: 2px;
+  padding-bottom: 5px;
+  width: 360px;
+  word-wrap: break-word;
+  text-align: start;
+  z-index: 5;
+  font-family: Roboto;
+  letter-spacing: 1px;
+  font-weight: 300;
+}
+
+.authorPicture {
+  border-radius: 50%;
+  max-width: 35px;
+  padding-right: 5px;
+  height: auto;
+}
+
+.commentList {
+  display: inline-block;
+  overflow-y: auto;
+  max-height: 100%;
+  height: 100%;
+  align-items: start;
+  grid-auto-rows: 10%;
+  width: 100%;
+  margin-left: -5px;
+  justify-content: space-between;
+}
+
+.commentForm {
+  margin-top: 10px;
+  max-width: 90%;
+  width: 90%;
+  margin-bottom: 10px;
+  justify-content: flex-start;
+  display: inline-flex;
+  align-items: center;
+  margin-left: 5%;
+}
+
+.commentInput {
+  border-radius: 100px;
+  width: 100%;
+  align-self: start;
+  padding-left: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  font-family: Roboto;
+  letter-spacing: 0.5px;
+  color: rgba(0,0,0, 0.38);
+}
+
+.commentBoxTitle {
+  font-weight: 500;
+  font-size: 20px;
+  color: #17284a;
+  align-self: center;
+}
+
+.commentBox {
+  height: 534px;
+  border: 1px solid black;
+  justify-content: end;
+  margin-left: 1rem;
+  border-radius: 3rem;
+  padding-top: 0.5rem;
+}
+
+.reportComment {
+  max-height: 30px;
+  position: absolute;
+  background: none;
+  border: 0;
+  border-radius: 20px;
+  z-index: 10;
+  bottom: 0;
+  right: 0;
+}
+
+.reportCommentImg {
+  max-height: 20px;
+  max-width: auto;
+}

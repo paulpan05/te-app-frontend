@@ -1,0 +1,35 @@
+$font-stack: Roboto;
+.toggleButtonInactive {
+  background-color: #F2F2F2 !important;
+  color: black !important;
+  border-radius: 40vh !important;
+  font: $font-stack !important;
+  border: none !important; 
+  box-shadow: none !important;
+  padding: 10px 20px 10px 20px;
+  text-align: center;
+  display: inline-block !important;
+  margin: 6px;
+  margin-bottom: 10px;
+}
+
+.toggleButtonInactive:hover {
+    box-shadow: 0 3px 3px 0 rgba(0,0,0,0.24) !important;
+}
+
+.toggleButtonActive:hover {
+    box-shadow: 0 3px 3px 0 rgba(0,0,0,0.24) !important;
+}
+
+.toggleButtonActive {
+  background-color: #17284A!important;
+  border-radius: 40vh !important;
+  font: $font-stack !important;
+  border: none !important; 
+  box-shadow: none !important;
+  padding: 10px 20px 10px 20px;
+  text-align: center;
+  display: inline-block !important;
+  margin: 6px;
+  margin-bottom: 10px;
+}

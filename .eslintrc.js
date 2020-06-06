@@ -6,9 +6,12 @@ module.exports = {
     'plugin:prettier/recommended',
   ],
   parserOptions: {
-    project: "./tsconfig.json",
+    project: './tsconfig.json',
   },
   rules: {
     'react/prop-types': 'off',
+    'array-callback-return': 'off',
+    'react/no-array-index-key': 'off',
+    'import/no-cycle': 'off',
   },
 };

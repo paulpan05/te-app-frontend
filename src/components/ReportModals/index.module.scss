@@ -1,0 +1,101 @@
+.reportTitle {
+  font-family: Roboto;
+  font-weight: 300;
+  font-size: 30px;
+  //line-height: 20px;
+  color: black;
+}
+
+.listingTitle {
+  font-family: Roboto;
+  font-weight: 600;
+  font-size: 30px;
+  color: #17284a;
+}
+
+.reportTextArea {
+  border-radius: 10px;
+  resize: none;
+  font-size: large;
+  width: 69%; //hehe
+  margin-top: 10px;
+  background-color: rgba(229, 226, 226, 0.63);
+  height: 7rem;
+  padding-left: 2px;
+}
+
+.reportReason {
+  font-family: Roboto;
+  font-size: 20px;
+  width: 100%;
+  text-align: center;
+}
+
+.myCard {
+  background: #ffffff;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), inset 0px 4px 1px #e5e5e5;
+  border-radius: 3rem !important;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+}
+
+.pad1 {
+  margin-right:0 !important;
+  margin-left:0 !important;
+  justify-content: center;
+  display: inline-flex;
+}
+
+.pad2 {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+    margin-right:0 !important;
+    margin-left:0 !important;
+    justify-content: center;
+    display: inline-flex;
+    align-items: center;
+}
+
+.exitButton {
+  background: none;
+  border: 0;
+  bottom: 50%;
+}
+
+.images img {
+  max-width: 50%;
+}
+@media (max-width: 767px) {
+  .flag {
+    font-size: 1rem;
+  }
+}
+@media (min-width: 768px) {
+  .flag {
+    font-size: 2rem;
+  }
+}
+.flag:hover {
+  color: red;
+}
+
+.sellerPicture {
+  border-radius: 50%;
+  height: 3rem;
+}
+
+.submitButton {
+  background: #17284a;
+  border: 1px solid #000000;
+  border-radius: 50px;
+  color: white;
+  font-family: Roboto;
+  font-size: 20px;
+  line-height: 23px;
+  max-width: 100%;
+  height: 3rem;
+  text-align: center;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}

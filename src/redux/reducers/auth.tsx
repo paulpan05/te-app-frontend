@@ -1,5 +1,6 @@
 import { AnyAction } from 'redux';
 import { authConstants } from '../constants';
+import blankProfilePic from '../../assets/img/blank-profile-picture.png';
 
 export interface authState {
   user: firebase.User | null | undefined;
@@ -7,6 +8,7 @@ export interface authState {
   logInFailedMessage: string | undefined;
   signingOut: boolean;
   signOutFailedMessage: string | undefined;
+  profilePicture: string;
 }
 
 const initialState: authState = {
@@ -15,6 +17,7 @@ const initialState: authState = {
   logInFailedMessage: undefined,
   signingOut: false,
   signOutFailedMessage: undefined,
+  profilePicture: blankProfilePic,
 };
 
 const auth = (state = initialState, action: AnyAction) => {
@@ -65,6 +68,11 @@ const auth = (state = initialState, action: AnyAction) => {
       return {
         ...state,
         signOutFailedMessage: undefined,
+      };
+    case authConstants.SET_PROFILE_PIC:
+      return {
+        ...state,
+        profilePicture: action.picture,
       };
     default:
       return state;

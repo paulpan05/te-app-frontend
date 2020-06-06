@@ -5,6 +5,11 @@ import { authConstants } from '../constants';
 
 type ThunkActionCreator = ActionCreator<ThunkAction<void, {}, {}, AnyAction>>;
 
+const setProfilePic = (picture: string) => ({
+  type: authConstants.SET_PROFILE_PIC,
+  picture,
+});
+
 const setUser = (user: firebase.User | null) => ({
   type: authConstants.SET_USER,
   user,
@@ -76,5 +81,6 @@ const authActions = {
   dismissLogInFailed,
   signOut,
   dismissSignOutFailed,
+  setProfilePic,
 };
 export default authActions;

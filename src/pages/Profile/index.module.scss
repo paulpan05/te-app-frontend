@@ -1,0 +1,144 @@
+
+.con {
+    max-width: 100% !important;
+    margin-top: 1rem !important;
+    min-height: 100% !important;
+}
+.column {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.row{
+    //height: % !important;
+    min-height: 50vh !important;
+    max-height: fit-content;
+    margin: 1rem;
+
+   // margin-top: 1rem !important;
+    //margin-right: 1rem !important;
+    border-width: 2px !important;    
+    outline: black;
+    outline-width: 2px;
+}
+.img {
+    width: 16rem !important;
+    height: 16rem !important;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1vh;
+    margin-top: 1vh;
+}
+
+.btnblue {
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1vh;
+    margin-bottom: 3vh;
+    border-radius: 30px !important;
+    background-color: #05275e !important;
+    color: white !important;
+}
+
+.btngrey {
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 2vh;
+    border-radius: 30px !important;
+    background-color: #aba3a4ee !important;
+    color: white !important;
+}
+
+
+
+.outlin{
+    height: inherit;
+    background-color: whitesmoke;
+    max-width: 100%;
+    width: 100%;
+    padding: 1%;
+    border: 1px;
+    border-style: solid;
+    border-radius: 3vh;
+    text-align: inherit;
+}
+ 
+.carddeck {
+    padding-bottom: 1%;
+    height: 100%;
+    width: 100%;
+    margin-bottom: 1% !important;
+    border-color: black !important;
+    border-radius: 2rem;
+    background-blend-mode: abs($number: 0);
+}
+
+.cardim {
+    border-color: black !important;
+    border-width: 2vh !important;
+    border-radius: 2rem !important;
+    height: 50% !important;
+    width: 100% !important;
+    
+}
+
+.card {
+    border-color: grey !important;
+    border-radius: 2rem !important;
+    width: 100% !important;
+    height: 50% !important;
+    background-color: rgb(239, 239, 239);
+    padding-bottom: 1%;
+
+}
+
+.cardtitle {
+    text-align: center;
+    padding: 1% !important;
+    
+}
+
+.carousel{
+    width: 100%;
+}
+
+.list{
+    margin: 1vh;
+}
+    /*.left {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        h1 {
+            margin-top: 15rem;
+            
+        }
+        img {
+            margin: 3rem;
+        }
+        button {
+        
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 1rem;
+        font-size: large;
+        margin: 1rem
+        }
+    }
+    .right {
+        width: 80%;
+        height: 100%;
+        max-width: 100%;
+        background-color: whitespace;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        padding-top: 3rem;
+        margin-left: -1rem;
+    }
+*/
