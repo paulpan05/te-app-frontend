@@ -1,27 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
-import { Row, Col} from 'react-bootstrap';
-import Form from 'react-bootstrap/Form';
+import { Row, Col } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import FormControl from 'react-bootstrap/FormControl';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import FlowerImg from '../../assets/GreenShirt.png';
 import styles from './index.module.scss';
 import Listing from '../../components/Listing/Listing';
-import Carousel from 'react-multi-carousel';
-import TagButton from '../../components/Button';
 import Tags from '../../components/Tags';
 import Rate from '../../components/RateSeller';
 import { toast } from 'react-toastify';
 import { rootState } from '../../redux/reducers';
-import endpoint from '../../configs/endpoint';
-import { getUserProfile, userSignup, updateProfile, getListings, getListingsBySearch, getListingsByTags, createListing, fetchIdListings} from '../../api';
+import { getUserProfile, getListings, getListingsBySearch, getListingsByTags, fetchIdListings} from '../../api';
 import CreateListing from '../../components/CreateListing';
 
 // Note: as of now there has to be at least 4 things in the database in order for listings to appear
@@ -33,16 +27,16 @@ const mapStateToProps = (state: rootState) => ({
   user: state.auth.user,
 });
 
-const Home: React.FC<HomeProps> = ({ dispatch, user }) => {
+const Home: React.FC<HomeProps> = ({ user }) => {
   const [listings, setListings] = useState();
-  const[searchListings, setSearchListings] = useState();
+  const [searchListings, setSearchListings] = useState();
   const [userInfo, userInfoSetter] = useState<any>(null);
   const [reloadHome, setReloadHome] = useState(true);
   const [showCreateListing, setShowCreateListing] = useState(false);
-  //holds the listing of the listing that needs to be rated
+  // holds the listing of the listing that needs to be rated
   const [rateListing, rateListingSetter] = useState();
   const [showRateSeller, setShowRateSeller] = useState(false);
-  let rowArray = new Array();
+  let rowArray: any = [];
   let searchInput = "";
   const dispTags = ['Tutoring', 'Housing', 'Rideshare', 'Study Material', 'Clothes', 'Furniture', 'Electronics', 'Appliances', 'Fitness', 'Other', 'On-Campus Pickup', 'Off-Campus Pickup', 'Venmo', 'Cash', 'Dining Dollars', 'Free'];
   let tags = {};
