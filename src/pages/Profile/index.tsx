@@ -39,22 +39,55 @@ const Profile: React.FC<ProfileProps> = ({ user, targetUserId, profilePicture })
   const [boughtArray, setBoughtArray] = useState<any>();
   const [soldArray, setSoldArray] = useState<any>();
 
-  const availListings = useCallback(async (result: any) => {
-    const listingArray: any = [];
-    const ids: any = [];
-    const creationTimes: any = [];
+  const availListings = useCallback(
+    async (result: any) => {
+      const listingArray: any = [];
+      const ids: any = [];
+      const creationTimes: any = [];
 
-    if (result === undefined || result.activeListings.length === 0) {
-      return;
-    }
+      if (result === undefined || result.activeListings.length === 0) {
+        return;
+      }
 
-    for (let k = 0; k < result.activeListings.length; k += 1) {
-      ids.push(result.activeListings[k][0]);
-      creationTimes.push(result.activeListings[k][1]);
-    }
+      for (let k = 0; k < result.activeListings.length; k += 1) {
+        ids.push(result.activeListings[k][0]);
+        creationTimes.push(result.activeListings[k][1]);
+      }
 
-    const listings = await fetchListings(user, ids, creationTimes);
-    if (listings) {
+      const listings = await fetchListings(user, ids, creationTimes);
+      if (listings) {
+        listings.map((listing) => {
+          listingArray.push(
+            <Listing
+              reloadProfile={setReloadProfile}
+              user={listing.user}
+              title={listing.title}
+              postDate={listing.creationTime}
+              pictures={listing.pictures}
+              price={listing.price}
+              listingId={listing.listingId}
+            />,
+          );
+        });
+        setAvailArray(listingArray);
+      }
+    },
+    [user],
+  );
+
+  const soldListings = useCallback(
+    async (result: any) => {
+      const listingArray: any = [];
+      const ids: any = [];
+      const creationTimes: any = [];
+      if (result === undefined || result.soldListings.length === 0) {
+        return;
+      }
+      for (let k = 0; k < result.soldListings.length; k += 1) {
+        ids.push(result.soldListings[k][0]);
+        creationTimes.push(result.soldListings[k][1]);
+      }
+      const listings = await fetchListings(user, ids, creationTimes);
       listings.map((listing) => {
         listingArray.push(
           <Listing
@@ -68,69 +101,45 @@ const Profile: React.FC<ProfileProps> = ({ user, targetUserId, profilePicture })
           />,
         );
       });
-      setAvailArray(listingArray);
-    }
-  }, [user]);
+      setSoldArray(listingArray);
+    },
+    [user],
+  );
 
-  const soldListings = useCallback(async (result: any) => {
-    const listingArray: any = [];
-    const ids: any = [];
-    const creationTimes: any = [];
-    if (result === undefined || result.soldListings.length === 0) {
-      return;
-    }
-    for (let k = 0; k < result.soldListings.length; k += 1) {
-      ids.push(result.soldListings[k][0]);
-      creationTimes.push(result.soldListings[k][1]);
-    }
-    const listings = await fetchListings(user, ids, creationTimes);
-    listings.map((listing) => {
-      listingArray.push(
-        <Listing
-          reloadProfile={setReloadProfile}
-          user={listing.user}
-          title={listing.title}
-          postDate={listing.creationTime}
-          pictures={listing.pictures}
-          price={listing.price}
-          listingId={listing.listingId}
-        />,
-      );
-    });
-    setSoldArray(listingArray);
-  }, [user]);
+  const boughtListings = useCallback(
+    async (result: any) => {
+      const listingArray: any = [];
+      const ids: any = [];
+      const creationTimes: any = [];
+      if (result === undefined || result.boughtListings.length === 0) {
+        return;
+      }
+      for (let k = 0; k < result.boughtListings.length; k += 1) {
+        ids.push(result.boughtListings[k][0]);
+        creationTimes.push(result.boughtListings[k][1]);
+      }
 
-  const boughtListings = useCallback(async (result: any) => {
-    const listingArray: any = [];
-    const ids: any = [];
-    const creationTimes: any = [];
-    if (result === undefined || result.boughtListings.length === 0) {
-      return;
-    }
-    for (let k = 0; k < result.boughtListings.length; k += 1) {
-      ids.push(result.boughtListings[k][0]);
-      creationTimes.push(result.boughtListings[k][1]);
-    }
+      const listings = await fetchListings(user, ids, creationTimes);
 
-    const listings = await fetchListings(user, ids, creationTimes);
-
-    if (listings) {
-      listings.map((listing) => {
-        listingArray.push(
-          <Listing
-            reloadProfile={setReloadProfile}
-            user={listing.user}
-            title={listing.title}
-            postDate={listing.creationTime}
-            pictures={listing.pictures}
-            price={listing.price}
-            listingId={listing.listingId}
-          />,
-        );
-      });
-    }
-    setBoughtArray(listingArray);
-  }, [user]);
+      if (listings) {
+        listings.map((listing) => {
+          listingArray.push(
+            <Listing
+              reloadProfile={setReloadProfile}
+              user={listing.user}
+              title={listing.title}
+              postDate={listing.creationTime}
+              pictures={listing.pictures}
+              price={listing.price}
+              listingId={listing.listingId}
+            />,
+          );
+        });
+      }
+      setBoughtArray(listingArray);
+    },
+    [user],
+  );
 
   const functionHandler = useCallback(async () => {
     const result = await getAndSetProfile();
