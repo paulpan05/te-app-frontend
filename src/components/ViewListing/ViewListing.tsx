@@ -303,7 +303,12 @@ const ViewListing: React.FC<ViewListingProps> = ({
                     {/* Button needs to have function to copy item link to clipboard */}
                     <button
                       type="button"
-                      onClick={() => {toast('This listing has been saved to your clipboard!'); navigator.clipboard.writeText(listingData.listingId)}}
+                      onClick={() => {
+                        toast('This listing has been saved to your clipboard!');
+                        navigator.clipboard.writeText(
+                          `Listing: ${listingData.title}\nDate: ${new Date(listingData.creationTime).toString()}\nSeller: ${sellerInfo.name}`
+                        );
+                      }}
                       className={styles.myButton}
                     >
                       <FontAwesomeIcon icon={faLink} size="lg" className={styles.flag} />
