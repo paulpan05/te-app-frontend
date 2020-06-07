@@ -90,7 +90,36 @@ const Listing: React.FC<ListingProps> = ({
           </p>
           <button
             type="submit"
-            onClick={async () => {
+            onClick={async (event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              setToggled(!toggled);
+              if (toggled === true) {
+                const successUnsave = await unsaveListing(user, listingId, postDate);
+                if (successUnsave) {
+                  if (instantChange) {
+                    instantChange();
+                  }
+                  toast('This listing has been removed from your Saved collection!');
+                } else {
+                  toast(
+                    'There has been an error while removing this from your saved collection. Please try again.',
+                  );
+                }
+              } else {
+                const successSave = await saveListing(user, listingId, postDate);
+                if (successSave) {
+                  toast('This listing has been added to your Saved collection!');
+                } else {
+                  toast(
+                    'There has been an error while adding this to your saved collection. Please try again.',
+                  );
+                }
+              }
+            }}
+            onKeyUp={async (event) => {
+              event.preventDefault();
+              event.stopPropagation();
               setToggled(!toggled);
               if (toggled === true) {
                 const successUnsave = await unsaveListing(user, listingId, postDate);
