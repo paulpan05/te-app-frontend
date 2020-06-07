@@ -73,7 +73,12 @@ const Listing: React.FC<ListingProps> = ({
             {getPictures()}
           </Carousel>
         </div>
-        <div className={styles.card_content}>
+        {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
+        <div
+          className={styles.card_content}
+          onClick={() => setShow(true)}
+          onKeyUp={() => setShow(true)}
+        >
           <h2 className={styles.card_title}>{title}</h2>
           <p className={styles.card_text}>
             <span>$</span>
