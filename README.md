@@ -42,6 +42,7 @@ You can access the app by going to https://triton-exchange.netlify.app
 
 ## How to Test
 
+- Do 'npm install' to install dependencies for project. Make sure you have Node.js and NPM on your development environment.
 - Copy .env.local.example file as .env.local in the same directory.
 - Input the Firebase credentials in the .env.local file, ask Software Development Lead Paul Pan if you don't have it.
 - 'npm start' and go to http://localhost:3000 to test things out.
