@@ -1,7 +1,6 @@
 /** This file is for the popup when you click to delete your listing. Confirms or denies action
  * and calls API to remove listing from database
  */
-/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
