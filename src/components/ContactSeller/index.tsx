@@ -1,7 +1,6 @@
 /** This file is for the popup when a user click's 'Contact Seller' on a listing modal. It is sent the
  * object of the listing and the seller profile.
  */
-/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
