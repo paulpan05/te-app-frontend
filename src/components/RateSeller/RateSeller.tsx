@@ -79,7 +79,7 @@ const RateSeller: React.FC<RateSellerProps> = ({
               reloadHome(true);
             }}
           >
-            Mark as Sold
+            Rate Seller
           </Button>
         </Form.Row>
       </Form>

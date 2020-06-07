@@ -73,7 +73,7 @@ const RateBuyer: React.FC<RateBuyerProps> = ({
   };
   return (
     <Modal show={show} onHide={() => setShow(false)} size="lg" dialogClassName={styles.soldDialog}>
-      <h1 className="mx-auto text-center">Rate Seller</h1>
+      <h1 className="mx-auto text-center">Rate Buyer</h1>
       <Form className="text-center">
         <h4 className="mx-auto">{title}</h4>
         <Form.Row className="justify-content-center">
