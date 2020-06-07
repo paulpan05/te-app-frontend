@@ -1,5 +1,11 @@
 # Triton Exchange - Frontend
 
+## Status
+
+![Integration testing](https://github.com/paulpan05/te-app-frontend/workflows/Integration%20testing/badge.svg)
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/2120977d-302b-4793-aa02-d4a6994b8011/deploy-status)](https://app.netlify.com/sites/triton-exchange/deploys)
+
 ## We are Team Pear
 
 ### Our Members
