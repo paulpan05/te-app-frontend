@@ -1,55 +1,48 @@
-# Triton Exchange Frontend
+# Triton Exchange - Frontend
 
-## Getting Started
+## We are Team Pear
 
- - Copy .env.local.example file as .env.local in the same directory
- - Input the Firebase credentials in the .env.local file
- - 'npm start' and profit
- - Install ESLint and Prettier plugins on your Visual Studio Code to enable automatic syntax warning and correction.
+### Our Members
 
-# React README
+- Project Manager - Parth Shah
+- Business Analyst - Dillen Padhiar
+- Senior System Analyst - Neil Tengbumroong
+- Software Architect - Amit Bar
+- Software Development Lead - Paul Pan, Allan Tan
+- Algorithm Specialist - Joachim Do
+- Database Specialist - Sebastian Dogaru
+- Quality Assurance Lead - Quylan Mac
+- User Interface Specialist - Aarushi Shah
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Introduction
 
-## Available Scripts
+Triton exchange is a web application that us, Team Pear, developed over the course of 10 weeks. This application aims to solve the issue of the lack of centralized and trustworthy online marketplaces for UC San Diego. By making a dedicated web app that is eqipped with UCSD Single Sign-On and user ratings, we hope to provide a place where the UCSD community can feel safe when shopping. Numerous other features, like reporting listings and saving listings, makes our app more advanced and attractive than traditional school online marketplaces.
 
-In the project directory, you can run:
+## Login Credentials
 
-### `npm start`
+Having access to UCSD Single Sign-On should be sufficient.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Requirements
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+The web application can be run on Google Chrome, Firefox, and Safari. Other browsers have not been tested and are not garanteed to work, most notably Internet Explorer.
 
-### `npm test`
+## Installation Instruction
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+There is no installation needed since it is a web application.
 
-### `npm run build`
+## How to Run
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+You can access the app by going to https://triton-exchange.netlify.app
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+## How to Test
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Copy .env.local.example file as .env.local in the same directory.
+- Input the Firebase credentials in the .env.local file, ask Software Development Lead Paul Pan if you don't have it.
+- 'npm start' and go to http://localhost:3000 to test things out.
+- Install ESLint and Prettier plugins on your Visual Studio Code to enable automatic syntax warning and correction.
+- 'npm run lint' to see what syntax errors you have.
+- Code will be tested and linted on GitHub prior to being automatically deployed from the master branch.
 
-### `npm run eject`
+## Known Bugs
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+If a button is clicked twice when submitting, unexpected result can happen since two requests are made to the backend.
